@@ -124,6 +124,18 @@
 			</roles>
 			<timezone>+1</timezone>     <!-- relativ zu GMT -->
 		</developer>
+		<developer>
+			<id>tobias.balonier</id>
+			<name>Tobias Balonier</name>
+			<email>bato1016@HS-Karlsruhe.de</email>
+			<url>http://www.iwi.hs-karlsruhe.de</url>
+			<organization>Hochschule Karlsruhe</organization>
+			<organizationUrl>http://www.iwi.hs-karlsruhe.de</organizationUrl>
+			<roles>
+				<role>Student</role>
+			</roles>
+			<timezone>+1</timezone>     <!-- relativ zu GMT -->
+		</developer>
 	</developers>
 
 	<properties>
