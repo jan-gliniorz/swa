@@ -124,6 +124,18 @@
 			</roles>
 			<timezone>+1</timezone>     <!-- relativ zu GMT -->
 		</developer>
+		<developer>
+			<id>Patrick.Frey</id>
+			<name>Patrick Frey</name>
+			<email>fpatrick@web.de</email>
+			<url>http://www.iwi.hs-karlsruhe.de</url>
+			<organization>Hochschule Karlsruhe</organization>
+			<organizationUrl>http://www.iwi.hs-karlsruhe.de</organizationUrl>
+			<roles>
+				<role>Student</role>
+			</roles>
+			<timezone>+1</timezone>     <!-- relativ zu GMT -->
+		</developer>
 	</developers>
 
 	<properties>
