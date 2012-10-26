@@ -1,4 +1,5 @@
 artikel_ID;bezeichnung;beschreibung;preis;bild;erstellt_am;geaendert_am
+<<<<<<< HEAD
 300;Chino;Hose;50;x;20011-10-01 00:00:00.000;20011-10-01 00:00:00.000
 301;Hemd;Hemd;25;x;20011-10-01 00:00:00.000;20011-10-01 00:00:00.000
 302;T-Shirt;T-Shirt;15;x;20011-10-03 00:00:00.000;20011-10-03 00:00:00.000
@@ -9,3 +10,15 @@ artikel_ID;bezeichnung;beschreibung;preis;bild;erstellt_am;geaendert_am
 307;Boxershort;Unterwäsche;5;x;20011-10-10 00:00:00.000;20011-10-10 00:00:00.000
 308;Badeshort;Badehose;10;x;20011-10-10 00:00:00.000;20011-10-10 00:00:00.000
 309;Jogginghose;Sporthose;23;x;20011-10-10 00:00:00.000;20011-10-10 00:00:00.000
+=======
+300;Chino;Hose;50;x;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+301;Hemd;Hemd;25;x;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+302;T-Shirt;T-Shirt;15;x;2011-10-03 00:00:00.000;2011-10-03 00:00:00.000
+303;Woll-Pullover;Pullover;35;x;2011-10-03 00:00:00.000;2011-10-03 00:00:00.000
+304;Regenjacke;Jacke;50;x;2011-10-07 00:00:00.000;2011-10-07 00:00:00.000
+305;Sakko;Sakko;55;x;2011-10-07 00:00:00.000;2011-10-07 00:00:00.000
+306;Weste;Weste;25;x;2011-10-07 00:00:00.000;2011-10-07 00:00:00.000
+307;Boxershort;Unterwäsche;5;x;2011-10-10 00:00:00.000;2011-10-10 00:00:00.000
+308;Badeshort;Badehose;10;x;2011-10-10 00:00:00.000;2011-10-10 00:00:00.000
+309;Jogginghose;Sporthose;23;x;2011-10-10 00:00:00.000;2011-10-10 00:00:00.000
+>>>>>>> branch 'master' of http://Tobias.Balonier:7bn6knwD@www.iwi.hs-karlsruhe.de/git/swa17.git

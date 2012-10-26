@@ -124,10 +124,17 @@
 			</roles>
 			<timezone>+1</timezone>     <!-- relativ zu GMT -->
 		</developer>
+<<<<<<< HEAD
 		<developer>
 			<id>tobias.balonier</id>
 			<name>Tobias Balonier</name>
 			<email>bato1016@HS-Karlsruhe.de</email>
+=======
+			<developer>
+			<id>Gliniorz</id>
+			<name>Jan Gliniorz</name>
+			<email>glja1011@HS-Karlsruhe.de</email>
+>>>>>>> branch 'master' of http://Tobias.Balonier:7bn6knwD@www.iwi.hs-karlsruhe.de/git/swa17.git
 			<url>http://www.iwi.hs-karlsruhe.de</url>
 			<organization>Hochschule Karlsruhe</organization>
 			<organizationUrl>http://www.iwi.hs-karlsruhe.de</organizationUrl>
