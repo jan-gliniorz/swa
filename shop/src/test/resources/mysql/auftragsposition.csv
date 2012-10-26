@@ -1,21 +1,4 @@
 auftragsposition_ID;auftrag_FID;artikel_FID;anzahl;preis
-<<<<<<< HEAD
-200;150;300;1;X
-201;150;301;2;X
-202;151;302;2;X
-203;152;305;20;x
-204;153;300;1;x
-205;153;303;3;x
-206;153;304;1;x
-207;153;309;10;x
-208;153;308;1;x
-209;154;305;4;x
-210;155;309;1;x
-211;156;307;1;x
-212;157;306;2;x
-213;158;300;1;x
-214;159;303;1;x
-=======
 200;150;300;1;20.99
 201;150;301;2;20.99
 202;151;302;2;20.99
@@ -31,4 +14,3 @@ auftragsposition_ID;auftrag_FID;artikel_FID;anzahl;preis
 212;157;306;2;20.99
 213;158;300;1;20.99
 214;159;303;1;20.99
->>>>>>> branch 'master' of http://Tobias.Balonier:7bn6knwD@www.iwi.hs-karlsruhe.de/git/swa17.git
