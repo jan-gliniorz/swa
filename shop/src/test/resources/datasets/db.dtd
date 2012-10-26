@@ -62,7 +62,6 @@
     kundenNr CDATA #REQUIRED
     nachname CDATA #REQUIRED
     vorname CDATA #REQUIRED
-    adresse_FID CDATA #REQUIRED
     email CDATA #REQUIRED
     passwort CDATA #REQUIRED
     erstellt_am CDATA #REQUIRED

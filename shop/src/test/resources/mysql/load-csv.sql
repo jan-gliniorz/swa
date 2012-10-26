@@ -1,66 +1,66 @@
 USE ${dbname.mysql};
 
-LOAD DATA LOCAL INFILE 'C:/Software/eclipse-workspace-git/swa17/shop/src/test/resources/mysql/hibernate_sequence.csv'
+LOAD DATA LOCAL INFILE 'C:/Software/git-workspace/swa17/shop/src/test/resources/mysql/hibernate_sequence.csv'
 INTO TABLE hibernate_sequence
 FIELDS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE 'C:/Software/eclipse-workspace-git/swa17/shop/src/test/resources/mysql/kunde.csv'
+LOAD DATA LOCAL INFILE 'C:/Software/git-workspace/swa17/shop/src/test/resources/mysql/kunde.csv'
 INTO TABLE kunde
 FIELDS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE 'C:/Software/eclipse-workspace-git/swa17/shop/src/test/resources/mysql/adresse.csv'
+LOAD DATA LOCAL INFILE 'C:/Software/git-workspace/swa17/shop/src/test/resources/mysql/adresse.csv'
 INTO TABLE adresse
 FIELDS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE 'C:/Software/eclipse-workspace-git/swa17/shop/src/test/resources/mysql/auftrag.csv'
+LOAD DATA LOCAL INFILE 'C:/Software/git-workspace/swa17/shop/src/test/resources/mysql/auftrag.csv'
 INTO TABLE auftrag
 FIELDS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE 'C:/Software/eclipse-workspace-git/swa17/shop/src/test/resources/mysql/artikel.csv'
+LOAD DATA LOCAL INFILE 'C:/Software/git-workspace/swa17/shop/src/test/resources/mysql/artikel.csv'
 INTO TABLE artikel
 FIELDS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE 'C:/Software/eclipse-workspace-git/swa17/shop/src/test/resources/mysql/auftragsposition.csv'
+LOAD DATA LOCAL INFILE 'C:/Software/git-workspace/swa17/shop/src/test/resources/mysql/auftragsposition.csv'
 INTO TABLE auftragsposition
 FIELDS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE 'C:/Software/eclipse-workspace-git/swa17/shop/src/test/resources/mysql/lieferung.csv'
+LOAD DATA LOCAL INFILE 'C:/Software/git-workspace/swa17/shop/src/test/resources/mysql/lieferung.csv'
 INTO TABLE lieferung
 FIELDS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE 'C:/Software/eclipse-workspace-git/swa17/shop/src/test/resources/mysql/lieferungsposition.csv'
+LOAD DATA LOCAL INFILE 'C:/Software/git-workspace/swa17/shop/src/test/resources/mysql/lieferungsposition.csv'
 INTO TABLE lieferungsposition
 FIELDS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE 'C:/Software/eclipse-workspace-git/swa17/shop/src/test/resources/mysql/rechnung.csv'
+LOAD DATA LOCAL INFILE 'C:/Software/git-workspace/swa17/shop/src/test/resources/mysql/rechnung.csv'
 INTO TABLE rechnung
 FIELDS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE 'C:/Software/eclipse-workspace-git/swa17/shop/src/test/resources/mysql/lager.csv'
+LOAD DATA LOCAL INFILE 'C:/Software/git-workspace/swa17/shop/src/test/resources/mysql/lager.csv'
 INTO TABLE lager
 FIELDS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE 'C:/Software/eclipse-workspace-git/swa17/shop/src/test/resources/mysql/lagerposition.csv'
+LOAD DATA LOCAL INFILE 'C:/Software/git-workspace/swa17/shop/src/test/resources/mysql/lagerposition.csv'
 INTO TABLE lagerposition
 FIELDS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
