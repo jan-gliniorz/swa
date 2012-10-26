@@ -1,0 +1,115 @@
+<!ELEMENT dataset (
+    adresse*,
+    artikel*,
+    auftrag*,
+    auftragsposition*,
+    hibernate_sequence*,
+    kunde*,
+    lager*,
+    lagerposition*,
+    lieferung*,
+    lieferungsposition*,
+    rechnung*)>
+
+<!ELEMENT adresse EMPTY>
+<!ATTLIST adresse
+    adresse_ID CDATA #REQUIRED
+    strasse CDATA #REQUIRED
+    hausNr CDATA #REQUIRED
+    plz CDATA #REQUIRED
+    ort CDATA #REQUIRED
+    land CDATA #REQUIRED
+    kunde_FID CDATA #REQUIRED
+    erstellt_am CDATA #REQUIRED
+    geaendert_am CDATA #REQUIRED
+>
+
+<!ELEMENT artikel EMPTY>
+<!ATTLIST artikel
+    artikel_ID CDATA #REQUIRED
+    bezeichung CDATA #REQUIRED
+    beschreibung CDATA #IMPLIED
+    preis CDATA #REQUIRED
+    bild CDATA #IMPLIED
+    erstellt_am CDATA #REQUIRED
+    geaendert_am CDATA #REQUIRED
+>
+
+<!ELEMENT auftrag EMPTY>
+<!ATTLIST auftrag
+    auftrag_ID CDATA #REQUIRED
+    kunde_FID CDATA #REQUIRED
+    erstellt_am CDATA #REQUIRED
+    geaendert_am CDATA #REQUIRED
+>
+
+<!ELEMENT auftragsposition EMPTY>
+<!ATTLIST auftragsposition
+    auftragsposition_ID CDATA #REQUIRED
+    artikel_FID CDATA #REQUIRED
+    auftrag_FID CDATA #REQUIRED
+    anzahl CDATA #REQUIRED
+    preis CDATA #REQUIRED
+>
+
+<!ELEMENT hibernate_sequence EMPTY>
+<!ATTLIST hibernate_sequence
+    next_val CDATA #REQUIRED
+>
+
+<!ELEMENT kunde EMPTY>
+<!ATTLIST kunde
+    kundenNr CDATA #REQUIRED
+    nachname CDATA #REQUIRED
+    vorname CDATA #REQUIRED
+    adresse_FID CDATA #REQUIRED
+    email CDATA #REQUIRED
+    passwort CDATA #REQUIRED
+    erstellt_am CDATA #REQUIRED
+    geaendert_am CDATA #REQUIRED
+>
+
+<!ELEMENT lager EMPTY>
+<!ATTLIST lager
+    lager_ID CDATA #REQUIRED
+    bezeichung CDATA #REQUIRED
+    erstellt_am CDATA #REQUIRED
+    geaendert_am CDATA #REQUIRED
+>
+
+<!ELEMENT lagerposition EMPTY>
+<!ATTLIST lagerposition
+    lagerposition_ID CDATA #REQUIRED
+    lager_FID CDATA #REQUIRED
+    artikel_FID CDATA #REQUIRED
+    anzahl CDATA #REQUIRED
+    erstellt_am CDATA #REQUIRED
+    geaendert_am CDATA #REQUIRED
+>
+
+<!ELEMENT lieferung EMPTY>
+<!ATTLIST lieferung
+    lieferung_ID CDATA #REQUIRED
+    bestelldatum CDATA #REQUIRED
+    lieferungsdatum CDATA #REQUIRED
+    erstellt_am CDATA #REQUIRED
+    geaendert_am CDATA #REQUIRED
+>
+
+<!ELEMENT lieferungsposition EMPTY>
+<!ATTLIST lieferungsposition
+    lieferungsposition_ID CDATA #REQUIRED
+    artikel_FID CDATA #REQUIRED
+    lieferung_FID CDATA #REQUIRED
+    anzahl CDATA #REQUIRED
+>
+
+<!ELEMENT rechnung EMPTY>
+<!ATTLIST rechnung
+    rechnung_ID CDATA #REQUIRED
+    auftrag_FID CDATA #REQUIRED
+    rechnungsdatum CDATA #REQUIRED
+    erstellt_am CDATA #REQUIRED
+    geaendert_am CDATA #REQUIRED
+>
+

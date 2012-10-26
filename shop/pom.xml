@@ -125,9 +125,27 @@
 			<timezone>+1</timezone>     <!-- relativ zu GMT -->
 		</developer>
 		<developer>
+<<<<<<< HEAD
 			<id>Patrick.Frey</id>
 			<name>Patrick Frey</name>
 			<email>fpatrick@web.de</email>
+=======
+			<id>tobias.balonier</id>
+			<name>Tobias Balonier</name>
+			<email>bato1016@HS-Karlsruhe.de</email>
+			<url>http://www.iwi.hs-karlsruhe.de</url>
+			<organization>Hochschule Karlsruhe</organization>
+			<organizationUrl>http://www.iwi.hs-karlsruhe.de</organizationUrl>
+			<roles>
+				<role>Student</role>
+			</roles>
+			<timezone>+1</timezone>     <!-- relativ zu GMT -->
+		</developer>
+		<developer>
+			<id>Gliniorz</id>
+			<name>Jan Gliniorz</name>
+			<email>glja1011@HS-Karlsruhe.de</email>
+>>>>>>> branch 'master' of http://Patrick.Frey:Eistee1013!@www.iwi.hs-karlsruhe.de/git/swa17.git
 			<url>http://www.iwi.hs-karlsruhe.de</url>
 			<organization>Hochschule Karlsruhe</organization>
 			<organizationUrl>http://www.iwi.hs-karlsruhe.de</organizationUrl>

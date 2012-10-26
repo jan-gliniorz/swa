@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 kundenNr;nachname;vorname;email;passwort;erstellt_am;geaendert_am
 10;Loya;Holly;Loya@gmail.com;1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
 11;Allan;Ada;Allan@gmail.com;1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
@@ -9,3 +10,30 @@ kundenNr;nachname;vorname;email;passwort;erstellt_am;geaendert_am
 17;Jost;Sonya;Jost@gmail.com;1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
 18;Parsley;Marsha;Parsley@gmail.com;1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
 19;Whitmore;Paula;Whitmore@gmail.com;1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+=======
+<<<<<<< HEAD
+kundenNr;nachname;vorname;email;passwort;erstellt_am;geaendert_am
+10;Loya;Holly;Loya@gmail.com;1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+11;Allan;Ada;Allan@gmail.com;1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+12;Boss;Joanna;Boss@gmail.com;1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+13;Sutphin;Tamara;Sutphin@gmail.com;1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+14;Timberlake;Dora;Timberlake@gmail.com;1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+15;Hooks;Rodney;Hooks@gmail.com;1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+16;Keegan;Raymond;Keegan@gmail.com;1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+17;Jost;Sonya;Jost@gmail.com;1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+18;Parsley;Marsha;Parsley@gmail.com;1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+19;Whitmore;Paula;Whitmore@gmail.com;1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+=======
+kundenNr;nachname;vorname;adresse_FID;email;passwort;erstellt_am;geaendert_am
+10;Loyality;Holly;100;"Loya@gmail.com";1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+11;Alan;Ada;101;"Allan@gmail.com";1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+12;Boss;Joanna;102;"Boss@gmail.com";1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+13;Sutphin;Tamara;103;"Sutphin@gmail.com";1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+14;Timberlake;Dora;104;"Timberlake@gmail.com";1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+15;Hooks;Rodney;105;"Hooks@gmail.com";1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+16;Keegan;Raymond;106;"Keegan@gmail.com";1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+17;Jost;Sonya;107;"Jost@gmail.com";1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+18;Parsley;Marsha;108;"Parsley@gmail.com";1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+19;Whitmore;Paula;109;"Whitmore@gmail.com";1234;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+>>>>>>> branch 'master' of http://Tobias.Balonier:7bn6knwD@www.iwi.hs-karlsruhe.de/git/swa17.git
+>>>>>>> branch 'master' of http://Patrick.Frey:Eistee1013!@www.iwi.hs-karlsruhe.de/git/swa17.git
