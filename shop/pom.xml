@@ -4,59 +4,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-<!--
-	WICHTIG: In settings.xml darf es *KEIN* Profile "mysql" geben, das dort aktiviert ist !!!
-
-	Aufrufe [-p : Profile]:
-	1) MySQL mit Testdaten laden und Flat-XML exportieren
-		 mvn -Pmysql test
-	2) Arquillian-Tests
-		 mvn test
-	3) Projekt-Doku generieren
-		 mvn -DskipTests site
-		 mvn -DskipTests -o site				// -o : offline
-
-	Aufraeumen:
-	4) Verzeichnis "target" loeschen
-		 mvn clean
-	5) User und DB in MySQL loeschen
-		 mvn -Pmysql clean
-	
-	Qualitaetssicherung mit FindBugs, Checkstyle und PMD (fuer Jenkins in SWE-2)
-	6)   mvn -DskipTests findbugs:findbugs checkstyle:checkstyle pmd:pmd
-		
-	Lasttests mit JMeter (in SWE-2):
-	7) JMeter-Tests starten
-         mvn -Pjmeter -DskipTests verify
-
-	(Un-) Deployment ohne Eclipse/WTP (fuer JMeter-Tests in SWE-2 und ggf. JBehave-Tests)
-	8) Deployment in einen laufenden JBoss
-		 mvn -DskipTests package jboss-as:deploy
-	9) Undeployment
-		 mvn -DskipTests jboss-as:undeploy
-	
-	RESTful Web Service (optional in SWE-1 und SWE-2)
-	10) XML Schema generieren
-	     mvn -Prestgen process-classes
-    11) Clientseitige Domain-Klassen mit JAXB-Annotationen aus dem generierten XML-Schema generieren
-		 mvn -Prestgen generate-test-sources
-
-	Abhängigkeiten anzeigen
-	12)   mvn dependency:tree
-	
-	Versionsnummern auf Aktualitaet pruefen
-	13) JARs ueberpruefen
-	      mvn versions:display-dependency-updates
-	14) Plugins ueberpruefen
-	      mvn versions:display-plugin-updates
-	      
-	Tests mit Selenium und JBehave
-	15)   mvn -Pjbehave test
-
-	Properties aus settings.xml:
-	- admin.mysql.password		Passwort des Administrators "root" von MySQL
-	- user.mysql.password		Passwort des Anwendungs-Users von MySQL
--->
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.shop</groupId>
