@@ -6,7 +6,7 @@ CREATE TABLE hibernate_sequence(
 	next_val BIGINT NOT NULL PRIMARY KEY
 );
 
-create table if not exists kunde (
+CREATE TABLE if not exists kunde (
 	kundenNr INTEGER NOT NULL PRIMARY KEY, 
 	nachname NVARCHAR(30) NOT NULL, 
 	vorname NVARCHAR(30) NOT NULL, 
