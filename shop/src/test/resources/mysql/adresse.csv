@@ -1,11 +1,11 @@
-adresse_ID;strasse;hausNr;plz;ort;land;kunde_FID;erstellt_am;geaendert_am
-100;Kaiserstrasse;234;76133;Karlsruhe;Deutschland;10;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
-101;Ringstrasse;10;76133;Karlsruhe;Deutschland;11;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
-102;Lilienstrasse;90;76133;Karlsruhe;Deutschland;12;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
-103;Fischerweg;7;76133;Karlsruhe;Deutschland;13;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
-104;Karlstrasse;56;76133;Karlsruhe;Deutschland;14;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
-105;Blumenweg;2;76133;Karlsruhe;Deutschland;15;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
-106;Herrenstrasse;34;76133;Karlsruhe;Deutschland;16;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
-107;Kronenweg32;234;76133;Karlsruhe;Deutschland;17;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
-108;Lessingstrasse;15;76133;Karlsruhe;Deutschland;18;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
-109;Kaisserstrasse;40;76133;Karlsruhe;Deutschland;19;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000
+adresse_ID;strasse;hausNr;plz;ort;land;kunde_FID;erstellt_am;geaendert_am;
+100;Kaiserstrasse;234;76133;Karlsruhe;Deutschland;10;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000;
+101;Ringstrasse;10;76133;Karlsruhe;Deutschland;11;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000;
+102;Lilienstrasse;90;76133;Karlsruhe;Deutschland;12;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000;
+103;Fischerweg;7;76133;Karlsruhe;Deutschland;13;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000;
+104;Karlstrasse;56;76133;Karlsruhe;Deutschland;14;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000;
+105;Blumenweg;2;76133;Karlsruhe;Deutschland;15;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000;
+106;Herrenstrasse;34;76133;Karlsruhe;Deutschland;16;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000;
+107;Kronenweg32;234;76133;Karlsruhe;Deutschland;17;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000;
+108;Lessingstrasse;15;76133;Karlsruhe;Deutschland;18;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000;
+109;Kaisserstrasse;40;76133;Karlsruhe;Deutschland;19;2011-10-01 00:00:00.000;2011-10-01 00:00:00.000;
