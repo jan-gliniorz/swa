@@ -36,9 +36,32 @@ public class Kunde implements Serializable {
 	private String passwort;
 
 	private String vorname;
-		
-	//private List<Auftrag> auftraege;
+	/*
+	private List<auftrag> auftraege;
 	
+	public List<auftrag> getAuftraege(){
+		return Collections.unmodifiableList(auftraege);
+	}
+	
+	public void setAuftraege(List<auftrag> _auftraege) {
+		if (auftraege == null) {
+		auftraege = _auftraege;
+		return;
+		}
+		// Wiederverwendung der vorhandenen Collection
+		auftraege.clear();
+		if (_auftraege != null) {
+		auftraege.addAll(_auftraege);
+		}
+	}
+	 public Kunde addAuftrag(auftrag _auftrag) {
+		if (auftraege == null) {
+			auftraege = new ArrayList<>();
+		}
+		auftraege.add(_auftrag);
+		return this;	
+	 }
+	*/
 	private Adresse adresse;
 	
 	public Adresse getAdresse(){
