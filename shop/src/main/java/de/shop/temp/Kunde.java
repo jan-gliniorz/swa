@@ -3,7 +3,7 @@ package de.shop.temp;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
-
+import java.util.*;
 
 /**
  * The persistent class for the kunde database table.
@@ -106,6 +106,80 @@ public class Kunde implements Serializable {
 
 	public void setVorname(String vorname) {
 		this.vorname = vorname;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((adresse == null) ? 0 : adresse.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result
+				+ ((erstelltAm == null) ? 0 : erstelltAm.hashCode());
+		result = prime * result
+				+ ((geaendertAm == null) ? 0 : geaendertAm.hashCode());
+		result = prime * result + kundenNr;
+		result = prime * result
+				+ ((nachname == null) ? 0 : nachname.hashCode());
+		result = prime * result
+				+ ((passwort == null) ? 0 : passwort.hashCode());
+		result = prime * result + ((vorname == null) ? 0 : vorname.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Kunde other = (Kunde) obj;
+		if (adresse == null) {
+			if (other.adresse != null)
+				return false;
+		} else if (!adresse.equals(other.adresse))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (erstelltAm == null) {
+			if (other.erstelltAm != null)
+				return false;
+		} else if (!erstelltAm.equals(other.erstelltAm))
+			return false;
+		if (geaendertAm == null) {
+			if (other.geaendertAm != null)
+				return false;
+		} else if (!geaendertAm.equals(other.geaendertAm))
+			return false;
+		if (kundenNr != other.kundenNr)
+			return false;
+		if (nachname == null) {
+			if (other.nachname != null)
+				return false;
+		} else if (!nachname.equals(other.nachname))
+			return false;
+		if (passwort == null) {
+			if (other.passwort != null)
+				return false;
+		} else if (!passwort.equals(other.passwort))
+			return false;
+		if (vorname == null) {
+			if (other.vorname != null)
+				return false;
+		} else if (!vorname.equals(other.vorname))
+			return false;
+		return true;
 	}
 
 }
