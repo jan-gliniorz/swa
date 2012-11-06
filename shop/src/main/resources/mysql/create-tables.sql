@@ -47,8 +47,9 @@ create table if not exists auftrag (
 
 create table if not exists auftragsposition (
 	auftragsposition_ID INTEGER NOT NULL PRIMARY KEY,
-	artikel_FID INTEGER NOT NULL,
 	auftrag_FID INTEGER NOT NULL,
+	idx INTEGER NOT NULL,
+	artikel_FID INTEGER NOT NULL,
 	anzahl INTEGER NOT NULL,
 	preis Decimal NOT NULL
 );
