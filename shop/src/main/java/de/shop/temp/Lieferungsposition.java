@@ -78,23 +78,19 @@ public class Lieferungsposition implements Serializable {
 		this.lieferung_FID = lieferung_FID;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + anzahl;
-		result = prime * result + lieferungsposition_ID;
 		result = prime * result + artikel_FID;
+		result = prime * result
+				+ ((lieferung == null) ? 0 : lieferung.hashCode());
 		result = prime * result + lieferung_FID;
+		result = prime * result + lieferungsposition_ID;
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -104,16 +100,17 @@ public class Lieferungsposition implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Lieferungsposition other = (Lieferungsposition) obj;
-		
 		if (anzahl != other.anzahl)
 			return false;
-		
 		if (artikel_FID != other.artikel_FID)
 			return false;
-		
+		if (lieferung == null) {
+			if (other.lieferung != null)
+				return false;
+		} else if (!lieferung.equals(other.lieferung))
+			return false;
 		if (lieferung_FID != other.lieferung_FID)
 			return false;
-		
 		if (lieferungsposition_ID != other.lieferungsposition_ID)
 			return false;
 		return true;
