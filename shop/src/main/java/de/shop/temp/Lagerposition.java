@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 public class Lagerposition implements Serializable {
 	
 	@ManyToOne(optional = false)
-	@JoinTable(name = "blabla",joinColumns = {
+	@JoinTable(name = "lager.artikel",joinColumns = {
 	@JoinColumn(name = "lager_FID", nullable = false,
 				insertable = false, updatable = false),
 	

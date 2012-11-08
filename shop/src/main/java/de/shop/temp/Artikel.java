@@ -18,7 +18,12 @@ import java.math.BigDecimal;
 public class Artikel implements Serializable {
 	
 	@OneToMany
+	@JoinTable(name = "lagerposition.aufgragsposition.lieferungsposition", joinColumns = {
+	@JoinColumn(name = "artikel_FID", nullable = false),
+	@JoinColumn(name = "artikel_FID", nullable = false),
 	@JoinColumn(name = "artikel_FID", nullable = false)
+	
+	})
 	
 	
 	private static final long serialVersionUID = 1L;
