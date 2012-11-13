@@ -6,9 +6,6 @@
              version="2.0">
 	<persistence-unit name="de.shop.PU">
 		<jta-data-source>java:jboss/datasources/ShopDS</jta-data-source>
-		<class>de.shop.Auftragsverwaltung.domain.Auftrag</class>
-		<class>de.shop.Auftragsverwaltung.domain.Auftragsposition</class>
-		<class>de.shop.Auftragsverwaltung.domain.Rechnung</class>
 		
 		<!-- Caching von Objekten mit @Cacheable -->
 		<!--
