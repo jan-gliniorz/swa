@@ -1,49 +1,56 @@
-package de.shop.temp;
+package de.shop.Kundenverwaltung.domain;
+
+import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.sql.Timestamp;
 import java.util.*;
+
+import de.shop.Auftragsverwaltung.domain.*;;
 
 /**
  * The persistent class for the kunde database table.
  * 
  */
 @Entity
-@Table(name = "Kunde")
+@Table(name = "kunde")
 public class Kunde implements Serializable {
-	@OneToOne(mappedBy = "kunde_FID")
+	private static final long serialVersionUID = 3925016425151715847L;
 	
-	@OneToMany
-	@JoinColumn(name = "kunde_FID", nullable = false)
-	@OrderColumn(name = "idx")
-	private static final long serialVersionUID = 1L;
-
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue
+	@Column(nullable = false, updatable = false)
 	private int kundenNr;
 
 	private String email;
 
 	@Column(name="erstellt_am")
-	private Timestamp erstelltAm;
+	@Temporal(TIMESTAMP)
+	private Date erstelltAm;
 
 	@Column(name="geaendert_am")
-	private Timestamp geaendertAm;
+	@Temporal(TIMESTAMP)
+	private Date geaendertAm;
 
 	private String nachname;
 
 	private String passwort;
 
 	private String vorname;
-	/*
-	private List<auftrag> auftraege;
 	
-	public List<auftrag> getAuftraege(){
+	@OneToOne(mappedBy = "kunde")
+	private Adresse adresse;
+	
+	@OneToMany(mappedBy = "kunde")
+	private List<Auftrag> auftraege;
+	
+	public List<Auftrag> getAuftraege(){
 		return Collections.unmodifiableList(auftraege);
 	}
 	
-	public void setAuftraege(List<auftrag> _auftraege) {
+	public void setAuftraege(List<Auftrag> _auftraege) {
 		if (auftraege == null) {
 		auftraege = _auftraege;
 		return;
@@ -54,15 +61,13 @@ public class Kunde implements Serializable {
 		auftraege.addAll(_auftraege);
 		}
 	}
-	 public Kunde addAuftrag(auftrag _auftrag) {
+	 public Kunde addAuftrag(Auftrag _auftrag) {
 		if (auftraege == null) {
 			auftraege = new ArrayList<>();
 		}
 		auftraege.add(_auftrag);
 		return this;	
 	 }
-	*/
-	private Adresse adresse;
 	
 	public Adresse getAdresse(){
 		return adresse;
@@ -91,20 +96,20 @@ public class Kunde implements Serializable {
 		this.email = email;
 	}
 
-	public Timestamp getErstelltAm() {
-		return this.erstelltAm;
+	public Date getErstelltAm() {
+		return this.erstelltAm == null ? null : (Date) this.erstelltAm.clone();
 	}
 
-	public void setErstelltAm(Timestamp erstelltAm) {
-		this.erstelltAm = erstelltAm;
+	public void setErstelltAm(Date erstelltAm) {
+		this.erstelltAm = erstelltAm == null ? null : (Date) erstelltAm.clone();
 	}
 
-	public Timestamp getGeaendertAm() {
-		return this.geaendertAm;
+	public Date getGeaendertAm() {
+		return this.geaendertAm == null ? null : (Date) this.geaendertAm.clone();
 	}
 
-	public void setGeaendertAm(Timestamp geaendertAm) {
-		this.geaendertAm = geaendertAm;
+	public void setGeaendertAm(Date geaendertAm) {
+		this.geaendertAm = geaendertAm == null ? null : (Date) geaendertAm.clone();
 	}
 
 	public String getNachname() {
@@ -204,5 +209,14 @@ public class Kunde implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Kunde [kundenNr=" + kundenNr + ", email=" + email
+				+ ", erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm
+				+ ", nachname=" + nachname + ", passwort=" + passwort
+				+ ", vorname=" + vorname + "]";
+	}
+	
 
 }

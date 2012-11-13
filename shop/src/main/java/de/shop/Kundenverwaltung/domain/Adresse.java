@@ -1,8 +1,12 @@
-package de.shop.temp;
+package de.shop.Kundenverwaltung.domain;
+
+import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.sql.Timestamp;
+import java.util.Date;
 
 
 /**
@@ -12,24 +16,22 @@ import java.sql.Timestamp;
 @Entity
 @Table(name ="adresse")
 public class Adresse implements Serializable {
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "kunde_FID", nullable = false, insertable = false, updatable = false)
-	private static final long serialVersionUID = 1L;
-
+	
+	private static final long serialVersionUID = -6118084007129611335L;
+		
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue
+	@Column(nullable = false, updatable = false)
 	private int adresse_ID;
+	
 
-	@Column(name="erstellt_am")
-	private Timestamp erstelltAm;
-
-	@Column(name="geaendert_am")
-	private Timestamp geaendertAm;
 
 	private String hausNr;
 
-	private int kunde_FID;
-
+	@OneToOne
+	@JoinColumn(name = "kunde_FID", nullable = false, updatable = false)
+	private Kunde kunde;
+	
 	private String land;
 
 	private String ort;
@@ -38,17 +40,23 @@ public class Adresse implements Serializable {
 
 	private String strasse;
 	
-	private Kunde kunde;
-	
+	@Column(name="erstellt_am")
+	@Temporal(TIMESTAMP)
+	private Date erstelltAm;
+
+	@Column(name="geaendert_am")
+	@Temporal(TIMESTAMP)
+	private Date geaendertAm;
+
+	public Adresse() {
+	}
+
 	public Kunde getKunde() {
 		return kunde;
 	}
-	
-	public void setKunde(Kunde _kunde){
-		kunde = _kunde;
-	}
-	
-	public Adresse() {
+
+	public void setKunde(Kunde kunde) {
+		this.kunde = kunde;
 	}
 
 	public int getAdresse_ID() {
@@ -59,20 +67,20 @@ public class Adresse implements Serializable {
 		this.adresse_ID = adresse_ID;
 	}
 
-	public Timestamp getErstelltAm() {
-		return this.erstelltAm;
+	public Date getErstelltAm() {
+		return this.erstelltAm == null ? null : (Date) this.erstelltAm.clone();
 	}
 
-	public void setErstelltAm(Timestamp erstelltAm) {
-		this.erstelltAm = erstelltAm;
+	public void setErstelltAm(Date erstelltAm) {
+		this.erstelltAm = erstelltAm == null ? null : (Date) erstelltAm.clone();
 	}
 
-	public Timestamp getGeaendertAm() {
-		return this.geaendertAm;
+	public Date getGeaendertAm() {
+		return this.geaendertAm == null ? null : (Date) this.geaendertAm.clone();
 	}
 
-	public void setGeaendertAm(Timestamp geaendertAm) {
-		this.geaendertAm = geaendertAm;
+	public void setGeaendertAm(Date geaendertAm) {
+		this.geaendertAm = geaendertAm == null ? null : (Date) geaendertAm.clone();
 	}
 
 	public String getHausNr() {
@@ -81,14 +89,6 @@ public class Adresse implements Serializable {
 
 	public void setHausNr(String hausNr) {
 		this.hausNr = hausNr;
-	}
-
-	public int getKunde_FID() {
-		return this.kunde_FID;
-	}
-
-	public void setKunde_FID(int kunde_FID) {
-		this.kunde_FID = kunde_FID;
 	}
 
 	public String getLand() {
@@ -123,9 +123,6 @@ public class Adresse implements Serializable {
 		this.strasse = strasse;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -136,8 +133,6 @@ public class Adresse implements Serializable {
 		result = prime * result
 				+ ((geaendertAm == null) ? 0 : geaendertAm.hashCode());
 		result = prime * result + ((hausNr == null) ? 0 : hausNr.hashCode());
-		result = prime * result + ((kunde == null) ? 0 : kunde.hashCode());
-		result = prime * result + kunde_FID;
 		result = prime * result + ((land == null) ? 0 : land.hashCode());
 		result = prime * result + ((ort == null) ? 0 : ort.hashCode());
 		result = prime * result + ((plz == null) ? 0 : plz.hashCode());
@@ -145,9 +140,6 @@ public class Adresse implements Serializable {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -174,13 +166,6 @@ public class Adresse implements Serializable {
 				return false;
 		} else if (!hausNr.equals(other.hausNr))
 			return false;
-		if (kunde == null) {
-			if (other.kunde != null)
-				return false;
-		} else if (!kunde.equals(other.kunde))
-			return false;
-		if (kunde_FID != other.kunde_FID)
-			return false;
 		if (land == null) {
 			if (other.land != null)
 				return false;
@@ -203,5 +188,15 @@ public class Adresse implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Adresse [adresse_ID=" + adresse_ID + ", erstelltAm="
+				+ erstelltAm + ", geaendertAm=" + geaendertAm + ", hausNr="
+				+ hausNr + ", land=" + land + ", ort=" + ort + ", plz=" + plz
+				+ ", strasse=" + strasse + "]";
+	}
+	
+	
 
 }
