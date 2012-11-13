@@ -1,6 +1,6 @@
 package de.shop.Auftragsverwaltung.domain;
 
-import de.shop.temp.*;
+import de.shop.Kundenverwaltung.domain.*;
 
 import java.io.Serializable;
 import javax.persistence.*;
