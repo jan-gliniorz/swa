@@ -1,7 +1,10 @@
-package de.shop.temp;
+package de.shop.Auftragsverwaltung.domain;
+
+import de.shop.temp.*;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.*;
 
 /**
  * The persistent class for the lieferungsposition database table.
@@ -11,16 +14,14 @@ import javax.persistence.*;
 @Table(name ="lieferungsposition")
 public class Lieferungsposition implements Serializable {
 	
-	@ManyToOne(optional = false)
-	@JoinTable(name = "lieferung",joinColumns = {
-	@JoinColumn(name = "lieferung_FID", nullable = false,
-				insertable = false, updatable = false),
-	@JoinColumn(name = "artikel_FID", nullable = false,
-				insertable = false, updatable = false)}
-	)
-	
-	
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "lieferung_FID", nullable = false,
+				insertable = false, updatable = false)
 
 	private Lieferung lieferung;
 	
@@ -32,7 +33,19 @@ public class Lieferungsposition implements Serializable {
 		this.lieferung = lieferung;
 	}
 	
+	@JoinColumn(name = "artikel_FID", nullable = false,
+			insertable = false, updatable = false)
 		
+	private Artikel artikel;
+	
+	public Artikel getArtikel(){
+		return artikel;
+	}
+	
+	public void setArtikel(Artikel artikel){
+		this.artikel = artikel;
+	}
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int lieferungsposition_ID;
@@ -83,10 +96,8 @@ public class Lieferungsposition implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + anzahl;
-		result = prime * result + artikel_FID;
 		result = prime * result
 				+ ((lieferung == null) ? 0 : lieferung.hashCode());
-		result = prime * result + lieferung_FID;
 		result = prime * result + lieferungsposition_ID;
 		return result;
 	}
@@ -99,20 +110,30 @@ public class Lieferungsposition implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+		
 		Lieferungsposition other = (Lieferungsposition) obj;
+		
 		if (anzahl != other.anzahl)
 			return false;
-		if (artikel_FID != other.artikel_FID)
-			return false;
+		
 		if (lieferung == null) {
 			if (other.lieferung != null)
 				return false;
 		} else if (!lieferung.equals(other.lieferung))
 			return false;
-		if (lieferung_FID != other.lieferung_FID)
-			return false;
+		
 		if (lieferungsposition_ID != other.lieferungsposition_ID)
 			return false;
+		
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Lieferungsposition [artikel=" + artikel
+				+ ", lieferungsposition_ID=" + lieferungsposition_ID
+				+ ", anzahl=" + anzahl + "]";
+	}
+
+	
 }

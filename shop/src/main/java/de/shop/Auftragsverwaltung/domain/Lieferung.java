@@ -1,11 +1,10 @@
-package de.shop.temp;
+package de.shop.Auftragsverwaltung.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.*;
-import java.math.BigDecimal;
 
 
 /**
@@ -18,10 +17,7 @@ public class Lieferung implements Serializable {
 	
 	@OneToMany
 	@JoinColumn(name = "lieferung_FID", nullable = false)
-	
-	
-	private static final long serialVersionUID = 1L;
-
+	@OrderColumn(name = "erstelltAm")
 	
 	private List<Lieferungsposition> lieferungspositionen;
 	
@@ -53,6 +49,8 @@ public class Lieferung implements Serializable {
 		lieferungspositionen.add(lieferungsposition);
 		return this;
 	}
+	
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int lieferung_ID;
@@ -81,11 +79,11 @@ public class Lieferung implements Serializable {
 	}
 
 	public Date getBestelldatum() {
-		return this.bestelldatum;
+		return bestelldatum == null ? null : (Date) bestelldatum.clone();
 	}
 
 	public void setBestelldatum(Date bestelldatum) {
-		this.bestelldatum = bestelldatum;
+		this.bestelldatum = bestelldatum == null ? null : (Date) bestelldatum.clone();
 	}
 
 	public Timestamp getErstelltAm() {
@@ -105,11 +103,11 @@ public class Lieferung implements Serializable {
 	}
 
 	public Date getLieferungsdatum() {
-		return this.lieferungsdatum;
+		return lieferungsdatum == null ? null : (Date) lieferungsdatum.clone();
 	}
 
 	public void setLieferungsdatum(Date lieferungsdatum) {
-		this.lieferungsdatum = lieferungsdatum;
+		this.lieferungsdatum = lieferungsdatum == null ? null : (Date) lieferungsdatum.clone();
 	}
 
 	@Override
@@ -125,10 +123,6 @@ public class Lieferung implements Serializable {
 		result = prime * result + lieferung_ID;
 		result = prime * result
 				+ ((lieferungsdatum == null) ? 0 : lieferungsdatum.hashCode());
-		result = prime
-				* result
-				+ ((lieferungspositionen == null) ? 0 : lieferungspositionen
-						.hashCode());
 		return result;
 	}
 
@@ -140,35 +134,42 @@ public class Lieferung implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+		
 		Lieferung other = (Lieferung) obj;
+		
 		if (bestelldatum == null) {
 			if (other.bestelldatum != null)
 				return false;
 		} else if (!bestelldatum.equals(other.bestelldatum))
 			return false;
+		
 		if (erstelltAm == null) {
 			if (other.erstelltAm != null)
 				return false;
 		} else if (!erstelltAm.equals(other.erstelltAm))
 			return false;
+		
 		if (geaendertAm == null) {
 			if (other.geaendertAm != null)
 				return false;
 		} else if (!geaendertAm.equals(other.geaendertAm))
 			return false;
-		if (lieferung_ID != other.lieferung_ID)
-			return false;
+		
 		if (lieferungsdatum == null) {
 			if (other.lieferungsdatum != null)
 				return false;
 		} else if (!lieferungsdatum.equals(other.lieferungsdatum))
 			return false;
-		if (lieferungspositionen == null) {
-			if (other.lieferungspositionen != null)
-				return false;
-		} else if (!lieferungspositionen.equals(other.lieferungspositionen))
-			return false;
+
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Lieferung [lieferung_ID=" + lieferung_ID + ", bestelldatum="
+				+ bestelldatum + ", erstelltAm=" + erstelltAm
+				+ ", geaendertAm=" + geaendertAm + ", lieferungsdatum="
+				+ lieferungsdatum + "]";
 	}
 	
 }
