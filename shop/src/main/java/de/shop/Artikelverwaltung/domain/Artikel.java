@@ -210,8 +210,7 @@ public class Artikel implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Artikel [artikel_ID=" + artikel_ID + ", lagerpositionen="
-				+ lagerpositionen + ", beschreibung=" + beschreibung
+		return "Artikel [artikel_ID=" + artikel_ID + ", beschreibung=" + beschreibung
 				+ ", bezeichung=" + bezeichung + ", bild=" + bild
 				+ ", erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm
 				+ ", preis=" + preis + "]";

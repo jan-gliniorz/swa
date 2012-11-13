@@ -152,8 +152,7 @@ public class Lager implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Lager [lager_ID=" + lager_ID + ", lagerpositionen="
-				+ lagerpositionen + ", bezeichung=" + bezeichung
+		return "Lager [lager_ID=" + lager_ID + ", bezeichung=" + bezeichung
 				+ ", erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm
 				+ "]";
 	}
