@@ -13,10 +13,6 @@ import java.util.*;
 @Entity
 @Table(name ="lieferungsposition")
 public class Lieferungsposition implements Serializable {
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne(optional = false)
@@ -52,10 +48,6 @@ public class Lieferungsposition implements Serializable {
 
 	private int anzahl;
 
-	private int artikel_FID;
-
-	private int lieferung_FID;
-
 	public Lieferungsposition() {
 	}
 
@@ -73,22 +65,6 @@ public class Lieferungsposition implements Serializable {
 
 	public void setAnzahl(int anzahl) {
 		this.anzahl = anzahl;
-	}
-
-	public int getArtikel_FID() {
-		return this.artikel_FID;
-	}
-
-	public void setArtikel_FID(int artikel_FID) {
-		this.artikel_FID = artikel_FID;
-	}
-
-	public int getLieferung_FID() {
-		return this.lieferung_FID;
-	}
-
-	public void setLieferung_FID(int lieferung_FID) {
-		this.lieferung_FID = lieferung_FID;
 	}
 
 	@Override
