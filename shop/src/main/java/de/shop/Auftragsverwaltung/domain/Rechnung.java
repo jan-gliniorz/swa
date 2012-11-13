@@ -54,24 +54,6 @@ public class Rechnung implements Serializable {
 		this.auftrag = auftrag;
 	}
 
-	/*
-	public int getRechnung_ID() {
-		return this.rechnung_ID;
-	}
-
-	public void setRechnung_ID(int rechnung_ID) {
-		this.rechnung_ID = rechnung_ID;
-	}
-	
-	public int getAuftrag_FID() {
-		return this.auftrag_FID;
-	}
-
-	public void setAuftrag_FID(int auftrag_FID) {
-		this.auftrag_FID = auftrag_FID;
-	}
-	*/
-
 	public Date getErstelltAm() {
 		return this.erstelltAm == null ? null : (Date) this.erstelltAm.clone();
 	}
@@ -139,5 +121,14 @@ public class Rechnung implements Serializable {
 		}
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return String
+				.format("Rechnung [rechnung_ID=%s, erstelltAm=%s, geaendertAm=%s, rechnungsdatum=%s]",
+						rechnung_ID, erstelltAm, geaendertAm, rechnungsdatum);
+	}
+	
+	
 }
 	

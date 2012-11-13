@@ -115,4 +115,13 @@ public class Auftragsposition implements Serializable {
 		}
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return String
+				.format("Auftragsposition [auftragsposition_ID=%s, anzahl=%s, artikel=%s, preis=%s]",
+						auftragsposition_ID, anzahl, artikel, preis);
+	}
+	
+	
 }

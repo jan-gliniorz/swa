@@ -147,4 +147,11 @@ public class Auftrag implements Serializable {
 		}
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return String
+				.format("Auftrag [auftrag_ID=%s, rechnung=%s, erstelltAm=%s, geaendertAm=%s, kunde=%s]",
+						auftrag_ID, rechnung, erstelltAm, geaendertAm, kunde);
+	}	
 }
