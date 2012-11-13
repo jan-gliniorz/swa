@@ -29,9 +29,8 @@ public class Lieferungsposition implements Serializable {
 		this.lieferung = lieferung;
 	}
 	
-	@JoinColumn(name = "artikel_FID", nullable = false,
-			insertable = false, updatable = false)
-		
+	@ManyToOne
+	@JoinColumn(name="artikel_FID", nullable = false, insertable = false, updatable = false)
 	private Artikel artikel;
 	
 	public Artikel getArtikel(){
