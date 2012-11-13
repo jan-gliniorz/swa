@@ -75,7 +75,6 @@ public class Auftragsposition implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + anzahl;
-		result = prime * result + ((artikel == null) ? 0 : artikel.hashCode());
 		result = prime * result + auftragsposition_ID;
 		result = prime * result + ((preis == null) ? 0 : preis.hashCode());
 		return result;
@@ -94,13 +93,6 @@ public class Auftragsposition implements Serializable {
 		}
 		Auftragsposition other = (Auftragsposition) obj;
 		if (anzahl != other.anzahl) {
-			return false;
-		}
-		if (artikel == null) {
-			if (other.artikel != null) {
-				return false;
-			}
-		} else if (!artikel.equals(other.artikel)) {
 			return false;
 		}
 		if (auftragsposition_ID != other.auftragsposition_ID) {
