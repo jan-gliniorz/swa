@@ -1,9 +1,10 @@
-package de.shop.temp;
+package de.shop.Artikelverwaltung.domain;
+
+import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collections;
 import java.util.*;
 
 /**
@@ -12,17 +13,64 @@ import java.util.*;
  */
 @Entity
 @Table(name = "Lager")
-public class Lager implements Serializable {
+public class Lager implements Serializable {	
 	
-	@OneToMany
-	@JoinColumn(name = "lager_FID", nullable = false)
-	
-	
-	
-	private static final long serialVersionUID = 1L;
-	
-	private List<Lagerposition> lagerpositionen;
 
+	private static final long serialVersionUID = -2184864191060846895L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int lager_ID;
+
+	@OneToMany(mappedBy = "lager")
+	private List<Lagerposition> lagerpositionen;
+	
+	
+	private String bezeichung;
+
+	@Column(name="erstellt_am")
+	@Temporal(TIMESTAMP)
+	private Date erstelltAm;
+
+	@Column(name="geaendert_am")
+	@Temporal(TIMESTAMP)
+	private Date geaendertAm;
+
+	public Lager() {
+	}
+
+	public int getLager_ID() {
+		return this.lager_ID;
+	}
+
+	public void setLager_ID(int lager_ID) {
+		this.lager_ID = lager_ID;
+	}
+
+	public String getBezeichung() {
+		return this.bezeichung;
+	}
+
+	public void setBezeichung(String bezeichung) {
+		this.bezeichung = bezeichung;
+	}
+
+	public Date getErstelltAm() {
+		return erstelltAm == null ? null : (Date) erstelltAm.clone();
+	}
+
+	public void setErstelltAm(Date erstelltAm) {
+		this.erstelltAm = erstelltAm == null ? null : (Date) erstelltAm.clone();
+	}
+
+	public Date getGeaendertAm() {
+		return geaendertAm == null ? null : (Date) geaendertAm.clone();
+	}
+
+	public void setGeaendertAm(Date geaendertAm) {
+		this.geaendertAm = geaendertAm == null ? null : (Date) geaendertAm.clone();
+	}
+	
 	public List<Lagerposition> getLagerpositionen(){
 		return Collections.unmodifiableList(lagerpositionen);
 	}
@@ -47,54 +95,7 @@ public class Lager implements Serializable {
 		lagerpositionen.add(lagerposition);
 		return this;
 	}
-	
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int lager_ID;
 
-	private String bezeichung;
-
-	@Column(name="erstellt_am")
-	private Timestamp erstelltAm;
-
-	@Column(name="geaendert_am")
-	private Timestamp geaendertAm;
-
-	public Lager() {
-	}
-
-	public int getLager_ID() {
-		return this.lager_ID;
-	}
-
-	public void setLager_ID(int lager_ID) {
-		this.lager_ID = lager_ID;
-	}
-
-	public String getBezeichung() {
-		return this.bezeichung;
-	}
-
-	public void setBezeichung(String bezeichung) {
-		this.bezeichung = bezeichung;
-	}
-
-	public Timestamp getErstelltAm() {
-		return this.erstelltAm;
-	}
-
-	public void setErstelltAm(Timestamp erstelltAm) {
-		this.erstelltAm = erstelltAm;
-	}
-
-	public Timestamp getGeaendertAm() {
-		return this.geaendertAm;
-	}
-
-	public void setGeaendertAm(Timestamp geaendertAm) {
-		this.geaendertAm = geaendertAm;
-	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -112,7 +113,8 @@ public class Lager implements Serializable {
 		result = prime * result + lager_ID;
 		return result;
 	}
-
+	
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -144,5 +146,18 @@ public class Lager implements Serializable {
 			return false;
 		return true;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Lager [lager_ID=" + lager_ID + ", lagerpositionen="
+				+ lagerpositionen + ", bezeichung=" + bezeichung
+				+ ", erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm
+				+ "]";
+	}
+	
+	
 
 }
