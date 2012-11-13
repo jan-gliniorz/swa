@@ -1,12 +1,13 @@
-package de.shop.temp;
+package de.shop.Artikelverwaltung.domain;
+
+import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
 import java.sql.Timestamp;
 import java.util.*;
-import java.util.Collections;
 import java.math.BigDecimal;
+
 
 
 /**
@@ -17,60 +18,18 @@ import java.math.BigDecimal;
 @Table(name = "Artikel")
 public class Artikel implements Serializable {
 	
-	@OneToMany
-	@JoinTable(name = "lagerposition.aufgragsposition.lieferungsposition", joinColumns = {
-	@JoinColumn(name = "artikel_FID", nullable = false),
-	@JoinColumn(name = "artikel_FID", nullable = false),
-	@JoinColumn(name = "artikel_FID", nullable = false)
-	
-	})
 	
 	
-	private static final long serialVersionUID = 1L;
-	
-	
-	private List<Lagerposition> lagerpositionen;
-	
-	public List<Lagerposition> getLagerposition(){
-		return Collections.unmodifiableList(lagerpositionen);
-	}
-	
-	public void setLagerposition(List<Lagerposition> lagerpositionen){
-		
-			if(this.lagerpositionen == null){
-				this.lagerpositionen = lagerpositionen;
-				return;
-			}
-			
-			this.lagerpositionen.clear();
-			
-			if(lagerpositionen != null){
-				this.lagerpositionen.addAll(lagerpositionen);
-			}
-			
-	}	
-		
-		
-	public Artikel addLagerposition(Lagerposition lagerposition){
-			
-		if(lagerpositionen == null){
-			lagerpositionen = new ArrayList<>();
-		}
-		
-		lagerpositionen.add(lagerposition);
-		return this;
-	}
-		
-	
-	
+	private static final long serialVersionUID = 4651646021686650992L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int artikel_ID;
-	
-	
-	
 
+
+	@OneToMany(mappedBy = "artikel")
+	private List<Lagerposition> lagerpositionen;
+	
 	@Lob
 	private String beschreibung;
 
@@ -79,10 +38,13 @@ public class Artikel implements Serializable {
 	private String bild;
 
 	@Column(name="erstellt_am")
-	private Timestamp erstelltAm;
+	@Temporal(TIMESTAMP)
+	private Date erstelltAm;
+	
 
 	@Column(name="geaendert_am")
-	private Timestamp geaendertAm;
+	@Temporal(TIMESTAMP)
+	private Date geaendertAm;
 
 	private BigDecimal preis;
 
@@ -121,20 +83,20 @@ public class Artikel implements Serializable {
 		this.bild = bild;
 	}
 
-	public Timestamp getErstelltAm() {
-		return this.erstelltAm;
+	public Date getErstelltAm() {
+		return erstelltAm == null ? null : (Date) erstelltAm.clone();
 	}
 
-	public void setErstelltAm(Timestamp erstelltAm) {
-		this.erstelltAm = erstelltAm;
+	public void setErstelltAm(Date erstelltAm) {
+		this.erstelltAm = erstelltAm == null ? null : (Date) erstelltAm.clone();
 	}
 
-	public Timestamp getGeaendertAm() {
-		return this.geaendertAm;
+	public Date getGeaendertAm() {
+		return geaendertAm == null ? null : (Date) geaendertAm.clone();
 	}
 
-	public void setGeaendertAm(Timestamp geaendertAm) {
-		this.geaendertAm = geaendertAm;
+	public void setGeaendertAm(Date geaendertAm) {
+		this.geaendertAm = geaendertAm == null ? null : (Date) geaendertAm.clone();
 	}
 
 	public BigDecimal getPreis() {
@@ -143,6 +105,16 @@ public class Artikel implements Serializable {
 
 	public void setPreis(BigDecimal preis) {
 		this.preis = preis;
+	}
+	
+	public Artikel addLagerposition(Lagerposition lagerposition){
+		
+		if(lagerpositionen == null){
+			lagerpositionen = new ArrayList<>();
+		}
+		
+		lagerpositionen.add(lagerposition);
+		return this;
 	}
 
 	/* (non-Javadoc)
@@ -165,6 +137,26 @@ public class Artikel implements Serializable {
 		result = prime * result + ((preis == null) ? 0 : preis.hashCode());
 		return result;
 	}
+	
+	
+	public List<Lagerposition> getLagerposition(){
+		return Collections.unmodifiableList(lagerpositionen);
+	}
+	
+	public void setLagerposition(List<Lagerposition> lagerpositionen){
+		
+			if(this.lagerpositionen == null){
+				this.lagerpositionen = lagerpositionen;
+				return;
+			}
+			
+			this.lagerpositionen.clear();
+			
+			if(lagerpositionen != null){
+				this.lagerpositionen.addAll(lagerpositionen);
+			}
+			
+	}	
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
@@ -213,4 +205,17 @@ public class Artikel implements Serializable {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Artikel [artikel_ID=" + artikel_ID + ", lagerpositionen="
+				+ lagerpositionen + ", beschreibung=" + beschreibung
+				+ ", bezeichung=" + bezeichung + ", bild=" + bild
+				+ ", erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm
+				+ ", preis=" + preis + "]";
+	}
+
+	
 }
