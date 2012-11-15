@@ -1,5 +1,9 @@
 package de.shop.Auftragsverwaltung.domain;
 
+import static javax.persistence.TemporalType.TIMESTAMP;
+import static de.shop.Util.Constants.KEINE_ID;
+import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -17,11 +21,12 @@ import java.util.*;
 	@NamedQuery(name = Lieferung.FIND_LIEFERUNG_BY_ID, 
 			query = "SELECT li " +
 					"FROM Lieferung li "+
-					"WHERE li.id = :LieferungId"),
-	@NamedQuery(name = Lieferung.FIND_LIEFERUNGSPOSITIONEN_BY_ID,
-			query = "SELECT lp " +
-					"FROM Lieferung li join li.lieferungsposition "+
-					"WHERE li.id = :LieferungId")
+					"WHERE li.id = :" + Lieferung.PARAM_ID),
+	@NamedQuery(name = Lieferung.FIND_LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN,
+			query = "SELECT DISTINCT li " +
+					"FROM Lieferung li " +
+					"JOIN li.lieferungspositionen "+
+					"WHERE li.id = :" + Lieferung.PARAM_ID)
 })
 
 public class Lieferung implements Serializable {
@@ -30,7 +35,9 @@ public class Lieferung implements Serializable {
 	
 	private static final String PREFIX = "Lieferung.";
 	public static final String FIND_LIEFERUNG_BY_ID = PREFIX + "findLieferungById";
-	public static final String FIND_LIEFERUNGSPOSITIONEN_BY_ID = PREFIX + "findLieferungspositionenById";
+	public static final String FIND_LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN = PREFIX + "findLieferungByIdFetchLieferungspositionen";
+	
+	public static final String PARAM_ID = "LieferungId";
 	
 	@OneToMany
 	@JoinColumn(name = "lieferung_FID", nullable = false)
@@ -69,19 +76,20 @@ public class Lieferung implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	
 	@Column(name= "lieferung_ID", nullable = false,
-			insertable = false, updatable = false) 
-	private int id;
+			insertable = false, updatable = false, precision=LONG_ANZ_ZIFFERN) 
+	private Long id = KEINE_ID;
 
 	@Temporal(TemporalType.DATE)
 	private Date bestelldatum;
 
 	@Column(name="erstellt_am")
-	private Timestamp erstelltAm;
+	@Temporal(TIMESTAMP)
+	private Date erstelltAm;
 
 	@Column(name="geaendert_am")
-	private Timestamp geaendertAm;
+	@Temporal(TIMESTAMP)
+	private Date geaendertAm;
 
 	@Temporal(TemporalType.DATE)
 	private Date lieferungsdatum;
@@ -89,11 +97,11 @@ public class Lieferung implements Serializable {
 	public Lieferung() {
 	}
 
-	public int getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -105,7 +113,7 @@ public class Lieferung implements Serializable {
 		this.bestelldatum = bestelldatum == null ? null : (Date) bestelldatum.clone();
 	}
 
-	public Timestamp getErstelltAm() {
+	public Date getErstelltAm() {
 		return this.erstelltAm;
 	}
 
@@ -113,7 +121,7 @@ public class Lieferung implements Serializable {
 		this.erstelltAm = erstelltAm;
 	}
 
-	public Timestamp getGeaendertAm() {
+	public Date getGeaendertAm() {
 		return this.geaendertAm;
 	}
 
@@ -139,7 +147,7 @@ public class Lieferung implements Serializable {
 				+ ((erstelltAm == null) ? 0 : erstelltAm.hashCode());
 		result = prime * result
 				+ ((geaendertAm == null) ? 0 : geaendertAm.hashCode());
-		result = prime * result + id;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((lieferungsdatum == null) ? 0 : lieferungsdatum.hashCode());
 		return result;

@@ -1,6 +1,8 @@
 package de.shop.Auftragsverwaltung.domain;
 
 import de.shop.Artikelverwaltung.domain.*;
+import static de.shop.Util.Constants.KEINE_ID;
+import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -17,11 +19,7 @@ import java.util.*;
 	@NamedQuery(name = Lieferungsposition.FIND_LIEFERUNGSPOSITION_BY_ID, 
 			query = "SELECT lp " +
 					"FROM Lieferungsposition lp "+
-					"WHERE lp.id = :LieferungpositionId"),
-	@NamedQuery(name = Lieferungsposition.FIND_ARTIKEL_BY_ID,
-	query = "SELECT a " +
-			"FROM Lieferungsposition lp join lp.Artikel "+
-			"WHERE lp.id = : LieferungspositionenId")
+					"WHERE lp.id = :"+Lieferungsposition.PARAM_ID),
 })
 
 public class Lieferungsposition implements Serializable {
@@ -30,9 +28,8 @@ public class Lieferungsposition implements Serializable {
 	
 	private static final String PREFIX = "Lieferungsposition.";
 	public static final String FIND_LIEFERUNGSPOSITION_BY_ID = PREFIX + "findLieferungspositionById";
-	public static final String FIND_ARTIKEL_BY_ID = PREFIX + "findArtikelById";
-
-
+	public static final String PARAM_ID = "LieferungspositionId";
+	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "lieferung_FID", nullable = false,
 				insertable = false, updatable = false)
@@ -61,21 +58,20 @@ public class Lieferungsposition implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	
 	@Column (name= "lieferungsposition_ID", nullable = false,
-			insertable = false, updatable = false)	
-	private int id ;
+			insertable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)	
+	private Long id=KEINE_ID ;
 
 	private int anzahl;
 
 	public Lieferungsposition() {
 	}
 
-	public int getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -94,7 +90,7 @@ public class Lieferungsposition implements Serializable {
 		result = prime * result + anzahl;
 		result = prime * result
 				+ ((lieferung == null) ? 0 : lieferung.hashCode());
-		result = prime * result + id;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
