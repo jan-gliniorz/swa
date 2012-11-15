@@ -56,7 +56,7 @@ create table if not exists auftragsposition (
 
 create table if not exists artikel (
 	artikel_ID INTEGER NOT NULL PRIMARY KEY,
-	bezeichung NVARCHAR(100) NOT NULL,
+	bezeichnung NVARCHAR(100) NOT NULL,
 	beschreibung TEXT NULL,
 	preis Decimal NOT NULL,
 	bild NVARCHAR(64) NULL,
