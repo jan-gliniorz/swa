@@ -2,6 +2,9 @@ package de.shop.Kundenverwaltung.domain;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
+import static de.shop.Util.Constants.KEINE_ID;
+import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -15,19 +18,26 @@ import java.util.Date;
  */
 @Entity
 @Table(name ="adresse")
+@NamedQueries({
+@NamedQuery(name = Adresse.ADRESSE_BY_ID,
+			query = "FROM Adresse a WHERE a.id = :" + Adresse.PARAM_ID)
+})
 public class Adresse implements Serializable {
 	
 	private static final long serialVersionUID = -6118084007129611335L;
+	
+	private static final String PREFIX = "Adresse.";
+	public static final String ADRESSE_BY_ID = PREFIX +"findAdresseByID";	
+	public static final String PARAM_ID = "id";
 		
 	@Id
 	@GeneratedValue
-	@Column(nullable = false, updatable = false)
-	private int adresse_ID;
+	@Column(nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN )
+	private Long id = KEINE_ID;
 	
-
-
 	private String hausNr;
-
+	
+	//EAGER-Fetching
 	@OneToOne
 	@JoinColumn(name = "kunde_FID", nullable = false, updatable = false)
 	private Kunde kunde;
@@ -59,12 +69,12 @@ public class Adresse implements Serializable {
 		this.kunde = kunde;
 	}
 
-	public int getAdresse_ID() {
-		return this.adresse_ID;
+	public Long getId() {
+		return this.id;
 	}
 
-	public void setAdresse_ID(int adresse_ID) {
-		this.adresse_ID = adresse_ID;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Date getErstelltAm() {
@@ -127,7 +137,7 @@ public class Adresse implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + adresse_ID;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((erstelltAm == null) ? 0 : erstelltAm.hashCode());
 		result = prime * result
@@ -149,7 +159,7 @@ public class Adresse implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Adresse other = (Adresse) obj;
-		if (adresse_ID != other.adresse_ID)
+		if (id != other.id)
 			return false;
 		if (erstelltAm == null) {
 			if (other.erstelltAm != null)
@@ -191,7 +201,7 @@ public class Adresse implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Adresse [adresse_ID=" + adresse_ID + ", erstelltAm="
+		return "Adresse [adresse_ID=" + id + ", erstelltAm="
 				+ erstelltAm + ", geaendertAm=" + geaendertAm + ", hausNr="
 				+ hausNr + ", land=" + land + ", ort=" + ort + ", plz=" + plz
 				+ ", strasse=" + strasse + "]";

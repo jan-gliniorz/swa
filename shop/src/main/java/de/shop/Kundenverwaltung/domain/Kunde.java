@@ -2,8 +2,12 @@ package de.shop.Kundenverwaltung.domain;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
+import static de.shop.Util.Constants.KEINE_ID;
+import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.persistence.criteria.*;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -16,13 +20,39 @@ import de.shop.Auftragsverwaltung.domain.*;;
  */
 @Entity
 @Table(name = "kunde")
+@NamedQueries({
+@NamedQuery(name = Kunde.KUNDE_BY_NACHNAME,
+			query = "FROM Kunde k WHERE k.nachname = :" + Kunde.PARAM_NACHNAME),
+@NamedQuery(name = Kunde.KUNDE_BY_PLZ,
+			query = "FROM Kunde k WHERE k.adresse.plz = :" + Kunde.PARAM_PLZ),
+@NamedQuery(name = Kunde.KUNDE_BY_KNR,
+			query = "FROM Kunde k WHERE k.kundenNr = :" + Kunde.PARAM_KUNDENNUMMER),
+@NamedQuery(name = Kunde.KUNDE_BY_NAME_AUFTRAEGE,
+			query = "SELECT DISTINCT k"
+					+ " FROM Kunde k"
+					+ " LEFT JOIN FETCH k.auftraege"
+					+ " WHERE k.nachname = :"+ Kunde.PARAM_NACHNAME)
+})
+
 public class Kunde implements Serializable {
+	
 	private static final long serialVersionUID = 3925016425151715847L;
+	
+	private static final String PREFIX = "Kunde.";
+	public static final String KUNDE_BY_NACHNAME = PREFIX +"findKundenByNachname";
+	public static final String KUNDE_BY_PLZ = PREFIX + "findKundenByPlz";
+	public static final String KUNDE_BY_KNR = PREFIX + "findKundenByKundennummer";
+	public static final String KUNDE_BY_NAME_AUFTRAEGE = PREFIX + "findKundenByNachnameFetchAufraege";
+	
+	public static final String PARAM_PLZ = "plz";
+	public static final String PARAM_NACHNAME = "nachname";
+	public static final String PARAM_KUNDENNUMMER = "kundenNr";
+	
 	
 	@Id
 	@GeneratedValue
-	@Column(nullable = false, updatable = false)
-	private int kundenNr;
+	@Column(nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
+	private Long kundenNr = KEINE_ID;
 
 	private String email;
 
@@ -40,9 +70,11 @@ public class Kunde implements Serializable {
 
 	private String vorname;
 	
+	//EAGER-Fetching
 	@OneToOne(mappedBy = "kunde")
 	private Adresse adresse;
 	
+	//LAZY-Fetching
 	@OneToMany(mappedBy = "kunde")
 	private List<Auftrag> auftraege;
 	
@@ -61,13 +93,14 @@ public class Kunde implements Serializable {
 		auftraege.addAll(_auftraege);
 		}
 	}
-	 public Kunde addAuftrag(Auftrag _auftrag) {
+	
+	public Kunde addAuftrag(Auftrag _auftrag) {
 		if (auftraege == null) {
 			auftraege = new ArrayList<>();
 		}
 		auftraege.add(_auftrag);
 		return this;	
-	 }
+	}
 	
 	public Adresse getAdresse(){
 		return adresse;
@@ -80,11 +113,11 @@ public class Kunde implements Serializable {
 	public Kunde() {
 	}
 
-	public int getKundenNr() {
+	public Long getKundenNr() {
 		return this.kundenNr;
 	}
 
-	public void setKundenNr(int kundenNr) {
+	public void setKundenNr(Long kundenNr) {
 		this.kundenNr = kundenNr;
 	}
 
@@ -149,11 +182,11 @@ public class Kunde implements Serializable {
 				+ ((erstelltAm == null) ? 0 : erstelltAm.hashCode());
 		result = prime * result
 				+ ((geaendertAm == null) ? 0 : geaendertAm.hashCode());
-		result = prime * result + kundenNr;
 		result = prime * result
 				+ ((nachname == null) ? 0 : nachname.hashCode());
 		result = prime * result
 				+ ((passwort == null) ? 0 : passwort.hashCode());
+		result = prime * result + ((kundenNr == null) ? 0 : kundenNr.hashCode());
 		result = prime * result + ((vorname == null) ? 0 : vorname.hashCode());
 		return result;
 	}
@@ -212,10 +245,9 @@ public class Kunde implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Kunde [kundenNr=" + kundenNr + ", email=" + email
-				+ ", erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm
-				+ ", nachname=" + nachname + ", passwort=" + passwort
-				+ ", vorname=" + vorname + "]";
+		return "Kunde [kundenNr=" + kundenNr + ", vorname=" + vorname + ", nachname=" + nachname
+				+ ", email=" + email + ", passwort=" + passwort
+				+ " erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm	+ "]";
 	}
 	
 
