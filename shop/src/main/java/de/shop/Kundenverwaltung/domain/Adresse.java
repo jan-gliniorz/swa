@@ -32,7 +32,7 @@ public class Adresse implements Serializable {
 		
 	@Id
 	@GeneratedValue
-	@Column(nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN )
+	@Column(name = "adresse_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN )
 	private Long id = KEINE_ID;
 	
 	private String hausNr;
