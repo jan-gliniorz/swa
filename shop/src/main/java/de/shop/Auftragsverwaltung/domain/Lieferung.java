@@ -20,8 +20,8 @@ import java.util.*;
 					"WHERE li.id = :LieferungId"),
 	@NamedQuery(name = Lieferung.FIND_LIEFERUNGSPOSITIONEN_BY_ID,
 			query = "SELECT lp " +
-					"FROM Lieferung li join li.Lieferungsposition "+
-					"WHERE li.id = :LieferungsId")
+					"FROM Lieferung li join li.lieferungsposition "+
+					"WHERE li.id = :LieferungId")
 })
 
 public class Lieferung implements Serializable {
