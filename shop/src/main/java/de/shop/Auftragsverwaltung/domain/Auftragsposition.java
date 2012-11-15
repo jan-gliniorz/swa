@@ -1,6 +1,8 @@
 package de.shop.Auftragsverwaltung.domain;
 
 import de.shop.Artikelverwaltung.domain.*;
+import static de.shop.Util.Constants.KEINE_ID;
+import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -20,7 +22,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "auftragsposition")
 @NamedQueries({
-	@NamedQuery(name = Auftrag.FIND_AUFTRAG_BY_ID, 
+	@NamedQuery(name = Auftragsposition.FIND_AUFTRAGSPOSITION_BY_ID, 
 			query = "SELECT a" +
 					" FROM Auftragsposition a"
 					+ " WHERE a.id = :" + Auftrag.PARAM_ID)
@@ -35,8 +37,8 @@ public class Auftragsposition implements Serializable {
 
 	@Id
 	@GeneratedValue
-	@Column(nullable = false, updatable = false)
-	private int auftragsposition_ID;
+	@Column(name = "auftragsposition_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
+	private Long id = KEINE_ID;
 
 	private int anzahl;
 	
@@ -49,12 +51,12 @@ public class Auftragsposition implements Serializable {
 	public Auftragsposition() {
 	}
 
-	public int getAuftragsposition_ID() {
-		return this.auftragsposition_ID;
+	public Long getId() {
+		return this.id;
 	}
 
-	public void setAuftragsposition_ID(int auftragsposition_ID) {
-		this.auftragsposition_ID = auftragsposition_ID;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public int getAnzahl() {
@@ -80,13 +82,14 @@ public class Auftragsposition implements Serializable {
 	public void setPreis(BigDecimal preis) {
 		this.preis = preis;
 	}
+	
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + anzahl;
-		result = prime * result + auftragsposition_ID;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((preis == null) ? 0 : preis.hashCode());
 		return result;
 	}
@@ -106,7 +109,11 @@ public class Auftragsposition implements Serializable {
 		if (anzahl != other.anzahl) {
 			return false;
 		}
-		if (auftragsposition_ID != other.auftragsposition_ID) {
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
 		}
 		if (preis == null) {
@@ -123,6 +130,6 @@ public class Auftragsposition implements Serializable {
 	public String toString() {
 		return String
 				.format("Auftragsposition [auftragsposition_ID=%s, anzahl=%s, artikel=%s, preis=%s]",
-						auftragsposition_ID, anzahl, artikel, preis);
+						id, anzahl, artikel, preis);
 	}	
 }

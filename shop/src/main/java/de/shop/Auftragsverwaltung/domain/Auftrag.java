@@ -1,6 +1,8 @@
 package de.shop.Auftragsverwaltung.domain;
 
 import de.shop.Kundenverwaltung.domain.*;
+import static de.shop.Util.Constants.KEINE_ID;
+import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -36,16 +38,16 @@ public class Auftrag implements Serializable {
 	private static final long serialVersionUID = 2465349694241738534L;
 	
 	private static final String PREFIX = "Auftrag.";
-	public static final String FIND_AUFTRAG_BY_ID = PREFIX + "findBestellungById";
-	public static final String FIND_AUFTRAG_BY_KUNDE = PREFIX + "findBestellungByKunde";
+	public static final String FIND_AUFTRAG_BY_ID = PREFIX + "findAuftragById";
+	public static final String FIND_AUFTRAG_BY_KUNDE = PREFIX + "findAuftragByKunde";
 	
 	public static final String PARAM_KUNDEID = "kundeId";
 	public static final String PARAM_ID = "id";
 
 	@Id
 	@GeneratedValue
-	@Column(nullable = false, updatable = false)
-	private int auftrag_ID;
+	@Column(name = "auftrag_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
+	private Long id = KEINE_ID;
 	
 	@OneToMany(fetch = EAGER)
 	@JoinColumn(name= "auftrag_FID", nullable = false)
@@ -69,12 +71,12 @@ public class Auftrag implements Serializable {
 	public Auftrag() {
 	}
 
-	public int getAuftrag_ID() {
-		return this.auftrag_ID;
+	public Long getId() {
+		return this.id;
 	}
 
-	public void setAuftrag_ID(int auftrag_ID) {
-		this.auftrag_ID = auftrag_ID;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Date getErstelltAm() {
@@ -134,9 +136,11 @@ public class Auftrag implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + auftrag_ID;
 		result = prime * result
 				+ ((erstelltAm == null) ? 0 : erstelltAm.hashCode());
+		result = prime * result
+				+ ((geaendertAm == null) ? 0 : geaendertAm.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -152,14 +156,25 @@ public class Auftrag implements Serializable {
 			return false;
 		}
 		Auftrag other = (Auftrag) obj;
-		if (auftrag_ID != other.auftrag_ID) {
-			return false;
-		}
 		if (erstelltAm == null) {
 			if (other.erstelltAm != null) {
 				return false;
 			}
 		} else if (!erstelltAm.equals(other.erstelltAm)) {
+			return false;
+		}
+		if (geaendertAm == null) {
+			if (other.geaendertAm != null) {
+				return false;
+			}
+		} else if (!geaendertAm.equals(other.geaendertAm)) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
 		}
 		return true;
@@ -169,6 +184,6 @@ public class Auftrag implements Serializable {
 	public String toString() {
 		return String
 				.format("Auftrag [auftrag_ID=%s, rechnung=%s, erstelltAm=%s, geaendertAm=%s, kunde=%s]",
-						auftrag_ID, rechnung, erstelltAm, geaendertAm, kunde);
+						id, rechnung, erstelltAm, geaendertAm, kunde);
 	}	
 }

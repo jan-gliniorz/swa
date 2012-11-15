@@ -1,5 +1,8 @@
 package de.shop.Auftragsverwaltung.domain;
 
+import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+import static de.shop.Util.Constants.KEINE_ID;
+
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -20,7 +23,7 @@ import java.util.Date;
 @NamedQueries({
 	@NamedQuery(name = Rechnung.FIND_RECHNUNG_BY_ID, 
 				query = "SELECT r"
-						+ " FROM Rechnung"
+						+ " FROM Rechnung r"
 						+ " WHERE r.id = :" + Rechnung.PARAM_ID)
 })
 public class Rechnung implements Serializable {
@@ -33,8 +36,8 @@ public class Rechnung implements Serializable {
 
 	@Id
 	@GeneratedValue
-	@Column(nullable = false, updatable = false)
-	private int rechnung_ID;
+	@Column(name = "rechnung_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
+	private Long id = KEINE_ID;
 
 	@OneToOne
 	@JoinColumn(name = "auftrag_FID")
@@ -54,6 +57,14 @@ public class Rechnung implements Serializable {
 	public Rechnung() {
 	}
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public Auftrag getAuftrag() {
 		return auftrag;
 	}
@@ -92,7 +103,9 @@ public class Rechnung implements Serializable {
 		int result = 1;
 		result = prime * result
 				+ ((erstelltAm == null) ? 0 : erstelltAm.hashCode());
-		result = prime * result + rechnung_ID;
+		result = prime * result
+				+ ((geaendertAm == null) ? 0 : geaendertAm.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((rechnungsdatum == null) ? 0 : rechnungsdatum.hashCode());
 		return result;
@@ -117,7 +130,18 @@ public class Rechnung implements Serializable {
 		} else if (!erstelltAm.equals(other.erstelltAm)) {
 			return false;
 		}
-		if (rechnung_ID != other.rechnung_ID) {
+		if (geaendertAm == null) {
+			if (other.geaendertAm != null) {
+				return false;
+			}
+		} else if (!geaendertAm.equals(other.geaendertAm)) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
 		}
 		if (rechnungsdatum == null) {
@@ -134,7 +158,7 @@ public class Rechnung implements Serializable {
 	public String toString() {
 		return String
 				.format("Rechnung [rechnung_ID=%s, erstelltAm=%s, geaendertAm=%s, rechnungsdatum=%s]",
-						rechnung_ID, erstelltAm, geaendertAm, rechnungsdatum);
+						id, erstelltAm, geaendertAm, rechnungsdatum);
 	}	
 }
 	
