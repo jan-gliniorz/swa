@@ -19,8 +19,19 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "auftragsposition")
+@NamedQueries({
+	@NamedQuery(name = Auftrag.FIND_AUFTRAG_BY_ID, 
+			query = "SELECT a" +
+					" FROM Auftragsposition a"
+					+ " WHERE a.id = :" + Auftrag.PARAM_ID)
+})
 public class Auftragsposition implements Serializable {
 	private static final long serialVersionUID = 3112053858805093020L;
+	
+	private static final String PREFIX = "Auftragsposition.";
+	public static final String FIND_AUFTRAGSPOSITION_BY_ID = PREFIX + "findAuftragspositionById";
+	
+	public static final String PARAM_ID = "id";	
 
 	@Id
 	@GeneratedValue
@@ -113,7 +124,5 @@ public class Auftragsposition implements Serializable {
 		return String
 				.format("Auftragsposition [auftragsposition_ID=%s, anzahl=%s, artikel=%s, preis=%s]",
 						auftragsposition_ID, anzahl, artikel, preis);
-	}
-	
-	
+	}	
 }

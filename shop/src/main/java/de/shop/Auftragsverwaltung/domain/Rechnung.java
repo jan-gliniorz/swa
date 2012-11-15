@@ -17,15 +17,25 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "rechnung")
+@NamedQueries({
+	@NamedQuery(name = Rechnung.FIND_RECHNUNG_BY_ID, 
+				query = "SELECT r"
+						+ " FROM Rechnung"
+						+ " WHERE r.id = :" + Rechnung.PARAM_ID)
+})
 public class Rechnung implements Serializable {
 	private static final long serialVersionUID = 4985112963755405161L;
+	
+	private static final String PREFIX = "Rechnung.";
+	public static final String FIND_RECHNUNG_BY_ID = PREFIX + "findRechnungById";
+	
+	public static final String PARAM_ID = "id";
 
 	@Id
 	@GeneratedValue
 	@Column(nullable = false, updatable = false)
 	private int rechnung_ID;
 
-	//private int auftrag_FID;
 	@OneToOne
 	@JoinColumn(name = "auftrag_FID")
 	private Auftrag auftrag;
@@ -125,8 +135,6 @@ public class Rechnung implements Serializable {
 		return String
 				.format("Rechnung [rechnung_ID=%s, erstelltAm=%s, geaendertAm=%s, rechnungsdatum=%s]",
 						rechnung_ID, erstelltAm, geaendertAm, rechnungsdatum);
-	}
-	
-	
+	}	
 }
 	
