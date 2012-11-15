@@ -4,6 +4,7 @@ import de.shop.Artikelverwaltung.domain.*;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.util.*;
 
 /**
@@ -12,8 +13,25 @@ import java.util.*;
  */
 @Entity
 @Table(name ="lieferungsposition")
+@NamedQueries({
+	@NamedQuery(name = Lieferungsposition.FIND_LIEFERUNGSPOSITION_BY_ID, 
+			query = "SELECT lp " +
+					"FROM Lieferungsposition lp "+
+					"WHERE lp.id = :LieferungpositionId"),
+	@NamedQuery(name = Lieferungsposition.FIND_ARTIKEL_BY_ID,
+	query = "SELECT a " +
+			"FROM Lieferungsposition lp join lp.Artikel "+
+			"WHERE lp.id = : LieferungspositionenId")
+})
+
 public class Lieferungsposition implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
+	
+	private static final String PREFIX = "Lieferungsposition.";
+	public static final String FIND_LIEFERUNGSPOSITION_BY_ID = PREFIX + "findLieferungspositionById";
+	public static final String FIND_ARTIKEL_BY_ID = PREFIX + "findArtikelById";
+
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "lieferung_FID", nullable = false,

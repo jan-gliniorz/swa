@@ -13,7 +13,24 @@ import java.util.*;
  */
 @Entity
 @Table(name ="lieferung")
+@NamedQueries({
+	@NamedQuery(name = Lieferung.FIND_LIEFERUNG_BY_ID, 
+			query = "SELECT li " +
+					"FROM Lieferung li "+
+					"WHERE li.id = :LieferungId"),
+	@NamedQuery(name = Lieferung.FIND_LIEFERUNGSPOSITIONEN_BY_ID,
+			query = "SELECT lp " +
+					"FROM Lieferung li join li.Lieferungsposition "+
+					"WHERE li.id = :LieferungsId")
+})
+
 public class Lieferung implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
+	private static final String PREFIX = "Lieferung.";
+	public static final String FIND_LIEFERUNG_BY_ID = PREFIX + "findLieferungById";
+	public static final String FIND_LIEFERUNGSPOSITIONEN_BY_ID = PREFIX + "findLieferungspositionenById";
 	
 	@OneToMany
 	@JoinColumn(name = "lieferung_FID", nullable = false)
@@ -49,8 +66,7 @@ public class Lieferung implements Serializable {
 		lieferungspositionen.add(lieferungsposition);
 		return this;
 	}
-	
-	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	
