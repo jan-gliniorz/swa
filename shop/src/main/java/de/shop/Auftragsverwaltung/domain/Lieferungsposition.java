@@ -10,7 +10,6 @@ import java.util.*;
  * The persistent class for the lieferungsposition database table.
  * 
  */
-/*--*/
 @Entity
 @Table(name ="lieferungsposition")
 public class Lieferungsposition implements Serializable {
