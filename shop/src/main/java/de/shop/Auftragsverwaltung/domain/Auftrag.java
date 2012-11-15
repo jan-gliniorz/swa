@@ -22,20 +22,37 @@ import java.util.List;
  */
 @Entity
 @Table(name = "auftrag")
+@NamedQueries({
+	@NamedQuery(name = Auftrag.FIND_AUFTRAG_BY_ID, 
+			query = "SELECT a" +
+					" FROM Auftrag a"
+					+ " WHERE a.id = :" + Auftrag.PARAM_ID),
+	@NamedQuery(name = Auftrag.FIND_AUFTRAG_BY_KUNDE, 
+				query = "SELECT a" +
+						" FROM Auftrag a"
+						+ " WHERE a.kunde.id = :" + Auftrag.PARAM_KUNDEID)
+})
 public class Auftrag implements Serializable {	
 	private static final long serialVersionUID = 2465349694241738534L;
+	
+	private static final String PREFIX = "Auftrag.";
+	public static final String FIND_AUFTRAG_BY_ID = PREFIX + "findBestellungById";
+	public static final String FIND_AUFTRAG_BY_KUNDE = PREFIX + "findBestellungByKunde";
+	
+	public static final String PARAM_KUNDEID = "kundeId";
+	public static final String PARAM_ID = "id";
 
 	@Id
 	@GeneratedValue
 	@Column(nullable = false, updatable = false)
 	private int auftrag_ID;
 	
-	@OneToMany
+	@OneToMany(fetch = EAGER)
 	@JoinColumn(name= "auftrag_FID", nullable = false)
 	@OrderColumn(name = "idx")
 	private List<Auftragsposition> auftragspositionen;
 	
-	@OneToOne(mappedBy = "auftrag") //TODO: wie wird hier als Ziel die Klasse Rechnung festgestellt? MappedBy ist das Feld auftrag in Rechnung....
+	@OneToOne(mappedBy = "auftrag")
 	private Rechnung rechnung;
 
 	@Column(name="erstellt_am")
