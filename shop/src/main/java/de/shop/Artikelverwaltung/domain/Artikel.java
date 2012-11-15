@@ -16,12 +16,30 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "Artikel")
+@NamedQueries({
+	  @NamedQuery(name = Artikel.Artikel_BY_Bezeichnung,
+			      query = "FROM Artikel a WHERE a.bezeichnung = :bezeichnung"),	
+	  @NamedQuery(name = Artikel.Artikel_BY_Artikel_ID,
+			  	  query = "FROM Artikel a WHERE a.artikel_ID = :artikel_ID")
+	  
+	})
+
 public class Artikel implements Serializable {
+
+	private static final String PREFIX = "Artikel.";
+
+	public static final String Artikel_BY_Bezeichnung=
+		PREFIX +"findArtikelByBezeichnung";
+	public static final String Artikel_BY_Artikel_ID =
+		PREFIX + "findArtikelByArtikel_ID";
 	
 	
 	
 	private static final long serialVersionUID = 4651646021686650992L;
 
+
+	
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int artikel_ID;
@@ -33,7 +51,7 @@ public class Artikel implements Serializable {
 	@Lob
 	private String beschreibung;
 
-	private String bezeichung;
+	private String bezeichnung;
 
 	private String bild;
 
@@ -68,11 +86,11 @@ public class Artikel implements Serializable {
 	}
 
 	public String getBezeichung() {
-		return this.bezeichung;
+		return this.bezeichnung;
 	}
 
 	public void setBezeichung(String bezeichung) {
-		this.bezeichung = bezeichung;
+		this.bezeichnung = bezeichung;
 	}
 
 	public String getBild() {
@@ -128,7 +146,7 @@ public class Artikel implements Serializable {
 		result = prime * result
 				+ ((beschreibung == null) ? 0 : beschreibung.hashCode());
 		result = prime * result
-				+ ((bezeichung == null) ? 0 : bezeichung.hashCode());
+				+ ((bezeichnung == null) ? 0 : bezeichnung.hashCode());
 		result = prime * result + ((bild == null) ? 0 : bild.hashCode());
 		result = prime * result
 				+ ((erstelltAm == null) ? 0 : erstelltAm.hashCode());
@@ -177,10 +195,10 @@ public class Artikel implements Serializable {
 				return false;
 		} else if (!beschreibung.equals(other.beschreibung))
 			return false;
-		if (bezeichung == null) {
-			if (other.bezeichung != null)
+		if (bezeichnung == null) {
+			if (other.bezeichnung != null)
 				return false;
-		} else if (!bezeichung.equals(other.bezeichung))
+		} else if (!bezeichnung.equals(other.bezeichnung))
 			return false;
 		if (bild == null) {
 			if (other.bild != null)
@@ -211,7 +229,7 @@ public class Artikel implements Serializable {
 	@Override
 	public String toString() {
 		return "Artikel [artikel_ID=" + artikel_ID + ", beschreibung=" + beschreibung
-				+ ", bezeichung=" + bezeichung + ", bild=" + bild
+				+ ", bezeichung=" + bezeichnung + ", bild=" + bild
 				+ ", erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm
 				+ ", preis=" + preis + "]";
 	}
