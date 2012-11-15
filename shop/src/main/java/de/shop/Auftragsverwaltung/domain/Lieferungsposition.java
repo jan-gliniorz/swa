@@ -44,7 +44,9 @@ public class Lieferungsposition implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	
-	@Column (name= "lieferungsposition_ID")	private int id ;
+	@Column (name= "lieferungsposition_ID", nullable = false,
+			insertable = false, updatable = false)	
+	private int id ;
 
 	private int anzahl;
 

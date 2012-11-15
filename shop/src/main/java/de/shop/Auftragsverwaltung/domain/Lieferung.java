@@ -54,7 +54,9 @@ public class Lieferung implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	
-	@Column(name= "lieferung_ID") private int id;
+	@Column(name= "lieferung_ID", nullable = false,
+			insertable = false, updatable = false) 
+	private int id;
 
 	@Temporal(TemporalType.DATE)
 	private Date bestelldatum;
