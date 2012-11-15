@@ -43,19 +43,22 @@ public class Lieferungsposition implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int lieferungsposition_ID;
+	
+	@Column (name= "lieferungsposition_ID", nullable = false,
+			insertable = false, updatable = false)	
+	private int id ;
 
 	private int anzahl;
 
 	public Lieferungsposition() {
 	}
 
-	public int getLieferungsposition_ID() {
-		return this.lieferungsposition_ID;
+	public int getId() {
+		return this.id;
 	}
 
-	public void setLieferungsposition_ID(int lieferungsposition_ID) {
-		this.lieferungsposition_ID = lieferungsposition_ID;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getAnzahl() {
@@ -73,7 +76,7 @@ public class Lieferungsposition implements Serializable {
 		result = prime * result + anzahl;
 		result = prime * result
 				+ ((lieferung == null) ? 0 : lieferung.hashCode());
-		result = prime * result + lieferungsposition_ID;
+		result = prime * result + id;
 		return result;
 	}
 
@@ -97,7 +100,7 @@ public class Lieferungsposition implements Serializable {
 		} else if (!lieferung.equals(other.lieferung))
 			return false;
 		
-		if (lieferungsposition_ID != other.lieferungsposition_ID)
+		if (id != other.id)
 			return false;
 		
 		return true;
@@ -106,7 +109,7 @@ public class Lieferungsposition implements Serializable {
 	@Override
 	public String toString() {
 		return "Lieferungsposition [artikel=" + artikel
-				+ ", lieferungsposition_ID=" + lieferungsposition_ID
+				+ ", id=" + id
 				+ ", anzahl=" + anzahl + "]";
 	}
 

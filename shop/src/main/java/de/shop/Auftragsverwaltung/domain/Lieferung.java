@@ -53,7 +53,10 @@ public class Lieferung implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int lieferung_ID;
+	
+	@Column(name= "lieferung_ID", nullable = false,
+			insertable = false, updatable = false) 
+	private int id;
 
 	@Temporal(TemporalType.DATE)
 	private Date bestelldatum;
@@ -70,12 +73,12 @@ public class Lieferung implements Serializable {
 	public Lieferung() {
 	}
 
-	public int getLieferung_ID() {
-		return this.lieferung_ID;
+	public int getId() {
+		return this.id;
 	}
 
-	public void setLieferung_ID(int lieferung_ID) {
-		this.lieferung_ID = lieferung_ID;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Date getBestelldatum() {
@@ -120,7 +123,7 @@ public class Lieferung implements Serializable {
 				+ ((erstelltAm == null) ? 0 : erstelltAm.hashCode());
 		result = prime * result
 				+ ((geaendertAm == null) ? 0 : geaendertAm.hashCode());
-		result = prime * result + lieferung_ID;
+		result = prime * result + id;
 		result = prime * result
 				+ ((lieferungsdatum == null) ? 0 : lieferungsdatum.hashCode());
 		return result;
@@ -166,7 +169,7 @@ public class Lieferung implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Lieferung [lieferung_ID=" + lieferung_ID + ", bestelldatum="
+		return "Lieferung [id=" + id + ", bestelldatum="
 				+ bestelldatum + ", erstelltAm=" + erstelltAm
 				+ ", geaendertAm=" + geaendertAm + ", lieferungsdatum="
 				+ lieferungsdatum + "]";
