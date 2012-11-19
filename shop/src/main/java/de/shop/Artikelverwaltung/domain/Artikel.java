@@ -20,10 +20,10 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "Artikel")
 @NamedQueries({
-	  @NamedQuery(name = Artikel.Artikel_BY_Bezeichnung,
-			      query = "FROM Artikel a WHERE a.bezeichnung = :bezeichnung"),	
-	  @NamedQuery(name = Artikel.Artikel_BY_Artikel_ID,
-			  	  query = "FROM Artikel a WHERE a.artikel_ID = :artikel_ID")
+	  @NamedQuery(name = Artikel.FIND_Artikel_BY_Bezeichnung,
+			      query = "FROM Artikel a WHERE a.bezeichnung = :"+ Artikel.PARAM_Bezeichnung),	
+	  @NamedQuery(name = Artikel.FIND_Artikel_BY_Artikel_ID,
+			  	  query = "FROM Artikel a WHERE a.id = :"+ Artikel.PARAM_ID)
 	  
 	})
 
@@ -31,10 +31,12 @@ public class Artikel implements Serializable {
 
 	private static final String PREFIX = "Artikel.";
 
-	public static final String Artikel_BY_Bezeichnung=
+	public static final String FIND_Artikel_BY_Bezeichnung=
 		PREFIX +"findArtikelByBezeichnung";
-	public static final String Artikel_BY_Artikel_ID =
-		PREFIX + "findArtikelByArtikel_ID";
+	public static final String FIND_Artikel_BY_Artikel_ID =
+		PREFIX + "findArtikelByArtikelid";
+	public static final String PARAM_ID = "id";
+	public static final String PARAM_Bezeichnung = "bezeichnung";
 
 	
 	

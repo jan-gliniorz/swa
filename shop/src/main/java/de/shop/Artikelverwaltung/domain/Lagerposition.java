@@ -17,7 +17,24 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name ="Lagerposition")
-public class Lagerposition implements Serializable {
+@NamedQueries({
+	@NamedQuery(name = Lagerposition.FIND_Lagerposition_BY_ID, 
+			query = "SELECT a" +
+					" FROM Lagerposition a"
+					+ " WHERE a.id = :" + Lagerposition.PARAM_ID),
+
+  })
+
+public class Lagerposition implements Serializable {	
+	
+	private static final String PREFIX = "Lagerposition.";
+
+
+	public static final String FIND_Lagerposition_BY_ID =
+		PREFIX + "findArtikelByArtikelid";
+	public static final String PARAM_ID = "id";
+
+
 	
 	private static final long serialVersionUID = 6937895919585767805L;
 

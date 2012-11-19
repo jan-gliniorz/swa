@@ -6,6 +6,8 @@ import static de.shop.Util.Constants.KEINE_ID;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import de.shop.Auftragsverwaltung.domain.Auftrag;
+
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -15,8 +17,27 @@ import java.util.*;
  */
 @Entity
 @Table(name = "Lager")
+   @NamedQueries({
+	@NamedQuery(name = Lager.FIND_Lager_BY_ID, 
+			query = "SELECT a" +
+					" FROM Lager a"
+					+ " WHERE a.id = :" + Lager.PARAM_ID),
+	@NamedQuery(name = Lager.FIND_Lager_BY_Bezeichnung, 
+				query = "SELECT a" +
+						" FROM Lager a"
+						+ " WHERE a.bezeichnung = :" + Lager.PARAM_Bezeichnung)
+   })
+
 public class Lager implements Serializable {	
 	
+	private static final String PREFIX = "Lager.";
+
+	public static final String FIND_Lager_BY_Bezeichnung=
+		PREFIX +"findArtikelByBezeichnung";
+	public static final String FIND_Lager_BY_ID =
+		PREFIX + "findArtikelByArtikelid";
+	public static final String PARAM_ID = "id";
+	public static final String PARAM_Bezeichnung = "bezeichnung";
 
 	private static final long serialVersionUID = -2184864191060846895L;
 
@@ -29,7 +50,7 @@ public class Lager implements Serializable {
 	private List<Lagerposition> lagerpositionen;
 	
 	
-	private String bezeichung;
+	private String bezeichnung;
 
 	@Column(name="erstellt_am")
 	@Temporal(TIMESTAMP)
@@ -51,11 +72,11 @@ public class Lager implements Serializable {
 	}
 
 	public String getBezeichung() {
-		return this.bezeichung;
+		return this.bezeichnung;
 	}
 
 	public void setBezeichung(String bezeichung) {
-		this.bezeichung = bezeichung;
+		this.bezeichnung = bezeichung;
 	}
 
 	public Date getErstelltAm() {
@@ -108,7 +129,7 @@ public class Lager implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((bezeichung == null) ? 0 : bezeichung.hashCode());
+				+ ((bezeichnung == null) ? 0 : bezeichnung.hashCode());
 		result = prime * result
 				+ ((erstelltAm == null) ? 0 : erstelltAm.hashCode());
 		result = prime * result
@@ -130,10 +151,10 @@ public class Lager implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Lager other = (Lager) obj;
-		if (bezeichung == null) {
-			if (other.bezeichung != null)
+		if (bezeichnung == null) {
+			if (other.bezeichnung != null)
 				return false;
-		} else if (!bezeichung.equals(other.bezeichung))
+		} else if (!bezeichnung.equals(other.bezeichnung))
 			return false;
 		if (erstelltAm == null) {
 			if (other.erstelltAm != null)
@@ -155,7 +176,7 @@ public class Lager implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Lager [lager_ID=" + id + ", bezeichung=" + bezeichung
+		return "Lager [lager_ID=" + id + ", bezeichung=" + bezeichnung
 				+ ", erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm
 				+ "]";
 	}
