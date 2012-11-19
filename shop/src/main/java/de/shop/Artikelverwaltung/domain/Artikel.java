@@ -1,14 +1,17 @@
 package de.shop.Artikelverwaltung.domain;
 
+import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import de.shop.Auftragsverwaltung.domain.Auftrag;
+import de.shop.Kundenverwaltung.domain.Kunde;
+import static de.shop.Util.Constants.KEINE_ID;
 import java.sql.Timestamp;
 import java.util.*;
 import java.math.BigDecimal;
-
-
 
 /**
  * The persistent class for the artikel database table.
@@ -32,17 +35,15 @@ public class Artikel implements Serializable {
 		PREFIX +"findArtikelByBezeichnung";
 	public static final String Artikel_BY_Artikel_ID =
 		PREFIX + "findArtikelByArtikel_ID";
-	
+
 	
 	
 	private static final long serialVersionUID = 4651646021686650992L;
-
-
-	
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int artikel_ID;
+	@Column(name = "artikel_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
+	private Long id = KEINE_ID;
 
 
 	@OneToMany(mappedBy = "artikel")
@@ -69,12 +70,12 @@ public class Artikel implements Serializable {
 	public Artikel() {
 	}
 
-	public int getArtikel_ID() {
-		return this.artikel_ID;
+	public Long getId() {
+		return this.id;
 	}
 
-	public void setArtikel_ID(int artikel_ID) {
-		this.artikel_ID = artikel_ID;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getBeschreibung() {
@@ -142,7 +143,7 @@ public class Artikel implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + artikel_ID;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((beschreibung == null) ? 0 : beschreibung.hashCode());
 		result = prime * result
@@ -188,7 +189,7 @@ public class Artikel implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Artikel other = (Artikel) obj;
-		if (artikel_ID != other.artikel_ID)
+		if (id != other.id)
 			return false;
 		if (beschreibung == null) {
 			if (other.beschreibung != null)
@@ -228,7 +229,7 @@ public class Artikel implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Artikel [artikel_ID=" + artikel_ID + ", beschreibung=" + beschreibung
+		return "Artikel [artikel_ID=" + id + ", beschreibung=" + beschreibung
 				+ ", bezeichung=" + bezeichnung + ", bild=" + bild
 				+ ", erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm
 				+ ", preis=" + preis + "]";

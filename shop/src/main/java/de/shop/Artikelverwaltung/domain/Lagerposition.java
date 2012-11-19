@@ -5,6 +5,9 @@ import java.util.*;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import static de.shop.Util.Constants.KEINE_ID;
+import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+
 import java.sql.Timestamp;
 
 
@@ -20,7 +23,8 @@ public class Lagerposition implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int lagerposition_ID;
+	@Column(name = "lagerposition_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
+	private Long id = KEINE_ID;
 	
 	@ManyToOne
 	@JoinColumn(name="lager_FID", nullable = false)
@@ -46,12 +50,12 @@ public class Lagerposition implements Serializable {
 	public Lagerposition() {
 	}
 
-	public int getLagerposition_ID() {
-		return this.lagerposition_ID;
+	public Long getId() {
+		return this.id;
 	}
 
-	public void setLagerposition_ID(int lagerposition_ID) {
-		this.lagerposition_ID = lagerposition_ID;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	public Lager getLager(){
@@ -126,7 +130,7 @@ public class Lagerposition implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Lagerposition [lagerposition_ID=" + lagerposition_ID
+		return "Lagerposition [lagerposition_ID=" + id
 				+ ", artikel=" + artikel + ", anzahl=" + anzahl
 				+ ", erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm
 				+ "]";

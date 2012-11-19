@@ -1,9 +1,11 @@
 package de.shop.Artikelverwaltung.domain;
 
+import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static javax.persistence.TemporalType.TIMESTAMP;
-
+import static de.shop.Util.Constants.KEINE_ID;
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -20,7 +22,8 @@ public class Lager implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int lager_ID;
+	@Column(name = "lager_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
+	private Long id = KEINE_ID;
 
 	@OneToMany(mappedBy = "lager")
 	private List<Lagerposition> lagerpositionen;
@@ -39,12 +42,12 @@ public class Lager implements Serializable {
 	public Lager() {
 	}
 
-	public int getLager_ID() {
-		return this.lager_ID;
+	public Long getID() {
+		return this.id;
 	}
 
-	public void setLager_ID(int lager_ID) {
-		this.lager_ID = lager_ID;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getBezeichung() {
@@ -110,7 +113,7 @@ public class Lager implements Serializable {
 				+ ((erstelltAm == null) ? 0 : erstelltAm.hashCode());
 		result = prime * result
 				+ ((geaendertAm == null) ? 0 : geaendertAm.hashCode());
-		result = prime * result + lager_ID;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 	
@@ -142,7 +145,7 @@ public class Lager implements Serializable {
 				return false;
 		} else if (!geaendertAm.equals(other.geaendertAm))
 			return false;
-		if (lager_ID != other.lager_ID)
+		if (id != other.id)
 			return false;
 		return true;
 	}
@@ -152,7 +155,7 @@ public class Lager implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Lager [lager_ID=" + lager_ID + ", bezeichung=" + bezeichung
+		return "Lager [lager_ID=" + id + ", bezeichung=" + bezeichung
 				+ ", erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm
 				+ "]";
 	}
