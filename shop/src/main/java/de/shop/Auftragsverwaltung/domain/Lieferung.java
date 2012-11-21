@@ -18,11 +18,11 @@ import java.util.*;
 @Entity
 @Table(name ="lieferung")
 @NamedQueries({
-	@NamedQuery(name = Lieferung.FIND_LIEFERUNG_BY_ID, 
+	@NamedQuery(name = Lieferung.LIEFERUNG_BY_ID, 
 			query = "SELECT li " +
 					"FROM Lieferung li "+
 					"WHERE li.id = :" + Lieferung.PARAM_ID),
-	@NamedQuery(name = Lieferung.FIND_LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN,
+	@NamedQuery(name = Lieferung.LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN,
 			query = "SELECT DISTINCT li " +
 					"FROM Lieferung li " +
 					"JOIN li.lieferungspositionen "+
@@ -34,10 +34,10 @@ public class Lieferung implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private static final String PREFIX = "Lieferung.";
-	public static final String FIND_LIEFERUNG_BY_ID = PREFIX + "findLieferungById";
-	public static final String FIND_LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN = PREFIX + "findLieferungByIdFetchLieferungspositionen";
+	public static final String LIEFERUNG_BY_ID = PREFIX + "findLieferungById";
+	public static final String LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN = PREFIX + "findLieferungByIdFetchLieferungspositionen";
 	
-	public static final String PARAM_ID = "LieferungId";
+	public static final String PARAM_ID = "id";
 	
 	@OneToMany
 	@JoinColumn(name = "lieferung_FID", nullable = false)
