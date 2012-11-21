@@ -59,7 +59,7 @@ public class KundeTest extends AbstractDomainTest {
 	public void validate() {
 		assertThat(true, is(true));
 	}
-	
+	/*
 	@Test
 	public void findKundeByIdVorhanden() {
 		// Given
@@ -69,7 +69,7 @@ public class KundeTest extends AbstractDomainTest {
 		//final AbstractKunde kunde = getEntityManager().find(AbstractKunde.class, id);
 		
 		Kunde kunde = getEntityManager().createNamedQuery(Kunde.KUNDE_BY_KNR, Kunde.class)
-							.setParameter(Kunde.PARAM_KUNDENNUMMER, 1)
+							.setParameter(Kunde.PARAM_KUNDENNUMMER, 12)
 							.getSingleResult();
 				
 				
@@ -77,18 +77,19 @@ public class KundeTest extends AbstractDomainTest {
 		assertThat(kunde.getKundenNr(), is(id));
 	}
 	
-	/*
+	
 	@Test
 	public void findKundeByEmailVorhanden() {
 		// Given
 		final String email = EMAIL_VORHANDEN;
 		
 		// When
-		final AbstractKunde kunde = getEntityManager().createNamedQuery(AbstractKunde.FIND_KUNDE_BY_EMAIL,
-                                                                        AbstractKunde.class)
-                                                      .setParameter(AbstractKunde.PARAM_KUNDE_EMAIL, email)
-				                                      .getSingleResult();
-		
+		Kunde kunde = getEntityManager().createNamedQuery(Kunde.KUNDE_BY_EMAIL, Kunde.class)
+								.setParameter(Kunde.PARAM_EMAIL, email)
+								.getSingleResult();
+				
+				
+                                                                       
 		// Then
 		assertThat(kunde.getEmail(), is(email));
 	}
@@ -100,10 +101,10 @@ public class KundeTest extends AbstractDomainTest {
 		
 		// When / Then
 		thrown.expect(NoResultException.class);
-		getEntityManager().createNamedQuery(AbstractKunde.FIND_KUNDE_BY_EMAIL,
-                                            AbstractKunde.class)
-                          .setParameter(AbstractKunde.PARAM_KUNDE_EMAIL, email)
-                          .getSingleResult();
+		getEntityManager().createNamedQuery(Kunde.KUNDE_BY_EMAIL, Kunde.class)
+					.setParameter(Kunde.PARAM_EMAIL, email)
+					.getSingleResult();
+                                                       
 	}
 
 	@Test

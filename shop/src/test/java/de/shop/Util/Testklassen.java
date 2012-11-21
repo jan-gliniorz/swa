@@ -12,14 +12,14 @@ public enum Testklassen {
 	
 	// Testklassen aus *VERSCHIEDENEN* Packages auflisten (durch Komma getrennt):
 	// so dass alle darin enthaltenen Klassen ins Web-Archiv mitverpackt werden
-	private List<Class<? extends AbstractTest>> classes = null; //TODO://Arrays.asList(KundeTest.class);
-	
+	//private List<Class<? extends AbstractTest>> classes = Arrays.asList(KundeTest.class, AdresseTest.class);
+	private List<Class<? extends AbstractDomainTest>> classes = Arrays.asList(KundeTest.class, AdresseTest.class);
 
 	public static Testklassen getInstance() {
 		return INSTANCE;
 	}
 	
-	public List<Class<? extends AbstractTest>> getTestklassen() {
+	public List<Class<? extends AbstractDomainTest>> getTestklassen() {
 		return classes;
 	}
 }

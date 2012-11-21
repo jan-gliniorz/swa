@@ -23,6 +23,8 @@ import de.shop.Auftragsverwaltung.domain.*;;
 @NamedQueries({
 @NamedQuery(name = Kunde.KUNDE_BY_NACHNAME,
 			query = "FROM Kunde k WHERE k.nachname = :" + Kunde.PARAM_NACHNAME),
+@NamedQuery(name = Kunde.KUNDE_BY_EMAIL,
+			query = "FROM Kunde k WHERE k.email = :" + Kunde.PARAM_EMAIL),
 @NamedQuery(name = Kunde.KUNDE_BY_PLZ,
 			query = "FROM Kunde k WHERE k.adresse.plz = :" + Kunde.PARAM_PLZ),
 @NamedQuery(name = Kunde.KUNDE_BY_KNR,
@@ -39,6 +41,7 @@ public class Kunde implements Serializable {
 	private static final long serialVersionUID = 3925016425151715847L;
 	
 	private static final String PREFIX = "Kunde.";
+	public static final String KUNDE_BY_EMAIL = PREFIX + "findKundenByEmail";
 	public static final String KUNDE_BY_NACHNAME = PREFIX +"findKundenByNachname";
 	public static final String KUNDE_BY_PLZ = PREFIX + "findKundenByPlz";
 	public static final String KUNDE_BY_KNR = PREFIX + "findKundenByKundennummer";
@@ -47,6 +50,7 @@ public class Kunde implements Serializable {
 	public static final String PARAM_PLZ = "plz";
 	public static final String PARAM_NACHNAME = "nachname";
 	public static final String PARAM_KUNDENNUMMER = "kundenNr";
+	public static final String PARAM_EMAIL = "email";
 	
 	
 	@Id
