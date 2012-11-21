@@ -53,7 +53,7 @@ public class LieferungTest extends AbstractDomainTest {
 		assertThat(true, is(true));
 	}
 	
-	@Test
+	/*@Test
 	public void findLieferungByIdVorhanden() {
 		// Given
 		final Long id = ID_VORHANDEN;
@@ -77,5 +77,5 @@ public class LieferungTest extends AbstractDomainTest {
 				
 		//Then
 		assertThat(lieferung.getBestelldatum(), is (bestelldatum));
-	}
+	}*/
 }
