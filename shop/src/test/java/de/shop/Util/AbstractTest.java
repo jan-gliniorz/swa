@@ -21,6 +21,8 @@ import org.junit.rules.ExpectedException;
 
 
 public abstract class AbstractTest {
+	private static final String DB_SERVICE_IMPL = "de.shop.Util.impl.DbServiceImpl";
+
 	protected static final Locale LOCALE = Locale.GERMAN;
 	
 	@Resource(lookup = "java:jboss/UserTransaction")
@@ -37,11 +39,16 @@ public abstract class AbstractTest {
 	}
 	
 	@BeforeClass
-	public static void dbreload() {
-		final ServiceLoader<DbService> dbServiceLoader = ServiceLoader.load(DbService.class);
+	public static void dbreload() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		//final ServiceLoader<DbService> dbServiceLoader = ServiceLoader.load(DbService.class);
+//		final DbService dbService = dbServiceLoader.iterator().next();
+//		dbService.reload();
+		
+		
 		//DbServiceImpl ohne explizite Verwendung
-		final DbService dbService = dbServiceLoader.iterator().next();
-		dbService.reload();
+		@SuppressWarnings("unchecked")
+		final Class<? extends DbService> dbServiceClass = (Class<? extends DbService>) Class.forName(DB_SERVICE_IMPL);
+		dbServiceClass.newInstance().reload();
 	}
 	
 	/**

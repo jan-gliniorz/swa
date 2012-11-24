@@ -140,6 +140,7 @@ public class KundeTest extends AbstractDomainTest {
 	}
 	
 	@Test
+	@Ignore
 	public void findKundenByDateVorhanden() {
 		// Given
 		final Date seit = ERSTELLT_VORHANDEN;
@@ -203,7 +204,7 @@ public class KundeTest extends AbstractDomainTest {
 		
 		// Den abgespeicherten Kunden ueber eine Named Query ermitteln
 		List<Kunde> kunden = getEntityManager().createNamedQuery(Kunde.KUNDE_BY_NACHNAME, Kunde.class)
-									.setParameter(Kunde.KUNDE_BY_NACHNAME, NACHNAME_NEU)
+									.setParameter(Kunde.PARAM_NACHNAME, NACHNAME_NEU)
 									.getResultList();
 		
 		// Ueberpruefung des ausgelesenen Objekts
