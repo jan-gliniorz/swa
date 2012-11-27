@@ -60,7 +60,7 @@ public class Kunde implements Serializable {
 	@Column(nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	private Long kundenNr = KEINE_ID;
 
-	@NotNull(message = "{kunde.email.notNull}")
+	@NotNull(message = "{kundenverwaltung.kunde.email.notNull}")
 	private String email;
 
 	@Column(name="erstellt_am")
@@ -82,18 +82,18 @@ public class Kunde implements Serializable {
 		geaendertAm = new Date();
 	}
 
-	@NotNull(message = "{kunde.nachname.notNull}")
+	@NotNull(message = "{kundenverwaltung.kunde.nachname.notNull}")
 	private String nachname;
 
-	@NotNull(message = "{kunde.passwort.notNull}")
+	@NotNull(message = "{kundenverwaltung.kunde.passwort.notNull}")
 	private String passwort;
 
-	@NotNull(message = "{kunde.vorname.notNull}")
+	@NotNull(message = "{kundenverwaltung.kunde.vorname.notNull}")
 	private String vorname;
 	
 	//EAGER-Fetching
 	@OneToOne(mappedBy = "kunde", cascade=PERSIST)
-	@NotNull(message = "{kunde.adresse.notNull}")
+	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
 	private Adresse adresse;
 	
 	//LAZY-Fetching
