@@ -136,6 +136,17 @@ public class Lieferung implements Serializable {
 	public void setLieferungsdatum(Date lieferungsdatum) {
 		this.lieferungsdatum = lieferungsdatum == null ? null : (Date) lieferungsdatum.clone();
 	}
+	
+	@PrePersist
+	private void prePersist() {
+		erstelltAm = new Date();
+		geaendertAm = new Date();
+	}
+	
+	@PreUpdate
+	private void preUpdate() {
+		geaendertAm = new Date();
+	}
 
 	@Override
 	public int hashCode() {

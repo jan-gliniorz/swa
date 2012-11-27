@@ -1,11 +1,15 @@
 package de.shop.Auftragsverwaltung.domain;
 
 import de.shop.Kundenverwaltung.domain.*;
+import de.shop.Util.IdGroup;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+import static de.shop.Util.Constants.MIN_ID;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.*;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
@@ -47,11 +51,13 @@ public class Auftrag implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "auftrag_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
+	@Min(value = MIN_ID, message = "{auftragsverwaltung.auftrag.id.min}", groups = IdGroup.class)
 	private Long id = KEINE_ID;
 	
 	@OneToMany(fetch = EAGER)
 	@JoinColumn(name= "auftrag_FID", nullable = false)
 	@OrderColumn(name = "idx")
+	@NotEmpty(message = "{auftragsverwaltung.auftrag.auftragspositionen.notEmpty}")
 	private List<Auftragsposition> auftragspositionen;
 	
 	@OneToOne(mappedBy = "auftrag")
@@ -130,6 +136,17 @@ public class Auftrag implements Serializable {
 		
 		this.auftragspositionen.add(position);
 		return this;
+	}
+	
+	@PrePersist
+	private void prePersist() {
+		erstelltAm = new Date();
+		geaendertAm = new Date();
+	}
+	
+	@PreUpdate
+	private void preUpdate() {
+		geaendertAm = new Date();
 	}
 
 	@Override
