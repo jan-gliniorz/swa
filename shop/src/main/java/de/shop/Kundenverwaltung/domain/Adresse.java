@@ -57,6 +57,17 @@ public class Adresse implements Serializable {
 	@Column(name="geaendert_am")
 	@Temporal(TIMESTAMP)
 	private Date geaendertAm;
+	
+	@PrePersist
+	protected void prePersist() {
+		erstelltAm = new Date();
+		geaendertAm = new Date();
+	}
+	
+	@PreUpdate
+	protected void preUpdate() {
+		geaendertAm = new Date();
+	}
 
 	public Adresse() {
 	}
