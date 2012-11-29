@@ -10,6 +10,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import javax.persistence.criteria.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -83,6 +84,7 @@ public class Kunde implements Serializable {
 	}
 
 	@NotNull(message = "{kundenverwaltung.kunde.nachname.notNull}")
+	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+", message = "{kundenverwaltung.kunde.nachname.pattern}")
 	private String nachname;
 
 	@NotNull(message = "{kundenverwaltung.kunde.passwort.notNull}")

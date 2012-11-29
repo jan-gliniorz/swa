@@ -7,6 +7,8 @@ import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -35,6 +37,7 @@ public class Adresse implements Serializable {
 	@Column(name = "adresse_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN )
 	private Long id = KEINE_ID;
 	
+	@NotNull(message = "{kundenverwaltung.adresse.hausNr.notNull}")
 	private String hausNr;
 	
 	//EAGER-Fetching
@@ -42,12 +45,17 @@ public class Adresse implements Serializable {
 	@JoinColumn(name = "kunde_FID", nullable = false, updatable = false)
 	private Kunde kunde;
 	
+	@NotNull(message = "{kundenverwaltung.adresse.land.notNull}")
 	private String land;
-
+	
+	@NotNull(message = "{kundenverwaltung.adresse.ort.notNull}")
 	private String ort;
-
+	
+	@NotNull(message = "{kundenverwaltung.adresse.plz.notNull}")
+	@Digits(integer = 5, fraction = 0, message = "{kundenverwaltung.adresse.plz.digits}")
 	private String plz;
-
+	
+	@NotNull(message = "{kundenverwaltung.adresse.strasse.notNull}")
 	private String strasse;
 	
 	@Column(name="erstellt_am")
