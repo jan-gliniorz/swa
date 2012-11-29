@@ -1,5 +1,6 @@
 package de.shop.Kundenverwaltung.domain;
 
+import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import static de.shop.Util.Constants.KEINE_ID;
@@ -8,6 +9,7 @@ import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.persistence.criteria.*;
+import javax.validation.constraints.NotNull;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -58,6 +60,7 @@ public class Kunde implements Serializable {
 	@Column(nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	private Long kundenNr = KEINE_ID;
 
+	@NotNull(message = "{kundenverwaltung.kunde.email.notNull}")
 	private String email;
 
 	@Column(name="erstellt_am")
@@ -67,15 +70,30 @@ public class Kunde implements Serializable {
 	@Column(name="geaendert_am")
 	@Temporal(TIMESTAMP)
 	private Date geaendertAm;
+	
+	@PrePersist
+	protected void prePersist() {
+		erstelltAm = new Date();
+		geaendertAm = new Date();
+	}
+	
+	@PreUpdate
+	protected void preUpdate() {
+		geaendertAm = new Date();
+	}
 
+	@NotNull(message = "{kundenverwaltung.kunde.nachname.notNull}")
 	private String nachname;
 
+	@NotNull(message = "{kundenverwaltung.kunde.passwort.notNull}")
 	private String passwort;
 
+	@NotNull(message = "{kundenverwaltung.kunde.vorname.notNull}")
 	private String vorname;
 	
 	//EAGER-Fetching
-	@OneToOne(mappedBy = "kunde")
+	@OneToOne(mappedBy = "kunde", cascade=PERSIST)
+	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
 	private Adresse adresse;
 	
 	//LAZY-Fetching

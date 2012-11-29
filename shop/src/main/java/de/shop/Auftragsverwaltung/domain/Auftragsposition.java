@@ -1,11 +1,15 @@
 package de.shop.Auftragsverwaltung.domain;
 
 import de.shop.Artikelverwaltung.domain.*;
+import de.shop.Util.IdGroup;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+import static de.shop.Util.Constants.MIN_ID;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.*;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
@@ -38,12 +42,14 @@ public class Auftragsposition implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "auftragsposition_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
+	@Min(value = MIN_ID, message = "{auftragsverwaltung.auftragsposition.id.min}", groups = IdGroup.class)
 	private Long id = KEINE_ID;
 
 	private int anzahl;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "artikel_FID", nullable = false)
+	@NotNull(message="{auftragsverwaltung.auftragsposition.artikel.notNull}")
 	private Artikel artikel;
 
 	private BigDecimal preis;

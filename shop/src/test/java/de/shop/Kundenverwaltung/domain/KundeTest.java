@@ -36,19 +36,20 @@ import de.shop.Util.AbstractDomainTest;
 
 @RunWith(Arquillian.class)
 public class KundeTest extends AbstractDomainTest {
-	private static final String NACHNAME_VORHANDEN = "Alpha";
+	private static final String NACHNAME_VORHANDEN = "Loya";
 	private static final String NACHNAME_NICHT_VORHANDEN = "Nicht";
-	private static final Long ID_VORHANDEN = Long.valueOf(101);
-	private static final String EMAIL_VORHANDEN = "k1@hska.de";
+	private static final Long ID_VORHANDEN = Long.valueOf(10);
+	private static final String EMAIL_VORHANDEN = "Loya@gmail.com";
 	private static final String EMAIL_NICHT_VORHANDEN = "Nicht";
-	private static final int TAG = 31;
-	private static final int MONAT = Calendar.JANUARY;
-	private static final int JAHR = 2001;
+	private static final int TAG = 01;
+	private static final int MONAT = Calendar.OCTOBER;
+	private static final int JAHR = 2011;
 	private static final Date ERSTELLT_VORHANDEN = new GregorianCalendar(JAHR, MONAT, TAG).getTime();
 	
 	private static final String NACHNAME_NEU = "Test";
 	private static final String VORNAME_NEU = "Theo";
 	private static final String EMAIL_NEU = "theo@test.de";
+	private static final String PW_NEU = "1234";
 	private static final String PLZ_NEU = "11111";
 	private static final String ORT_NEU = "Testort";
 	private static final String STRASSE_NEU = "Testweg";
@@ -67,13 +68,10 @@ public class KundeTest extends AbstractDomainTest {
 		final Long id = ID_VORHANDEN;
 		
 		// When
-		//final AbstractKunde kunde = getEntityManager().find(AbstractKunde.class, id);
-		
 		Kunde kunde = getEntityManager().createNamedQuery(Kunde.KUNDE_BY_KNR, Kunde.class)
-							.setParameter(Kunde.PARAM_KUNDENNUMMER, id)
-							.getSingleResult();
-				
-				
+								.setParameter(Kunde.PARAM_KUNDENNUMMER, id)
+								.getSingleResult();
+						
 		// Then
 		assertThat(kunde.getKundenNr(), is(id));
 	}
@@ -88,9 +86,7 @@ public class KundeTest extends AbstractDomainTest {
 		Kunde kunde = getEntityManager().createNamedQuery(Kunde.KUNDE_BY_EMAIL, Kunde.class)
 								.setParameter(Kunde.PARAM_EMAIL, email)
 								.getSingleResult();
-				
-				
-                                                                       
+				                                                             
 		// Then
 		assertThat(kunde.getEmail(), is(email));
 	}
@@ -103,8 +99,8 @@ public class KundeTest extends AbstractDomainTest {
 		// When / Then
 		thrown.expect(NoResultException.class);
 		getEntityManager().createNamedQuery(Kunde.KUNDE_BY_EMAIL, Kunde.class)
-					.setParameter(Kunde.PARAM_EMAIL, email)
-					.getSingleResult();
+				.setParameter(Kunde.PARAM_EMAIL, email)
+				.getSingleResult();
                                                        
 	}
 
@@ -115,9 +111,9 @@ public class KundeTest extends AbstractDomainTest {
 		
 		// When
 		List <Kunde> kunden = getEntityManager().createNamedQuery(Kunde.KUNDE_BY_NACHNAME, Kunde.class)
-						.setParameter(Kunde.PARAM_NACHNAME, nachname)
-						.getResultList();
-		
+									.setParameter(Kunde.PARAM_NACHNAME, nachname)
+									.getResultList();
+			
 		// Then
 		assertThat(kunden.isEmpty(), is(false));
 		for(Kunde k : kunden){
@@ -132,27 +128,24 @@ public class KundeTest extends AbstractDomainTest {
 		
 		// When
 		List<Kunde> kunden = getEntityManager().createNamedQuery(Kunde.KUNDE_BY_NACHNAME, Kunde.class)
-						.setParameter(Kunde.PARAM_NACHNAME, nachname)
-						.getResultList();
+										.setParameter(Kunde.PARAM_NACHNAME, nachname)
+										.getResultList();
 		
 		// Then
 		assertThat(kunden.isEmpty(), is(true));
 	}
 	
 	@Test
-	@Ignore
 	public void findKundenByDateVorhanden() {
 		// Given
 		final Date seit = ERSTELLT_VORHANDEN;
 		
-		// When
-		
+		// When		
 		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Kunde> criteriaQuery =
 		builder.createQuery(Kunde.class);
 		Root<Kunde> k = criteriaQuery.from(Kunde.class);
 		Path<Date> DatePath = k.get(Kunde_.erstelltAm);
-		// k.get("nachname")
 		Predicate pred = builder.equal(DatePath, seit);
 		criteriaQuery.where(pred);
 		TypedQuery<Kunde>query = getEntityManager().createQuery(criteriaQuery);
@@ -167,13 +160,14 @@ public class KundeTest extends AbstractDomainTest {
 	}
 
 	@Test
-	public void createPrivatkunde() {
+	public void createKunde() {
 		// Given
 		Kunde kunde = new Kunde();
 		kunde.setNachname(NACHNAME_NEU);
 		kunde.setVorname(VORNAME_NEU);
 		kunde.setEmail(EMAIL_NEU);
 		kunde.setErstelltAm(ERSTELLT_VORHANDEN);
+		kunde.setPasswort(PW_NEU);
 		
 		final Adresse adresse = new Adresse();
 		adresse.setPlz(PLZ_NEU);
@@ -214,12 +208,6 @@ public class KundeTest extends AbstractDomainTest {
 		assertThat(kunde.getNachname(), is(NACHNAME_NEU));
 	}
 	
-	@Ignore("Beispiel fuer einen unvollstaendigen Test")
-	@Test
-	public void notYetImplemented() {
-		fail();
-	}
-	
 	@Test
 	public void createKundeOhneAdresse() throws HeuristicMixedException, HeuristicRollbackException, SystemException {
 		// Given
@@ -246,6 +234,7 @@ public class KundeTest extends AbstractDomainTest {
 					return;
 				}
 			}
+			fail("Kein Fehler trotz fehlender Adresse");
 		}
 
 	}

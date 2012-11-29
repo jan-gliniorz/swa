@@ -2,9 +2,13 @@ package de.shop.Auftragsverwaltung.domain;
 
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.KEINE_ID;
+import static de.shop.Util.Constants.MIN_ID;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.*;
+
+import de.shop.Util.IdGroup;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
@@ -37,10 +41,12 @@ public class Rechnung implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "rechnung_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
+	@Min(value = MIN_ID, message = "{auftragsverwaltung.rechnung.id.min}", groups = IdGroup.class)
 	private Long id = KEINE_ID;
 
 	@OneToOne
 	@JoinColumn(name = "auftrag_FID")
+	@NotNull(message = "{auftragsverwaltung.rechnung.auftrag.notNull}")
 	private Auftrag auftrag;
 
 	@Column(name="erstellt_am")
@@ -95,6 +101,17 @@ public class Rechnung implements Serializable {
 
 	public void setRechnungsdatum(Date rechnungsdatum) {
 		this.rechnungsdatum = rechnungsdatum == null ? null : (Date) rechnungsdatum.clone();
+	}
+	
+	@PrePersist
+	private void prePersist() {
+		erstelltAm = new Date();
+		geaendertAm = new Date();
+	}
+	
+	@PreUpdate
+	private void preUpdate() {
+		geaendertAm = new Date();
 	}
 
 	@Override
