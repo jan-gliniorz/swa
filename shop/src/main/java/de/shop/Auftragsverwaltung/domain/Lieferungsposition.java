@@ -16,7 +16,7 @@ import java.util.*;
 @Entity
 @Table(name ="lieferungsposition")
 @NamedQueries({
-	@NamedQuery(name = Lieferungsposition.FIND_LIEFERUNGSPOSITION_BY_ID, 
+	@NamedQuery(name = Lieferungsposition.LIEFERUNGSPOSITION_BY_ID, 
 			query = "SELECT lp " +
 					"FROM Lieferungsposition lp "+
 					"WHERE lp.id = :"+Lieferungsposition.PARAM_ID),
@@ -27,8 +27,8 @@ public class Lieferungsposition implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private static final String PREFIX = "Lieferungsposition.";
-	public static final String FIND_LIEFERUNGSPOSITION_BY_ID = PREFIX + "findLieferungspositionById";
-	public static final String PARAM_ID = "LieferungspositionId";
+	public static final String LIEFERUNGSPOSITION_BY_ID = PREFIX + "findLieferungspositionById";
+	public static final String PARAM_ID = "id";
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "lieferung_FID", nullable = false,

@@ -19,14 +19,18 @@ import java.util.*;
 @Table(name ="lieferung")
 @NamedQueries({
 	@NamedQuery(name = Lieferung.LIEFERUNG_BY_ID, 
-			query = "SELECT li " +
-					"FROM Lieferung li "+
-					"WHERE li.id = :" + Lieferung.PARAM_ID),
+			query = "SELECT li" +
+					" FROM Lieferung li"+
+					" WHERE li.id = :" + Lieferung.PARAM_ID),
 	@NamedQuery(name = Lieferung.LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN,
-			query = "SELECT DISTINCT li " +
-					"FROM Lieferung li " +
-					"JOIN li.lieferungspositionen "+
-					"WHERE li.id = :" + Lieferung.PARAM_ID)
+			query = "SELECT DISTINCT li" +
+					" FROM Lieferung li" +
+					" JOIN li.lieferungspositionen"+
+					" WHERE li.id = :" + Lieferung.PARAM_ID),
+	@NamedQuery(name = Lieferung.LIEFERUNG_BY_BESTELLDATUM,
+			query = "SELECT li" +
+					" FROM Lieferung li" +
+					" WHERE li.bestelldatum = :" + Lieferung.PARAM_BESTELLDATUM)
 })
 
 public class Lieferung implements Serializable {
@@ -36,12 +40,14 @@ public class Lieferung implements Serializable {
 	private static final String PREFIX = "Lieferung.";
 	public static final String LIEFERUNG_BY_ID = PREFIX + "findLieferungById";
 	public static final String LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN = PREFIX + "findLieferungByIdFetchLieferungspositionen";
+	public static final String LIEFERUNG_BY_BESTELLDATUM = PREFIX + "findLieferungByBestelldatum";
 	
 	public static final String PARAM_ID = "id";
+	public static final String PARAM_BESTELLDATUM = "bestelldatum";
 	
 	@OneToMany
 	@JoinColumn(name = "lieferung_FID", nullable = false)
-	@OrderColumn(name = "erstelltAm")
+	
 	
 	private List<Lieferungsposition> lieferungspositionen;
 	
@@ -83,6 +89,9 @@ public class Lieferung implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date bestelldatum;
 
+	@Temporal(TemporalType.DATE)
+	private Date lieferungsdatum;
+	
 	@Column(name="erstellt_am")
 	@Temporal(TIMESTAMP)
 	private Date erstelltAm;
@@ -90,9 +99,6 @@ public class Lieferung implements Serializable {
 	@Column(name="geaendert_am")
 	@Temporal(TIMESTAMP)
 	private Date geaendertAm;
-
-	@Temporal(TemporalType.DATE)
-	private Date lieferungsdatum;
 
 	public Lieferung() {
 	}
