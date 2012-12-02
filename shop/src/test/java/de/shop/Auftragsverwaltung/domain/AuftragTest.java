@@ -11,8 +11,10 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
+import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Kundenverwaltung.domain.Kunde;
 
+import javax.crypto.spec.PSource;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
@@ -40,14 +42,9 @@ public class AuftragTest extends AbstractDomainTest {
 	private static final Long ID_KUNDE_VORHANDEN = Long.valueOf(13);
 	private static final Long ID_NICHTVORHANDEN = Long.valueOf(50);
 	
-	private static final String NACHNAME_NEU = "Test";
-	private static final String VORNAME_NEU = "Theo";
-	private static final String EMAIL_NEU = "theo@test.de";
-	private static final String PLZ_NEU = "11111";
-	private static final String ORT_NEU = "Testort";
-	private static final String STRASSE_NEU = "Testweg";
-	private static final String HAUSNR_NEU = "1";
-	private static final String LAND_NEU = "Deutschland";
+	private static final Long KUNDEID_NEU = Long.valueOf(13);
+	private static final int POSITION1ANZAHL_NEU = 1;
+	private static final Long POSITION1ARTIKELID_NEU = Long.valueOf(303);
 	
 	
 	@Test
@@ -93,5 +90,55 @@ public class AuftragTest extends AbstractDomainTest {
 				
 		// Then
 		assertThat(kundenAuftraege.size(), is(1));
+	}
+	
+	@Test
+	@Ignore
+	public void createAuftragTest(){
+		// Given
+		final Long kundeId = KUNDEID_NEU;
+		final int position1Anz = POSITION1ANZAHL_NEU;
+		final Long position1ArtikelId = POSITION1ARTIKELID_NEU;
+		
+		Auftrag auftrag = new Auftrag();
+		Kunde kunde = getEntityManager().createNamedQuery(Kunde.KUNDE_BY_KNR, Kunde.class)
+				.setParameter(Kunde.PARAM_KUNDENNUMMER, kundeId)
+				.getSingleResult();
+		auftrag.setKunde(kunde);
+		
+		Auftragsposition position1 = new Auftragsposition();
+		position1.setAnzahl(position1Anz);
+		Artikel artikel = getEntityManager().createNamedQuery(Artikel.FIND_Artikel_BY_Artikel_ID, Artikel.class)
+											.setParameter(Artikel.PARAM_ID, position1ArtikelId)
+											.getSingleResult();
+		position1.setArtikel(artikel);
+		//position1.setPreis(artikel.getPreis() * position1.getAnzahl()); //TODO: BigDecimal mit int multiplizieren
+		position1.setPreis(artikel.getPreis());
+		
+		auftrag.addAuftragsposition(position1);
+		
+		// When
+		try {
+			getEntityManager().persist(auftrag);
+			getEntityManager().persist(position1);
+			
+		}
+		catch (ConstraintViolationException e) {
+			// Es gibt Verletzungen bzgl. Bean Validation: auf der Console ausgeben
+			final Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+			for (ConstraintViolation<?> v : violations) {
+				System.err.println("!!! FEHLERMELDUNG>>> " + v.getMessage());
+				System.err.println("!!! ATTRIBUT>>> " + v.getPropertyPath());
+				System.err.println("!!! ATTRIBUTWERT>>> " + v.getInvalidValue());
+			}
+			
+			throw new RuntimeException(e);
+		}
+		
+		// Then
+		List<Auftrag> auftraege = getEntityManager().createNamedQuery(Auftrag.FIND_AUFTRAG_BY_ID, Auftrag.class)
+													.setParameter(Auftrag.PARAM_ID, kundeId) //TODO: ID des auftrages herausfinden und hier eintragen
+													.getResultList();
+		assertThat(auftraege.size(), is(1));
 	}
 }
