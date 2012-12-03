@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import java.util.*;
+import javax.validation.constraints.*;
 
 /**
  * The persistent class for the lieferungsposition database table.
@@ -62,8 +63,11 @@ public class Lieferungsposition implements Serializable {
 			insertable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)	
 	private Long id=KEINE_ID ;
 
+	
+	@NotNull(message = "{auftragsverwaltung.lieferungsposition.anzahl.notNull}")
 	private int anzahl;
 
+	
 	public Lieferungsposition() {
 	}
 
