@@ -1,13 +1,19 @@
 package de.shop.Artikelverwaltung.domain;
 
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+import static de.shop.Util.Constants.MIN_ID;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 import de.shop.Auftragsverwaltung.domain.Auftrag;
 import de.shop.Kundenverwaltung.domain.Kunde;
+import de.shop.Util.IdGroup;
 import static de.shop.Util.Constants.KEINE_ID;
 import java.sql.Timestamp;
 import java.util.*;
@@ -45,15 +51,18 @@ public class Artikel implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "artikel_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
+	@Min(value = MIN_ID, message = "artikelverwaltung.artikel.id.min", groups = IdGroup.class)
 	private Long id = KEINE_ID;
 
 
 	@OneToMany(mappedBy = "artikel")
+	@NotEmpty(message = "artikelverwaltung.artikel.lagerposition.notEmpty")
 	private List<Lagerposition> lagerpositionen;
 	
 	@Lob
 	private String beschreibung;
 
+	@NotNull(message = "artikelverwaltung.artikel.bezeichnung.notNull")
 	private String bezeichnung;
 
 	private String bild;
@@ -67,6 +76,7 @@ public class Artikel implements Serializable {
 	@Temporal(TIMESTAMP)
 	private Date geaendertAm;
 
+	@NotNull(message = "artikelverwaltung.artikel.preis.notNull")
 	private BigDecimal preis;
 
 	public Artikel() {
@@ -88,11 +98,11 @@ public class Artikel implements Serializable {
 		this.beschreibung = beschreibung;
 	}
 
-	public String getBezeichung() {
+	public String getBezeichnung() {
 		return this.bezeichnung;
 	}
 
-	public void setBezeichung(String bezeichung) {
+	public void setBezeichnung(String bezeichung) {
 		this.bezeichnung = bezeichung;
 	}
 
@@ -136,6 +146,19 @@ public class Artikel implements Serializable {
 		
 		lagerpositionen.add(lagerposition);
 		return this;
+	}
+	
+	@PrePersist
+	private void prePersist()
+	{
+		erstelltAm = new Date();
+		geaendertAm = new Date();
+	}
+	
+	@PreUpdate
+	private void preUpdate()
+	{
+		geaendertAm = new Date();
 	}
 
 	/* (non-Javadoc)

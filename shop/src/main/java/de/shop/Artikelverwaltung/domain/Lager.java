@@ -1,12 +1,20 @@
 package de.shop.Artikelverwaltung.domain;
 
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+import static de.shop.Util.Constants.MIN_ID;
 import static javax.persistence.TemporalType.TIMESTAMP;
 import static de.shop.Util.Constants.KEINE_ID;
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.sun.istack.NotNull;
 
 import de.shop.Auftragsverwaltung.domain.Auftrag;
+import de.shop.Util.IdGroup;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -33,9 +41,9 @@ public class Lager implements Serializable {
 	private static final String PREFIX = "Lager.";
 
 	public static final String FIND_Lager_BY_Bezeichnung=
-		PREFIX +"findArtikelByBezeichnung";
+		PREFIX +"findLagerByBezeichnung";
 	public static final String FIND_Lager_BY_ID =
-		PREFIX + "findArtikelByArtikelid";
+		PREFIX + "findLagerByArtikelid";
 	public static final String PARAM_ID = "id";
 	public static final String PARAM_Bezeichnung = "bezeichnung";
 
@@ -44,12 +52,13 @@ public class Lager implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "lager_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
+	@Min(value = MIN_ID, message = "artikelverwaltung.lager.id.min", groups = IdGroup.class)
 	private Long id = KEINE_ID;
 
 	@OneToMany(mappedBy = "lager")
 	private List<Lagerposition> lagerpositionen;
-	
-	
+
+	@NotBlank(message = "artikelverwaltung.lager.bezeichnung.notBlank")
 	private String bezeichnung;
 
 	@Column(name="erstellt_am")
@@ -63,7 +72,7 @@ public class Lager implements Serializable {
 	public Lager() {
 	}
 
-	public Long getID() {
+	public Long getId() {
 		return this.id;
 	}
 
@@ -71,11 +80,11 @@ public class Lager implements Serializable {
 		this.id = id;
 	}
 
-	public String getBezeichung() {
+	public String getBezeichnung() {
 		return this.bezeichnung;
 	}
 
-	public void setBezeichung(String bezeichung) {
+	public void setBezeichnung(String bezeichung) {
 		this.bezeichnung = bezeichung;
 	}
 
@@ -120,6 +129,18 @@ public class Lager implements Serializable {
 		return this;
 	}
 
+	@PrePersist
+	private void prePersist()
+	{
+		erstelltAm = new Date();
+		geaendertAm = new Date();
+	}
+	
+	@PreUpdate
+	private void preUpdate()
+	{
+		geaendertAm = new Date();
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()

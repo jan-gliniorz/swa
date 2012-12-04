@@ -66,7 +66,7 @@ create table if not exists artikel (
 
 create table if not exists lager (
 	lager_ID INTEGER NOT NULL PRIMARY KEY,
-	bezeichung NVARCHAR(100) NOT NULL,
+	bezeichnung NVARCHAR(100) NOT NULL,
 	erstellt_am TIMESTAMP NOT NULL,
 	geaendert_am TIMESTAMP NOT NULL
 );

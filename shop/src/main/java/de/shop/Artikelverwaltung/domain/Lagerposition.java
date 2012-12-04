@@ -4,9 +4,12 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 import java.util.*;
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
+import de.shop.Util.IdGroup;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+import static de.shop.Util.Constants.MIN_ID;
 
 import java.sql.Timestamp;
 
@@ -41,18 +44,22 @@ public class Lagerposition implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "lagerposition_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
+	@Min(value = MIN_ID, message = "artikelverwaltung.lagerposition.id.min", groups = IdGroup.class)
 	private Long id = KEINE_ID;
 	
 	@ManyToOne
 	@JoinColumn(name="lager_FID", nullable = false)
 	@OrderColumn(name="erstellt_am")
+	@NotNull(message = "artikelverwaltung.lagerposition.lager.notNull")
 	private Lager lager;
 	
 	@ManyToOne
 	@JoinColumn(name="artikel_FID", nullable = false)
 	@OrderColumn(name="erstellt_am")
+	@NotNull(message = "artikelverwaltung.lagerposition.artikel.notNull")
 	private Artikel artikel;
 
+	@Min(value = 1, message = "artikelverwaltung.lagerposition.anzahl.min")
 	private int anzahl;
 
 	@Column(name="erstellt_am")
@@ -83,6 +90,14 @@ public class Lagerposition implements Serializable {
 		this.lager = lager;
 	}
 
+	public void setArtikel(Artikel artikel){
+		this.artikel = artikel;
+	}
+	
+	public Artikel getArtikel(){
+		return artikel;
+	}
+	
 	public int getAnzahl() {
 		return this.anzahl;
 	}
@@ -109,6 +124,19 @@ public class Lagerposition implements Serializable {
 	}
 
 
+	
+	@PrePersist
+	private void prePersist()
+	{
+		erstelltAm = new Date();
+		geaendertAm = new Date();
+	}
+	
+	@PreUpdate
+	private void preUpdate()
+	{
+		geaendertAm = new Date();
+	}
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
