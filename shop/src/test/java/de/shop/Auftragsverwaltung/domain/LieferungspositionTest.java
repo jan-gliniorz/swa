@@ -64,34 +64,5 @@ public class LieferungspositionTest extends AbstractDomainTest {
 		// Then
 		assertThat(lieferungsposition.getId(), is(id));
 	}
-	
-	
-	@Test
-	public void createLieferungspositonOhneAnzahl() throws HeuristicMixedException, HeuristicRollbackException,
-	                                                  SystemException {
-		// Given
-		final int anzahl = ANZAHL_NEU;
-		
-		// When
-		final Lieferungsposition lieferungsposition = new Lieferungsposition();
-		lieferungsposition.setAnzahl(anzahl);
-		getEntityManager().persist(lieferungsposition);
-		
-		// Thenq
-		try {
-			getUserTransaction().commit();
-		}
-		catch (RollbackException e) {
-			final PersistenceException cause = (PersistenceException) e.getCause();
-			final ConstraintViolationException cause2 = (ConstraintViolationException) cause.getCause();
-			final Set<ConstraintViolation<?>> violations = cause2.getConstraintViolations();
-			for (ConstraintViolation<?> v : violations) {
-				final String msg = v.getMessage();
-				if (msg.contains("Eine Lieferungsposition muss eine Anzahl haben!")) {
-					return;
-				}
-			}
-		}
-	}
 }
 

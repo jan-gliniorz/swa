@@ -83,7 +83,7 @@ create table if not exists lagerposition (
 create table if not exists lieferung (
 	lieferung_ID INTEGER NOT NULL PRIMARY KEY,
 	bestelldatum DATE NOT NULL,
-	lieferungsdatum DATE NOT NULL,
+	lieferungsdatum DATE,
 	erstellt_am TIMESTAMP NOT NULL,
 	geaendert_am TIMESTAMP NOT NULL
 );

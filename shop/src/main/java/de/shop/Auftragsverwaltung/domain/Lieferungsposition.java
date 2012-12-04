@@ -1,8 +1,10 @@
 package de.shop.Auftragsverwaltung.domain;
 
 import de.shop.Artikelverwaltung.domain.*;
+import de.shop.Util.IdGroup;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+import static de.shop.Util.Constants.MIN_ID;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -46,6 +48,7 @@ public class Lieferungsposition implements Serializable {
 	}
 	
 	@ManyToOne
+	@NotNull(message = "{auftragsverwaltung.lieferungsposition.artikel.notNull}")
 	@JoinColumn(name="artikel_FID", nullable = false, insertable = false, updatable = false)
 	private Artikel artikel;
 	
@@ -59,8 +62,8 @@ public class Lieferungsposition implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column (name= "lieferungsposition_ID", nullable = false,
-			insertable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)	
+	@Column (name= "lieferungsposition_ID", nullable = false, insertable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)	
+	@Min(value = MIN_ID, message = "{auftragsverwaltung.lieferungsposition.id.min}", groups = IdGroup.class)
 	private Long id=KEINE_ID ;
 
 	

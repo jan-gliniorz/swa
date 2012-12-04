@@ -3,9 +3,16 @@ package de.shop.Auftragsverwaltung.domain;
 import static javax.persistence.TemporalType.TIMESTAMP;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+import static de.shop.Util.Constants.MIN_ID;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+import de.shop.Util.IdGroup;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -47,8 +54,8 @@ public class Lieferung implements Serializable {
 	
 	@OneToMany
 	@JoinColumn(name = "lieferung_FID", nullable = false)
-	
-	
+	@OrderColumn(name = "idx")
+	@NotEmpty(message = "{auftragsverwaltung.lieferung.lieferungspositionen.notEmpty}")
 	private List<Lieferungsposition> lieferungspositionen;
 	
 	public List<Lieferungsposition> getLieferungsposition(){
@@ -82,11 +89,12 @@ public class Lieferung implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name= "lieferung_ID", nullable = false,
-			insertable = false, updatable = false, precision=LONG_ANZ_ZIFFERN) 
+	@Column(name= "lieferung_ID", nullable = false, insertable = false, updatable = false, precision=LONG_ANZ_ZIFFERN)
+	@Min(value = MIN_ID, message = "{auftragsverwaltung.lieferung.id.min}", groups = IdGroup.class)
 	private Long id = KEINE_ID;
 
 	@Temporal(TemporalType.DATE)
+	@NotNull(message = "{auftragsverwaltung.lieferung.bestelldatum.notNull}")
 	private Date bestelldatum;
 
 	@Temporal(TemporalType.DATE)
