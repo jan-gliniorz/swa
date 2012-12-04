@@ -12,6 +12,8 @@ import javax.persistence.criteria.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import org.hibernate.validator.constraints.Email;
+
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -60,7 +62,8 @@ public class Kunde implements Serializable {
 	@GeneratedValue
 	@Column(nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	private Long kundenNr = KEINE_ID;
-
+	
+	@Email
 	@NotNull(message = "{kundenverwaltung.kunde.email.notNull}")
 	private String email;
 
