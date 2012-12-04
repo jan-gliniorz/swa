@@ -49,11 +49,11 @@ public class Rechnung implements Serializable {
 	@NotNull(message = "{auftragsverwaltung.rechnung.auftrag.notNull}")
 	private Auftrag auftrag;
 
-	@Column(name="erstellt_am")
+	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
 	private Date erstelltAm;
 
-	@Column(name="geaendert_am")
+	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
 	private Date geaendertAm;
 

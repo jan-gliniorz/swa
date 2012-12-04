@@ -30,12 +30,12 @@ import java.util.List;
 @Table(name = "auftrag")
 @NamedQueries({
 	@NamedQuery(name = Auftrag.FIND_AUFTRAG_BY_ID, 
-			query = "SELECT a" +
-					" FROM Auftrag a"
+			query = "SELECT a"
+					+ " FROM Auftrag a"
 					+ " WHERE a.id = :" + Auftrag.PARAM_ID),
 	@NamedQuery(name = Auftrag.FIND_AUFTRAG_BY_KUNDE, 
-				query = "SELECT a" +
-						" FROM Auftrag a"
+				query = "SELECT a"
+						+ " FROM Auftrag a"
 						+ " WHERE a.kunde.id = :" + Auftrag.PARAM_KUNDEID)
 })
 public class Auftrag implements Serializable {	
@@ -55,7 +55,7 @@ public class Auftrag implements Serializable {
 	private Long id = KEINE_ID;
 	
 	@OneToMany(fetch = EAGER)
-	@JoinColumn(name= "auftrag_FID", nullable = false)
+	@JoinColumn(name = "auftrag_FID", nullable = false)
 	@OrderColumn(name = "idx")
 	@NotEmpty(message = "{auftragsverwaltung.auftrag.auftragspositionen.notEmpty}")
 	private List<Auftragsposition> auftragspositionen;
@@ -63,11 +63,11 @@ public class Auftrag implements Serializable {
 	@OneToOne(mappedBy = "auftrag")
 	private Rechnung rechnung;
 
-	@Column(name="erstellt_am")
+	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
 	private Date erstelltAm;
 
-	@Column(name="geaendert_am")
+	@Column(name = "geaendert_am")
 	private Date geaendertAm;
 
 	@ManyToOne(optional = false)
@@ -86,7 +86,7 @@ public class Auftrag implements Serializable {
 	}
 
 	public Date getErstelltAm() {
-		return this.erstelltAm;
+		return this.erstelltAm == null ? null : (Date) erstelltAm.clone();
 	}
 
 	public void setErstelltAm(Date erstelltAm) {
@@ -114,23 +114,20 @@ public class Auftrag implements Serializable {
 	}
 
 	public void setAuftragspositionen(List<Auftragsposition> auftragspositionen) {
-		if(this.auftragspositionen == null)
-		{
+		if (this.auftragspositionen == null) {
 			this.auftragspositionen = auftragspositionen;
 			return;
 		}
 		
 		this.auftragspositionen.clear();
-		if(auftragspositionen != null)
-		{
+		if (auftragspositionen != null) {
 			this.auftragspositionen = auftragspositionen;
 		}
 	}
 	
 	public Auftrag addAuftragsposition(Auftragsposition position)
 	{
-		if(this.auftragspositionen == null)
-		{
+		if (this.auftragspositionen == null) {
 			this.auftragspositionen = new ArrayList<>(); //TODO: Warum hier keinen Typ angeben?
 		}
 		

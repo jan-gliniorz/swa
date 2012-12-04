@@ -27,8 +27,8 @@ import java.math.BigDecimal;
 @Table(name = "auftragsposition")
 @NamedQueries({
 	@NamedQuery(name = Auftragsposition.FIND_AUFTRAGSPOSITION_BY_ID, 
-			query = "SELECT a" +
-					" FROM Auftragsposition a"
+			query = "SELECT a"
+					+ " FROM Auftragsposition a"
 					+ " WHERE a.id = :" + Auftrag.PARAM_ID)
 })
 public class Auftragsposition implements Serializable {
@@ -49,7 +49,7 @@ public class Auftragsposition implements Serializable {
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "artikel_FID", nullable = false)
-	@NotNull(message="{auftragsverwaltung.auftragsposition.artikel.notNull}")
+	@NotNull(message = "{auftragsverwaltung.auftragsposition.artikel.notNull}")
 	private Artikel artikel;
 
 	private BigDecimal preis;
