@@ -34,11 +34,18 @@ import de.shop.Auftragsverwaltung.domain.*;;
 			query = "FROM Kunde k WHERE k.adresse.plz = :" + Kunde.PARAM_PLZ),
 @NamedQuery(name = Kunde.KUNDE_BY_KNR,
 			query = "FROM Kunde k WHERE k.kundenNr = :" + Kunde.PARAM_KUNDENNUMMER),
+@NamedQuery(name  = Kunde.KUNDEN_ALL,
+            query = "SELECT k FROM Kunde k"),
 @NamedQuery(name = Kunde.KUNDE_BY_NAME_AUFTRAEGE,
 			query = "SELECT DISTINCT k"
 					+ " FROM Kunde k"
 					+ " LEFT JOIN FETCH k.auftraege"
-					+ " WHERE k.nachname = :"+ Kunde.PARAM_NACHNAME)
+					+ " WHERE k.nachname = :"+ Kunde.PARAM_NACHNAME),
+@NamedQuery(name = Kunde.KUNDE_BY_ID_AUFTRAEGE,
+			query = "SELECT DISTINCT k"
+					+ " FROM Kunde k"
+					+ " LEFT JOIN FETCH k.auftraege"
+					+ " WHERE k.kundenNr = :"+ Kunde.KUNDE_BY_KNR)
 })
 
 public class Kunde implements Serializable {
@@ -46,11 +53,14 @@ public class Kunde implements Serializable {
 	private static final long serialVersionUID = 3925016425151715847L;
 	
 	private static final String PREFIX = "Kunde.";
+	public static final String KUNDEN_ALL = PREFIX + "findKundenAll";
 	public static final String KUNDE_BY_EMAIL = PREFIX + "findKundenByEmail";
 	public static final String KUNDE_BY_NACHNAME = PREFIX +"findKundenByNachname";
 	public static final String KUNDE_BY_PLZ = PREFIX + "findKundenByPlz";
 	public static final String KUNDE_BY_KNR = PREFIX + "findKundenByKundennummer";
 	public static final String KUNDE_BY_NAME_AUFTRAEGE = PREFIX + "findKundenByNachnameFetchAufraege";
+	public static final String KUNDE_BY_ID_AUFTRAEGE = PREFIX + "findKundenByIdFetchAufraege";
+	
 	
 	public static final String PARAM_PLZ = "plz";
 	public static final String PARAM_NACHNAME = "nachname";
