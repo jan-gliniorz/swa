@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Util.IdGroup;
 
 import java.sql.Timestamp;
@@ -37,7 +38,9 @@ import java.util.*;
 	@NamedQuery(name = Lieferung.LIEFERUNG_BY_BESTELLDATUM,
 			query = "SELECT li" +
 					" FROM Lieferung li" +
-					" WHERE li.bestelldatum = :" + Lieferung.PARAM_BESTELLDATUM)
+					" WHERE li.bestelldatum = :" + Lieferung.PARAM_BESTELLDATUM),
+	@NamedQuery(name = Lieferung.LIEFERUNGEN_ALL,
+    		query = "SELECT li FROM Lieferung li")
 })
 
 public class Lieferung implements Serializable {
@@ -48,6 +51,7 @@ public class Lieferung implements Serializable {
 	public static final String LIEFERUNG_BY_ID = PREFIX + "findLieferungById";
 	public static final String LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN = PREFIX + "findLieferungByIdFetchLieferungspositionen";
 	public static final String LIEFERUNG_BY_BESTELLDATUM = PREFIX + "findLieferungByBestelldatum";
+	public static final String LIEFERUNGEN_ALL = PREFIX + "findLieferungenAll";
 	
 	public static final String PARAM_ID = "id";
 	public static final String PARAM_BESTELLDATUM = "bestelldatum";
