@@ -42,6 +42,7 @@ public class LieferungTest extends AbstractDomainTest {
 	private static final int MONAT = Calendar.JANUARY;
 	private static final int JAHR = 2001;
 	private static final Date SEIT_VORHANDEN = new GregorianCalendar(JAHR, MONAT, TAG).getTime();
+	private static final Date BESTELLDATUM_VORHANDEN = new GregorianCalendar(2012, Calendar.).getTime();
 	
 	private static final Date LIEFERUNGSDATUM_NEU = new GregorianCalendar(2012,Calendar.NOVEMBER,31).getTime();
 	private static final Date BESTELLDATUM_NEU = new GregorianCalendar(2012,Calendar.DECEMBER,31).getTime();
@@ -87,6 +88,21 @@ public class LieferungTest extends AbstractDomainTest {
 		assertThat(lieferungen.size() > 0, is (true));
 	}
 	
+	@Test
+	public void findLieferungByBestelldatum() {
+		//Given
+		final Date bestelldatum BESTELLLDATUM_VORHANDEN;
+		
+		//When
+		final TypedQuery<Lieferung> query = getEntityManager().createNamedQuery(Lieferung.LIEFERUNG_BY_ID,
+				Lieferung.class);
+		query.setParameter(Lieferung.PARAM_ID, id);
+		Lieferung lieferung = query.getSingleResult();
+		
+		// Then
+		assertThat(lieferung.getId(), is(id));
+	}
+	}
 	@Test
 	public void createLieferung() {
 		

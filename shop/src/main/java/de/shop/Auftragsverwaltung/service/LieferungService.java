@@ -107,7 +107,6 @@ public class LieferungService implements Serializable {
 	
 	/**
 	 */
-	//BIS HIERHIN! BIS HIERHIN! BIS HIERHIN! BIS HIERHIN! BIS HIERHIN! BIS HIERHIN! BIS HIERHIN!
 	
 	public Lieferung findLieferungById(Long id, FetchType fetch, Locale locale) {
 		
@@ -184,15 +183,15 @@ public class LieferungService implements Serializable {
 		// Werden alle Constraints beim Modifizieren gewahrt?
 		validateLieferung(lieferung, locale);
 		
-		// Pruefung, ob die Email-Adresse schon existiert
+		
 		try {
-			final Lieferung vorhandenerLieferung = em.createNamedQuery(Lieferung.LIEFERUNG_BY_ID,
+			final Lieferung vorhandeneLieferung = em.createNamedQuery(Lieferung.LIEFERUNG_BY_ID,
 					                                                   Lieferung.class)
 					                                 .setParameter(Lieferung.PARAM_ID, lieferung.getId())
 					                                 .getSingleResult();
 			
-			// Gibt es die Email-Adresse bei einem anderen Kunden?
-			if (vorhandenerLieferung.getId().longValue() != lieferung.getId().longValue()) {
+			
+			if (vorhandeneLieferung.getId().longValue() != lieferung.getId().longValue()) {
 				throw new LieferungIdExistsException(lieferung.getId());
 			}
 		}
@@ -211,7 +210,6 @@ public class LieferungService implements Serializable {
 			return;
 		}
 		
-		// Bestellungen laden, damit sie anschl. ueberprueft werden koennen
 		try {
 			lieferung = findLieferungById(lieferung.getId(), FetchType.MIT_POSITIONEN, Locale.getDefault());
 		}
