@@ -5,7 +5,6 @@ import static java.util.logging.Level.FINER;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;

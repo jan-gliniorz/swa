@@ -45,7 +45,7 @@ import de.shop.Auftragsverwaltung.domain.*;;
 			query = "SELECT DISTINCT k"
 					+ " FROM Kunde k"
 					+ " LEFT JOIN FETCH k.auftraege"
-					+ " WHERE k.kundenNr = :"+ Kunde.KUNDE_BY_KNR)
+					+ " WHERE k.kundenNr = :"+ Kunde.PARAM_KUNDENNUMMER)
 })
 
 public class Kunde implements Serializable {

@@ -15,7 +15,9 @@
 		<s:modifies/>
 	</u:ValidationService>
 	
+	<!--
 	<m:BestellungObserver mailAbsender="abcd0011@hs-karlsruhe.de" nameAbsender="Joe Doe">
 		<s:modifies/>
 	</m:BestellungObserver>
+	-->
 </beans>
