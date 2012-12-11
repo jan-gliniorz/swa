@@ -98,10 +98,14 @@ public class LieferungTest extends AbstractDomainTest {
 		final TypedQuery<Lieferung> query = getEntityManager().createNamedQuery(Lieferung.LIEFERUNG_BY_BESTELLDATUM,
 				Lieferung.class);
 		query.setParameter(Lieferung.PARAM_BESTELLDATUM, bestelldatum);
-		Lieferung lieferung = query.getSingleResult();
+		final List<Lieferung> lieferungen
+		= query.getResultList();
 		
+		if (lieferungen.isEmpty())
+			throw new RuntimeException();
+			
 		// Then
-		assertThat(lieferung.getBestelldatum(), is(bestelldatum));
+		assertThat(lieferungen.get(1).getBestelldatum(), is(bestelldatum));
 	}
 	
 	@Test
@@ -128,10 +132,11 @@ public class LieferungTest extends AbstractDomainTest {
 		lieferung.addLieferungsposition(position1);
 		
 		try {
-			getEntityManager().persist(lieferung);
+			//getEntityManager().persist(lieferung);
 			getEntityManager().persist(position1);
 		}
 		catch (ConstraintViolationException e) {
+			
 			// Es gibt Verletzungen bzgl. Bean Validation: auf der Console ausgeben
 			final Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
 			for (ConstraintViolation<?> v : violations) {
