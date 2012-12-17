@@ -55,7 +55,7 @@ public class AuftragServiceImpl implements Serializable, AuftragService {
 	private ValidationService validationService;
 	
 	@Inject
-	@NeueBestellung
+	@NeuerAuftrag
 	private transient Event<Auftrag> event;
 	
 	@PostConstruct
@@ -95,7 +95,7 @@ public class AuftragServiceImpl implements Serializable, AuftragService {
 		}
 		
 		// managed kunden holen; Auftrag dem Kunden zuordnen
-		kunde = ks.findKundeById(kunde.getKundenNr(), FetchType.MIT_BESTELLUNGEN, locale);
+		kunde = ks.findKundenByKundennummer(kunde.getKundenNr(), FetchType.MIT_BESTELLUNGEN, locale);
 		kunde.addAuftrag(auftrag);
 		auftrag.setKunde(kunde);
 		

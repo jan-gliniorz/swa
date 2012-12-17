@@ -73,7 +73,7 @@ public class AuftragServiceTest extends AbstractTest {
 		//Artikel2 suchen und hinzufügen
 		
 		trans.begin();
-		Kunde kunde = kundeService.findKundeById(KUNDE_ID_VORHANDEN, FetchType.MIT_BESTELLUNGEN, LOCALE);
+		Kunde kunde = kundeService.findKundenByKundennummer(KUNDE_ID_VORHANDEN, FetchType.MIT_BESTELLUNGEN, LOCALE);
 		trans.commit();
 		
 		trans.begin();

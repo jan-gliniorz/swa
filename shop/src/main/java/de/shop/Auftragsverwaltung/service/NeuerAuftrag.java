@@ -12,6 +12,6 @@ import javax.inject.Qualifier;
 @Qualifier
 @Target({ FIELD, PARAMETER })
 @Retention(RUNTIME)
-public @interface NeueBestellung {
+public @interface NeuerAuftrag {
 
 }
