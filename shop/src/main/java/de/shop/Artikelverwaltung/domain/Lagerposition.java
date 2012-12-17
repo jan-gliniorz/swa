@@ -6,6 +6,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import de.shop.Auftragsverwaltung.domain.Lieferungsposition;
 import de.shop.Util.IdGroup;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
@@ -25,7 +26,10 @@ import java.sql.Timestamp;
 			query = "SELECT a" +
 					" FROM Lagerposition a"
 					+ " WHERE a.id = :" + Lagerposition.PARAM_ID),
-
+	@NamedQuery(name = Lagerposition.FIND_Lagerposition_ALL,
+				    query = "SELECT lp FROM Lagerposition lp"),
+	@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_Artikel,
+				    query = "SELECT lp FROM Lagerposition lp WHERE lp.artikel.id = :" + Lagerposition.PARAM_Artikel)
   })
 
 public class Lagerposition implements Serializable {	
@@ -34,8 +38,13 @@ public class Lagerposition implements Serializable {
 
 
 	public static final String FIND_Lagerposition_BY_ID =
-		PREFIX + "findArtikelByArtikelid";
+		PREFIX + "findLagerpositionById";
 	public static final String PARAM_ID = "id";
+	public static final String FIND_Lagerposition_ALL = 
+		PREFIX + "findLagerpositionAll";
+	public static final String FIND_LAGERPOSITION_BY_Artikel =
+		PREFIX + "findLagerpositionByArtikel";
+	public static final String PARAM_Artikel = "artikelId";
 
 
 	

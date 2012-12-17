@@ -5,6 +5,8 @@ import static de.shop.Util.Constants.MIN_ID;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
+
+import javax.inject.Named;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -12,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import de.shop.Auftragsverwaltung.domain.Auftrag;
+import de.shop.Auftragsverwaltung.domain.Lieferung;
 import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Util.IdGroup;
 import static de.shop.Util.Constants.KEINE_ID;
@@ -29,8 +32,16 @@ import java.math.BigDecimal;
 	  @NamedQuery(name = Artikel.FIND_Artikel_BY_Bezeichnung,
 			      query = "FROM Artikel a WHERE a.bezeichnung = :"+ Artikel.PARAM_Bezeichnung),	
 	  @NamedQuery(name = Artikel.FIND_Artikel_BY_Artikel_ID,
-			  	  query = "FROM Artikel a WHERE a.id = :"+ Artikel.PARAM_ID)
-	  
+			  	  query = "FROM Artikel a WHERE a.id = :"+ Artikel.PARAM_ID),
+	  @NamedQuery(name = Artikel.FIND_Artikel_BY_ID_Lagerpositionen,
+				query = "SELECT DISTINCT la" +
+						" FROM Artikel la" +
+						" JOIN la.lagerpositionen"+
+						" WHERE la.id = :" + Artikel.PARAM_ID),
+	  @NamedQuery(name = Artikel.FIND_Artikel_All,
+			    query = "SELECT la FROM Artikel la"),
+	  @NamedQuery( name = Artikel.FIND_ARTIKEL_ALL_LAGERPOSITIONEN,
+			    	query = "SELECT a FROM Artikel a JOIN a.lagerpositionen")
 	})
 
 public class Artikel implements Serializable {
@@ -41,11 +52,16 @@ public class Artikel implements Serializable {
 		PREFIX +"findArtikelByBezeichnung";
 	public static final String FIND_Artikel_BY_Artikel_ID =
 		PREFIX + "findArtikelByArtikelid";
+	public static final String FIND_Artikel_BY_ID_Lagerpositionen=
+		PREFIX +"findArtikelByIdLagerposition";
+	public static final String FIND_Artikel_All=
+		PREFIX +"findArtikelAll";
+	public static final String FIND_ARTIKEL_ALL_LAGERPOSITIONEN = 
+			PREFIX + "findArtikellAllLagerpositionen";
+	
 	public static final String PARAM_ID = "id";
 	public static final String PARAM_Bezeichnung = "bezeichnung";
 
-	
-	
 	private static final long serialVersionUID = 4651646021686650992L;
 	
 	@Id
@@ -56,7 +72,7 @@ public class Artikel implements Serializable {
 
 
 	@OneToMany(mappedBy = "artikel")
-	@NotEmpty(message = "artikelverwaltung.artikel.lagerposition.notEmpty")
+	//@NotEmpty(message = "artikelverwaltung.artikel.lagerposition.notEmpty") //TODO:Fehlermeldung entfernen.
 	private List<Lagerposition> lagerpositionen;
 	
 	@Lob
