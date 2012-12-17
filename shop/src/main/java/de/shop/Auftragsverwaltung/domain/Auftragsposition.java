@@ -56,6 +56,11 @@ public class Auftragsposition implements Serializable {
 
 	public Auftragsposition() {
 	}
+	
+	public Auftragsposition(Artikel artikel, int anzahl) {
+		this.artikel = artikel;
+		this.anzahl = anzahl;
+	}
 
 	public Long getId() {
 		return this.id;
