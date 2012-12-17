@@ -59,11 +59,6 @@ public class KundeServiceTest extends AbstractTest {
 	private static final String LAND_NEU = "Deutschland";
 	private static final String PASSWORD_NEU = "testpassword";
 	private static final String PASSWORD_FALSCH_NEU = "falsch";
-
-	private static final int TAG_NEU = 31;
-	private static final int MONAT_NEU = Calendar.JANUARY;
-	private static final int JAHR_NEU = 2011;
-	private static final Date DATUM_NEU = new GregorianCalendar(JAHR_NEU, MONAT_NEU, TAG_NEU).getTime();
 	
 	@Inject
 	private KundeService ks;

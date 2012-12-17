@@ -4,19 +4,14 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
-import de.shop.Kundenverwaltung.domain.Kunde;
-
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import javax.transaction.HeuristicMixedException;
@@ -27,7 +22,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -116,7 +110,7 @@ public class KundeTest extends AbstractDomainTest {
 			
 		// Then
 		assertThat(kunden.isEmpty(), is(false));
-		for(Kunde k : kunden){
+		for (Kunde k : kunden) {
 			assertThat(k.getNachname(), is(nachname));
 		}
 		
@@ -145,8 +139,8 @@ public class KundeTest extends AbstractDomainTest {
 		CriteriaQuery<Kunde> criteriaQuery =
 		builder.createQuery(Kunde.class);
 		Root<Kunde> k = criteriaQuery.from(Kunde.class);
-		Path<Date> DatePath = k.get(Kunde_.erstelltAm);
-		Predicate pred = builder.equal(DatePath, seit);
+		Path<Date> datePath = k.get(Kunde_.erstelltAm);
+		Predicate pred = builder.equal(datePath, seit);
 		criteriaQuery.where(pred);
 		TypedQuery<Kunde>query = getEntityManager().createQuery(criteriaQuery);
 		List<Kunde> kunden = query.getResultList();

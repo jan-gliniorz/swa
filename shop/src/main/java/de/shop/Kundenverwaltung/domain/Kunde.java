@@ -34,12 +34,12 @@ import de.shop.Auftragsverwaltung.domain.*;;
 			query = "SELECT DISTINCT k"
 					+ " FROM Kunde k"
 					+ " LEFT JOIN FETCH k.auftraege"
-					+ " WHERE k.nachname = :"+ Kunde.PARAM_NACHNAME),
+					+ " WHERE k.nachname = :" + Kunde.PARAM_NACHNAME),
 @NamedQuery(name = Kunde.KUNDE_BY_ID_AUFTRAEGE,
 			query = "SELECT DISTINCT k"
 					+ " FROM Kunde k"
 					+ " LEFT JOIN FETCH k.auftraege"
-					+ " WHERE k.kundenNr = :"+ Kunde.PARAM_KUNDENNUMMER)
+					+ " WHERE k.kundenNr = :" + Kunde.PARAM_KUNDENNUMMER)
 })
 
 public class Kunde implements Serializable {
@@ -49,7 +49,7 @@ public class Kunde implements Serializable {
 	private static final String PREFIX = "Kunde.";
 	public static final String KUNDEN_ALL = PREFIX + "findKundenAll";
 	public static final String KUNDE_BY_EMAIL = PREFIX + "findKundenByEmail";
-	public static final String KUNDE_BY_NACHNAME = PREFIX +"findKundenByNachname";
+	public static final String KUNDE_BY_NACHNAME = PREFIX + "findKundenByNachname";
 	public static final String KUNDE_BY_PLZ = PREFIX + "findKundenByPlz";
 	public static final String KUNDE_BY_KNR = PREFIX + "findKundenByKundennummer";
 	public static final String KUNDE_BY_NAME_AUFTRAEGE = PREFIX + "findKundenByNachnameFetchAufraege";
@@ -69,11 +69,11 @@ public class Kunde implements Serializable {
 	@NotNull(message = "{kundenverwaltung.kunde.email.notNull}")
 	private String email;
 
-	@Column(name="erstellt_am")
+	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
 	private Date erstelltAm;
 
-	@Column(name="geaendert_am")
+	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
 	private Date geaendertAm;
 
@@ -98,7 +98,7 @@ public class Kunde implements Serializable {
 	private String vorname;
 	
 	//EAGER-Fetching
-	@OneToOne(mappedBy = "kunde", cascade=PERSIST)
+	@OneToOne(mappedBy = "kunde", cascade = PERSIST)
 	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
 	private Adresse adresse;
 	
@@ -117,36 +117,36 @@ public class Kunde implements Serializable {
 	@OneToMany(mappedBy = "kunde")
 	private List<Auftrag> auftraege;
 	
-	public List<Auftrag> getAuftraege(){
+	public List<Auftrag> getAuftraege() {
 		return Collections.unmodifiableList(auftraege);
 	}
 	
-	public void setAuftraege(List<Auftrag> _auftraege) {
+	public void setAuftraege(List<Auftrag> auftraege) {
 		if (auftraege == null) {
-		auftraege = _auftraege;
+		this.auftraege = auftraege;
 		return;
 		}
 		// Wiederverwendung der vorhandenen Collection
 		auftraege.clear();
-		if (_auftraege != null) {
-		auftraege.addAll(_auftraege);
+		if (auftraege != null) {
+		this.auftraege.addAll(auftraege);
 		}
 	}
 	
-	public Kunde addAuftrag(Auftrag _auftrag) {
+	public Kunde addAuftrag(Auftrag auftrag) {
 		if (auftraege == null) {
 			auftraege = new ArrayList<>();
 		}
-		auftraege.add(_auftrag);
+		auftraege.add(auftrag);
 		return this;	
 	}
 	
-	public Adresse getAdresse(){
+	public Adresse getAdresse() {
 		return adresse;
 	}
 
-	public void setAdresse(Adresse _adresse){
-		adresse = _adresse;
+	public void setAdresse(Adresse adresse) {
+		this.adresse = adresse;
 	}
 	
 	public Kunde() {
@@ -253,39 +253,46 @@ public class Kunde implements Serializable {
 		if (adresse == null) {
 			if (other.adresse != null)
 				return false;
-		} else if (!adresse.equals(other.adresse))
+		} 
+		else if (!adresse.equals(other.adresse))
 			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
-		} else if (!email.equals(other.email))
+		} 
+		else if (!email.equals(other.email))
 			return false;
 		if (erstelltAm == null) {
 			if (other.erstelltAm != null)
 				return false;
-		} else if (!erstelltAm.equals(other.erstelltAm))
+		} 
+		else if (!erstelltAm.equals(other.erstelltAm))
 			return false;
 		if (geaendertAm == null) {
 			if (other.geaendertAm != null)
 				return false;
-		} else if (!geaendertAm.equals(other.geaendertAm))
+		}
+		else if (!geaendertAm.equals(other.geaendertAm))
 			return false;
 		if (kundenNr != other.kundenNr)
 			return false;
 		if (nachname == null) {
 			if (other.nachname != null)
 				return false;
-		} else if (!nachname.equals(other.nachname))
+		} 
+		else if (!nachname.equals(other.nachname))
 			return false;
 		if (passwort == null) {
 			if (other.passwort != null)
 				return false;
-		} else if (!passwort.equals(other.passwort))
+		}
+		else if (!passwort.equals(other.passwort))
 			return false;
 		if (vorname == null) {
 			if (other.vorname != null)
 				return false;
-		} else if (!vorname.equals(other.vorname))
+		}
+		else if (!vorname.equals(other.vorname))
 			return false;
 		return true;
 	}
@@ -293,7 +300,7 @@ public class Kunde implements Serializable {
 	@Override
 	public String toString() {
 		return "Kunde [kundenNr=" + kundenNr + ", vorname=" + vorname + ", nachname=" + nachname
-				+ ", email=" + email + ", passwort=" + passwort +", passwortWdh=" + passwortWdh
+				+ ", email=" + email + ", passwort=" + passwort + ", passwortWdh=" + passwortWdh
 				+ " erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm	+ "]";
 	}
 	

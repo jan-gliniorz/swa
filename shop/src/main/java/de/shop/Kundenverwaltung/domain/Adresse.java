@@ -15,7 +15,7 @@ import java.util.Date;
  * 
  */
 @Entity
-@Table(name ="adresse")
+@Table(name = "adresse")
 @NamedQueries({
 @NamedQuery(name = Adresse.ADRESSE_BY_ID,
 			query = "FROM Adresse a WHERE a.id = :" + Adresse.PARAM_ID)
@@ -25,7 +25,7 @@ public class Adresse implements Serializable {
 	private static final long serialVersionUID = -6118084007129611335L;
 	
 	private static final String PREFIX = "Adresse.";
-	public static final String ADRESSE_BY_ID = PREFIX +"findAdresseByID";	
+	public static final String ADRESSE_BY_ID = PREFIX + "findAdresseByID";	
 	public static final String PARAM_ID = "id";
 		
 	@Id
@@ -54,11 +54,11 @@ public class Adresse implements Serializable {
 	@NotNull(message = "{kundenverwaltung.adresse.strasse.notNull}")
 	private String strasse;
 	
-	@Column(name="erstellt_am")
+	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
 	private Date erstelltAm;
 
-	@Column(name="geaendert_am")
+	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
 	private Date geaendertAm;
 	
@@ -179,37 +179,44 @@ public class Adresse implements Serializable {
 		if (erstelltAm == null) {
 			if (other.erstelltAm != null)
 				return false;
-		} else if (!erstelltAm.equals(other.erstelltAm))
+		}
+		else if (!erstelltAm.equals(other.erstelltAm))
 			return false;
 		if (geaendertAm == null) {
 			if (other.geaendertAm != null)
 				return false;
-		} else if (!geaendertAm.equals(other.geaendertAm))
+		}
+		else if (!geaendertAm.equals(other.geaendertAm))
 			return false;
 		if (hausNr == null) {
 			if (other.hausNr != null)
 				return false;
-		} else if (!hausNr.equals(other.hausNr))
+		}
+		else if (!hausNr.equals(other.hausNr))
 			return false;
 		if (land == null) {
 			if (other.land != null)
 				return false;
-		} else if (!land.equals(other.land))
+		}
+		else if (!land.equals(other.land))
 			return false;
 		if (ort == null) {
 			if (other.ort != null)
 				return false;
-		} else if (!ort.equals(other.ort))
+		}
+		else if (!ort.equals(other.ort))
 			return false;
 		if (plz == null) {
 			if (other.plz != null)
 				return false;
-		} else if (!plz.equals(other.plz))
+		}
+		else if (!plz.equals(other.plz))
 			return false;
 		if (strasse == null) {
 			if (other.strasse != null)
 				return false;
-		} else if (!strasse.equals(other.strasse))
+		}
+		else if (!strasse.equals(other.strasse))
 			return false;
 		return true;
 	}

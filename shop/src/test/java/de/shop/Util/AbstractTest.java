@@ -3,14 +3,10 @@ package de.shop.Util;
 import static javax.transaction.Status.STATUS_ACTIVE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-
 import java.util.Locale;
-import java.util.ServiceLoader;
-
 import javax.annotation.Resource;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.After;
