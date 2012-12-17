@@ -5,8 +5,14 @@ import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.MIN_ID;
 
 import java.io.Serializable;
+import java.net.URI;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import de.shop.Util.IdGroup;
 
@@ -30,6 +36,7 @@ import java.util.Date;
 						+ " FROM Rechnung r"
 						+ " WHERE r.id = :" + Rechnung.PARAM_ID)
 })
+@XmlRootElement
 public class Rechnung implements Serializable {
 	private static final long serialVersionUID = 4985112963755405161L;
 	
@@ -42,22 +49,31 @@ public class Rechnung implements Serializable {
 	@GeneratedValue
 	@Column(name = "rechnung_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "{auftragsverwaltung.rechnung.id.min}", groups = IdGroup.class)
+	@XmlAttribute
 	private Long id = KEINE_ID;
 
 	@OneToOne
 	@JoinColumn(name = "auftrag_FID")
 	@NotNull(message = "{auftragsverwaltung.rechnung.auftrag.notNull}")
+	@XmlTransient
 	private Auftrag auftrag;
+	
+	@Transient
+	@XmlElement(name = "auftrag")
+	private URI auftragUri;
 
 	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
+	@XmlElement
 	private Date erstelltAm;
 
 	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
+	@XmlElement
 	private Date geaendertAm;
 
 	@Temporal(TemporalType.DATE)
+	@XmlElement
 	private Date rechnungsdatum;
 
 	public Rechnung() {

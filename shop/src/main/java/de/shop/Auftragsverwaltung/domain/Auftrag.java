@@ -7,7 +7,10 @@ import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
 
 import java.io.Serializable;
+import java.net.URI;
+
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.hibernate.validator.constraints.*;
 
@@ -15,6 +18,11 @@ import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.TemporalType.TIMESTAMP;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +46,7 @@ import java.util.List;
 						+ " FROM Auftrag a"
 						+ " WHERE a.kunde.id = :" + Auftrag.PARAM_KUNDEID)
 })
+@XmlRootElement
 public class Auftrag implements Serializable {	
 	private static final long serialVersionUID = 2465349694241738534L;
 	
@@ -52,27 +61,44 @@ public class Auftrag implements Serializable {
 	@GeneratedValue
 	@Column(name = "auftrag_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "{auftragsverwaltung.auftrag.id.min}", groups = IdGroup.class)
+	@XmlAttribute
 	private Long id = KEINE_ID;
 	
 	@OneToMany(fetch = EAGER)
 	@JoinColumn(name = "auftrag_FID", nullable = false)
 	@OrderColumn(name = "idx")
 	@NotEmpty(message = "{auftragsverwaltung.auftrag.auftragspositionen.notEmpty}")
+	@Valid
+	@XmlElementWrapper(name = "bestellpositionen", required = true)
+	@XmlElement(name = "bestellposition", required = true)
 	private List<Auftragsposition> auftragspositionen;
 	
 	@OneToOne(mappedBy = "auftrag")
+	@XmlTransient
 	private Rechnung rechnung;
+	
+	@Transient
+	@XmlElement(name = "rechnung")
+	private URI rechnungUri;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "kunde_FID", nullable = false, insertable = false, updatable = false)
+	@XmlTransient
+	private Kunde kunde;
+	
+	@Transient
+	@XmlElement(name = "kunde", required = true)
+	private URI kundeUri;
 
 	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
+	@XmlElement
 	private Date erstelltAm;
 
 	@Column(name = "geaendert_am")
+	@Temporal(TIMESTAMP)
+	@XmlElement
 	private Date geaendertAm;
-
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "kunde_FID", nullable = false, insertable = false, updatable = false)
-	private Kunde kunde;
 
 	public Auftrag() {
 	}

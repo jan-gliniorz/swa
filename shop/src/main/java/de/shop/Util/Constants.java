@@ -6,6 +6,11 @@ public final class Constants {
 	public static final int LONG_ANZ_ZIFFERN = 20;
 	public static final long MIN_ID = 1L;
 	
+	// REST
+	public static final String ARTIKELVERWALTUNG_NS = "urn:shop:artikelverwaltung";
+	public static final String AUFTRAGSVERWALTUNG_NS = "urn:shop:auftragsverwaltung";
+	public static final String KUNDENVERWALTUNG_NS = "urn:shop:kundenverwaltung";
+	
 	private Constants() {
 	}
 }

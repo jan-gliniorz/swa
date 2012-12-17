@@ -8,15 +8,24 @@ import static de.shop.Util.Constants.MIN_ID;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.*;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.TemporalType.TIMESTAMP;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import java.math.BigDecimal;
+import java.net.URI;
 
 
 /**
@@ -31,6 +40,7 @@ import java.math.BigDecimal;
 					+ " FROM Auftragsposition a"
 					+ " WHERE a.id = :" + Auftrag.PARAM_ID)
 })
+@XmlRootElement
 public class Auftragsposition implements Serializable {
 	private static final long serialVersionUID = 3112053858805093020L;
 	
@@ -38,20 +48,30 @@ public class Auftragsposition implements Serializable {
 	public static final String FIND_AUFTRAGSPOSITION_BY_ID = PREFIX + "findAuftragspositionById";
 	
 	public static final String PARAM_ID = "id";	
+	private static final int ANZAHL_MIN = 1;
 
 	@Id
 	@GeneratedValue
 	@Column(name = "auftragsposition_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "{auftragsverwaltung.auftragsposition.id.min}", groups = IdGroup.class)
+	@XmlAttribute
 	private Long id = KEINE_ID;
 
+	@Min(value = ANZAHL_MIN, message = "{artikelverwaltung.auftragsposition.anzahl.min}")
+	@XmlElement
 	private int anzahl;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "artikel_FID", nullable = false)
 	@NotNull(message = "{auftragsverwaltung.auftragsposition.artikel.notNull}")
+	@XmlTransient
 	private Artikel artikel;
+	
+	@Transient
+	@XmlElement(name = "artikel", required=true)
+	private URI artikelUri;
 
+	@XmlElement
 	private BigDecimal preis;
 
 	public Auftragsposition() {
@@ -60,6 +80,7 @@ public class Auftragsposition implements Serializable {
 	public Auftragsposition(Artikel artikel, int anzahl) {
 		this.artikel = artikel;
 		this.anzahl = anzahl;
+//		this.preis = artikel.getPreis() * this.anzahl; //TODO: Preis berechnen
 	}
 
 	public Long getId() {
