@@ -1,4 +1,4 @@
-package de.shop.Auftragsverwaltung.service;
+package de.shop.Artikelverwaltung.service;
 
 import static de.shop.Util.Constants.KEINE_ID;
 import static java.util.logging.Level.FINER;
@@ -17,27 +17,11 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import javax.validation.groups.Default;
 
-import de.shop.Auftragsverwaltung.domain.Lieferung;
-import de.shop.Auftragsverwaltung.domain.Lieferung_;
-import de.shop.Auftragsverwaltung.domain.Lieferungsposition;
-import de.shop.Auftragsverwaltung.domain.Lieferungsposition_;
-import de.shop.Auftragsverwaltung.domain.Auftragsposition;
-import de.shop.Auftragsverwaltung.domain.Auftragsposition_;
-import de.shop.Auftragsverwaltung.domain.Auftrag;
-import de.shop.Auftragsverwaltung.domain.Auftrag_;
-import de.shop.Kundenverwaltung.domain.Kunde;
-import de.shop.Kundenverwaltung.domain.Kunde_;
-import de.shop.Kundenverwaltung.service.InvalidKundeIdException;
+import de.shop.Artikelverwaltung.domain.Lieferung;
+import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Util.IdGroup;
 import de.shop.Util.Log;
 import de.shop.Util.ValidationService;
@@ -121,7 +105,7 @@ public class LieferungService implements Serializable {
 				
 				case MIT_POSITIONEN:
 					lieferung = em.createNamedQuery(Lieferung.LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN, Lieferung.class)
-							  .setParameter(Lieferung.LIEFERUNG_BY_ID, id)
+							  .setParameter(Lieferung.PARAM_ID, id)
 							  .getSingleResult();
 					break;
 	
@@ -221,20 +205,147 @@ public class LieferungService implements Serializable {
 			return;
 		}
 		
-		// Gibt es Lieferungspositionen?
-		if (!lieferung.getLieferungsposition().isEmpty()) {
-			throw new LieferungDeletePositionException(lieferung);
-		}
-
 		em.remove(lieferung);
 	}
 
 	/**
 	 */
-	public List<Lieferung> findLieferungByBestelldatum(Date bestelldatum) {
-		final List<Lieferung> lieferung = em.createNamedQuery(Lieferung.LIEFERUNG_BY_BESTELLDATUM, Lieferung.class)
+	public List<Lieferung> findLieferungByBestelldatum(Date bestelldatum, Locale locale) {
+		final List<Lieferung> lieferungen = em.createNamedQuery(Lieferung.LIEFERUNG_BY_BESTELLDATUM, Lieferung.class)
                                              .setParameter(Lieferung.PARAM_BESTELLDATUM, bestelldatum)
                                              .getResultList();
-		return lieferung;
+		return lieferungen;
 	}
+	
+	//======================================================================================================================
+	//============================LIEFERUNGSPOSITIONSERVICE=================================================================
+	//======================================================================================================================
+
+	public Lieferungsposition findLieferungspositionById(Long id, Locale locale) {
+		
+		validateLieferungspositionId(id, locale);
+		
+		Lieferungsposition lieferungsposition = null;
+		try {
+			lieferungsposition = em.find(Lieferungsposition.class, id);
+		}
+		catch (NoResultException e) {
+			return null;
+		}
+
+		return lieferungsposition;
+	}
+	
+	private void validateLieferungspositionId(Long lieferungspositionId, Locale locale) {
+		final Validator validator = validationService.getValidator(locale);
+		final Set<ConstraintViolation<Lieferungsposition>> violations = validator.validateValue(Lieferungsposition.class,
+				                                                                           "id",
+				                                                                           lieferungspositionId,
+				                                                                           IdGroup.class);
+		
+		if (!violations.isEmpty())
+			throw new LieferungspositionInvalidIdException(lieferungspositionId, violations);
+	}
+	
+	/**
+	 */
+	public void deleteLieferungsposition(Lieferungsposition lieferungsposition) {
+		if (lieferungsposition == null) {
+			return;
+		}
+		
+		try {
+			lieferungsposition = findLieferungspositionById(lieferungsposition.getId(), Locale.getDefault());
+		}
+		catch (LieferungspositionInvalidIdException e) {
+			return;
+		}
+		
+		if (lieferungsposition == null) {
+			return;
+		}
+
+		em.remove(lieferungsposition);
+	}	
+	
+	/*public Lieferungsposition findLieferungspositionById(Long id, Locale locale) {
+		
+		validateLieferungspositionId(id, locale);
+	
+		Lieferungsposition lieferungsposition = null;
+	
+		try {
+			lieferungsposition = em.find(Lieferungsposition.class, id);	
+		}
+		catch (NoResultException e) {
+			return null;
+		}
+
+		return lieferungsposition;
+	}
+	
+	private void validateLieferungspositionId(Long lieferungspositionId, Locale locale) {
+		final Validator validator = validationService.getValidator(locale);
+		final Set<ConstraintViolation<Lieferungsposition>> violations = validator.validateValue(Lieferungsposition.class,
+			                                                                           "id",
+			                                                                           lieferungspositionId,
+			                                                                           IdGroup.class);
+	
+		if (!violations.isEmpty())
+			throw new LieferungspositionInvalidIdException(lieferungspositionId, violations);
+	}*/
+	
+	/*public Lieferungsposition createLieferungsposition(Lieferungsposition lieferungsposition, Locale locale) {
+		if (lieferungsposition == null) {
+			return lieferungsposition;
+		}
+
+		// Werden alle Constraints beim Einfuegen gewahrt?
+		validateLieferungsposition(lieferungsposition, locale);
+		
+		lieferungsposition.setId(KEINE_ID);
+		em.persist(lieferungsposition);
+		return lieferungsposition;		
+	}
+	
+	private void validateLieferungsposition (Lieferungsposition lieferungsposition, Locale locale) {
+		
+
+		// Werden alle Constraints beim Einfuegen gewahrt?
+		final Validator validator = validationService.getValidator(locale);
+		
+		final Set<ConstraintViolation<Lieferungsposition>> violations = validator.validate(lieferungsposition);
+		if (!violations.isEmpty()) {
+			throw new LieferungspositionValidationException(lieferungsposition, violations);
+		}
+	}*/
+
+
+	/*public Lieferungsposition updateLieferungsposition (Lieferungsposition lieferungsposition, Locale locale) {
+		if (lieferungsposition == null) {
+				return null;
+		}
+
+		// Werden alle Constraints beim Modifizieren gewahrt?
+		validateLieferungsposition(lieferungsposition, locale);
+			
+		
+		try {
+			final Lieferungsposition vorhandeneLieferungsposition = em.createNamedQuery(Lieferungsposition.LIEFERUNGSPOSITION_BY_ID,
+						                                               Lieferungsposition.class)
+						                              .setParameter(Lieferungsposition.PARAM_ID, lieferungsposition.getId())
+						                              .getSingleResult();
+				
+		
+			if (vorhandeneLieferungsposition.getId().longValue() != lieferungsposition.getId().longValue()) {
+				throw new LieferungspositionIdExistsException(lieferungsposition.getId());
+			}
+		}
+		catch (NoResultException e) {
+			LOGGER.finest("Neue Lieferungsposition");
+		}
+
+		em.merge(lieferungsposition);
+		return lieferungsposition;
+	}*/
 }

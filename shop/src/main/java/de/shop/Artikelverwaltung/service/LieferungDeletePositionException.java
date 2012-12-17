@@ -1,9 +1,8 @@
-package de.shop.Auftragsverwaltung.service;
+package de.shop.Artikelverwaltung.service;
 
 import javax.ejb.ApplicationException;
 
-import de.shop.Auftragsverwaltung.domain.Lieferung;
-import de.shop.Kundenverwaltung.domain.Kunde;
+import de.shop.Artikelverwaltung.domain.Lieferung;
 
 
 /**

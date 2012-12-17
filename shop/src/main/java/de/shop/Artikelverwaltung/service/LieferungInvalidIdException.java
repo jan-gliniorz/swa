@@ -1,12 +1,11 @@
-package de.shop.Auftragsverwaltung.service;
+package de.shop.Artikelverwaltung.service;
 
 import java.util.Collection;
 
 import javax.ejb.ApplicationException;
 import javax.validation.ConstraintViolation;
 
-import de.shop.Auftragsverwaltung.domain.Lieferung;
-import de.shop.Kundenverwaltung.domain.Kunde;
+import de.shop.Artikelverwaltung.domain.Lieferung;
 
 @ApplicationException(rollback = true)
 public class LieferungInvalidIdException extends LieferungServiceException {

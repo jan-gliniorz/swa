@@ -1,11 +1,9 @@
-package de.shop.Auftragsverwaltung.domain;
+package de.shop.Artikelverwaltung.domain;
 
-import static javax.persistence.TemporalType.DATE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -13,13 +11,9 @@ import java.util.List;
 import java.util.Set;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
-import de.shop.Auftragsverwaltung.domain.Lieferung;
-import de.shop.Kundenverwaltung.domain.Kunde;
+import de.shop.Artikelverwaltung.domain.Lieferung;
 
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
@@ -29,7 +23,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,10 +32,6 @@ import de.shop.Util.AbstractDomainTest;
 @RunWith(Arquillian.class)
 public class LieferungTest extends AbstractDomainTest {
 	private static final Long ID_VORHANDEN = Long.valueOf(455);
-	private static final int TAG = 31;
-	private static final int MONAT = Calendar.JANUARY;
-	private static final int JAHR = 2001;
-	private static final Date SEIT_VORHANDEN = new GregorianCalendar(JAHR, MONAT, TAG).getTime();
 	private static final Date BESTELLDATUM_VORHANDEN = new GregorianCalendar(2011, Calendar.SEPTEMBER, 26).getTime();
 	
 	private static final Date LIEFERUNGSDATUM_NEU = new GregorianCalendar(2012,Calendar.NOVEMBER,31).getTime();
@@ -115,6 +104,8 @@ public class LieferungTest extends AbstractDomainTest {
 		final int position1Anz = POS1ANZ_NEU;
 		final Long position1ArtikelId = POS1ARTIKELID_NEU;
 		final Long lieferungId = ID_NEU;
+		final Date bestelldatum = BESTELLDATUM_NEU;
+		final Date lieferungsdatum = LIEFERUNGSDATUM_NEU;
 
 		Artikel artikel = getEntityManager().createNamedQuery(Artikel.FIND_Artikel_BY_Artikel_ID, Artikel.class)
 											.setParameter(Artikel.PARAM_ID, position1ArtikelId)
@@ -123,8 +114,8 @@ public class LieferungTest extends AbstractDomainTest {
 		// When
 		Lieferung lieferung = new Lieferung();
 		lieferung.setId(lieferungId);
-		lieferung.setBestelldatum(BESTELLDATUM_NEU);
-		lieferung.setLieferungsdatum(LIEFERUNGSDATUM_NEU);
+		lieferung.setBestelldatum(bestelldatum);
+		lieferung.setLieferungsdatum(lieferungsdatum);
 		
 		Lieferungsposition position1 = new Lieferungsposition();
 		position1.setAnzahl(position1Anz);
@@ -132,7 +123,7 @@ public class LieferungTest extends AbstractDomainTest {
 		lieferung.addLieferungsposition(position1);
 		
 		try {
-			//getEntityManager().persist(lieferung);
+			getEntityManager().persist(lieferung);
 			getEntityManager().persist(position1);
 		}
 		catch (ConstraintViolationException e) {
@@ -147,10 +138,7 @@ public class LieferungTest extends AbstractDomainTest {
 			
 			throw new RuntimeException(e);
 		}
-		
-		// Then
-		
-				// Den abgespeicherten Kunden ueber eine Named Query ermitteln
+				
 		// Then
 				List<Lieferung> lieferungen = getEntityManager().createNamedQuery(Lieferung.LIEFERUNG_BY_ID, Lieferung.class)
 															.setParameter(Lieferung.PARAM_ID, lieferungId) 
@@ -158,6 +146,7 @@ public class LieferungTest extends AbstractDomainTest {
 				
 				// Ueberpruefung des ausgelesenen Objekts
 				assertThat(lieferungen.size(), is(1));
+				
 				
 				/*kunde = (Kunde) kunden.get(0);
 				assertThat(kunde.getKundenNr().longValue() > 0, is(true));
@@ -191,7 +180,5 @@ public class LieferungTest extends AbstractDomainTest {
 			}
 			fail("Kein Fehler trotz fehlendem Bestelldatum");
 		}
-		
 	}
-	
 }

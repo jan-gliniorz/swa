@@ -1,4 +1,4 @@
-package de.shop.Auftragsverwaltung.service;
+package de.shop.Artikelverwaltung.service;
 
 import de.shop.Util.AbstractShopException;
 
