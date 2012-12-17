@@ -14,7 +14,6 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import de.shop.Auftragsverwaltung.domain.Auftrag;
-import de.shop.Auftragsverwaltung.domain.Lieferung;
 import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Util.IdGroup;
 import static de.shop.Util.Constants.KEINE_ID;
