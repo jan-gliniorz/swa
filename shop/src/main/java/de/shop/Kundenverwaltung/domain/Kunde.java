@@ -2,21 +2,15 @@ package de.shop.Kundenverwaltung.domain;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.TemporalType.TIMESTAMP;
-
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
-
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.persistence.criteria.*;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.Email;
-
-import java.sql.Timestamp;
 import java.util.*;
-
 import de.shop.Auftragsverwaltung.domain.*;;
 
 /**
@@ -61,12 +55,10 @@ public class Kunde implements Serializable {
 	public static final String KUNDE_BY_NAME_AUFTRAEGE = PREFIX + "findKundenByNachnameFetchAufraege";
 	public static final String KUNDE_BY_ID_AUFTRAEGE = PREFIX + "findKundenByIdFetchAufraege";
 	
-	
 	public static final String PARAM_PLZ = "plz";
 	public static final String PARAM_NACHNAME = "nachname";
 	public static final String PARAM_KUNDENNUMMER = "kundenNr";
 	public static final String PARAM_EMAIL = "email";
-	
 	
 	@Id
 	@GeneratedValue
@@ -84,6 +76,31 @@ public class Kunde implements Serializable {
 	@Column(name="geaendert_am")
 	@Temporal(TIMESTAMP)
 	private Date geaendertAm;
+
+	@NotNull(message = "{kundenverwaltung.kunde.nachname.notNull}")
+	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+", message = "{kundenverwaltung.kunde.nachname.pattern}")
+	private String nachname;
+
+	@NotNull(message = "{kundenverwaltung.kunde.passwort.notNull}")
+	private String passwort;
+	
+	@Transient
+	private String passwortWdh;
+	
+	@AssertTrue(groups = PasswordGroup.class, message = "{kundenverwaltung.kunde.passwort.notEqual}")
+	public boolean isPasswordEqual() {
+	if (passwort == null)
+	return passwortWdh == null;
+	return passwort.equals(passwortWdh);
+	}
+
+	@NotNull(message = "{kundenverwaltung.kunde.vorname.notNull}")
+	private String vorname;
+	
+	//EAGER-Fetching
+	@OneToOne(mappedBy = "kunde", cascade=PERSIST)
+	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
+	private Adresse adresse;
 	
 	@PrePersist
 	protected void prePersist() {
@@ -96,21 +113,6 @@ public class Kunde implements Serializable {
 		geaendertAm = new Date();
 	}
 
-	@NotNull(message = "{kundenverwaltung.kunde.nachname.notNull}")
-	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+", message = "{kundenverwaltung.kunde.nachname.pattern}")
-	private String nachname;
-
-	@NotNull(message = "{kundenverwaltung.kunde.passwort.notNull}")
-	private String passwort;
-
-	@NotNull(message = "{kundenverwaltung.kunde.vorname.notNull}")
-	private String vorname;
-	
-	//EAGER-Fetching
-	@OneToOne(mappedBy = "kunde", cascade=PERSIST)
-	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
-	private Adresse adresse;
-	
 	//LAZY-Fetching
 	@OneToMany(mappedBy = "kunde")
 	private List<Auftrag> auftraege;
@@ -196,6 +198,14 @@ public class Kunde implements Serializable {
 
 	public void setPasswort(String passwort) {
 		this.passwort = passwort;
+	}
+	
+	public String getPasswortWdh() {
+		return passwortWdh;
+	}
+
+	public void setPasswortWdh(String passwortWdh) {
+		this.passwortWdh = passwortWdh;
 	}
 
 	public String getVorname() {
@@ -283,7 +293,7 @@ public class Kunde implements Serializable {
 	@Override
 	public String toString() {
 		return "Kunde [kundenNr=" + kundenNr + ", vorname=" + vorname + ", nachname=" + nachname
-				+ ", email=" + email + ", passwort=" + passwort
+				+ ", email=" + email + ", passwort=" + passwort +", passwortWdh=" + passwortWdh
 				+ " erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm	+ "]";
 	}
 	

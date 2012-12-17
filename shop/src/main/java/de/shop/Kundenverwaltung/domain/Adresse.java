@@ -1,16 +1,12 @@
 package de.shop.Kundenverwaltung.domain;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
-
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
-
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
-
-import java.sql.Timestamp;
 import java.util.Date;
 
 

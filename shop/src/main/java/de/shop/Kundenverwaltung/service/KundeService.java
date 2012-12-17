@@ -32,6 +32,7 @@ import de.shop.Auftragsverwaltung.domain.Auftrag;
 import de.shop.Auftragsverwaltung.domain.Auftrag_;
 import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Kundenverwaltung.domain.Kunde_;
+import de.shop.Kundenverwaltung.domain.PasswordGroup;
 import de.shop.Util.IdGroup;
 import de.shop.Util.Log;
 import de.shop.Util.ValidationService;
@@ -146,7 +147,7 @@ public class KundeService implements Serializable {
 
 	/**
 	 */
-	public Kunde findKundeById(Long id, FetchType fetch, Locale locale) {
+	public Kunde findKundenByKundennummer(Long id, FetchType fetch, Locale locale) {
 		validateKundeId(id, locale);
 		
 		Kunde kunde = null;
@@ -158,7 +159,7 @@ public class KundeService implements Serializable {
 				
 				case MIT_BESTELLUNGEN:
 					kunde = em.createNamedQuery(Kunde.KUNDE_BY_ID_AUFTRAEGE, Kunde.class)
-							  .setParameter(Kunde.KUNDE_BY_KNR, id)
+							  .setParameter(Kunde.PARAM_KUNDENNUMMER, id)
 							  .getSingleResult();
 					break;
 	
@@ -177,7 +178,7 @@ public class KundeService implements Serializable {
 	private void validateKundeId(Long kundeId, Locale locale) {
 		final Validator validator = validationService.getValidator(locale);
 		final Set<ConstraintViolation<Kunde>> violations = validator.validateValue(Kunde.class,
-				                                                                           "id",
+				                                                                           "kundenNr",
 				                                                                           kundeId,
 				                                                                           IdGroup.class);
 		if (!violations.isEmpty())
@@ -217,7 +218,7 @@ public class KundeService implements Serializable {
 		}
 
 		// Werden alle Constraints beim Einfuegen gewahrt?
-		validateKunde(kunde, locale);
+		validateKunde(kunde, locale, PasswordGroup.class);
 		
 		// Pruefung, ob die Email-Adresse schon existiert
 		try {
@@ -236,7 +237,7 @@ public class KundeService implements Serializable {
 		return kunde;		
 	}
 	
-	private void validateKunde(Kunde kunde, Locale locale) {
+	private void validateKunde(Kunde kunde, Locale locale, Class<?>... groups) {
 		// Werden alle Constraints beim Einfuegen gewahrt?
 		final Validator validator = validationService.getValidator(locale);
 		
@@ -254,7 +255,7 @@ public class KundeService implements Serializable {
 		}
 
 		// Werden alle Constraints beim Modifizieren gewahrt?
-		validateKunde(kunde, locale);
+		validateKunde(kunde, locale, PasswordGroup.class);
 		
 		// Pruefung, ob die Email-Adresse schon existiert
 		try {
@@ -271,8 +272,9 @@ public class KundeService implements Serializable {
 		catch (NoResultException e) {
 			LOGGER.finest("Neue Email-Adresse");
 		}
-
+		
 		em.merge(kunde);
+
 		return kunde;
 	}
 
@@ -285,7 +287,7 @@ public class KundeService implements Serializable {
 		
 		// Bestellungen laden, damit sie anschl. ueberprueft werden koennen
 		try {
-			kunde = findKundeById(kunde.getKundenNr(), FetchType.MIT_BESTELLUNGEN, Locale.getDefault());
+			kunde = findKundenByKundennummer(kunde.getKundenNr(), FetchType.MIT_BESTELLUNGEN, Locale.getDefault());
 		}
 		catch (InvalidKundeIdException e) {
 			return;
@@ -325,11 +327,6 @@ public class KundeService implements Serializable {
 		final Predicate pred = builder.equal(nachnamePath, nachname);
 		criteriaQuery.where(pred);
 
-		// Ausgabe des komponierten Query-Strings. Voraussetzung: das Modul "org.hibernate" ist aktiviert
-		//if (LOGGER.isLoggable(FINEST)) {
-		//	query.unwrap(org.hibernate.Query.class).getQueryString();
-		//}
-		
 		final List<Kunde> kunden = em.createQuery(criteriaQuery).getResultList();
 		return kunden;
 	}

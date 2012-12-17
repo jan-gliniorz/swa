@@ -15,7 +15,7 @@ public class InvalidKundeIdException extends KundeServiceException {
 	private final Collection<ConstraintViolation<Kunde>> violations;
 	
 	public InvalidKundeIdException(Long kundeId, Collection<ConstraintViolation<Kunde>> violations) {
-		super("Ungueltige Kunde-ID: " + kundeId + ", Violations: " + violations);
+		super("Ungueltige Kundennummer: " + kundeId + ", Violations: " + violations);
 		this.kundeId = kundeId;
 		this.violations = violations;
 	}
