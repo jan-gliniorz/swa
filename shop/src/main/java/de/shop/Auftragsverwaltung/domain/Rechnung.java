@@ -6,21 +6,14 @@ import static de.shop.Util.Constants.MIN_ID;
 
 import java.io.Serializable;
 import java.net.URI;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
 import de.shop.Util.IdGroup;
-
-import static javax.persistence.CascadeType.PERSIST;
-import static javax.persistence.CascadeType.REMOVE;
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.TemporalType.TIMESTAMP;
-
 import java.util.Date;
 
 
@@ -160,28 +153,32 @@ public class Rechnung implements Serializable {
 			if (other.erstelltAm != null) {
 				return false;
 			}
-		} else if (!erstelltAm.equals(other.erstelltAm)) {
+		}
+		else if (!erstelltAm.equals(other.erstelltAm)) {
 			return false;
 		}
 		if (geaendertAm == null) {
 			if (other.geaendertAm != null) {
 				return false;
 			}
-		} else if (!geaendertAm.equals(other.geaendertAm)) {
+		}
+		else if (!geaendertAm.equals(other.geaendertAm)) {
 			return false;
 		}
 		if (id == null) {
 			if (other.id != null) {
 				return false;
 			}
-		} else if (!id.equals(other.id)) {
+		}
+		else if (!id.equals(other.id)) {
 			return false;
 		}
 		if (rechnungsdatum == null) {
 			if (other.rechnungsdatum != null) {
 				return false;
 			}
-		} else if (!rechnungsdatum.equals(other.rechnungsdatum)) {
+		}
+		else if (!rechnungsdatum.equals(other.rechnungsdatum)) {
 			return false;
 		}
 		return true;

@@ -14,16 +14,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import static javax.persistence.CascadeType.PERSIST;
-import static javax.persistence.CascadeType.REMOVE;
-import static javax.persistence.FetchType.EAGER;
-import static javax.persistence.TemporalType.TIMESTAMP;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
 import java.math.BigDecimal;
 import java.net.URI;
 
@@ -68,7 +58,7 @@ public class Auftragsposition implements Serializable {
 	private Artikel artikel;
 	
 	@Transient
-	@XmlElement(name = "artikel", required=true)
+	@XmlElement(name = "artikel", required = true)
 	private URI artikelUri;
 
 	@XmlElement
@@ -145,14 +135,16 @@ public class Auftragsposition implements Serializable {
 			if (other.id != null) {
 				return false;
 			}
-		} else if (!id.equals(other.id)) {
+		}
+		else if (!id.equals(other.id)) {
 			return false;
 		}
 		if (preis == null) {
 			if (other.preis != null) {
 				return false;
 			}
-		} else if (!preis.equals(other.preis)) {
+		}
+		else if (!preis.equals(other.preis)) {
 			return false;
 		}
 		return true;

@@ -14,8 +14,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.hibernate.validator.constraints.*;
 
-import static javax.persistence.CascadeType.PERSIST;
-import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.TemporalType.TIMESTAMP;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -151,8 +149,8 @@ public class Auftrag implements Serializable {
 		}
 	}
 	
-	public Auftrag addAuftragsposition(Auftragsposition position)
-	{
+	public Auftrag addAuftragsposition(Auftragsposition position) {
+		
 		if (this.auftragspositionen == null) {
 			this.auftragspositionen = new ArrayList<>(); //TODO: Warum hier keinen Typ angeben?
 		}
@@ -200,21 +198,24 @@ public class Auftrag implements Serializable {
 			if (other.erstelltAm != null) {
 				return false;
 			}
-		} else if (!erstelltAm.equals(other.erstelltAm)) {
+		} 
+		else if (!erstelltAm.equals(other.erstelltAm)) {
 			return false;
 		}
 		if (geaendertAm == null) {
 			if (other.geaendertAm != null) {
 				return false;
 			}
-		} else if (!geaendertAm.equals(other.geaendertAm)) {
+		}
+		else if (!geaendertAm.equals(other.geaendertAm)) {
 			return false;
 		}
 		if (id == null) {
 			if (other.id != null) {
 				return false;
 			}
-		} else if (!id.equals(other.id)) {
+		}
+		else if (!id.equals(other.id)) {
 			return false;
 		}
 		return true;
