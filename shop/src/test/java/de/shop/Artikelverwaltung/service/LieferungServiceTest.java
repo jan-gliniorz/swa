@@ -33,6 +33,7 @@ import org.junit.runner.RunWith;
 import de.shop.Artikelverwaltung.domain.*;
 import de.shop.Artikelverwaltung.service.LieferungService.FetchType;
 import de.shop.Util.AbstractTest;
+import de.shop.Util.AbstractDomainTest;
 
 @RunWith(Arquillian.class)
 public class LieferungServiceTest extends AbstractTest {
@@ -58,8 +59,6 @@ public class LieferungServiceTest extends AbstractTest {
 	private static final int ANZAHL_NEU = 3;
 	private static final Long ARTIKEL_ID_VORHANDEN = Long.valueOf(310);
 
-	
-	
 	@Inject
 	private LieferungService ls;
 	private ArtikelService as;
@@ -109,70 +108,6 @@ public class LieferungServiceTest extends AbstractTest {
 		
 		// Then
 		assertThat(lieferung, is(nullValue()));
-	}
-	
-	/**
-	 */
-	@Test
-	public void createLieferung() throws RollbackException, HeuristicMixedException, HeuristicRollbackException,
-	                                       SystemException, NotSupportedException {
-		// Given
-		//Attribute neueLieferung
-		final Date bestelldatum = BESTELLDATUM_NEU;
-		final Date lieferungsdatum = LIEFERUNGSDATUM_NEU;
-		
-		final int anzahl = ANZAHL_NEU;
-		
-		final Long id = ARTIKEL_ID_VORHANDEN;
-
-		// When
-		
-		//Collection mit allen Lieferungen vorm Create
-		final Collection<Lieferung> lieferungenVorher = ls.findLieferungenAll(FetchType.NUR_LIEFERUNG, null);
-		final UserTransaction trans = getUserTransaction();
-		trans.commit();
-
-		//Objekt lieferung anlegen und Attribute setten
-		Lieferung lieferung = new Lieferung();
-		lieferung.setBestelldatum(bestelldatum);
-		lieferung.setLieferungsdatum(lieferungsdatum);
-		
-		//Objekt vorhandenerArtikel anhand einer vorgegebenen Artikelnummer erstellen
-		trans.begin();
-		Artikel vorhandenerArtikel = as.findArtikelByID(id, de.shop.Artikelverwaltung.service.ArtikelService.FetchType.NUR_Artikel, LOCALE);
-		trans.commit();	
-		
-		//Objekt neueLieferungsposition erstellen und Attribute setten
-		final Lieferungsposition neueLieferungsposition = new Lieferungsposition();
-		neueLieferungsposition.setAnzahl(anzahl);
-		
-		//Objekt vorhandenerArtikel in neueLieferungsposition einfügen
-		neueLieferungsposition.setArtikel(vorhandenerArtikel);
-		
-		//Objekt neueLieferungsposition zum Objekt lieferung hinzufügen
-		lieferung.addLieferungsposition(neueLieferungsposition);
-	
-		//Objekt neueLieferung erstellen und ???
-		trans.begin();
-		Lieferung neueLieferung = ls.createLieferung(lieferung, LOCALE);
-		trans.commit();
-
-		//Collection mit allen Lieferungen nach dem Create
-		trans.begin();
-		final Collection<Lieferung> lieferungenNachher = ls.findLieferungenAll(FetchType.NUR_LIEFERUNG, null);
-		trans.commit();
-		
-		assertThat(lieferungenVorher.size() + 1, is(lieferungenNachher.size()));
-		for (Lieferung li : lieferungenVorher) {
-			assertTrue(li.getId() < neueLieferung.getId());
-			assertTrue(li.getErstelltAm().getTime() < neueLieferung.getErstelltAm().getTime());
-		}
-		
-		trans.begin();
-		neueLieferung = ls.findLieferungById(neueLieferung.getId(), FetchType.NUR_LIEFERUNG, LOCALE);
-		trans.commit();
-		
-		assertThat(neueLieferung.getBestelldatum(), is(bestelldatum));
 	}
 
 	/**

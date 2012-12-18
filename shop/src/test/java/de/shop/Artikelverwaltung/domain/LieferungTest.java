@@ -12,6 +12,7 @@ import java.util.Set;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lieferung;
+import de.shop.Kundenverwaltung.domain.Kunde;
 
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
@@ -41,7 +42,6 @@ public class LieferungTest extends AbstractDomainTest {
 	private static final Long ID_NEU = Long.valueOf(452);
 
 
-	
 	
 	@Test
 	public void validate() {
@@ -103,7 +103,6 @@ public class LieferungTest extends AbstractDomainTest {
 		// Given
 		final int position1Anz = POS1ANZ_NEU;
 		final Long position1ArtikelId = POS1ARTIKELID_NEU;
-		final Long lieferungId = ID_NEU;
 		final Date bestelldatum = BESTELLDATUM_NEU;
 		final Date lieferungsdatum = LIEFERUNGSDATUM_NEU;
 
@@ -112,22 +111,20 @@ public class LieferungTest extends AbstractDomainTest {
 											.getSingleResult();
 		
 		// When
-		Lieferung lieferung = new Lieferung();
-		lieferung.setId(lieferungId);
+		final Lieferung lieferung = new Lieferung();
 		lieferung.setBestelldatum(bestelldatum);
 		lieferung.setLieferungsdatum(lieferungsdatum);
 		
-		Lieferungsposition position1 = new Lieferungsposition();
+		final Lieferungsposition position1 = new Lieferungsposition();
 		position1.setAnzahl(position1Anz);
 		position1.setArtikel(artikel);
 		lieferung.addLieferungsposition(position1);
 		
 		try {
 			getEntityManager().persist(lieferung);
-			getEntityManager().persist(position1);
+			//getEntityManager().persist(position1);
 		}
 		catch (ConstraintViolationException e) {
-			
 			// Es gibt Verletzungen bzgl. Bean Validation: auf der Console ausgeben
 			final Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
 			for (ConstraintViolation<?> v : violations) {
@@ -140,45 +137,12 @@ public class LieferungTest extends AbstractDomainTest {
 		}
 				
 		// Then
-				List<Lieferung> lieferungen = getEntityManager().createNamedQuery(Lieferung.LIEFERUNG_BY_ID, Lieferung.class)
-															.setParameter(Lieferung.PARAM_ID, lieferungId) 
+				List<Lieferung> lieferungen = getEntityManager().createNamedQuery(Lieferung.LIEFERUNG_BY_BESTELLDATUM, Lieferung.class)
+															.setParameter(Lieferung.PARAM_BESTELLDATUM, bestelldatum) 
 															.getResultList();
 				
 				// Ueberpruefung des ausgelesenen Objekts
 				assertThat(lieferungen.size(), is(1));
-				
-				
-				/*kunde = (Kunde) kunden.get(0);
-				assertThat(kunde.getKundenNr().longValue() > 0, is(true));
-				assertThat(kunde.getNachname(), is(NACHNAME_NEU));*/
-	}
-
-	@Test
-	public void createLieferungOhneBestelldatum() throws HeuristicMixedException, HeuristicRollbackException,
-	                                                  SystemException {
-		// Given
-		final Date bestelldatum = BESTELLDATUM_NEU;
-		
-		// When
-		final Lieferung lieferung = new Lieferung();
-		lieferung.setBestelldatum(bestelldatum);
-		getEntityManager().persist(lieferung);
-		
-		// Then
-		try {
-			getUserTransaction().commit();
-		}
-		catch (RollbackException e) {
-			final PersistenceException cause = (PersistenceException) e.getCause();
-			final ConstraintViolationException cause2 = (ConstraintViolationException) cause.getCause();
-			final Set<ConstraintViolation<?>> violations = cause2.getConstraintViolations();
-			for (ConstraintViolation<?> v : violations) {
-				final String msg = v.getMessage();
-				if (msg.contains("Eine Lieferung muss ein Bestelldatum enthalten.")) {
-					return;
-				}
-			}
-			fail("Kein Fehler trotz fehlendem Bestelldatum");
-		}
+				assertThat(lieferung.getBestelldatum(), is(bestelldatum));
 	}
 }

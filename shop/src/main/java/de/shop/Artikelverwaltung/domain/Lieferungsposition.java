@@ -35,7 +35,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 
 public class Lieferungsposition implements Serializable {
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -895845732573641L;
 	
 	private static final String PREFIX = "Lieferungsposition.";
 	public static final String LIEFERUNGSPOSITION_BY_ID = PREFIX + "findLieferungspositionById";

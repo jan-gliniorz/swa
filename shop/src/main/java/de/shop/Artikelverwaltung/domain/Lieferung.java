@@ -46,7 +46,7 @@ import java.util.*;
 
 public class Lieferung implements Serializable {
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4645734623734341L;
 	
 	private static final String PREFIX = "Lieferung.";
 	public static final String LIEFERUNG_BY_ID = PREFIX + "findLieferungById";
