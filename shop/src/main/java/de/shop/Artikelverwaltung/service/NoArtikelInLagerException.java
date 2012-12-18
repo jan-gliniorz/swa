@@ -1,4 +1,4 @@
-package de.shop.Artikelverwaltung.Service;
+package de.shop.Artikelverwaltung.service;
 
 import java.util.Collection;
 

@@ -1,14 +1,14 @@
-package de.shop.Artikelverwaltung.Service;
+package de.shop.Artikelverwaltung.service;
 
 import javax.ejb.ApplicationException;
 
 @ApplicationException(rollback = true)
-public class ArtikelIdExistsException extends ArtikelServiceException {
+public class LagerpositionIdExistsException extends LagerpositionServiceException {
 	private static final long serialVersionUID = 1L;
 	private final long id;
 	
-	public ArtikelIdExistsException(long id) {
-		super("Die Artikels-ID " + id + " existiert bereits");
+	public LagerpositionIdExistsException(long id) {
+		super("Die Lagerpositions-ID " + id + " existiert bereits");
 		this.id = id;
 		ArtikelService a;
 	}

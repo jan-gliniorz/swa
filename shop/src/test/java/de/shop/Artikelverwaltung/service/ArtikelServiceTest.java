@@ -1,4 +1,4 @@
-package de.shop.Artikelverwaltung.Service;
+package de.shop.Artikelverwaltung.service;
 
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -23,10 +23,10 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import de.shop.Artikelverwaltung.Service.ArtikelService.FetchType;
-import de.shop.Artikelverwaltung.Service.ArtikelService.OrderType;
+import de.shop.Artikelverwaltung.service.ArtikelService.FetchType;
+import de.shop.Artikelverwaltung.service.ArtikelService.OrderType;
 import de.shop.Artikelverwaltung.domain.Artikel;
-import de.shop.Artikelverwaltung.Service.ArtikelService;
+import de.shop.Artikelverwaltung.service.ArtikelService;
 import de.shop.Artikelverwaltung.domain.Lager;
 import de.shop.Util.AbstractTest;
 

@@ -26,7 +26,7 @@ import de.shop.Artikelverwaltung.domain.Artikel;
 //import de.shop.Artikelverwaltung.service.ArtikelService;
 import de.shop.Auftragsverwaltung.domain.Auftragsposition;
 import de.shop.Auftragsverwaltung.domain.Auftrag;
-import de.shop.Auftragsverwaltung.domain.Lieferung;
+import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Kundenverwaltung.service.KundeService;
 import de.shop.Kundenverwaltung.service.KundeService.FetchType;
@@ -70,7 +70,7 @@ public class AuftragServiceTest extends AbstractTest {
 //		Auftragsposition position1 = new Auftragsposition(artikel1, artikel1Anzahl);
 //		neuerAuftrag.addAuftragsposition(position1);
 		
-		//Artikel2 suchen und hinzufügen
+		//Artikel2 suchen und hinzufï¿½gen
 		
 		trans.begin();
 		Kunde kunde = kundeService.findKundenByKundennummer(KUNDE_ID_VORHANDEN, FetchType.MIT_BESTELLUNGEN, LOCALE);

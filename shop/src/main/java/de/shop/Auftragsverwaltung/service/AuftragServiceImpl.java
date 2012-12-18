@@ -33,7 +33,7 @@ import javax.validation.groups.Default;
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Auftragsverwaltung.domain.Auftragsposition;
 import de.shop.Auftragsverwaltung.domain.Auftrag;
-import de.shop.Auftragsverwaltung.domain.Lieferung;
+import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Kundenverwaltung.service.KundeService;
 import de.shop.Kundenverwaltung.service.KundeService.FetchType;
@@ -99,7 +99,7 @@ public class AuftragServiceImpl implements Serializable, AuftragService {
 		kunde.addAuftrag(auftrag);
 		auftrag.setKunde(kunde);
 		
-		//id's müssen bei neuen Objekten leer sein
+		//id's mï¿½ssen bei neuen Objekten leer sein
 		auftrag.setId(KEINE_ID);
 		for(Auftragsposition ap : auftrag.getAuftragspositionen()) {
 			ap.setId(KEINE_ID);

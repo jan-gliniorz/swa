@@ -1,44 +1,5 @@
 package de.shop.Artikelverwaltung.service;
 
-//import static org.hamcrest.CoreMatchers.both;
-//import static org.hamcrest.CoreMatchers.either;
-//
-//import static javax.persistence.TemporalType.DATE;
-//import static org.hamcrest.CoreMatchers.is;
-//import static org.hamcrest.CoreMatchers.notNullValue;
-//import static org.hamcrest.CoreMatchers.nullValue;
-//import static org.junit.Assert.assertThat;
-//import static org.junit.Assert.assertTrue;
-//
-//import java.lang.invoke.MethodHandle;
-//import java.lang.invoke.MethodHandles;
-//import java.math.BigDecimal;
-//import java.util.Calendar;
-//import java.util.Collection;
-//import java.util.Date;
-//import java.util.GregorianCalendar;
-//import java.util.List;
-//
-//import javax.inject.Inject;
-//import javax.transaction.HeuristicMixedException;
-//import javax.transaction.HeuristicRollbackException;
-//import javax.transaction.NotSupportedException;
-//import javax.transaction.RollbackException;
-//import javax.transaction.SystemException;
-//import javax.transaction.UserTransaction;
-//
-//import org.jboss.arquillian.junit.Arquillian;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.openqa.selenium.android.library.Logger;
-//
-//import de.shop.Artikelverwaltung.domain.Artikel;
-//import de.shop.Artikelverwaltung.domain.Lieferung;
-//import de.shop.Artikelverwaltung.domain.Lieferungsposition;
-//import de.shop.Artikelverwaltung.service.LieferungService.FetchType;
-//import de.shop.Kundenverwaltung.domain.Kunde;
-//import de.shop.Util.AbstractTest;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -70,7 +31,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import de.shop.Artikelverwaltung.domain.*;
-import de.shop.Artikelverwaltung.service.*;
 import de.shop.Artikelverwaltung.service.LieferungService.FetchType;
 import de.shop.Util.AbstractTest;
 
@@ -96,11 +56,13 @@ public class LieferungServiceTest extends AbstractTest {
 	
 	
 	private static final int ANZAHL_NEU = 3;
+	private static final Long ARTIKEL_ID_VORHANDEN = Long.valueOf(310);
 
 	
 	
 	@Inject
 	private LieferungService ls;
+	private ArtikelService as;
 	
 	/**
 	 */
@@ -137,19 +99,6 @@ public class LieferungServiceTest extends AbstractTest {
 	
 	/**
 	 */
-//	@Test
-//	public void findLieferungMitBestelldatumUngueltig() {
-//		// Given
-//		final Date bestelldatum = BESTELLDATUM_UNGUELTIG;
-//
-//		// When / Then
-//		thrown.expect(LieferungInvalidBestelldatumException.class);
-//		ls.findLieferungByBestelldatum(bestelldatum, LOCALE);
-//		
-//	}
-
-	/**
-	 */
 	@Test
 	public void findLieferungMitIdNichtVorhanden() {
 		// Given
@@ -169,46 +118,46 @@ public class LieferungServiceTest extends AbstractTest {
 	                                       SystemException, NotSupportedException {
 		// Given
 		//Attribute neueLieferung
-		final long id = ID_NEU;
 		final Date bestelldatum = BESTELLDATUM_NEU;
 		final Date lieferungsdatum = LIEFERUNGSDATUM_NEU;
 		
-		
-		//Attribute neueLieferungsposition
 		final int anzahl = ANZAHL_NEU;
-
-
-		//Attribute vorhandenerArtikel
-		final String bezeichnung = BEZEICHNUNG_VORHANDEN;
-		final String beschreibung = BESCHREIBUNG_VORHANDEN;
-		final BigDecimal preis = PREIS_VORHANDEN;
-		final String bild = BILD_VORHANDEN;
 		
+		final Long id = ARTIKEL_ID_VORHANDEN;
 
 		// When
+		
+		//Collection mit allen Lieferungen vorm Create
 		final Collection<Lieferung> lieferungenVorher = ls.findLieferungenAll(FetchType.NUR_LIEFERUNG, null);
 		final UserTransaction trans = getUserTransaction();
 		trans.commit();
 
+		//Objekt lieferung anlegen und Attribute setten
 		Lieferung lieferung = new Lieferung();
 		lieferung.setBestelldatum(bestelldatum);
 		lieferung.setLieferungsdatum(lieferungsdatum);
 		
-		final Artikel vorhandenerArtikel = new Artikel();
-		vorhandenerArtikel.setBezeichnung(bezeichnung);
-		vorhandenerArtikel.setBeschreibung(beschreibung);
-		vorhandenerArtikel.setBild(bild);
-		vorhandenerArtikel.setPreis(preis);
+		//Objekt vorhandenerArtikel anhand einer vorgegebenen Artikelnummer erstellen
+		trans.begin();
+		Artikel vorhandenerArtikel = as.findArtikelByID(id, de.shop.Artikelverwaltung.service.ArtikelService.FetchType.NUR_Artikel, LOCALE);
+		trans.commit();	
 		
+		//Objekt neueLieferungsposition erstellen und Attribute setten
 		final Lieferungsposition neueLieferungsposition = new Lieferungsposition();
 		neueLieferungsposition.setAnzahl(anzahl);
+		
+		//Objekt vorhandenerArtikel in neueLieferungsposition einfügen
 		neueLieferungsposition.setArtikel(vorhandenerArtikel);
+		
+		//Objekt neueLieferungsposition zum Objekt lieferung hinzufügen
 		lieferung.addLieferungsposition(neueLieferungsposition);
 	
+		//Objekt neueLieferung erstellen und ???
 		trans.begin();
 		Lieferung neueLieferung = ls.createLieferung(lieferung, LOCALE);
 		trans.commit();
 
+		//Collection mit allen Lieferungen nach dem Create
 		trans.begin();
 		final Collection<Lieferung> lieferungenNachher = ls.findLieferungenAll(FetchType.NUR_LIEFERUNG, null);
 		trans.commit();
@@ -314,35 +263,4 @@ public class LieferungServiceTest extends AbstractTest {
 		trans.commit();
 		assertThat(lieferungVorher.size() - 1, is(lieferungNachher.size()));
 	}
-	
-	/**
-	 */
-	/*@Test
-	public void neuesLieferungsdatumFuerLieferung() throws RollbackException, HeuristicMixedException, HeuristicRollbackException,
-	                                        SystemException, NotSupportedException {
-		// Given
-		final Long id = ID_VORHANDEN;
-
-		// When
-		Lieferung lieferung = ls.findLieferungById(id, FetchType.NUR_LIEFERUNG, LOCALE);
-		final UserTransaction trans = getUserTransaction();
-		trans.commit();
-		
-		final Date altesLieferungsdatum = lieferung.getLieferungsdatum();
-		final Date neuesLieferungsdatum = LIEFERUNGSDATUM_NEU;
-		
-		//lieferung.setLieferungsdatum(neuesLieferungsdatum);
-	
-		
-		trans.begin();
-		lieferung = ls.updateLieferung(lieferung, LOCALE);
-		trans.commit();
-		
-		// Then
-		assertThat(lieferung.getLieferungsdatum(), is(neuesLieferungsdatum));
-		trans.begin();
-		lieferung = ls.findLieferungById(id, FetchType.NUR_LIEFERUNG, LOCALE);
-		trans.commit();
-		assertThat(lieferung.getLieferungsdatum(), is(neuesLieferungsdatum));
-	}*/
 }
