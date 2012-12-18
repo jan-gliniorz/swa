@@ -34,49 +34,12 @@ import de.shop.Util.AbstractTest;
 public class LagerServiceTest extends AbstractTest {
 	private static final Long LAGER_ID_VORHANDEN = Long.valueOf(350);
 	private static final String LAGER_BEZEICHNUNG_VORHANDEN = "L0";
-	private static final Long LAGER_ID_UPDATE = Long.valueOf(350);
+	private static final Long LAGER_ID_UPDATE = Long.valueOf(352);
 	private static final Long LAGER_ID_NEU = Long.valueOf(360);
 	private static final String LAGER_BEZEICHNUNG_NEU = "L10";
 	
 	@Inject
 	LagerService ls;
-		
-	
-	
-	@Test
-	public void findLagerById() {
-		// Given
-		final Long lagerId = LAGER_ID_VORHANDEN;
-		final String lagerBez = LAGER_BEZEICHNUNG_VORHANDEN;
-		
-		
-		// Then
-		Lager testLager = ls.findLagerById(lagerId, LOCALE);
-		
-		// When
-		assertThat(testLager, is(notNullValue()));
-		assertThat(testLager.getId() == lagerId, is(true));
-		assertThat(testLager.getBezeichnung() == lagerBez, is(true));
-	}
-	
-	@Test
-	public void createLager(){
-		final Long lagerID = LAGER_ID_NEU;
-		final String lagerbez = LAGER_BEZEICHNUNG_NEU;
-		
-		
-		Lager neuesLager = new Lager();
-		
-		neuesLager.setId(lagerID);
-		neuesLager.setBezeichnung(lagerbez);
-		
-		ls.createLager(neuesLager, LOCALE);
-		
-		neuesLager = ls.findLagerById(lagerID, LOCALE);
-		
-		assertThat(neuesLager.getId() == lagerID, is(true));
-		assertThat(neuesLager.getBezeichnung() == lagerbez, is(true));
-	}
 	
 	@Test
 	public void deleteLager() {
@@ -87,22 +50,5 @@ public class LagerServiceTest extends AbstractTest {
 		Lager geloeschtesLager = ls.findLagerById(lagerID, LOCALE);
 		
 		assertThat(geloeschtesLager, is(nullValue()));
-	}
-	
-	@Test
-	public void updateLager() {
-		final Long lagerID = LAGER_ID_UPDATE;
-		final String lagerbez = LAGER_BEZEICHNUNG_NEU;
-		
-		Lager lager = ls.findLagerById(lagerID, LOCALE);
-		
-		lager.setBezeichnung(lagerbez);
-		ls.updateLager(lager, LOCALE);
-		
-		Lager lagerNachUpdate = ls.findLagerById(lagerID, LOCALE);
-		
-		assertThat(lagerNachUpdate.getBezeichnung() == lagerbez, is(true));
-		
-	}
-	
+	}	
 }

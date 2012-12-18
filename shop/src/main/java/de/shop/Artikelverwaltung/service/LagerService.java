@@ -79,6 +79,7 @@ public class LagerService implements Serializable {
 //		return lagerpositionen;
 //	}
 	/**
+	 * @throws Exception 
 	 */
 	public Lager findLagerById(Long id, Locale locale) {
 	
@@ -90,6 +91,7 @@ public class LagerService implements Serializable {
 			lager = em.find(Lager.class, id);	
 		}
 		catch (NoResultException e) {
+			//throw new Exception("kein Lager mit Id:" + id + "gefunden");
 			return null;
 		}
 
@@ -170,7 +172,7 @@ public class LagerService implements Serializable {
 			}
 		}
 		catch (NoResultException e) {
-			LOGGER.finest("Neue Lager");
+			LOGGER.finest("Lager mit id:" + lager.getId() + " konnte nicht gefunden werden");
 		}
 
 		em.merge(lager);
