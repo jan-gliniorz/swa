@@ -5,8 +5,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,10 +21,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
-//import de.shop.Artikelverwaltung.service.ArtikelService;
+import de.shop.Artikelverwaltung.service.ArtikelService;
 import de.shop.Auftragsverwaltung.domain.Auftragsposition;
 import de.shop.Auftragsverwaltung.domain.Auftrag;
-import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Kundenverwaltung.service.KundeService;
 import de.shop.Kundenverwaltung.service.KundeService.FetchType;
@@ -49,8 +46,8 @@ public class AuftragServiceTest extends AbstractTest {
 	@Inject
 	KundeService kundeService;
 	
-	//@Inject
-	//ArtikelService artikelService;
+	@Inject
+	ArtikelService artikelService;
 	
 	@Test
 	@Ignore
@@ -63,17 +60,23 @@ public class AuftragServiceTest extends AbstractTest {
 		final short artikel2Anzahl = ARTIKEL_2_ANZAHL; 
 		
 		// When
-		//Artikel suchen
+		Artikel artikel1 = artikelService.findArtikelByID(artikel1Id, de.shop.Artikelverwaltung.service.ArtikelService.FetchType.NUR_Artikel, LOCALE);
 		final UserTransaction trans = getUserTransaction();
+		trans.commit();
 		
 		Auftrag neuerAuftrag = new Auftrag();
-//		Auftragsposition position1 = new Auftragsposition(artikel1, artikel1Anzahl);
-//		neuerAuftrag.addAuftragsposition(position1);
-		
-		//Artikel2 suchen und hinzuf�gen
+		Auftragsposition position1 = new Auftragsposition(artikel1, artikel1Anzahl);
+		neuerAuftrag.addAuftragsposition(position1);
 		
 		trans.begin();
-		Kunde kunde = kundeService.findKundenByKundennummer(KUNDE_ID_VORHANDEN, FetchType.MIT_BESTELLUNGEN, LOCALE);
+		Artikel artikel2 = artikelService.findArtikelByID(artikel2Id, de.shop.Artikelverwaltung.service.ArtikelService.FetchType.NUR_Artikel, LOCALE);
+		trans.commit();
+		
+		Auftragsposition position2 = new Auftragsposition(artikel2, artikel2Anzahl);
+		neuerAuftrag.addAuftragsposition(position2);
+		
+		trans.begin();
+		Kunde kunde = kundeService.findKundenByKundennummer(kundeId, FetchType.MIT_BESTELLUNGEN, LOCALE);
 		trans.commit();
 		
 		trans.begin();
