@@ -32,11 +32,11 @@ import de.shop.Util.AbstractTest;
 
 @RunWith(Arquillian.class)
 public class ArtikelServiceTest extends AbstractTest {
-	private static final Long ARTIKEL_ID_VORHANDEN = Long.valueOf(310);
-	private static final String ARTIKEL_BEZEICHNUNG_VORHANDEN = "Hose";
+	private static final Long ARTIKEL_ID_VORHANDEN = Long.valueOf(301);
+	private static final String ARTIKEL_BEZEICHNUNG_VORHANDEN = "emd";
 	private static final short ARTIKEL_ANZAHL = 1;
 	private static final Long ARTIKEL_ID_UPDATE = Long.valueOf(300);
-	private static final Long ARTIKEL_ID_NEU = Long.valueOf(314);
+	private static final Long ARTIKEL_ID_DELETE = Long.valueOf(312);
 	private static final String ARTIKEL_BEZEICHNUNG_NEU = "Hose";
 	private static final String ARTIKEL_BESCHREIBUNG_NEU = "Regenschirm";
 	private static final BigDecimal ARTIKEL_PREIS_NEU = BigDecimal.valueOf(39.0);
@@ -69,33 +69,32 @@ public class ArtikelServiceTest extends AbstractTest {
 		assertThat(testArtikel.getBezeichnung() == artikelBez, is(true));
 	}
 	
+	
 	@Test
 	public void createArtikel(){
-		final Long artikelID = ARTIKEL_ID_NEU;
+	
 		final String artikelbez = ARTIKEL_BEZEICHNUNG_NEU;
 		final String artikelbes = ARTIKEL_BESCHREIBUNG_NEU;
 		final BigDecimal artikelpre = ARTIKEL_PREIS_NEU;
 		
 		Artikel neuerArtikel = new Artikel();
 		
-		neuerArtikel.setId(artikelID);
+		
 		neuerArtikel.setBeschreibung(artikelbes);
 		neuerArtikel.setBezeichnung(artikelbez);
 		neuerArtikel.setPreis(artikelpre);
 		
+		List<Artikel> artikelalt = as.findArtikelAll(FetchType.NUR_Artikel, OrderType.ID);		
 		as.createArtikel(neuerArtikel, LOCALE);
+		List<Artikel> artikelneu = as.findArtikelAll(FetchType.NUR_Artikel, OrderType.ID);
 		
-		as.findArtikelByID(artikelID, FetchType.NUR_Artikel, LOCALE);
-		
-		assertThat(neuerArtikel.getId() == artikelID, is(true));
-		assertThat(neuerArtikel.getBezeichnung() == artikelbez, is(true));
-		assertThat(neuerArtikel.getBeschreibung() == artikelbes, is(true));
-		assertThat(neuerArtikel.getPreis() == artikelpre, is(true));
+		assertThat(artikelneu.size(), is(artikelalt.size()+1));
+
 	}
 	
 	@Test
 	public void deleteArtikel() {
-		final Long artikelID = ARTIKEL_ID_VORHANDEN;
+		final Long artikelID = ARTIKEL_ID_DELETE;
 		
 		Artikel neuerArtikel = as.findArtikelByID(artikelID, FetchType.NUR_Artikel, LOCALE);
 		as.deleteArtikel(neuerArtikel);

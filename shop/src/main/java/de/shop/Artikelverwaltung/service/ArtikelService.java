@@ -112,7 +112,7 @@ public class ArtikelService implements Serializable {
 				
 				case MIT_POSITIONEN:
 					artikel = em.createNamedQuery(Artikel.FIND_Artikel_BY_ID_Lagerpositionen, Artikel.class)
-							  .setParameter(Artikel.FIND_Artikel_BY_Artikel_ID, id)
+							  .setParameter(Artikel.PARAM_ID, id)
 							  .getSingleResult();
 					break;
 	
