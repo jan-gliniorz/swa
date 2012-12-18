@@ -1,4 +1,4 @@
-package de.shop.Artikelverwaltung.Service;
+package de.shop.Artikelverwaltung.service;
 
 import static de.shop.Util.Constants.KEINE_ID;
 import static java.util.logging.Level.FINER;
@@ -28,7 +28,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
-import de.shop.Artikelverwaltung.Service.ArtikelService.FetchType;
+import de.shop.Artikelverwaltung.service.ArtikelService.FetchType;
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lager;
 import de.shop.Artikelverwaltung.domain.Lagerposition;

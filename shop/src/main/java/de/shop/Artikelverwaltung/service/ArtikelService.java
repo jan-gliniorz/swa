@@ -1,4 +1,4 @@
-package de.shop.Artikelverwaltung.Service;
+package de.shop.Artikelverwaltung.service;
 
 import static de.shop.Util.Constants.KEINE_ID;
 import static java.util.logging.Level.FINER;
