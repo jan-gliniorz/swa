@@ -6,7 +6,6 @@ import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import de.shop.Auftragsverwaltung.domain.Lieferungsposition;
 import de.shop.Util.IdGroup;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
