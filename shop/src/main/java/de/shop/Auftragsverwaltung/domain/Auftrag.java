@@ -1,31 +1,47 @@
 package de.shop.Auftragsverwaltung.domain;
 
-import de.shop.Kundenverwaltung.domain.*;
-import de.shop.Util.IdGroup;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import org.hibernate.validator.constraints.*;
-
-import static javax.persistence.FetchType.EAGER;
-import static javax.persistence.TemporalType.TIMESTAMP;
+import javax.validation.constraints.Min;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import de.shop.Kundenverwaltung.domain.Kunde;
+import de.shop.Util.IdGroup;
 
 
 /**
@@ -62,7 +78,7 @@ public class Auftrag implements Serializable {
 	@XmlAttribute
 	private Long id = KEINE_ID;
 	
-	@OneToMany(fetch = EAGER)
+	@OneToMany(fetch = EAGER, cascade = PERSIST)
 	@JoinColumn(name = "auftrag_FID", nullable = false)
 	@OrderColumn(name = "idx")
 	@NotEmpty(message = "{auftragsverwaltung.auftrag.auftragspositionen.notEmpty}")
@@ -80,7 +96,7 @@ public class Auftrag implements Serializable {
 	private URI rechnungUri;
 	
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "kunde_FID", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "kunde_FID", nullable = false, updatable = false)
 	@XmlTransient
 	private Kunde kunde;
 	

@@ -16,7 +16,6 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -50,7 +49,6 @@ public class AuftragServiceTest extends AbstractTest {
 	ArtikelService artikelService;
 	
 	@Test
-	@Ignore
 	public void createAuftrag() throws NotSupportedException, SystemException, SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
 		// Given
 		final Long kundeId = KUNDE_ID_VORHANDEN;
@@ -87,7 +85,7 @@ public class AuftragServiceTest extends AbstractTest {
 		assertThat(neuerAuftrag.getAuftragspositionen().size(), is(2));
 		for(Auftragsposition aPos : neuerAuftrag.getAuftragspositionen()) {
 			assertThat(aPos.getArtikel().getId(), anyOf(is(ARTIKEL_1_ID), is(ARTIKEL_2_ID)));
-		}
+		}															
 	}
 	
 	@Test

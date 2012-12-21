@@ -1,21 +1,32 @@
 package de.shop.Auftragsverwaltung.domain;
 
-import de.shop.Artikelverwaltung.domain.*;
-import de.shop.Util.IdGroup;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import java.math.BigDecimal;
+import java.net.URI;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import java.math.BigDecimal;
-import java.net.URI;
+import de.shop.Artikelverwaltung.domain.Artikel;
+import de.shop.Util.IdGroup;
 
 
 /**
@@ -70,7 +81,7 @@ public class Auftragsposition implements Serializable {
 	public Auftragsposition(Artikel artikel, int anzahl) {
 		this.artikel = artikel;
 		this.anzahl = anzahl;
-//		this.preis = artikel.getPreis() * this.anzahl; //TODO: Preis berechnen
+		this.preis = artikel.getPreis().multiply(new BigDecimal(this.anzahl));
 	}
 
 	public Long getId() {
