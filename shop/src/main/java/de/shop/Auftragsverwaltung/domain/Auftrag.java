@@ -90,11 +90,11 @@ public class Auftrag implements Serializable {
 	@OneToOne(mappedBy = "auftrag")
 	@XmlTransient
 	private Rechnung rechnung;
-	
+
 	@Transient
 	@XmlElement(name = "rechnung")
 	private URI rechnungUri;
-	
+
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "kunde_FID", nullable = false, updatable = false)
 	@XmlTransient
@@ -148,6 +148,14 @@ public class Auftrag implements Serializable {
 	public void setKunde(Kunde kunde) {
 		this.kunde = kunde;
 	}
+	
+	public URI getKundeUri() {
+		return kundeUri;
+	}
+
+	public void setKundeUri(URI kundeUri) {
+		this.kundeUri = kundeUri;
+	}
 
 	public List<Auftragsposition> getAuftragspositionen() {
 		return Collections.unmodifiableList(auftragspositionen);
@@ -173,6 +181,22 @@ public class Auftrag implements Serializable {
 		
 		this.auftragspositionen.add(position);
 		return this;
+	}
+	
+	public Rechnung getRechnung() {
+		return rechnung;
+	}
+
+	public void setRechnung(Rechnung rechnung) {
+		this.rechnung = rechnung;
+	}
+	
+	public URI getRechnungUri() {
+		return rechnungUri;
+	}
+
+	public void setRechnungUri(URI rechnungUri) {
+		this.rechnungUri = rechnungUri;
 	}
 	
 	@PrePersist

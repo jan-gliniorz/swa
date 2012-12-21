@@ -1,4 +1,4 @@
-package de.shop.Auftragsverwaltung.service;
+ package de.shop.Auftragsverwaltung.service;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.PARAMETER;

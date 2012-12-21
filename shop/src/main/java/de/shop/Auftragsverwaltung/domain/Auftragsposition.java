@@ -116,6 +116,13 @@ public class Auftragsposition implements Serializable {
 		this.preis = preis;
 	}
 	
+	public URI getArtikelUri() {
+		return artikelUri;
+	}
+
+	public void setArtikelUri(URI artikelUri) {
+		this.artikelUri = artikelUri;
+	}	
 
 	@Override
 	public int hashCode() {

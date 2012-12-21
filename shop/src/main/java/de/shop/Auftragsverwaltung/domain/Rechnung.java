@@ -103,6 +103,14 @@ public class Rechnung implements Serializable {
 	public void setAuftrag(Auftrag auftrag) {
 		this.auftrag = auftrag;
 	}
+	
+	public URI getAuftragUri() {
+		return auftragUri;
+	}
+
+	public void setAuftragUri(URI auftragUri) {
+		this.auftragUri = auftragUri;
+	}
 
 	public Date getErstelltAm() {
 		return this.erstelltAm == null ? null : (Date) this.erstelltAm.clone();
