@@ -27,14 +27,19 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Table(name ="lieferungsposition")
 @NamedQueries({
 	@NamedQuery(name = Lieferungsposition.LIEFERUNGSPOSITION_BY_ID, 
-			query = "SELECT lp " +
-					"FROM Lieferungsposition lp "+
-					"WHERE lp.id = :"+Lieferungsposition.PARAM_ID),
+			query = "SELECT lp" +
+					" FROM Lieferungsposition lp"+
+					" WHERE lp.id = :"+Lieferungsposition.PARAM_ID),
 	@NamedQuery(name = Lieferungsposition.LIEFERUNGSPOSITION_BY_ID_ARTIKEL,
 			query = "SELECT DISTINCT lp" +
 					" FROM Lieferungsposition lp" +
 					" JOIN lp.artikel"+
 					" WHERE lp.id = :" + Lieferungsposition.PARAM_ID),
+	@NamedQuery(name = Lieferungsposition.LIEFERUNGSPOSITIONEN_BY_LIEFERUNG_ID,
+			query = "SELECT lp" + 
+					" FROM Lieferung li"+
+					" JOIN li.lieferungsposition lp" +
+					" WHERE li.id = :" + Lieferungsposition.PARAM_ID)
 })
 
 public class Lieferungsposition implements Serializable {
@@ -44,6 +49,7 @@ public class Lieferungsposition implements Serializable {
 	private static final String PREFIX = "Lieferungsposition.";
 	public static final String LIEFERUNGSPOSITION_BY_ID = PREFIX + "findLieferungspositionById";
 	public static final String LIEFERUNGSPOSITION_BY_ID_ARTIKEL = PREFIX  + "findLieferungspositionByIdArtikel";
+	public static final String LIEFERUNGSPOSITIONEN_BY_LIEFERUNG_ID = PREFIX + "findLieferungspositionenByLieferungId";
 	
 	public static final String PARAM_ID = "id";
 	

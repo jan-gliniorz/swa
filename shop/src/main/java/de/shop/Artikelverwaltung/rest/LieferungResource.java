@@ -105,6 +105,26 @@ public class LieferungResource {
 	}
 
 	
+	@GET
+	@Path("{lieferungid:[1-9][0-9]*}")
+	public List<Lieferungsposition> findLieferungspositionByLieferungId(@PathParam("lieferungid") Long id, Locale locale, @Context UriInfo uriInfo) {
+		
+		final List <Lieferungsposition> lieferungspositionen = ls.findLieferungspositionenByLieferungId(id, locale);
+		
+		if (lieferungspositionen == null) {
+			final String msg = "Keine Lieferungspositionen gefunden für Lieferungs-ID " + id;
+			throw new NotFoundException(msg);
+		}
+		
+		for (Lieferungsposition lp : lieferungspositionen) {
+			uriHelperLieferungsposition.updateUriLieferungsposition(lp, uriInfo);
+		}
+		
+		return lieferungspositionen;
+		
+	}
+	
+	
 	@POST
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	@Produces

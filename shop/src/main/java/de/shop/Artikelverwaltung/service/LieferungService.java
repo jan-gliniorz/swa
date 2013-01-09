@@ -247,105 +247,20 @@ public class LieferungService implements Serializable {
 			throw new LieferungspositionInvalidIdException(lieferungspositionId, violations);
 	}
 	
+	
 	/**
 	 */
-	public void deleteLieferungsposition(Lieferungsposition lieferungsposition) {
-		if (lieferungsposition == null) {
-			return;
-		}
-		
-		try {
-			lieferungsposition = findLieferungspositionById(lieferungsposition.getId(), Locale.getDefault());
-		}
-		catch (LieferungspositionInvalidIdException e) {
-			return;
-		}
-		
-		if (lieferungsposition == null) {
-			return;
-		}
-
-		em.remove(lieferungsposition);
-	}	
 	
-	/*public Lieferungsposition findLieferungspositionById(Long id, Locale locale) {
+public List <Lieferungsposition> findLieferungspositionenByLieferungId(Long id, Locale locale) {
 		
-		validateLieferungspositionId(id, locale);
-	
-		Lieferungsposition lieferungsposition = null;
-	
-		try {
-			lieferungsposition = em.find(Lieferungsposition.class, id);	
-		}
-		catch (NoResultException e) {
-			return null;
-		}
-
-		return lieferungsposition;
+		validateLieferungId(id, locale);
+		
+		List<Lieferungsposition> lieferungspositionen = null;
+		
+		lieferungspositionen = em.createNamedQuery(Lieferungsposition.LIEFERUNGSPOSITIONEN_BY_LIEFERUNG_ID, Lieferungsposition.class)
+                    .setParameter(Lieferungsposition.PARAM_ID, id)
+                    .getResultList();
+		
+		return lieferungspositionen;
 	}
-	
-	private void validateLieferungspositionId(Long lieferungspositionId, Locale locale) {
-		final Validator validator = validationService.getValidator(locale);
-		final Set<ConstraintViolation<Lieferungsposition>> violations = validator.validateValue(Lieferungsposition.class,
-			                                                                           "id",
-			                                                                           lieferungspositionId,
-			                                                                           IdGroup.class);
-	
-		if (!violations.isEmpty())
-			throw new LieferungspositionInvalidIdException(lieferungspositionId, violations);
-	}*/
-	
-	/*public Lieferungsposition createLieferungsposition(Lieferungsposition lieferungsposition, Locale locale) {
-		if (lieferungsposition == null) {
-			return lieferungsposition;
-		}
-
-		// Werden alle Constraints beim Einfuegen gewahrt?
-		validateLieferungsposition(lieferungsposition, locale);
-		
-		lieferungsposition.setId(KEINE_ID);
-		em.persist(lieferungsposition);
-		return lieferungsposition;		
-	}
-	
-	private void validateLieferungsposition (Lieferungsposition lieferungsposition, Locale locale) {
-		
-
-		// Werden alle Constraints beim Einfuegen gewahrt?
-		final Validator validator = validationService.getValidator(locale);
-		
-		final Set<ConstraintViolation<Lieferungsposition>> violations = validator.validate(lieferungsposition);
-		if (!violations.isEmpty()) {
-			throw new LieferungspositionValidationException(lieferungsposition, violations);
-		}
-	}*/
-
-
-	/*public Lieferungsposition updateLieferungsposition (Lieferungsposition lieferungsposition, Locale locale) {
-		if (lieferungsposition == null) {
-				return null;
-		}
-
-		// Werden alle Constraints beim Modifizieren gewahrt?
-		validateLieferungsposition(lieferungsposition, locale);
-			
-		
-		try {
-			final Lieferungsposition vorhandeneLieferungsposition = em.createNamedQuery(Lieferungsposition.LIEFERUNGSPOSITION_BY_ID,
-						                                               Lieferungsposition.class)
-						                              .setParameter(Lieferungsposition.PARAM_ID, lieferungsposition.getId())
-						                              .getSingleResult();
-				
-		
-			if (vorhandeneLieferungsposition.getId().longValue() != lieferungsposition.getId().longValue()) {
-				throw new LieferungspositionIdExistsException(lieferungsposition.getId());
-			}
-		}
-		catch (NoResultException e) {
-			LOGGER.finest("Neue Lieferungsposition");
-		}
-
-		em.merge(lieferungsposition);
-		return lieferungsposition;
-	}*/
 }

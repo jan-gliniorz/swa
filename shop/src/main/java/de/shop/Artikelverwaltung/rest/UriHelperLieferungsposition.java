@@ -48,4 +48,12 @@ public class UriHelperLieferungsposition {
 		final URI uri = ub.build(lieferungsposition.getId());
 		return uri;
 	}
+	
+	public URI getUriLieferungspositionenByLieferungId(Lieferung lieferung, UriInfo uriInfo) {
+		final UriBuilder ub = uriInfo.getBaseUriBuilder()
+		                             .path(LieferungResource.class)
+		                             .path(LieferungResource.class, "findLieferungspositionByLieferungId");
+		final URI uri = ub.build(lieferung.getId());
+		return uri;
+	}
 }

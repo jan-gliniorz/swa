@@ -34,7 +34,8 @@ public class UriHelperLieferung {
 		
 		if (lieferungspositionen != null && !lieferungspositionen.isEmpty()) {
 
-			final URI lieferungspositionUri = uriHelperLieferungsposition.getUriLieferungsposition(lieferung.getLieferungsposition(), uriInfo);
+			
+			final URI lieferungspositionUri = uriHelperLieferungsposition.getUriLieferungspositionenByLieferungId(lieferung, uriInfo);
 			lieferung.setLieferungspositionUri(lieferungspositionUri);
 		}				
 	}
