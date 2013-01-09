@@ -8,15 +8,18 @@ import static de.shop.Util.Constants.MIN_ID;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 import de.shop.Util.IdGroup;
 
-import java.sql.Timestamp;
 import java.util.*;
 
 
@@ -61,7 +64,39 @@ public class Lieferung implements Serializable {
 	@JoinColumn(name = "lieferung_FID", nullable = false)
 	//@OrderColumn(name = "idx")
 	@NotEmpty(message = "{artikelverwaltung.lieferung.lieferungspositionen.notEmpty}")
+	@XmlElementWrapper(name = "lieferungspositionen", required = true)
+	@XmlElement (name = "lieferungspositionen", required = true)
 	private List<Lieferungsposition> lieferungspositionen;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name= "lieferung_ID", nullable = false, updatable = false, precision=LONG_ANZ_ZIFFERN)
+	@Min(value = MIN_ID, message = "{artikelverwaltung.lieferung.id.min}", groups = IdGroup.class)
+	@XmlAttribute
+	private Long id = KEINE_ID;
+
+	@Temporal(TemporalType.DATE)
+	
+	@NotNull(message = "{artikelverwaltung.lieferung.bestelldatum.notNull}")
+	@XmlElement
+	private Date bestelldatum;
+
+	@Temporal(TemporalType.DATE)
+	@XmlElement
+	private Date lieferungsdatum;
+	
+	@Column(name="erstellt_am")
+	@Temporal(TIMESTAMP)
+	@XmlElement
+	private Date erstelltAm;
+
+	@Column(name="geaendert_am")
+	@Temporal(TIMESTAMP)
+	@XmlElement
+	private Date geaendertAm;
+
+	public Lieferung() {
+	}
 	
 	public List<Lieferungsposition> getLieferungsposition(){
 		return Collections.unmodifiableList(lieferungspositionen);
@@ -89,32 +124,7 @@ public class Lieferung implements Serializable {
 		lieferungspositionen.add(lieferungsposition);
 		return this;
 	}
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name= "lieferung_ID", nullable = false, updatable = false, precision=LONG_ANZ_ZIFFERN)
-	@Min(value = MIN_ID, message = "{artikelverwaltung.lieferung.id.min}", groups = IdGroup.class)
-	private Long id = KEINE_ID;
-
-	@Temporal(TemporalType.DATE)
 	
-	@NotNull(message = "{artikelverwaltung.lieferung.bestelldatum.notNull}")
-	private Date bestelldatum;
-
-	@Temporal(TemporalType.DATE)
-	private Date lieferungsdatum;
-	
-	@Column(name="erstellt_am")
-	@Temporal(TIMESTAMP)
-	private Date erstelltAm;
-
-	@Column(name="geaendert_am")
-	@Temporal(TIMESTAMP)
-	private Date geaendertAm;
-
-	public Lieferung() {
-	}
-
 	public Long getId() {
 		return this.id;
 	}
@@ -130,7 +140,15 @@ public class Lieferung implements Serializable {
 	public void setBestelldatum(Date bestelldatum) {
 		this.bestelldatum = bestelldatum == null ? null : (Date) bestelldatum.clone();
 	}
+	
+	public Date getLieferungsdatum() {
+		return lieferungsdatum == null ? null : (Date) lieferungsdatum.clone();
+	}
 
+	public void setLieferungsdatum(Date lieferungsdatum) {
+		this.lieferungsdatum = lieferungsdatum == null ? null : (Date) lieferungsdatum.clone();
+	}
+	
 	public Date getErstelltAm() {
 		return this.erstelltAm == null ? null : (Date) this.erstelltAm.clone();
 	}
@@ -147,13 +165,7 @@ public class Lieferung implements Serializable {
 		this.geaendertAm = geaendertAm == null ? null : (Date) geaendertAm.clone();
 	}
 
-	public Date getLieferungsdatum() {
-		return lieferungsdatum == null ? null : (Date) lieferungsdatum.clone();
-	}
 
-	public void setLieferungsdatum(Date lieferungsdatum) {
-		this.lieferungsdatum = lieferungsdatum == null ? null : (Date) lieferungsdatum.clone();
-	}
 	
 	@PrePersist
 	private void prePersist() {

@@ -6,9 +6,13 @@ import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
 
 import java.io.Serializable;
+import java.net.URI;
+
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.*;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
@@ -43,23 +47,29 @@ public class Lieferungsposition implements Serializable {
 	
 	public static final String PARAM_ID = "id";
 	
-//	@ManyToOne(optional = false)
-//	@JoinColumn(name = "lieferung_FID", nullable = false)
-//
-//	private Lieferung lieferung;
-//	
-//	public Lieferung getLieferung(){
-//		return lieferung;
-//	}
-//	
-//	public void setLieferung(Lieferung lieferung){
-//		this.lieferung = lieferung;
-//	}
-	
 	@ManyToOne(fetch=FetchType.LAZY, optional = false)
 	@JoinColumn(name="artikel_FID", nullable = false)
 	@NotNull(message = "{artikelverwaltung.lieferungsposition.artikel.notNull}")
+	@XmlTransient
 	private Artikel artikel;
+	
+	@Transient
+	@XmlElement(name = "artikel", required = true)
+	private URI artikelUri;	
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column (name= "lieferungsposition_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)	
+	@Min(value = MIN_ID, message = "{artikelverwaltung.lieferungsposition.id.min}", groups = IdGroup.class)
+	@XmlAttribute
+	private Long id=KEINE_ID ;
+	
+	@NotNull(message = "{artikelverwaltung.lieferungsposition.anzahl.notNull}")
+	@XmlElement
+	private int anzahl;
+
+	public Lieferungsposition() {
+	}
 	
 	public Artikel getArtikel(){
 		return artikel;
@@ -69,20 +79,14 @@ public class Lieferungsposition implements Serializable {
 		this.artikel = artikel;
 	}
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column (name= "lieferungsposition_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)	
-	@Min(value = MIN_ID, message = "{artikelverwaltung.lieferungsposition.id.min}", groups = IdGroup.class)
-	private Long id=KEINE_ID ;
-
-	
-	@NotNull(message = "{artikelverwaltung.lieferungsposition.anzahl.notNull}")
-	private int anzahl;
-
-	
-	public Lieferungsposition() {
+	public URI getArtikelUri() {
+		return artikelUri;
 	}
 
+	public void setArtikelUri(URI artikelUri) {
+		this.artikelUri = artikelUri;
+	}
+	
 	public Long getId() {
 		return this.id;
 	}

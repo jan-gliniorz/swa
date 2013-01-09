@@ -2,7 +2,6 @@ package de.shop.Artikelverwaltung.domain;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -12,14 +11,8 @@ import java.util.Set;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lieferung;
-import de.shop.Kundenverwaltung.domain.Kunde;
 
-import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
@@ -39,8 +32,6 @@ public class LieferungTest extends AbstractDomainTest {
 	private static final Date BESTELLDATUM_NEU = new GregorianCalendar(2012,Calendar.DECEMBER,31).getTime();
 	private static final int POS1ANZ_NEU = 3;
 	private static final Long POS1ARTIKELID_NEU = Long.valueOf(303);
-	private static final Long ID_NEU = Long.valueOf(452);
-
 
 	
 	@Test
