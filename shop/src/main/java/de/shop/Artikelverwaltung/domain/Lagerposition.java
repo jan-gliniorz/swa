@@ -3,8 +3,14 @@ package de.shop.Artikelverwaltung.domain;
 import static javax.persistence.TemporalType.TIMESTAMP;
 import java.util.*;
 import java.io.Serializable;
+import java.net.URI;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import de.shop.Util.IdGroup;
 import static de.shop.Util.Constants.KEINE_ID;
@@ -30,7 +36,7 @@ import java.sql.Timestamp;
 	@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_Artikel,
 				    query = "SELECT lp FROM Lagerposition lp WHERE lp.artikel.id = :" + Lagerposition.PARAM_Artikel)
   })
-
+@XmlRootElement
 public class Lagerposition implements Serializable {	
 	
 	private static final String PREFIX = "Lagerposition.";
@@ -53,29 +59,43 @@ public class Lagerposition implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "lagerposition_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "artikelverwaltung.lagerposition.id.min", groups = IdGroup.class)
+	@XmlAttribute
 	private Long id = KEINE_ID;
 	
 	@ManyToOne
 	@JoinColumn(name="lager_FID", nullable = false)
 	@OrderColumn(name="erstellt_am")
 	@NotNull(message = "artikelverwaltung.lagerposition.lager.notNull")
+	@XmlTransient
 	private Lager lager;
 	
+	@Transient
+	@XmlElement(name = "lager", required = true)
+	private URI lagerUri;
+
 	@ManyToOne
 	@JoinColumn(name="artikel_FID", nullable = false)
 	@OrderColumn(name="erstellt_am")
 	@NotNull(message = "artikelverwaltung.lagerposition.artikel.notNull")
+	@XmlTransient
 	private Artikel artikel;
+	
+	@Transient
+	@XmlElement(name = "artikel", required = true)
+	private URI artikelUri;
 
 	@Min(value = 1, message = "artikelverwaltung.lagerposition.anzahl.min")
+	@XmlElement
 	private int anzahl;
 
 	@Column(name="erstellt_am")
 	@Temporal(TIMESTAMP)
+	@XmlElement
 	private Date erstelltAm;
 
 	@Column(name="geaendert_am")
 	@Temporal(TIMESTAMP)
+	@XmlElement
 	private Date geaendertAm;
 
 
@@ -97,6 +117,14 @@ public class Lagerposition implements Serializable {
 	public void setLager(Lager lager){
 		this.lager = lager;
 	}
+	
+	public URI getLagerUri() {
+		return lagerUri;
+	}
+
+	public void setLagerUri(URI lagerUri) {
+		this.lagerUri = lagerUri;
+	}
 
 	public void setArtikel(Artikel artikel){
 		this.artikel = artikel;
@@ -112,6 +140,14 @@ public class Lagerposition implements Serializable {
 
 	public void setAnzahl(int anzahl) {
 		this.anzahl = anzahl;
+	}
+	
+	public URI getArtikelUri() {
+		return artikelUri;
+	}
+
+	public void setArtikelUri(URI artikelUri) {
+		this.artikelUri = artikelUri;
 	}
 
 

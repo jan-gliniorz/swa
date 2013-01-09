@@ -7,6 +7,10 @@ import static de.shop.Util.Constants.KEINE_ID;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -36,6 +40,7 @@ import java.util.*;
 						+ " WHERE a.bezeichnung = :" + Lager.PARAM_Bezeichnung)
    })
 
+@XmlRootElement
 public class Lager implements Serializable {	
 	
 	private static final String PREFIX = "Lager.";
@@ -53,20 +58,26 @@ public class Lager implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "lager_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "artikelverwaltung.lager.id.min", groups = IdGroup.class)
+	@XmlAttribute
 	private Long id = KEINE_ID;
 
 	@OneToMany(mappedBy = "lager")
+	@XmlElementWrapper(name = "lagerpositionen", required = true)
+	@XmlElement(name = "lagerposition", required = true)
 	private List<Lagerposition> lagerpositionen;
 
 	@NotBlank(message = "artikelverwaltung.lager.bezeichnung.notBlank")
+	@XmlElement
 	private String bezeichnung;
 
 	@Column(name="erstellt_am")
 	@Temporal(TIMESTAMP)
+	@XmlElement
 	private Date erstelltAm;
 
 	@Column(name="geaendert_am")
 	@Temporal(TIMESTAMP)
+	@XmlElement
 	private Date geaendertAm;
 
 	public Lager() {

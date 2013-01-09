@@ -1,29 +1,42 @@
 package de.shop.Artikelverwaltung.domain;
 
+import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
-import javax.inject.Named;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import com.sun.xml.internal.rngom.util.Uri;
 
-import de.shop.Auftragsverwaltung.domain.Auftrag;
-import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Util.IdGroup;
-import static de.shop.Util.Constants.KEINE_ID;
-import java.sql.Timestamp;
-import java.util.*;
-import java.math.BigDecimal;
 
 /**
  * The persistent class for the artikel database table.
@@ -89,10 +102,13 @@ public class Artikel implements Serializable {
 
 	@OneToMany(mappedBy = "artikel")
 	//@NotEmpty(message = "artikelverwaltung.artikel.lagerposition.notEmpty") //TODO:Fehlermeldung entfernen.
-	@XmlElementWrapper(name = "lagerpositionen", required = true)
-	@XmlElement(name = "lagerpositionen", required = true)
+	@XmlTransient
 	private List<Lagerposition> lagerpositionen;
 	
+	@Transient
+	@XmlElement(name = "lagerpositionen")
+	private URI lagerpositionenUri; 
+
 	@Lob
 	@XmlElement
 	private String beschreibung;
@@ -136,6 +152,14 @@ public class Artikel implements Serializable {
 
 	public void setBeschreibung(String beschreibung) {
 		this.beschreibung = beschreibung;
+	}
+	
+	public URI getLagerpositionenUri() {
+		return lagerpositionenUri;
+	}
+
+	public void setLagerpositionenUri(URI lagerpositionenUri) {
+		this.lagerpositionenUri = lagerpositionenUri;
 	}
 
 	public String getBezeichnung() {
