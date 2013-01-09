@@ -1,17 +1,46 @@
 package de.shop.Kundenverwaltung.domain;
 
-import static javax.persistence.CascadeType.PERSIST;
-import static javax.persistence.TemporalType.TIMESTAMP;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+import static java.util.logging.Level.FINER;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.TemporalType.TIMESTAMP;
+
 import java.io.Serializable;
-import javax.persistence.*;
+import java.lang.invoke.MethodHandles;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Logger;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.hibernate.validator.constraints.Email;
-import java.util.*;
-import de.shop.Auftragsverwaltung.domain.*;;
+
+import de.shop.Auftragsverwaltung.domain.Auftrag;
 
 /**
  * The persistent class for the kunde database table.
@@ -41,10 +70,11 @@ import de.shop.Auftragsverwaltung.domain.*;;
 					+ " LEFT JOIN FETCH k.auftraege"
 					+ " WHERE k.kundenNr = :" + Kunde.PARAM_KUNDENNUMMER)
 })
-
+@XmlRootElement
 public class Kunde implements Serializable {
 	
 	private static final long serialVersionUID = 3925016425151715847L;
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	
 	private static final String PREFIX = "Kunde.";
 	public static final String KUNDEN_ALL = PREFIX + "findKundenAll";
@@ -63,6 +93,7 @@ public class Kunde implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
+	@XmlAttribute
 	private Long kundenNr = KEINE_ID;
 	
 	@Email
@@ -71,10 +102,12 @@ public class Kunde implements Serializable {
 
 	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
+	@XmlTransient
 	private Date erstelltAm;
 
 	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
+	@XmlTransient
 	private Date geaendertAm;
 
 	@NotNull(message = "{kundenverwaltung.kunde.nachname.notNull}")
@@ -100,6 +133,7 @@ public class Kunde implements Serializable {
 	//EAGER-Fetching
 	@OneToOne(mappedBy = "kunde", cascade = PERSIST)
 	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
+	@XmlElement(required = true)
 	private Adresse adresse;
 	
 	@PrePersist
@@ -108,17 +142,36 @@ public class Kunde implements Serializable {
 		geaendertAm = new Date();
 	}
 	
+	@PostPersist
+	protected void postPersist() {
+		LOGGER.log(FINER, "Neuer Kunde mit Kundenummer={0}", kundenNr);
+	}
+	
 	@PreUpdate
 	protected void preUpdate() {
 		geaendertAm = new Date();
 	}
+	
+	@PostLoad
+	protected void postLoad() {
+		passwortWdh = passwort;
+	}
 
 	//LAZY-Fetching
 	@OneToMany(mappedBy = "kunde")
+	@XmlTransient
 	private List<Auftrag> auftraege;
+	
+	@Transient
+	@XmlElement(name = "auftraege")
+	private URI auftraegeUri;
 	
 	public List<Auftrag> getAuftraege() {
 		return Collections.unmodifiableList(auftraege);
+	}
+	
+	public URI getAuftraegeUri() {
+		return auftraegeUri;
 	}
 	
 	public void setAuftraege(List<Auftrag> auftraege) {
@@ -133,12 +186,24 @@ public class Kunde implements Serializable {
 		}
 	}
 	
+	public void setAuftraegeUri(URI auftraegeUri) {
+		this.auftraegeUri = auftraegeUri;
+	}
+	
 	public Kunde addAuftrag(Auftrag auftrag) {
 		if (auftraege == null) {
 			auftraege = new ArrayList<>();
 		}
 		auftraege.add(auftrag);
 		return this;	
+	}
+	
+	public void setValues(Kunde k) {
+		nachname = k.nachname;
+		vorname = k.vorname;
+		email = k.email;
+		passwort = k.passwort;
+		passwortWdh = k.passwort;
 	}
 	
 	public Adresse getAdresse() {

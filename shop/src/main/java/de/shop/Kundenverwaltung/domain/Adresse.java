@@ -1,14 +1,35 @@
 package de.shop.Kundenverwaltung.domain;
 
-import static javax.persistence.TemporalType.TIMESTAMP;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+import static java.util.logging.Level.FINER;
+import static javax.persistence.TemporalType.TIMESTAMP;
+import static javax.xml.bind.annotation.XmlAccessType.FIELD;
+
 import java.io.Serializable;
-import javax.persistence.*;
+import java.lang.invoke.MethodHandles;
+import java.util.Date;
+import java.util.logging.Logger;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.PostPersist;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * The persistent class for the adresse database table.
@@ -16,6 +37,8 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "adresse")
+@XmlAccessorType(FIELD)
+
 @NamedQueries({
 @NamedQuery(name = Adresse.ADRESSE_BY_ID,
 			query = "FROM Adresse a WHERE a.id = :" + Adresse.PARAM_ID)
@@ -23,6 +46,7 @@ import java.util.Date;
 public class Adresse implements Serializable {
 	
 	private static final long serialVersionUID = -6118084007129611335L;
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	
 	private static final String PREFIX = "Adresse.";
 	public static final String ADRESSE_BY_ID = PREFIX + "findAdresseByID";	
@@ -31,6 +55,7 @@ public class Adresse implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "adresse_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN )
+	@XmlAttribute
 	private Long id = KEINE_ID;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.hausNr.notNull}")
@@ -39,33 +64,45 @@ public class Adresse implements Serializable {
 	//EAGER-Fetching
 	@OneToOne
 	@JoinColumn(name = "kunde_FID", nullable = false, updatable = false)
+	@XmlTransient
 	private Kunde kunde;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.land.notNull}")
+	@XmlElement(required = true)
 	private String land;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.ort.notNull}")
+	@XmlElement(required = true)
 	private String ort;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.plz.notNull}")
 	@Digits(integer = 5, fraction = 0, message = "{kundenverwaltung.adresse.plz.digits}")
+	@XmlElement(required = true)
 	private String plz;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.strasse.notNull}")
+	@XmlElement(required = true)
 	private String strasse;
 	
 	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
+	@XmlTransient
 	private Date erstelltAm;
 
 	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
+	@XmlTransient
 	private Date geaendertAm;
 	
 	@PrePersist
 	protected void prePersist() {
 		erstelltAm = new Date();
 		geaendertAm = new Date();
+	}
+	
+	@PostPersist
+	private void postPersist() {
+		LOGGER.log(FINER, "Neue Adresse mit ID={0}", id);
 	}
 	
 	@PreUpdate
