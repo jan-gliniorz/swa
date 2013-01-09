@@ -33,6 +33,10 @@ import de.shop.Util.AbstractTest;
 @RunWith(Arquillian.class)
 public class ArtikelServiceTest extends AbstractTest {
 	private static final Long ARTIKEL_ID_VORHANDEN = Long.valueOf(301);
+	private static final List<Long> ARTIKEL_IDS_VORHANDEN = new ArrayList<Long>() {{
+		add(Long.valueOf(301));
+		add(Long.valueOf(302));
+		}};
 	private static final String ARTIKEL_BEZEICHNUNG_VORHANDEN = "emd";
 	private static final short ARTIKEL_ANZAHL = 1;
 	private static final Long ARTIKEL_ID_UPDATE = Long.valueOf(300);
@@ -40,6 +44,7 @@ public class ArtikelServiceTest extends AbstractTest {
 	private static final String ARTIKEL_BEZEICHNUNG_NEU = "Hose";
 	private static final String ARTIKEL_BESCHREIBUNG_NEU = "Regenschirm";
 	private static final BigDecimal ARTIKEL_PREIS_NEU = BigDecimal.valueOf(39.0);
+	
 	
 	@Inject
 	ArtikelService as;
@@ -57,8 +62,6 @@ public class ArtikelServiceTest extends AbstractTest {
 	public void findArtikelById() {
 		// Given
 		final Long artikelId = ARTIKEL_ID_VORHANDEN;
-		final String artikelBez = ARTIKEL_BEZEICHNUNG_VORHANDEN;
-		
 		
 		// Then
 		Artikel testArtikel = as.findArtikelByID(artikelId, FetchType.NUR_Artikel, LOCALE);
@@ -66,7 +69,20 @@ public class ArtikelServiceTest extends AbstractTest {
 		// When
 		assertThat(testArtikel, is(notNullValue()));
 		assertThat(testArtikel.getId() == artikelId, is(true));
-		assertThat(testArtikel.getBezeichnung() == artikelBez, is(true));
+	}
+	
+	@Test
+	public void findArtikelByIds() {
+		// Given
+		final List<Long> artikelIds = ARTIKEL_IDS_VORHANDEN;
+				
+		// Then
+		List<Artikel> testArtikel = as.findArtikelByIDs(artikelIds, FetchType.NUR_Artikel, LOCALE);
+		
+		// When
+		assertThat(testArtikel, is(notNullValue()));
+		assertThat(ARTIKEL_IDS_VORHANDEN.contains(testArtikel.get(0).getId()), is(true));
+		assertThat(ARTIKEL_IDS_VORHANDEN.contains(testArtikel.get(1).getId()), is(true));
 	}
 	
 	

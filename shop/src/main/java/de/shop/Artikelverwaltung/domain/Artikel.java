@@ -10,6 +10,10 @@ import javax.inject.Named;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -40,9 +44,17 @@ import java.math.BigDecimal;
 	  @NamedQuery(name = Artikel.FIND_Artikel_All,
 			    query = "SELECT la FROM Artikel la"),
 	  @NamedQuery( name = Artikel.FIND_ARTIKEL_ALL_LAGERPOSITIONEN,
-			    	query = "SELECT a FROM Artikel a JOIN a.lagerpositionen")
+			    	query = "SELECT a FROM Artikel a JOIN a.lagerpositionen"),
+	  @NamedQuery(name = Artikel.FIND_Artikel_BY_Artikel_IDs,
+	  			query = "FROM Artikel a WHERE a.id IN (:"+ Artikel.PARAM_ID + ")"),
+  	  @NamedQuery(name = Artikel.FIND_Artikel_BY_IDs_Lagerpositionen,
+  	  		query = "SELECT DISTINCT la" +
+			" FROM Artikel la" +
+			" JOIN la.lagerpositionen"+
+			" WHERE la.id IN (:" + Artikel.PARAM_ID+")")
 	})
 
+@XmlRootElement
 public class Artikel implements Serializable {
 
 	private static final String PREFIX = "Artikel.";
@@ -57,6 +69,10 @@ public class Artikel implements Serializable {
 		PREFIX +"findArtikelAll";
 	public static final String FIND_ARTIKEL_ALL_LAGERPOSITIONEN = 
 			PREFIX + "findArtikellAllLagerpositionen";
+	public static final String FIND_Artikel_BY_Artikel_IDs =
+			PREFIX + "findArtikelByIds";
+	public static final String FIND_Artikel_BY_IDs_Lagerpositionen =
+			PREFIX + "findArtikelByIDsLagerpositionen";
 	
 	public static final String PARAM_ID = "id";
 	public static final String PARAM_Bezeichnung = "bezeichnung";
@@ -67,31 +83,40 @@ public class Artikel implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "artikel_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "artikelverwaltung.artikel.id.min", groups = IdGroup.class)
+	@XmlAttribute
 	private Long id = KEINE_ID;
 
 
 	@OneToMany(mappedBy = "artikel")
 	//@NotEmpty(message = "artikelverwaltung.artikel.lagerposition.notEmpty") //TODO:Fehlermeldung entfernen.
+	@XmlElementWrapper(name = "lagerpositionen", required = true)
+	@XmlElement(name = "lagerpositionen", required = true)
 	private List<Lagerposition> lagerpositionen;
 	
 	@Lob
+	@XmlElement
 	private String beschreibung;
 
 	@NotNull(message = "artikelverwaltung.artikel.bezeichnung.notNull")
+	@XmlElement
 	private String bezeichnung;
 
+	@XmlElement
 	private String bild;
 
 	@Column(name="erstellt_am")
 	@Temporal(TIMESTAMP)
+	@XmlElement
 	private Date erstelltAm;
 	
 
 	@Column(name="geaendert_am")
 	@Temporal(TIMESTAMP)
+	@XmlElement
 	private Date geaendertAm;
 
 	@NotNull(message = "artikelverwaltung.artikel.preis.notNull")
+	@XmlElement
 	private BigDecimal preis;
 
 	public Artikel() {
@@ -163,6 +188,25 @@ public class Artikel implements Serializable {
 		return this;
 	}
 	
+	public List<Lagerposition> getLagerposition(){
+		return Collections.unmodifiableList(lagerpositionen);
+	}
+	
+	public void setLagerposition(List<Lagerposition> lagerpositionen){
+		
+			if(this.lagerpositionen == null){
+				this.lagerpositionen = lagerpositionen;
+				return;
+			}
+			
+			this.lagerpositionen.clear();
+			
+			if(lagerpositionen != null){
+				this.lagerpositionen.addAll(lagerpositionen);
+			}
+			
+	}	
+	
 	@PrePersist
 	private void prePersist()
 	{
@@ -198,24 +242,7 @@ public class Artikel implements Serializable {
 	}
 	
 	
-	public List<Lagerposition> getLagerposition(){
-		return Collections.unmodifiableList(lagerpositionen);
-	}
 	
-	public void setLagerposition(List<Lagerposition> lagerpositionen){
-		
-			if(this.lagerpositionen == null){
-				this.lagerpositionen = lagerpositionen;
-				return;
-			}
-			
-			this.lagerpositionen.clear();
-			
-			if(lagerpositionen != null){
-				this.lagerpositionen.addAll(lagerpositionen);
-			}
-			
-	}	
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)

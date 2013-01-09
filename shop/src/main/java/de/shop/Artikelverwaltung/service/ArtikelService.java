@@ -128,6 +128,44 @@ public class ArtikelService implements Serializable {
 		return artikel;
 	}
 	
+	public List<Artikel> findArtikelByIDs(List<Long> ids, FetchType fetch, Locale locale) {
+		
+		for(Long id : ids){
+			validateArtikelId(id, locale);
+		}
+		
+		List<Artikel> artikel = null;
+		try {
+			switch (fetch) {
+				case NUR_Artikel:
+					artikel = em.createNamedQuery(Artikel.FIND_Artikel_BY_Artikel_IDs, Artikel.class)
+					  .setParameter(Artikel.PARAM_ID, ids)
+					  .getResultList();
+					break;
+				
+				case MIT_POSITIONEN:
+					artikel = em.createNamedQuery(Artikel.FIND_Artikel_BY_IDs_Lagerpositionen, Artikel.class)
+							  .setParameter(Artikel.PARAM_ID, ids)
+							  .getResultList();
+					break;
+	
+				default:
+					artikel = em.createNamedQuery(Artikel.FIND_Artikel_BY_Artikel_IDs, Artikel.class)
+							  .setParameter(Artikel.PARAM_ID, ids)
+							  .getResultList();
+					break;
+			}
+		}
+		catch (NoResultException e) {
+			return null;
+		}
+
+		return artikel;
+	}
+	
+	
+	
+	
 	private void validateArtikelId(Long artikelId, Locale locale) {
 		final Validator validator = validationService.getValidator(locale);
 		final Set<ConstraintViolation<Artikel>> violations = validator.validateValue(Artikel.class,
