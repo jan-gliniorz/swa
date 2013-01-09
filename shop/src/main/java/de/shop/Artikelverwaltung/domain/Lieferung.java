@@ -7,6 +7,8 @@ import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
 
 import java.io.Serializable;
+import java.net.URI;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -18,6 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Util.IdGroup;
 
 import java.util.*;
@@ -62,12 +65,18 @@ public class Lieferung implements Serializable {
 	
 	@OneToMany (fetch = EAGER, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "lieferung_FID", nullable = false)
-	//@OrderColumn(name = "idx")
+
 	@NotEmpty(message = "{artikelverwaltung.lieferung.lieferungspositionen.notEmpty}")
 	@XmlElementWrapper(name = "lieferungspositionen", required = true)
 	@XmlElement (name = "lieferungspositionen", required = true)
+	@XmlTransient
 	private List<Lieferungsposition> lieferungspositionen;
 
+	
+	@Transient
+	@XmlElement(name = "lieferungen", required = true)
+	private URI lieferungspositionUri;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name= "lieferung_ID", nullable = false, updatable = false, precision=LONG_ANZ_ZIFFERN)
@@ -125,6 +134,14 @@ public class Lieferung implements Serializable {
 		return this;
 	}
 	
+	public URI getLieferungspositionUri() {
+		return lieferungspositionUri;
+	}
+
+	public void setLieferungspositionUri(URI lieferungspositionUri) {
+		this.lieferungspositionUri = lieferungspositionUri;
+	}
+	
 	public Long getId() {
 		return this.id;
 	}
@@ -165,7 +182,9 @@ public class Lieferung implements Serializable {
 		this.geaendertAm = geaendertAm == null ? null : (Date) geaendertAm.clone();
 	}
 
-
+	public void setValues(Lieferung l) {
+		lieferungsdatum = l.lieferungsdatum;
+	}
 	
 	@PrePersist
 	private void prePersist() {
@@ -239,5 +258,4 @@ public class Lieferung implements Serializable {
 				+ ", geaendertAm=" + geaendertAm + ", lieferungsdatum="
 				+ lieferungsdatum + "]";
 	}
-	
 }
