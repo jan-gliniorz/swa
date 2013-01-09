@@ -231,6 +231,13 @@ public class Artikel implements Serializable {
 			
 	}	
 	
+	public void setValues(Artikel a) {
+		bezeichnung = a.bezeichnung;
+		beschreibung = a.beschreibung;
+		bild = a.bild;
+		lagerpositionen = a.lagerpositionen;
+	}
+	
 	@PrePersist
 	private void prePersist()
 	{

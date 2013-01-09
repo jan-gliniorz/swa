@@ -1,6 +1,7 @@
 package de.shop.Artikelverwaltung.rest;
 
 import static java.util.logging.Level.FINER;
+import static java.util.logging.Level.FINEST;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
 import static javax.ws.rs.core.MediaType.TEXT_XML;
@@ -18,8 +19,10 @@ import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -41,6 +44,7 @@ import de.shop.Artikelverwaltung.service.LagerService;
 import de.shop.Artikelverwaltung.service.LieferungService;
 import de.shop.Artikelverwaltung.service.ArtikelService.FetchType;
 import de.shop.Artikelverwaltung.rest.UriHelperLieferung;
+import de.shop.Kundenverwaltung.domain.Kunde;
 
 
 import de.shop.Util.Log;
@@ -89,8 +93,10 @@ public class ArtikelResource {
 	
 	@GET
 	@Path("{id:[1-9][0-9]*}")
-	public Artikel findArtikelById(@PathParam("id") Long id, FetchType fetch, Locale locale, @Context UriInfo uriInfo) {
-		final Artikel artikel = as.findArtikelByID(id, fetch, locale);
+	public Artikel findArtikelById(@PathParam("id") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+		final List<Locale> locales = headers.getAcceptableLanguages();
+		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
+		final Artikel artikel = as.findArtikelByID(id, ArtikelService.FetchType.NUR_Artikel, locale); ///TODO: Fetchtype über die URL mitgeben????
 		if (artikel == null) {
 			final String msg = "Kein Artikel gefunden mit der ID " + id;
 			throw new NotFoundException(msg);
@@ -102,71 +108,65 @@ public class ArtikelResource {
 	}
 
 	
-//	@POST
-//	@Consumes({ APPLICATION_XML, TEXT_XML })
-//	@Produces
-//	public Response createArtikel(Artikel artikel, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
-//
-//		// persistente Artikel ermitteln
-//		Collection<Lagerposition> lagerpositionen = artikel.getLagerposition();
-//		List<Long> lagerIds = new ArrayList<>(lagerpositionen.size());
-//		for (Lagerposition lp : lagerpositionen) {
-//			final String lagerUriStr = lp.getLagerUri().toString();
-//			int startPos = lagerUriStr.lastIndexOf('/') + 1;
-//			final String lagerIdStr = lagerUriStr.substring(startPos);
-//			Long artikelId = null;
-//			try {
-//				lagerIds = Long.valueOf(lagerIdStr);
-//			}
-//			catch (NumberFormatException e) {
-//				// Ungueltige Artikel-ID: wird nicht beruecksichtigt
-//				continue;
-//			}
-//			artikelIds.add(artikelId);
-//		}
-//		
-//		if (artikelIds.isEmpty()) {
-//			// keine einzige gueltige Artikel-ID
-//			final StringBuilder sb = new StringBuilder("Keine Lagerpositionen vorhanden mit den IDs: ");
-//			for (Lagerposition lp : lagerpositionen) {
-//				final String artikelUriStr = lp.getArtikelUri().toString();
-//				int startPos = artikelUriStr.lastIndexOf('/') + 1;
-//				sb.append(artikelUriStr.substring(startPos));
-//				sb.append(" ");
-//			}
-//			throw new NotFoundException(sb.toString());
-//		}
-//
-//		Collection<Artikel> gefundeneArtikel = as.findArtikelByID(artikelId);
-//		if (gefundeneArtikel.isEmpty()) {
-//			throw new NotFoundException("Keine Artikel vorhanden mit den IDs: " + artikelIds);
-//		}
-//
-//		int i = 0;
-//		final List<Lieferungsposition> neueLieferungspositionen = new ArrayList<>(lieferungspositionen.size());
-//		for (Lieferungsposition lp : lieferungspositionen) {
-//			// Artikel-ID der aktuellen Bestellposition (s.o.):
-//			// artikelIds haben gleiche Reihenfolge wie bestellpositionen
-//			final long artikelId = artikelIds.get(i++);
-//			
-//			// Wurde der Artikel beim DB-Zugriff gefunden?
-//			for (Artikel artikel : gefundeneArtikel) {
-//				if (artikel.getId().longValue() == artikelId) {
-//					// Der Artikel wurde gefunden
-//					lp.setArtikel(artikel);
-//					neueLieferungspositionen.add(lp);
-//					break;					
-//				}
-//			}
-//		}
-//		lieferung.setLieferungsposition(neueLieferungspositionen);
-//
-//		lieferung = ls.createLieferung(lieferung, locale);
-//
-//		final URI lieferungUri = uriHelperLieferung.getUriLieferung(lieferung, uriInfo);
-//		final Response response = Response.created(lieferungUri).build();
-//		LOGGER.finest(lieferungUri.toString());
-//		
-//		return response;
-//	}
+	@POST
+	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Produces
+	public Response createArtikel(Artikel artikel, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+
+		// ein neuer Artikel kann noch nicht im Lager vorhanden sein
+		artikel.setLagerposition(null);
+		
+		final List<Locale> locales = headers.getAcceptableLanguages();
+		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
+		
+		artikel = as.createArtikel(artikel, locale);
+		
+		final URI artikelUri = uriHelperArtikel.getUriArtikel(artikel, uriInfo);
+		final Response response = Response.created(artikelUri).build();
+		LOGGER.finest(artikelUri.toString());
+		
+		return response;
+	}
+	
+	@PUT
+	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Produces
+	public void updateArtikel(Artikel artikel, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+
+		// ein neuer Artikel kann noch nicht im Lager vorhanden sein
+		//artikel.setLagerposition(null); ///TODO: Was ist hier mit den URLs? Diese müssen ersetzt werden durch die collections?!
+		
+		final List<Locale> locales = headers.getAcceptableLanguages();
+		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
+		
+		Artikel artikelOrig = as.findArtikelByID(artikel.getId(), ArtikelService.FetchType.NUR_Artikel, locale);
+		if(artikelOrig == null) {
+			final String msg = "Kein Artikel gefunden mit der ID " + artikel.getId();
+			throw new NotFoundException(msg);
+		}
+		
+		LOGGER.log(FINEST, "Artikel vorher: %s", artikelOrig);
+		artikelOrig.setValues(artikel);
+		LOGGER.log(FINEST, "Artikel nachher: %s", artikelOrig);
+		artikel = as.updateArtikel(artikelOrig, locale);
+
+		if(artikel == null) {
+			final String msg = "Kein Artikel gefunden mit der ID " + artikelOrig.getId();
+			throw new NotFoundException(msg);
+		}
+	}
+	
+	@Path("{id:[0-9]+}")
+	@DELETE
+	@Produces
+	public void deleteArtikel(@PathParam("id") Long artikelId, @Context HttpHeaders headers) {
+		final List<Locale> locales = headers.getAcceptableLanguages();
+		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
+		final Artikel artikel = as.findArtikelByID(artikelId, ArtikelService.FetchType.NUR_Artikel, locale);
+		if(artikel == null) {
+			final String msg = "Kein Artikel gefunden mit der ID " + artikelId;
+			throw new NotFoundException(msg);
+		}
+		as.deleteArtikel(artikel);
+	}
 }
