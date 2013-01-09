@@ -40,8 +40,6 @@ import de.shop.Artikelverwaltung.service.LieferungService;
 import de.shop.Artikelverwaltung.service.LieferungService.FetchType;
 import de.shop.Artikelverwaltung.rest.UriHelperLieferung;
 import de.shop.Artikelverwaltung.rest.UriHelperLieferungsposition;
-import de.shop.Kundenverwaltung.domain.Adresse;
-
 
 import de.shop.Util.Log;
 import de.shop.Util.NotFoundException;

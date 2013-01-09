@@ -10,14 +10,6 @@ import javax.ws.rs.core.UriInfo;
 
 import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Artikelverwaltung.domain.Lieferungsposition;
-import de.shop.Artikelverwaltung.rest.UriHelperLieferungsposition;
-
-import de.shop.Auftragsverwaltung.domain.Auftragsposition;
-import de.shop.Auftragsverwaltung.domain.Auftrag;
-
-import de.shop.Kundenverwaltung.domain.Kunde;
-import de.shop.Kundenverwaltung.rest.UriHelperKunde;
-
 import de.shop.Util.Log;
 
 

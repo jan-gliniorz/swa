@@ -1,6 +1,5 @@
 package de.shop.Artikelverwaltung.domain;
 
-import de.shop.Util.IdGroup;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
@@ -8,16 +7,25 @@ import static de.shop.Util.Constants.MIN_ID;
 import java.io.Serializable;
 import java.net.URI;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import static javax.persistence.CascadeType.PERSIST;
-import static javax.persistence.CascadeType.REMOVE;
-import static javax.persistence.FetchType.EAGER;
-import static javax.persistence.TemporalType.TIMESTAMP;
+import de.shop.Util.IdGroup;
 
 /**
  * The persistent class for the lieferungsposition database table.
@@ -38,7 +46,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 	@NamedQuery(name = Lieferungsposition.LIEFERUNGSPOSITIONEN_BY_LIEFERUNG_ID,
 			query = "SELECT lp" + 
 					" FROM Lieferung li"+
-					" JOIN li.lieferungsposition lp" +
+					" JOIN li.lieferungspositionen lp" +
 					" WHERE li.id = :" + Lieferungsposition.PARAM_ID)
 })
 
