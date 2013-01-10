@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Util.Log;
@@ -21,17 +22,13 @@ public class UriHelperLieferung {
 	private UriHelperLieferungsposition uriHelperLieferungsposition;
 	
 	public void updateUriLieferung(Lieferung lieferung, UriInfo uriInfo) {
+//
+//		final List<Lieferungsposition> lieferungspositionen = lieferung.getLieferungsposition();
+//		
+//		if (lieferungspositionen != null && !lieferungspositionen.isEmpty()) {
 
-		final List<Lieferungsposition> lieferungspositionen = lieferung.getLieferungsposition();
-		
-		if (lieferungspositionen != null && !lieferungspositionen.isEmpty()) {
-
-			
-			final URI lieferungspositionUri = uriHelperLieferungsposition.getUriLieferungspositionenByLieferungId(lieferung, uriInfo);
-			lieferung.setLieferungspositionUri(lieferungspositionUri);
-		}				
+			lieferung.setLieferungspositionUri(uriHelperLieferungsposition.getUriLieferungspositionenByLieferungId(lieferung, uriInfo));			
 	}
-	
 	
 	public URI getUriLieferung(Lieferung lieferung, UriInfo uriInfo) {
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()

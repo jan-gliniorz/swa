@@ -66,7 +66,7 @@ public class LieferungService implements Serializable {
 		switch (fetch) {
 			case NUR_LIEFERUNG:
 				lieferungen = OrderType.ID.equals(order)
-				         ? em.createNamedQuery(Lieferung.LIEFERUNG_BY_ID, Lieferung.class)
+				         ? em.createNamedQuery(Lieferung.LIEFERUNGEN_ALL, Lieferung.class)
 				             .getResultList()
 				         : em.createNamedQuery(Lieferung.LIEFERUNGEN_ALL, Lieferung.class)
 				             .getResultList();
@@ -79,7 +79,7 @@ public class LieferungService implements Serializable {
 
 			default:
 				lieferungen = OrderType.ID.equals(order)
-		         		? em.createNamedQuery(Lieferung.LIEFERUNG_BY_ID, Lieferung.class)
+		         		? em.createNamedQuery(Lieferung.LIEFERUNGEN_ALL, Lieferung.class)
 		         			.getResultList()
 		             	: em.createNamedQuery(Lieferung.LIEFERUNGEN_ALL, Lieferung.class)
 		             		.getResultList();

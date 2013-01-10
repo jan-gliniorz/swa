@@ -31,6 +31,8 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
+
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Artikelverwaltung.service.ArtikelService;
@@ -78,59 +80,32 @@ public class LieferungResource {
 
 	
 	@GET
+	@Wrapped(element ="lieferungen") 
+	public Collection<Lieferung>findLieferungenAll(@Context UriInfo uriInfo) {
+		Collection<Lieferung> lieferung = ls.findLieferungenAll(LieferungService.FetchType.NUR_LIEFERUNG,LieferungService.OrderType.ID);
+		for(Lieferung l : lieferung) {
+			uriHelperLieferung.updateUriLieferung(l, uriInfo);
+		}
+		
+		return lieferung;
+	} 
+	
+	
+	@GET
 	@Path("{id:[1-9][0-9]*}")
-	public Lieferung findLieferungById(@PathParam("id") Long id, FetchType fetch, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+	public Lieferung findLieferungById(@PathParam("id") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		
-		final Lieferung lieferung = ls.findLieferungById(id, fetch, locale);
+		final Lieferung lieferung = ls.findLieferungById(id, LieferungService.FetchType.NUR_LIEFERUNG, locale);
 		if (lieferung == null) {
 			final String msg = "Keine Lieferung gefunden mit der ID " + id;
 			throw new NotFoundException(msg);
 		}
+		
 		uriHelperLieferung.updateUriLieferung(lieferung, uriInfo);
 		return lieferung;
-	}
-
-	
-	@GET
-	@Path("{id:[1-9][0-9]*}")
-	public Lieferungsposition findLieferungspositionById(@PathParam("id") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
-		
-		final List<Locale> locales = headers.getAcceptableLanguages();
-		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-		
-		final Lieferungsposition lieferungsposition = ls.findLieferungspositionById(id, locale);
-		if (lieferungsposition == null) {
-			final String msg = "Keine Lieferungsposition gefunden mit der ID " + id;
-			throw new NotFoundException(msg);
-		}
-		uriHelperLieferungsposition.updateUriLieferungsposition(lieferungsposition, uriInfo);
-		return lieferungsposition;
-	}
-
-	
-	@GET
-	@Path("{lieferungid:[1-9][0-9]*}")
-	public List<Lieferungsposition> findLieferungspositionByLieferungId(@PathParam("lieferungid") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
-		
-		final List<Locale> locales = headers.getAcceptableLanguages();
-		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-		
-		final List <Lieferungsposition> lieferungspositionen = ls.findLieferungspositionenByLieferungId(id, locale);
-		
-		if (lieferungspositionen == null) {
-			final String msg = "Keine Lieferungspositionen gefunden für Lieferungs-ID " + id;
-			throw new NotFoundException(msg);
-		}
-		
-		for (Lieferungsposition lp : lieferungspositionen) {
-			uriHelperLieferungsposition.updateUriLieferungsposition(lp, uriInfo);
-		}
-		
-		return lieferungspositionen;
-		
 	}
 	
 	
