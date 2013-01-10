@@ -2,7 +2,6 @@ package de.shop.Artikelverwaltung.rest;
 
 
 import java.net.URI;
-import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -12,15 +11,6 @@ import javax.ws.rs.core.UriInfo;
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Artikelverwaltung.domain.Lieferungsposition;
-
-import de.shop.Artikelverwaltung.rest.UriHelperArtikel;
-
-import de.shop.Auftragsverwaltung.domain.Auftragsposition;
-import de.shop.Auftragsverwaltung.domain.Auftrag;
-
-import de.shop.Kundenverwaltung.domain.Kunde;
-import de.shop.Kundenverwaltung.rest.UriHelperKunde;
-
 import de.shop.Util.Log;
 
 

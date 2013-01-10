@@ -3,7 +3,8 @@ package de.shop.Artikelverwaltung.service;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -13,7 +14,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.jms.Session;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -25,7 +25,9 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import de.shop.Artikelverwaltung.domain.*;
+import de.shop.Artikelverwaltung.domain.Artikel;
+import de.shop.Artikelverwaltung.domain.Lieferung;
+import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Artikelverwaltung.service.LieferungService.FetchType;
 import de.shop.Util.AbstractTest;
 
@@ -49,9 +51,6 @@ public class LieferungServiceTest extends AbstractTest {
 	
 	private static final int ANZAHL_NEU = 3;
 	
-	private static final Long ARTIKEL_ID_VORHANDEN = Long.valueOf(305);
-
-
 	@Inject
 	private LieferungService ls;
 	private ArtikelService as;

@@ -79,7 +79,11 @@ public class LieferungResource {
 	
 	@GET
 	@Path("{id:[1-9][0-9]*}")
-	public Lieferung findLieferungById(@PathParam("id") Long id, FetchType fetch, Locale locale, @Context UriInfo uriInfo) {
+	public Lieferung findLieferungById(@PathParam("id") Long id, FetchType fetch, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+		
+		final List<Locale> locales = headers.getAcceptableLanguages();
+		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
+		
 		final Lieferung lieferung = ls.findLieferungById(id, fetch, locale);
 		if (lieferung == null) {
 			final String msg = "Keine Lieferung gefunden mit der ID " + id;
@@ -92,7 +96,11 @@ public class LieferungResource {
 	
 	@GET
 	@Path("{id:[1-9][0-9]*}")
-	public Lieferungsposition findLieferungspositionById(@PathParam("id") Long id, Locale locale, @Context UriInfo uriInfo) {
+	public Lieferungsposition findLieferungspositionById(@PathParam("id") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+		
+		final List<Locale> locales = headers.getAcceptableLanguages();
+		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
+		
 		final Lieferungsposition lieferungsposition = ls.findLieferungspositionById(id, locale);
 		if (lieferungsposition == null) {
 			final String msg = "Keine Lieferungsposition gefunden mit der ID " + id;
@@ -105,7 +113,10 @@ public class LieferungResource {
 	
 	@GET
 	@Path("{lieferungid:[1-9][0-9]*}")
-	public List<Lieferungsposition> findLieferungspositionByLieferungId(@PathParam("lieferungid") Long id, Locale locale, @Context UriInfo uriInfo) {
+	public List<Lieferungsposition> findLieferungspositionByLieferungId(@PathParam("lieferungid") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+		
+		final List<Locale> locales = headers.getAcceptableLanguages();
+		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		
 		final List <Lieferungsposition> lieferungspositionen = ls.findLieferungspositionenByLieferungId(id, locale);
 		
