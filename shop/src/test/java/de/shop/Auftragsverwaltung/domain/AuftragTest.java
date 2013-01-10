@@ -84,6 +84,11 @@ public class AuftragTest extends AbstractDomainTest {
 		final Long kundeId = KUNDEID_NEU;
 		final int position1Anz = POSITION1ANZAHL_NEU;
 		final Long position1ArtikelId = POSITION1ARTIKELID_NEU;
+		final int auftragAnzahlVorCreate = getEntityManager()
+											.createNamedQuery(Auftrag.FIND_AUFTRAG_BY_ID, Auftrag.class)
+											.setParameter(Auftrag.PARAM_ID, kundeId)
+											.getResultList()
+											.size();
 		
 		Auftrag auftrag = new Auftrag();
 		Kunde kunde = getEntityManager().createNamedQuery(Kunde.KUNDE_BY_KNR, Kunde.class)
@@ -91,15 +96,11 @@ public class AuftragTest extends AbstractDomainTest {
 				.getSingleResult();
 		auftrag.setKunde(kunde);
 		
-		Auftragsposition position1 = new Auftragsposition();
-		position1.setAnzahl(position1Anz);
+		//Auftragsposition 1 erstellen und dem Auftrag hinzufuegen
 		Artikel artikel = getEntityManager().createNamedQuery(Artikel.FIND_Artikel_BY_Artikel_ID, Artikel.class)
 											.setParameter(Artikel.PARAM_ID, position1ArtikelId)
 											.getSingleResult();
-		position1.setArtikel(artikel);
-		//position1.setPreis(artikel.getPreis() * position1.getAnzahl()); //TODO: BigDecimal mit int multiplizieren
-		position1.setPreis(artikel.getPreis());
-		
+		Auftragsposition position1 = new Auftragsposition(artikel, position1Anz);
 		auftrag.addAuftragsposition(position1);
 		
 		// When
@@ -121,9 +122,8 @@ public class AuftragTest extends AbstractDomainTest {
 		}
 		
 		// Then
-		List<Auftrag> auftraege = getEntityManager().createNamedQuery(Auftrag.FIND_AUFTRAG_BY_ID, Auftrag.class)
-													.setParameter(Auftrag.PARAM_ID, kundeId) //TODO: ID des auftrages herausfinden und hier eintragen
+		List<Auftrag> auftraege = getEntityManager().createNamedQuery(Auftrag.FIND_AUFTRAG_ALL, Auftrag.class)
 													.getResultList();
-		assertThat(auftraege.size(), is(1));
+		assertThat(auftraege.size(), is(auftragAnzahlVorCreate + 1));
 	}
 }

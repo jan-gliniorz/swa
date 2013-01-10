@@ -77,10 +77,10 @@ public class AuftragResource {
 	}
 	
 	@GET
-	@Wrapped(element ="auftraege") 
+	@Wrapped(element = "auftraege") 
 	public Collection<Auftrag>findAuftraegeAll(@Context UriInfo uriInfo) {
 		Collection<Auftrag> auftraege = auftragService.findAuftragAll();
-		for(Auftrag a : auftraege) {
+		for (Auftrag a : auftraege) {
 			uriHelperAuftrag.updateUriAuftrag(a, uriInfo);
 		}
 		
@@ -167,7 +167,9 @@ public class AuftragResource {
 			throw new NotFoundException(sb.toString());
 		}
 
-		Collection<Artikel> gefundeneArtikel = as.findArtikelByIDs(artikelIds, ArtikelService.FetchType.NUR_Artikel, locale);
+		Collection<Artikel> gefundeneArtikel = as.findArtikelByIDs(artikelIds, 
+																	ArtikelService.FetchType.NUR_Artikel, 
+																	locale);
 		if (gefundeneArtikel.isEmpty()) {
 			throw new NotFoundException("Keine Artikel vorhanden mit den IDs: " + artikelIds);
 		}

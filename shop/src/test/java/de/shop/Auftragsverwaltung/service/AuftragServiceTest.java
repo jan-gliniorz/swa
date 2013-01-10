@@ -40,16 +40,22 @@ public class AuftragServiceTest extends AbstractTest {
 	private static final short KUNDE_ID_AUFTRAG_ANZ_AUFTRAGVORHANDEN = 2;
 	
 	@Inject
-	AuftragService auftragService;
+	private AuftragService auftragService;
 	
 	@Inject
-	KundeService kundeService;
+	private KundeService kundeService;
 	
 	@Inject
-	ArtikelService artikelService;
+	private ArtikelService artikelService;
 	
 	@Test
-	public void createAuftrag() throws NotSupportedException, SystemException, SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
+	public void createAuftrag() throws NotSupportedException, 
+										SystemException, 
+										SecurityException, 
+										IllegalStateException, 
+										RollbackException, 
+										HeuristicMixedException, 
+										HeuristicRollbackException {
 		// Given
 		final Long kundeId = KUNDE_ID_VORHANDEN;
 		final Long artikel1Id = ARTIKEL_1_ID;
@@ -58,7 +64,10 @@ public class AuftragServiceTest extends AbstractTest {
 		final short artikel2Anzahl = ARTIKEL_2_ANZAHL; 
 		
 		// When
-		Artikel artikel1 = artikelService.findArtikelByID(artikel1Id, de.shop.Artikelverwaltung.service.ArtikelService.FetchType.NUR_Artikel, LOCALE);
+		Artikel artikel1 = artikelService
+							.findArtikelByID(artikel1Id, 
+											de.shop.Artikelverwaltung.service.ArtikelService.FetchType.NUR_Artikel,
+											LOCALE);
 		final UserTransaction trans = getUserTransaction();
 		trans.commit();
 		
@@ -67,14 +76,19 @@ public class AuftragServiceTest extends AbstractTest {
 		neuerAuftrag.addAuftragsposition(position1);
 		
 		trans.begin();
-		Artikel artikel2 = artikelService.findArtikelByID(artikel2Id, de.shop.Artikelverwaltung.service.ArtikelService.FetchType.NUR_Artikel, LOCALE);
+		Artikel artikel2 = artikelService
+							.findArtikelByID(artikel2Id, 
+											de.shop.Artikelverwaltung.service.ArtikelService.FetchType.NUR_Artikel, 
+											LOCALE);
 		trans.commit();
 		
 		Auftragsposition position2 = new Auftragsposition(artikel2, artikel2Anzahl);
 		neuerAuftrag.addAuftragsposition(position2);
 		
 		trans.begin();
-		Kunde kunde = kundeService.findKundenByKundennummer(kundeId, FetchType.MIT_BESTELLUNGEN, LOCALE);
+		Kunde kunde = kundeService.findKundenByKundennummer(kundeId, 
+															FetchType.MIT_BESTELLUNGEN, 
+															LOCALE);
 		trans.commit();
 		
 		trans.begin();
@@ -83,7 +97,7 @@ public class AuftragServiceTest extends AbstractTest {
 		
 		// Then
 		assertThat(neuerAuftrag.getAuftragspositionen().size(), is(2));
-		for(Auftragsposition aPos : neuerAuftrag.getAuftragspositionen()) {
+		for (Auftragsposition aPos : neuerAuftrag.getAuftragspositionen()) {
 			assertThat(aPos.getArtikel().getId(), anyOf(is(ARTIKEL_1_ID), is(ARTIKEL_2_ID)));
 		}															
 	}
@@ -97,7 +111,7 @@ public class AuftragServiceTest extends AbstractTest {
 		Auftrag testAuftrag = auftragService.findAuftragById(auftragId);
 		
 		// When
-		assertThat(testAuftrag.getKunde().getKundenNr() == Long.valueOf(10), is(true));
+		assertThat(testAuftrag.getKunde().getKundenNr() == AUFTRAG_ID_VORHANDEN, is(true));
 		assertThat(testAuftrag.getAuftragspositionen().size(), is(1));
 	}
 	

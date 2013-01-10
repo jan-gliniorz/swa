@@ -51,7 +51,7 @@ import de.shop.Util.IdGroup;
 @Entity
 @Table(name = "auftrag")
 @NamedQueries({
-	@NamedQuery(name = Auftrag.FIND_AUFTRAG_All, 
+	@NamedQuery(name = Auftrag.FIND_AUFTRAG_ALL, 
 			query = "SELECT a"
 					+ " FROM Auftrag a"),
 	@NamedQuery(name = Auftrag.FIND_AUFTRAG_BY_ID, 
@@ -69,7 +69,7 @@ public class Auftrag implements Serializable {
 	
 	private static final String PREFIX = "Auftrag.";
 	public static final String FIND_AUFTRAG_BY_ID = PREFIX + "findAuftragById";
-	public static final String FIND_AUFTRAG_All = PREFIX + "findAuftragByAll";
+	public static final String FIND_AUFTRAG_ALL = PREFIX + "findAuftragByAll";
 	public static final String FIND_AUFTRAG_BY_KUNDE = PREFIX + "findAuftragByKunde";
 	
 	public static final String PARAM_KUNDEID = "kundeId";
@@ -180,7 +180,7 @@ public class Auftrag implements Serializable {
 	public Auftrag addAuftragsposition(Auftragsposition position) {
 		
 		if (this.auftragspositionen == null) {
-			this.auftragspositionen = new ArrayList<>(); //TODO: Warum hier keinen Typ angeben?
+			this.auftragspositionen = new ArrayList<>();
 		}
 		
 		this.auftragspositionen.add(position);

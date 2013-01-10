@@ -63,7 +63,7 @@ public class AuftragServiceImpl implements Serializable, AuftragService {
 	
 	@Override
 	public List<Auftrag> findAuftragAll() {
-		final List<Auftrag> auftraege = em.createNamedQuery(Auftrag.FIND_AUFTRAG_All, Auftrag.class)
+		final List<Auftrag> auftraege = em.createNamedQuery(Auftrag.FIND_AUFTRAG_ALL, Auftrag.class)
 											.getResultList();
 		return auftraege;
 	}
@@ -86,11 +86,11 @@ public class AuftragServiceImpl implements Serializable, AuftragService {
 	public Auftrag createAuftrag(Auftrag auftrag, 
 									Kunde kunde, 
 									Locale locale) {
-		if(auftrag == null) {
+		if (auftrag == null) {
 			return null;
 		}
 		
-		for(Auftragsposition ap : auftrag.getAuftragspositionen()) {
+		for (Auftragsposition ap : auftrag.getAuftragspositionen()) {
 			LOGGER.log(FINEST, "Auftragsposition {0}", ap);
 		}
 		
@@ -101,7 +101,7 @@ public class AuftragServiceImpl implements Serializable, AuftragService {
 		
 		//id's müssen bei neuen Objekten leer sein
 		auftrag.setId(KEINE_ID);
-		for(Auftragsposition ap : auftrag.getAuftragspositionen()) {
+		for (Auftragsposition ap : auftrag.getAuftragspositionen()) {
 			ap.setId(KEINE_ID);
 		}
 		
