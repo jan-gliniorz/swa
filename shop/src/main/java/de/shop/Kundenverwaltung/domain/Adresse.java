@@ -54,7 +54,7 @@ public class Adresse implements Serializable {
 		
 	@Id
 	@GeneratedValue
-	@Column(name = "adresse_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN )
+	@Column(name = "adresse_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@XmlAttribute
 	private Long id = KEINE_ID;
 	

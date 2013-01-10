@@ -9,7 +9,6 @@ import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -35,7 +34,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import de.shop.Auftragsverwaltung.domain.Auftrag;
-//import de.shop.Auftragsverwaltung.rest.UriHelperAuftrag;
+import de.shop.Auftragsverwaltung.rest.UriHelperAuftrag;
 import de.shop.Auftragsverwaltung.service.AuftragService;
 import de.shop.Kundenverwaltung.domain.Adresse;
 import de.shop.Kundenverwaltung.domain.Kunde;
@@ -43,9 +42,6 @@ import de.shop.Kundenverwaltung.service.KundeService;
 import de.shop.Kundenverwaltung.service.KundeService.FetchType;
 import de.shop.Util.Log;
 import de.shop.Util.NotFoundException;
-import de.shop.Util.RestLongWrapper;
-import de.shop.Util.RestStringWrapper;
-
 
 @Path("/kunden")
 @Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
@@ -65,8 +61,8 @@ public class KundeResource {
 	@Inject
 	private UriHelperKunde uriHelperKunde;
 	
-//	@Inject
-//	private UriHelperAuftrag uriHelperAuftrag;
+	@Inject
+	private UriHelperAuftrag uriHelperAuftrag;
 	
 	@PostConstruct
 	private void postConstruct() {
@@ -106,11 +102,10 @@ public class KundeResource {
 	
 		// URLs innerhalb des gefundenen Kunden anpassen
 		uriHelperKunde.updateUriKunde(kunde, uriInfo);
-		
+
 		return kunde;
 	}
 	
-
 	/**
 	 * Mit der URL /kunden werden alle Kunden ermittelt oder
 	 * mit kundenverwaltung/kunden?nachname=... diejenigen mit einem bestimmten Nachnamen.
@@ -143,33 +138,29 @@ public class KundeResource {
 			uriHelperKunde.updateUriKunde(kunde, uriInfo);
 		}
 		
-		// Konvertierung in eigene Collection-Klasse wg. Wurzelelement
-		//final KundeCollection kundeColl = new KundeCollection(kunden);
-		
 		return kunden;
 	}
 	
-//	/**
-//	 * Mit der URL /kunden/{id}/bestellungen die Bestellungen zu eine Kunden ermitteln
-//	 * @param kundeId ID des Kunden
-//	 * @return Objekt mit Bestellungsdaten, falls die ID vorhanden ist
-//	 */
-//	@GET
-//	@Path("{id:[1-9][0-9]*}/auftraege")
-//	public Collection<Auftrag> findAuftragById(@PathParam("id") Long kundennummer,  @Context UriInfo uriInfo) {
-//		final Collection<Auftrag> auftraege = as.findAuftragByKundeId(kundennummer);
-//		if (auftraege.isEmpty()) {
-//			final String msg = "Kein Kunde gefunden mit der Kundennummer" + kundennummer;
-//			throw new NotFoundException(msg);
-//		}
-//		
-//		// URLs innerhalb der gefundenen Bestellungen anpassen
-//		for (Auftrag auftraege : auftraege) {
-//			uriHelperAufrag.updateUriBestellung(auftrag, uriInfo);
-//		}
-//		
-//		return auftraege;
-//	}
+	/**
+	 * Mit der URL /kunden/{id}/bestellungen die Auftraege zu eine Kunden ermitteln
+	 * @param kundeId ID des Kunden
+	 * @return Objekt mit Auftragssdaten, falls die ID vorhanden ist
+	 */
+	@GET
+	@Path("{id:[1-9][0-9]*}/auftraege")
+	public Collection<Auftrag> findAuftragById(@PathParam("id") Long kundennummer,  @Context UriInfo uriInfo) {
+		final Collection<Auftrag> auftraege = as.findAuftragByKundeId(kundennummer);
+		if (auftraege.isEmpty()) {
+			final String msg = "Kein Kunde gefunden mit der Kundennummer" + kundennummer;
+			throw new NotFoundException(msg);
+		}
+		
+		// URLs innerhalb der gefundenen Aufträge anpassen
+		for (Auftrag auftrag : auftraege) {
+			uriHelperAuftrag.updateUriAuftrag(auftrag, uriInfo);
+		}
+		return auftraege;
+	}
 
 	/**
 	 * Mit der URL /kunden einen Kunden per POST anlegen.
@@ -193,7 +184,6 @@ public class KundeResource {
 		final URI kundeUri = uriHelperKunde.getUriKunde(kunde, uriInfo);
 		return Response.created(kundeUri).build();
 	}
-	
 	
 	/**
 	 * Mit der URL /kunden einen Kunden per PUT aktualisieren
@@ -224,7 +214,6 @@ public class KundeResource {
 			throw new NotFoundException(msg);
 		}
 	}
-	
 	
 	/**
 	 * Mit der URL /kunden{id} einen Kunden per DELETE l&ouml;schen

@@ -18,7 +18,7 @@ public class KundeDeleteBestellungException extends KundeServiceException {
 		super("Kunde mit der Kundennummer=" + kunde.getKundenNr() + " kann nicht geloescht werden: "
 			  + kunde.getAuftraege().size() + " Aufträge");
 		this.kundeId = kunde.getKundenNr();
-		this.anzahlBestellungen = kunde.getAuftraege().size();;
+		this.anzahlBestellungen = kunde.getAuftraege().size();
 	}
 
 	public Long getKundeId() {

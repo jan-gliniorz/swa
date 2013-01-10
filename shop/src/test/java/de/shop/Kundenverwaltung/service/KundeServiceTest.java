@@ -9,7 +9,11 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.junit.matchers.JUnitMatchers.both;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.transaction.HeuristicMixedException;
@@ -23,10 +27,10 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import de.shop.Auftragsverwaltung.domain.Auftragsposition;
 import de.shop.Auftragsverwaltung.domain.Auftrag;
-import de.shop.Kundenverwaltung.domain.Kunde;
+import de.shop.Auftragsverwaltung.domain.Auftragsposition;
 import de.shop.Kundenverwaltung.domain.Adresse;
+import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Kundenverwaltung.service.KundeService.FetchType;
 import de.shop.Util.AbstractTest;
 
