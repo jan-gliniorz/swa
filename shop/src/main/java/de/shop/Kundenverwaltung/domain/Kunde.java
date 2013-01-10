@@ -60,7 +60,7 @@ import de.shop.Auftragsverwaltung.domain.Auftrag;
 @NamedQuery(name  = Kunde.KUNDEN_ALL,
             query = "SELECT k FROM Kunde k"),
 @NamedQuery(name = Kunde.KUNDE_BY_NAME_AUFTRAEGE,
-			query = "SELECT DISTINCT k"
+		query = "SELECT DISTINCT k"
 					+ " FROM Kunde k"
 					+ " LEFT JOIN FETCH k.auftraege"
 					+ " WHERE k.nachname = :" + Kunde.PARAM_NACHNAME),

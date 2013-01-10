@@ -66,7 +66,7 @@ public class KundeResource {
 	private UriHelperKunde uriHelperKunde;
 	
 //	@Inject
-//	private UriHelperAuftrag uriHelperBestellung;
+//	private UriHelperAuftrag uriHelperAuftrag;
 	
 	@PostConstruct
 	private void postConstruct() {
@@ -93,7 +93,7 @@ public class KundeResource {
 	@GET
 	@Path("{id:[1-9][0-9]*}")
 //	@Formatted    // XML formatieren, d.h. Einruecken und Zeilenumbruch
-	public Kunde findKundenByKundenummer(@PathParam("kundennummer") Long kundennummer,
+	public Kunde findKundenByKundenummer(@PathParam("id") Long kundennummer,
 			                           @Context UriInfo uriInfo,
 			                           @Context HttpHeaders headers) {
 		final List<Locale> locales = headers.getAcceptableLanguages();
@@ -155,7 +155,7 @@ public class KundeResource {
 //	 * @return Objekt mit Bestellungsdaten, falls die ID vorhanden ist
 //	 */
 //	@GET
-//	@Path("{id:[1-9][0-9]*}/bestellungen")
+//	@Path("{id:[1-9][0-9]*}/auftraege")
 //	public Collection<Auftrag> findAuftragById(@PathParam("id") Long kundennummer,  @Context UriInfo uriInfo) {
 //		final Collection<Auftrag> auftraege = as.findAuftragByKundeId(kundennummer);
 //		if (auftraege.isEmpty()) {
@@ -230,13 +230,13 @@ public class KundeResource {
 	 * Mit der URL /kunden{id} einen Kunden per DELETE l&ouml;schen
 	 * @param kundeId des zu l&ouml;schenden Kunden
 	 */
-	@Path("{id:[0-9]+}")
+	@Path("{kundennummer:[0-9]+}")
 	@DELETE
 	@Produces
-	public void deleteKunde(@PathParam("id") Long kundeId, @Context HttpHeaders headers) {
+	public void deleteKunde(@PathParam("kundennummer") Long kundennummer, @Context HttpHeaders headers) {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-		final Kunde kunde = ks.findKundenByKundennummer(kundeId, FetchType.NUR_KUNDE, locale);
+		final Kunde kunde = ks.findKundenByKundennummer(kundennummer, FetchType.NUR_KUNDE, locale);
 		ks.deleteKunde(kunde);
 	}
 }

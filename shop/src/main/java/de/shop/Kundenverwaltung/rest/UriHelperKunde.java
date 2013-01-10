@@ -26,7 +26,7 @@ public class UriHelperKunde {
 
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()
                                      .path(KundeResource.class)
-                                     .path(KundeResource.class, "findBestellungenByKundeId");
+                                     .path(KundeResource.class, "findKundenByKundenummer");
 		final URI auftraegeUri = ub.build(kunde.getKundenNr());
 		kunde.setAuftraegeUri(auftraegeUri);
 	}
