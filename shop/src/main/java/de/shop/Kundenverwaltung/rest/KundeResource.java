@@ -93,7 +93,7 @@ public class KundeResource {
 	@GET
 	@Path("{id:[1-9][0-9]*}")
 //	@Formatted    // XML formatieren, d.h. Einruecken und Zeilenumbruch
-	public Kunde findKundenByKundenummer(@PathParam("id") Long kundennummer,
+	public Kunde findKundenByKundennummer(@PathParam("id") Long kundennummer,
 			                           @Context UriInfo uriInfo,
 			                           @Context HttpHeaders headers) {
 		final List<Locale> locales = headers.getAcceptableLanguages();
