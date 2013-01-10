@@ -6,7 +6,6 @@ import static java.util.logging.Level.FINEST;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -18,20 +17,13 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
 import de.shop.Artikelverwaltung.service.ArtikelService;
-import de.shop.Auftragsverwaltung.domain.Auftragsposition;
 import de.shop.Auftragsverwaltung.domain.Auftrag;
+import de.shop.Auftragsverwaltung.domain.Auftragsposition;
 import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Kundenverwaltung.service.KundeService;
 import de.shop.Kundenverwaltung.service.KundeService.FetchType;
@@ -67,6 +59,13 @@ public class AuftragServiceImpl implements Serializable, AuftragService {
 	@PreDestroy
 	private void preDestroy() {
 		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+	}
+	
+	@Override
+	public List<Auftrag> findAuftragAll() {
+		final List<Auftrag> auftraege = em.createNamedQuery(Auftrag.FIND_AUFTRAG_All, Auftrag.class)
+											.getResultList();
+		return auftraege;
 	}
 
 	@Override

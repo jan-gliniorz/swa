@@ -5,9 +5,9 @@ import java.util.Locale;
 
 import de.shop.Auftragsverwaltung.domain.Auftrag;
 import de.shop.Kundenverwaltung.domain.Kunde;
-import de.shop.Artikelverwaltung.domain.Artikel;
 
 public interface AuftragService {
+	List<Auftrag> findAuftragAll();
 	/**
 	 */
 	Auftrag findAuftragById(Long id);

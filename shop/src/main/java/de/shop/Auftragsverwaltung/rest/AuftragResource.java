@@ -23,16 +23,17 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
+
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.service.ArtikelService;
-import de.shop.Auftragsverwaltung.domain.Auftragsposition;
 import de.shop.Auftragsverwaltung.domain.Auftrag;
+import de.shop.Auftragsverwaltung.domain.Auftragsposition;
 import de.shop.Auftragsverwaltung.service.AuftragService;
 import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Kundenverwaltung.rest.UriHelperKunde;
@@ -74,6 +75,17 @@ public class AuftragResource {
 	private void preDestroy() {
 		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
 	}
+	
+	@GET
+	@Wrapped(element ="auftraege") 
+	public Collection<Auftrag>findAuftraegeAll(@Context UriInfo uriInfo) {
+		Collection<Auftrag> auftraege = auftragService.findAuftragAll();
+		for(Auftrag a : auftraege) {
+			uriHelperAuftrag.updateUriAuftrag(a, uriInfo);
+		}
+		
+		return auftraege;
+	} 
 	
 	/**
 	 * Mit der URL /auftraege/{id} eine Bestellung ermitteln

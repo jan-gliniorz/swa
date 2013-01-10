@@ -51,6 +51,9 @@ import de.shop.Util.IdGroup;
 @Entity
 @Table(name = "auftrag")
 @NamedQueries({
+	@NamedQuery(name = Auftrag.FIND_AUFTRAG_All, 
+			query = "SELECT a"
+					+ " FROM Auftrag a"),
 	@NamedQuery(name = Auftrag.FIND_AUFTRAG_BY_ID, 
 			query = "SELECT a"
 					+ " FROM Auftrag a"
@@ -66,6 +69,7 @@ public class Auftrag implements Serializable {
 	
 	private static final String PREFIX = "Auftrag.";
 	public static final String FIND_AUFTRAG_BY_ID = PREFIX + "findAuftragById";
+	public static final String FIND_AUFTRAG_All = PREFIX + "findAuftragByAll";
 	public static final String FIND_AUFTRAG_BY_KUNDE = PREFIX + "findAuftragByKunde";
 	
 	public static final String PARAM_KUNDEID = "kundeId";
