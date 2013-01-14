@@ -19,6 +19,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriInfo;
@@ -81,8 +82,8 @@ public class LieferungspositionResource {
 
 	
 	@GET
-	@Path("{lieferungid:[1-9][0-9]*}")
-	public List<Lieferungsposition> findLieferungspositionByLieferungId(@PathParam("lieferungid") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+	@QueryParam("{lieferungid:[1-9][0-9]*}")
+	public List<Lieferungsposition> findLieferungspositionByLieferungId(@QueryParam("lieferungid") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);

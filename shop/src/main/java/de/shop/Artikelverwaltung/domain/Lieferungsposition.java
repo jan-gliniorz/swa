@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
@@ -61,8 +62,9 @@ public class Lieferungsposition implements Serializable {
 	
 	public static final String PARAM_ID = "id";
 	
-	@ManyToOne(fetch=FetchType.LAZY, optional = false)
+    @ManyToOne//(fetch=FetchType.LAZY, optional = false)
 	@JoinColumn(name="artikel_FID", nullable = false)
+    @OrderColumn(name="erstellt_am")
 	@NotNull(message = "{artikelverwaltung.lieferungsposition.artikel.notNull}")
 	@XmlTransient
 	private Artikel artikel;

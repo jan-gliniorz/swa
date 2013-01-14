@@ -3,6 +3,7 @@ package de.shop.Artikelverwaltung.domain;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
+import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
@@ -78,9 +79,8 @@ public class Lieferung implements Serializable {
 	public static final String PARAM_ID = "id";
 	public static final String PARAM_BESTELLDATUM = "bestelldatum";
 	
-	@OneToMany (fetch = EAGER, cascade = { CascadeType.ALL })
+	@OneToMany (fetch = EAGER, cascade = PERSIST)
 	@JoinColumn(name = "lieferung_FID", nullable = false)
-
 	@NotEmpty(message = "{artikelverwaltung.lieferung.lieferungspositionen.notEmpty}")
 	@XmlElementWrapper(name = "lieferungspositionen", required = true)
 	@XmlElement (name = "lieferungspositionen", required = true)
