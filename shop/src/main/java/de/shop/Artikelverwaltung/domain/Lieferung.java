@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +33,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -47,32 +46,34 @@ import de.shop.Util.IdGroup;
  * 
  */
 @Entity
-@Table(name ="lieferung")
+@Table(name = "lieferung")
 @NamedQueries({
 	@NamedQuery(name = Lieferung.LIEFERUNG_BY_ID, 
-			query = "SELECT li" +
-					" FROM Lieferung li"+
-					" WHERE li.id = :" + Lieferung.PARAM_ID),
+			query = "SELECT li"
+					+ " FROM Lieferung li"
+					+ " WHERE li.id = :" + Lieferung.PARAM_ID),
 	@NamedQuery(name = Lieferung.LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN,
-			query = "SELECT DISTINCT li" +
-					" FROM Lieferung li" +
-					" JOIN li.lieferungspositionen"+
-					" WHERE li.id = :" + Lieferung.PARAM_ID),
+			query = "SELECT DISTINCT li"
+					+ " FROM Lieferung li"
+					+ " JOIN li.lieferungspositionen"
+					+ " WHERE li.id = :" + Lieferung.PARAM_ID),
 	@NamedQuery(name = Lieferung.LIEFERUNG_BY_BESTELLDATUM,
-			query = "SELECT li" +
-					" FROM Lieferung li" +
-					" WHERE li.bestelldatum = :" + Lieferung.PARAM_BESTELLDATUM),
+			query = "SELECT li"
+					+ " FROM Lieferung li"
+					+ " WHERE li.bestelldatum = :" + Lieferung.PARAM_BESTELLDATUM),
 	@NamedQuery(name = Lieferung.LIEFERUNGEN_ALL,
     		query = "SELECT li FROM Lieferung li")
 })
 
+@XmlRootElement
 public class Lieferung implements Serializable {
 	
 	private static final long serialVersionUID = -4645734623734341L;
 	
 	private static final String PREFIX = "Lieferung.";
 	public static final String LIEFERUNG_BY_ID = PREFIX + "findLieferungById";
-	public static final String LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN = PREFIX + "findLieferungByIdFetchLieferungspositionen";
+	public static final String LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN = PREFIX 
+							   + "findLieferungByIdFetchLieferungspositionen";
 	public static final String LIEFERUNG_BY_BESTELLDATUM = PREFIX + "findLieferungByBestelldatum";
 	public static final String LIEFERUNGEN_ALL = PREFIX + "findLieferungenAll";
 	
@@ -82,8 +83,6 @@ public class Lieferung implements Serializable {
 	@OneToMany (fetch = EAGER, cascade = PERSIST)
 	@JoinColumn(name = "lieferung_FID", nullable = false)
 	@NotEmpty(message = "{artikelverwaltung.lieferung.lieferungspositionen.notEmpty}")
-	@XmlElementWrapper(name = "lieferungspositionen", required = true)
-	@XmlElement (name = "lieferungspositionen", required = true)
 	@XmlTransient
 	private List<Lieferungsposition> lieferungspositionen;
 
@@ -93,14 +92,13 @@ public class Lieferung implements Serializable {
 	private URI lieferungspositionUri;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name= "lieferung_ID", nullable = false, updatable = false, precision=LONG_ANZ_ZIFFERN)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "lieferung_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "{artikelverwaltung.lieferung.id.min}", groups = IdGroup.class)
 	@XmlAttribute
 	private Long id = KEINE_ID;
 
 	@Temporal(TemporalType.DATE)
-	
 	@NotNull(message = "{artikelverwaltung.lieferung.bestelldatum.notNull}")
 	@XmlElement
 	private Date bestelldatum;
@@ -109,12 +107,12 @@ public class Lieferung implements Serializable {
 	@XmlElement
 	private Date lieferungsdatum;
 	
-	@Column(name="erstellt_am")
+	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
 	@XmlElement
 	private Date erstelltAm;
 
-	@Column(name="geaendert_am")
+	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
 	@XmlElement
 	private Date geaendertAm;
@@ -122,26 +120,26 @@ public class Lieferung implements Serializable {
 	public Lieferung() {
 	}
 	
-	public List<Lieferungsposition> getLieferungsposition(){
+	public List<Lieferungsposition> getLieferungsposition() {
 		return Collections.unmodifiableList(lieferungspositionen);
 	}
 	
-	public void setLieferungsposition(List<Lieferungsposition> lieferungspositionen){
-		if(this.lieferungspositionen == null){
+	public void setLieferungsposition(List<Lieferungsposition> lieferungspositionen) {
+		if (this.lieferungspositionen == null) {
 			this.lieferungspositionen = lieferungspositionen;
 			return;
 		}
 		
 		this.lieferungspositionen.clear();
-		if(lieferungspositionen != null){
+		if (lieferungspositionen != null) {
 			this.lieferungspositionen = lieferungspositionen;
 		}
 		
 	}	
 	
-	public Lieferung addLieferungsposition(Lieferungsposition lieferungsposition){
+	public Lieferung addLieferungsposition(Lieferungsposition lieferungsposition) {
 		
-		if(lieferungspositionen == null){
+		if (lieferungspositionen == null) {
 			lieferungspositionen = new ArrayList<>();
 		}
 		
@@ -197,8 +195,9 @@ public class Lieferung implements Serializable {
 		this.geaendertAm = geaendertAm == null ? null : (Date) geaendertAm.clone();
 	}
 
-	public void setValues(Lieferung l) {
-		lieferungsdatum = l.lieferungsdatum;
+	public void setValues(Lieferung lieferung) {
+		lieferungsdatum = lieferung.lieferungsdatum;
+		bestelldatum = lieferung.bestelldatum; 
 	}
 	
 	@PrePersist
@@ -242,25 +241,29 @@ public class Lieferung implements Serializable {
 		if (bestelldatum == null) {
 			if (other.bestelldatum != null)
 				return false;
-		} else if (!bestelldatum.equals(other.bestelldatum))
+		} 
+		else if (!bestelldatum.equals(other.bestelldatum))
 			return false;
 		
 		if (erstelltAm == null) {
 			if (other.erstelltAm != null)
 				return false;
-		} else if (!erstelltAm.equals(other.erstelltAm))
+		} 
+		else if (!erstelltAm.equals(other.erstelltAm))
 			return false;
 		
 		if (geaendertAm == null) {
 			if (other.geaendertAm != null)
 				return false;
-		} else if (!geaendertAm.equals(other.geaendertAm))
+		} 
+		else if (!geaendertAm.equals(other.geaendertAm))
 			return false;
 		
 		if (lieferungsdatum == null) {
 			if (other.lieferungsdatum != null)
 				return false;
-		} else if (!lieferungsdatum.equals(other.lieferungsdatum))
+		} 
+		else if (!lieferungsdatum.equals(other.lieferungsdatum))
 			return false;
 
 		return true;

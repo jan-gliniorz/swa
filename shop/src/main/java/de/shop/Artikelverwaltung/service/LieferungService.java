@@ -147,7 +147,7 @@ public class LieferungService implements Serializable {
 		return lieferung;		
 	}
 	
-	private void validateLieferung (Lieferung lieferung, Locale locale) {
+	private void validateLieferung(Lieferung lieferung, Locale locale) {
 		// Werden alle Constraints beim Einfuegen gewahrt?
 		final Validator validator = validationService.getValidator(locale);
 		
@@ -159,7 +159,7 @@ public class LieferungService implements Serializable {
 	
 	/**
 	 */
-	public Lieferung updateLieferung (Lieferung lieferung, Locale locale) {
+	public Lieferung updateLieferung(Lieferung lieferung, Locale locale) {
 		if (lieferung == null) {
 			return null;
 		}
@@ -195,7 +195,7 @@ public class LieferungService implements Serializable {
 		}
 		
 		try {
-			lieferung = findLieferungById(lieferung.getId(), FetchType.MIT_POSITIONEN, Locale.getDefault());
+			lieferung = findLieferungById(lieferung.getId(), FetchType.NUR_LIEFERUNG, Locale.getDefault());
 		}
 		catch (LieferungInvalidIdException e) {
 			return;
@@ -217,9 +217,9 @@ public class LieferungService implements Serializable {
 		return lieferungen;
 	}
 	
-	//======================================================================================================================
-	//============================LIEFERUNGSPOSITIONSERVICE=================================================================
-	//======================================================================================================================
+	//==============================================================================
+	//============================LIEFERUNGSPOSITIONSERVICE=========================
+	//==============================================================================
 
 	public Lieferungsposition findLieferungspositionById(Long id, Locale locale) {
 		
@@ -238,10 +238,11 @@ public class LieferungService implements Serializable {
 	
 	private void validateLieferungspositionId(Long lieferungspositionId, Locale locale) {
 		final Validator validator = validationService.getValidator(locale);
-		final Set<ConstraintViolation<Lieferungsposition>> violations = validator.validateValue(Lieferungsposition.class,
-				                                                                           "id",
-				                                                                           lieferungspositionId,
-				                                                                           IdGroup.class);
+		final Set<ConstraintViolation<Lieferungsposition>> violations = 
+														   validator.validateValue(Lieferungsposition.class,
+				                                           "id",
+				                                           lieferungspositionId,
+				                                           IdGroup.class);
 		
 		if (!violations.isEmpty())
 			throw new LieferungspositionInvalidIdException(lieferungspositionId, violations);
@@ -257,9 +258,10 @@ public List <Lieferungsposition> findLieferungspositionenByLieferungId(Long id, 
 		
 		List<Lieferungsposition> lieferungspositionen = null;
 		
-		lieferungspositionen = em.createNamedQuery(Lieferungsposition.LIEFERUNGSPOSITIONEN_BY_LIEFERUNG_ID, Lieferungsposition.class)
-                    .setParameter(Lieferungsposition.PARAM_ID, id)
-                    .getResultList();
+		lieferungspositionen = em.createNamedQuery(
+				   				  Lieferungsposition.LIEFERUNGSPOSITIONEN_BY_LIEFERUNG_ID, Lieferungsposition.class)
+				   				  .setParameter(Lieferungsposition.PARAM_ID, id)
+				   				  .getResultList();
 		
 		return lieferungspositionen;
 	}

@@ -33,16 +33,17 @@ public class UriHelperLieferungsposition {
 	
 	public URI getUriLieferungsposition(Lieferungsposition lieferungsposition, UriInfo uriInfo) {
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()
-		                             .path(LieferungResource.class)
-		                             .path(LieferungResource.class, "findLieferungspositionById");
+		                             .path(LieferungspositionResource.class)
+		                             .path(LieferungspositionResource.class, "findLieferungspositionById");
 		final URI uri = ub.build(lieferungsposition.getId());
 		return uri;
 	}
 	
 	public URI getUriLieferungspositionenByLieferungId(Lieferung lieferung, UriInfo uriInfo) {
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()
-		                             .path(LieferungResource.class)
-		                             .path(LieferungResource.class, "findLieferungspositionByLieferungId");
+		                             .path(LieferungspositionResource.class)
+//		                             .path(LieferungspositionResource.class, "findLieferungspositionByLieferungId")
+		                             .queryParam("lieferungid", lieferung.getId());
 		final URI uri = ub.build(lieferung.getId());
 		return uri;
 	}

@@ -38,12 +38,24 @@ public class LieferungServiceTest extends AbstractTest {
 	private static final Long ID_VORHANDEN = Long.valueOf(451);
 	private static final Long ID_UNGUELTIG = Long.valueOf(888);
 	
-	private static final Date LIEFERUNGSDATUM_NEU = new GregorianCalendar(2012,Calendar.NOVEMBER,30).getTime();
-		
-	private static final Date BESTELLDATUM_NEU = new GregorianCalendar(2012,Calendar.DECEMBER,31).getTime();
-	private static final Date BESTELLDATUM_NICHT_VORHANDEN = new GregorianCalendar(1956,Calendar.FEBRUARY, 2).getTime();
-	private static final Date BESTELLDATUM_VORHANDEN = new GregorianCalendar(2011, Calendar.SEPTEMBER, 26).getTime();
+	private static final int TAG_NEU = 31;
+	private static final int MONAT_NEU = Calendar.NOVEMBER;
+	private static final int JAHR_NEU = 2012;
+	private static final Date LIEFERUNGSDATUM_NEU = new GregorianCalendar(JAHR_NEU, MONAT_NEU, TAG_NEU).getTime();
+	private static final Date BESTELLDATUM_NEU = new GregorianCalendar(JAHR_NEU, MONAT_NEU, TAG_NEU).getTime();
 	
+	private static final int TAG_NVORH = 2;
+	private static final int MONAT_NVORH = Calendar.FEBRUARY;
+	private static final int JAHR_NVORH = 1999;
+	private static final Date BESTELLDATUM_NICHT_VORHANDEN = 
+							  new GregorianCalendar(JAHR_NVORH, MONAT_NVORH, TAG_NVORH).getTime();
+	
+	private static final int TAG_VORH = 26;
+	private static final int MONAT_VORH = Calendar.SEPTEMBER;
+	private static final int JAHR_VORH = 2011;
+	private static final Date BESTELLDATUM_VORHANDEN = new GregorianCalendar(JAHR_VORH, MONAT_VORH, TAG_VORH).getTime();
+	
+	private static final Long ARTIKEL_ID_VORHANDEN = Long.valueOf(305);
 	private static final String BEZEICHNUNG_VORHANDEN = "Regenjacke";
 	private static final String BESCHREIBUNG_VORHANDEN = "Regenjacke";
 	private static final BigDecimal PREIS_VORHANDEN = BigDecimal.valueOf(50);
@@ -184,7 +196,10 @@ public class LieferungServiceTest extends AbstractTest {
 		
 //		Objekt vorhandenerArtikel anhand einer vorgegebenen Artikelnummer erstellen
 		trans.begin();
-		Artikel vorhandenerArtikel = as.findArtikelByID(Long.valueOf(305), de.shop.Artikelverwaltung.service.ArtikelService.FetchType.NUR_Artikel, LOCALE);
+		Artikel vorhandenerArtikel = as.findArtikelByID(
+										Long.valueOf(ARTIKEL_ID_VORHANDEN), 
+										de.shop.Artikelverwaltung.service.ArtikelService.FetchType.NUR_Artikel, 
+										LOCALE);
 		trans.commit();	
 		
 		//Objekt neueLieferungsposition erstellen und Attribute setten

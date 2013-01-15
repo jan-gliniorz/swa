@@ -3,8 +3,6 @@ package de.shop.Artikelverwaltung.domain;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import de.shop.Artikelverwaltung.domain.Lieferungsposition;
-
 import javax.persistence.TypedQuery;
 
 import org.jboss.arquillian.junit.Arquillian;
@@ -31,8 +29,9 @@ public class LieferungspositionTest extends AbstractDomainTest {
 		final long id = ID_VORHANDEN;
 		
 		// When
-		final TypedQuery<Lieferungsposition> query = getEntityManager().createNamedQuery(Lieferungsposition.LIEFERUNGSPOSITION_BY_ID,
-				Lieferungsposition.class);
+		final TypedQuery<Lieferungsposition> query = getEntityManager()
+													 .createNamedQuery(Lieferungsposition.LIEFERUNGSPOSITION_BY_ID,
+													 Lieferungsposition.class);
 		query.setParameter(Lieferungsposition.PARAM_ID, id);
 		Lieferungsposition lieferungsposition = query.getSingleResult();
 		

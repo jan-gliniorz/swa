@@ -15,7 +15,8 @@ public class LieferungInvalidBestelldatumException extends LieferungServiceExcep
 	private final Date bestelldatum;
 	private final Collection<ConstraintViolation<Lieferung>> violations;
 	
-	public LieferungInvalidBestelldatumException(Date bestelldatum, Collection<ConstraintViolation<Lieferung>> violations) {
+	public LieferungInvalidBestelldatumException(
+		   Date bestelldatum, Collection<ConstraintViolation<Lieferung>> violations) {
 		super("Ungueltiges Bestelldatum: " + bestelldatum + ", Violations: " + violations);
 		this.bestelldatum = bestelldatum;
 		this.violations = violations;

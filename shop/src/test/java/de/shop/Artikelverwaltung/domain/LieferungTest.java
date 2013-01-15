@@ -9,9 +9,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
-import de.shop.Artikelverwaltung.domain.Artikel;
-import de.shop.Artikelverwaltung.domain.Lieferung;
-
 import javax.persistence.TypedQuery;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -26,10 +23,22 @@ import de.shop.Util.AbstractDomainTest;
 @RunWith(Arquillian.class)
 public class LieferungTest extends AbstractDomainTest {
 	private static final Long ID_VORHANDEN = Long.valueOf(455);
-	private static final Date BESTELLDATUM_VORHANDEN = new GregorianCalendar(2011, Calendar.SEPTEMBER, 26).getTime();
 	
-	private static final Date LIEFERUNGSDATUM_NEU = new GregorianCalendar(2012,Calendar.NOVEMBER,31).getTime();
-	private static final Date BESTELLDATUM_NEU = new GregorianCalendar(2012,Calendar.DECEMBER,31).getTime();
+	private static final int TAG_BEST_VORH = 26;
+	private static final int MONAT_BEST_VORH = Calendar.SEPTEMBER;
+	private static final int JAHR_BEST_VORH = 2011;
+	private static final Date BESTELLDATUM_VORHANDEN = new GregorianCalendar(
+							  JAHR_BEST_VORH, MONAT_BEST_VORH, TAG_BEST_VORH).getTime();
+	
+	private static final int TAG_NEU = 31;
+	private static final int MONAT_NEU = Calendar.NOVEMBER;
+	private static final int JAHR_NEU = 2012;
+	private static final Date LIEFERUNGSDATUM_NEU = new GregorianCalendar(
+							  JAHR_NEU, MONAT_NEU, TAG_NEU).getTime();
+
+	private static final Date BESTELLDATUM_NEU = new GregorianCalendar(
+							  JAHR_NEU, MONAT_NEU, TAG_NEU).getTime();
+	
 	private static final int POS1ANZ_NEU = 3;
 	private static final Long POS1ARTIKELID_NEU = Long.valueOf(303);
 
@@ -60,13 +69,14 @@ public class LieferungTest extends AbstractDomainTest {
 		final long id = ID_VORHANDEN;
 		
 		// When
-		final TypedQuery<Lieferung> query = getEntityManager().createNamedQuery(Lieferung.LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN,
-				Lieferung.class);
+		final TypedQuery<Lieferung> query = getEntityManager()
+										    .createNamedQuery(Lieferung.LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN,
+										    Lieferung.class);
 		query.setParameter(Lieferung.PARAM_ID, id);
 		final List<Lieferung> lieferungen = query.getResultList();
 		
 		// Then
-		assertThat(lieferungen.size() > 0, is (true));
+		assertThat(lieferungen.size() > 0, is(true));
 	}
 	
 	@Test
@@ -128,9 +138,10 @@ public class LieferungTest extends AbstractDomainTest {
 		}
 				
 		// Then
-				List<Lieferung> lieferungen = getEntityManager().createNamedQuery(Lieferung.LIEFERUNG_BY_BESTELLDATUM, Lieferung.class)
-															.setParameter(Lieferung.PARAM_BESTELLDATUM, bestelldatum) 
-															.getResultList();
+				List<Lieferung> lieferungen = getEntityManager()
+											  .createNamedQuery(Lieferung.LIEFERUNG_BY_BESTELLDATUM, Lieferung.class)
+											  .setParameter(Lieferung.PARAM_BESTELLDATUM, bestelldatum) 
+											  .getResultList();
 				
 				// Ueberpruefung des ausgelesenen Objekts
 				assertThat(lieferungen.size(), is(1));

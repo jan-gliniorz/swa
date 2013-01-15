@@ -66,7 +66,8 @@ public class LieferungspositionResource {
 	
 	@GET
 	@Path("{id:[1-9][0-9]*}")
-	public Lieferungsposition findLieferungspositionById(@PathParam("id") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+	public Lieferungsposition findLieferungspositionById(
+							  @PathParam("id") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
@@ -83,7 +84,10 @@ public class LieferungspositionResource {
 	
 	@GET
 	@QueryParam("{lieferungid:[1-9][0-9]*}")
-	public List<Lieferungsposition> findLieferungspositionByLieferungId(@QueryParam("lieferungid") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+	public List<Lieferungsposition> findLieferungspositionByLieferungId(
+		                        @QueryParam("lieferungid") Long id, 
+		                        @Context UriInfo uriInfo, 
+								@Context HttpHeaders headers) {
 		
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);

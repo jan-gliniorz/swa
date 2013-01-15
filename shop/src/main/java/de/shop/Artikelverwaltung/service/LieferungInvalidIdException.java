@@ -14,7 +14,9 @@ public class LieferungInvalidIdException extends LieferungServiceException {
 	private final Long lieferungId;
 	private final Collection<ConstraintViolation<Lieferung>> violations;
 	
-	public LieferungInvalidIdException(Long lieferungId, Collection<ConstraintViolation<Lieferung>> violations) {
+	public LieferungInvalidIdException(
+		   Long lieferungId, 
+		   Collection<ConstraintViolation<Lieferung>> violations) {
 		super("Ungueltige Lieferungs-ID: " + lieferungId + ", Violations: " + violations);
 		this.lieferungId = lieferungId;
 		this.violations = violations;

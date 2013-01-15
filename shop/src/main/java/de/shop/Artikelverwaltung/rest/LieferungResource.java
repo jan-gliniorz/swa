@@ -34,15 +34,11 @@ import javax.ws.rs.core.UriInfo;
 import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
+import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Artikelverwaltung.service.ArtikelService;
-
-import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Artikelverwaltung.service.LieferungService;
 import de.shop.Artikelverwaltung.service.LieferungService.FetchType;
-import de.shop.Artikelverwaltung.rest.UriHelperLieferung;
-import de.shop.Artikelverwaltung.rest.UriHelperLieferungsposition;
-
 import de.shop.Util.Log;
 import de.shop.Util.NotFoundException;
 
@@ -80,10 +76,11 @@ public class LieferungResource {
 
 	
 	@GET
-	@Wrapped(element ="lieferungen") 
+	@Wrapped(element = "lieferungen") 
 	public Collection<Lieferung>findLieferungenAll(@Context UriInfo uriInfo) {
-		Collection<Lieferung> lieferung = ls.findLieferungenAll(LieferungService.FetchType.NUR_LIEFERUNG,LieferungService.OrderType.ID);
-		for(Lieferung l : lieferung) {
+		Collection<Lieferung> lieferung = ls.findLieferungenAll(
+										  LieferungService.FetchType.NUR_LIEFERUNG, LieferungService.OrderType.ID);
+		for (Lieferung l : lieferung) {
 			uriHelperLieferung.updateUriLieferung(l, uriInfo);
 		}
 		
@@ -93,12 +90,13 @@ public class LieferungResource {
 	
 	@GET
 	@Path("{id:[1-9][0-9]*}")
-	public Lieferung findLieferungById(@PathParam("id") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+	public Lieferung findLieferungById(
+					 @PathParam("id") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		
-		final Lieferung lieferung = ls.findLieferungById(id, LieferungService.FetchType.NUR_LIEFERUNG, locale);
+		final Lieferung lieferung = ls.findLieferungById(id, LieferungService.FetchType.MIT_POSITIONEN, locale);
 		if (lieferung == null) {
 			final String msg = "Keine Lieferung gefunden mit der ID " + id;
 			throw new NotFoundException(msg);
@@ -185,22 +183,25 @@ public class LieferungResource {
 	@PUT
 	@Consumes(APPLICATION_XML)
 	@Produces
-	public void updateLieferung (Lieferung lieferung, @Context UriInfo uriInfo, @Context HttpHeaders headers)
+	public void updateLieferung(Lieferung lieferung, @Context UriInfo uriInfo, @Context HttpHeaders headers)
 	{
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-		Lieferung vorhLieferung = ls.findLieferungById(lieferung.getId(), FetchType.NUR_LIEFERUNG, locale);
-		if (vorhLieferung == null) {
-			final String msg = "Keine Lieferung gefunden mit der ID " + lieferung.getId();
-			throw new NotFoundException(msg);
-		}
+		
+		Lieferung vorhLieferung = ls.findLieferungById(lieferung.getId(), 
+								  LieferungService.FetchType.NUR_LIEFERUNG, locale);
+		
+//		if (vorhLieferung == null) {
+//			final String msg = "Keine Lieferung gefunden mit der ID " + lieferung.getId();
+//			throw new NotFoundException(msg);
+//		}
 		LOGGER.log(FINEST, "Kunde vorher: %s", vorhLieferung);
 			
 		// Daten der vorhandenen Lieferung überschreiben
 		vorhLieferung.setValues(lieferung);
 		LOGGER.log(FINEST, "Kunde nachher: %s", vorhLieferung);
 				
-		// Update durchfuehren
+		// Update durchfuehren		
 		lieferung = ls.updateLieferung(vorhLieferung, locale);
 		if (lieferung == null) {
 			final String msg = "Keine Lieferung gefunden mit der ID " + vorhLieferung.getId();
@@ -211,10 +212,10 @@ public class LieferungResource {
 	@Path("{id:[1-9][0-9]*}")
 	@DELETE
 	@Produces
-	public void deleteLieferung(@PathParam("id") Long id, FetchType fetch, @Context HttpHeaders headers) {
+	public void deleteLieferung(@PathParam("id") Long id, @Context HttpHeaders headers) {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-		final Lieferung lieferung = ls.findLieferungById(id, fetch, locale);
+		final Lieferung lieferung = ls.findLieferungById(id, FetchType.NUR_LIEFERUNG, locale);
 		ls.deleteLieferung(lieferung);
 	}
 }

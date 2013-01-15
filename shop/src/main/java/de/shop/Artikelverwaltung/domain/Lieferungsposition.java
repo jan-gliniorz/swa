@@ -9,7 +9,6 @@ import java.net.URI;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,6 +23,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import de.shop.Util.IdGroup;
@@ -33,24 +33,25 @@ import de.shop.Util.IdGroup;
  * 
  */
 @Entity
-@Table(name ="lieferungsposition")
+@Table(name = "lieferungsposition")
 @NamedQueries({
 	@NamedQuery(name = Lieferungsposition.LIEFERUNGSPOSITION_BY_ID, 
-			query = "SELECT lp" +
-					" FROM Lieferungsposition lp"+
-					" WHERE lp.id = :"+Lieferungsposition.PARAM_ID),
+			query = "SELECT lp"
+					+ " FROM Lieferungsposition lp"
+					+ " WHERE lp.id = :" + Lieferungsposition.PARAM_ID),
 	@NamedQuery(name = Lieferungsposition.LIEFERUNGSPOSITION_BY_ID_ARTIKEL,
-			query = "SELECT DISTINCT lp" +
-					" FROM Lieferungsposition lp" +
-					" JOIN lp.artikel"+
-					" WHERE lp.id = :" + Lieferungsposition.PARAM_ID),
+			query = "SELECT DISTINCT lp"
+					+ " FROM Lieferungsposition lp"
+					+ " JOIN lp.artikel"
+					+ " WHERE lp.id = :" + Lieferungsposition.PARAM_ID),
 	@NamedQuery(name = Lieferungsposition.LIEFERUNGSPOSITIONEN_BY_LIEFERUNG_ID,
-			query = "SELECT lp" + 
-					" FROM Lieferung li"+
-					" JOIN li.lieferungspositionen lp" +
-					" WHERE li.id = :" + Lieferungsposition.PARAM_ID)
+			query = "SELECT lp"
+					+ " FROM Lieferung li"
+					+ " JOIN li.lieferungspositionen lp"
+					+ " WHERE li.id = :" + Lieferungsposition.PARAM_ID)
 })
 
+@XmlRootElement
 public class Lieferungsposition implements Serializable {
 	
 	private static final long serialVersionUID = -895845732573641L;
@@ -63,8 +64,8 @@ public class Lieferungsposition implements Serializable {
 	public static final String PARAM_ID = "id";
 	
     @ManyToOne//(fetch=FetchType.LAZY, optional = false)
-	@JoinColumn(name="artikel_FID", nullable = false)
-    @OrderColumn(name="erstellt_am")
+	@JoinColumn(name = "artikel_FID", nullable = false)
+    @OrderColumn(name = "erstellt_am")
 	@NotNull(message = "{artikelverwaltung.lieferungsposition.artikel.notNull}")
 	@XmlTransient
 	private Artikel artikel;
@@ -74,11 +75,11 @@ public class Lieferungsposition implements Serializable {
 	private URI artikelUri;	
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column (name= "lieferungsposition_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column (name = "lieferungsposition_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)	
 	@Min(value = MIN_ID, message = "{artikelverwaltung.lieferungsposition.id.min}", groups = IdGroup.class)
 	@XmlAttribute
-	private Long id=KEINE_ID ;
+	private Long id = KEINE_ID;
 	
 	@NotNull(message = "{artikelverwaltung.lieferungsposition.anzahl.notNull}")
 	@XmlElement
@@ -87,11 +88,11 @@ public class Lieferungsposition implements Serializable {
 	public Lieferungsposition() {
 	}
 	
-	public Artikel getArtikel(){
+	public Artikel getArtikel() {
 		return artikel;
 	}
 	
-	public void setArtikel(Artikel artikel){
+	public void setArtikel(Artikel artikel) {
 		this.artikel = artikel;
 	}
 	
