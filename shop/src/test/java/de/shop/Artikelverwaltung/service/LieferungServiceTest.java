@@ -247,7 +247,7 @@ public class LieferungServiceTest extends AbstractTest {
 		final Lieferung neueLieferung = new Lieferung();
 		neueLieferung.setBestelldatum(bestelldatum);
 		neueLieferung.setLieferungsdatum(lieferungsdatum);
-		neueLieferung.setLieferungsposition(null);
+		neueLieferung.setLieferungspositionen(null);
 		
 		// Then
 		thrown.expect(LieferungValidationException.class);

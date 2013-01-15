@@ -112,7 +112,7 @@ public class LieferungResource {
 	@Produces
 	public Response createLieferung(Lieferung lieferung, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		
-		Collection<Lieferungsposition> lieferungspositionen = lieferung.getLieferungsposition();
+		Collection<Lieferungsposition> lieferungspositionen = lieferung.getLieferungspositionen();
 		
 		List<Long> artikelIds = new ArrayList<>(lieferungspositionen.size());
 		
@@ -165,7 +165,7 @@ public class LieferungResource {
 				}
 			}
 		}
-		lieferung.setLieferungsposition(neueLieferungspositionen);
+		lieferung.setLieferungspositionen(neueLieferungspositionen);
 		
 		
 		final List<Locale> locales = headers.getAcceptableLanguages();

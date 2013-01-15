@@ -14,7 +14,8 @@ public class LieferungspositionInvalidIdException extends LieferungspositionServ
 	private final Long lieferungspositionId;
 	private final Collection<ConstraintViolation<Lieferungsposition>> violations;
 	
-	public LieferungspositionInvalidIdException(Long lieferungspositionId, Collection<ConstraintViolation<Lieferungsposition>> violations) {
+	public LieferungspositionInvalidIdException(Long lieferungspositionId, 
+												Collection<ConstraintViolation<Lieferungsposition>> violations) {
 		super("Ungueltige Lieferungspositionen-ID: " + lieferungspositionId + ", Violations: " + violations);
 		this.lieferungspositionId = lieferungspositionId;
 		this.violations = violations;

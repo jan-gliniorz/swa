@@ -16,9 +16,9 @@ public class LieferungDeletePositionException extends LieferungServiceException 
 	
 	public LieferungDeletePositionException(Lieferung lieferung) {
 		super("Lieferung mit der ID=" + lieferung.getId() + " kann nicht geloescht werden: "
-			  + lieferung.getLieferungsposition().size() + " Position(en)");
+			  + lieferung.getLieferungspositionen().size() + " Position(en)");
 		this.lieferungId = lieferung.getId();
-		this.anzahlPositionen = lieferung.getLieferungsposition().size();
+		this.anzahlPositionen = lieferung.getLieferungspositionen().size();
 	}
 
 	public Long getLieferungId() {

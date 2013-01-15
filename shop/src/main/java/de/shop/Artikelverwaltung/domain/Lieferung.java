@@ -120,11 +120,11 @@ public class Lieferung implements Serializable {
 	public Lieferung() {
 	}
 	
-	public List<Lieferungsposition> getLieferungsposition() {
+	public List<Lieferungsposition> getLieferungspositionen() {
 		return Collections.unmodifiableList(lieferungspositionen);
 	}
 	
-	public void setLieferungsposition(List<Lieferungsposition> lieferungspositionen) {
+	public void setLieferungspositionen(List<Lieferungsposition> lieferungspositionen) {
 		if (this.lieferungspositionen == null) {
 			this.lieferungspositionen = lieferungspositionen;
 			return;
