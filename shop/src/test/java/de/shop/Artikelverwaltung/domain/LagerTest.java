@@ -2,38 +2,19 @@ package de.shop.Artikelverwaltung.domain;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
-import de.shop.Artikelverwaltung.domain.Lager;
-
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-import javax.persistence.TemporalType;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import de.shop.Util.AbstractDomainTest;
-
 
 @RunWith(Arquillian.class)
 public class LagerTest extends AbstractDomainTest {
@@ -56,15 +37,13 @@ public class LagerTest extends AbstractDomainTest {
 		// When
 		//final AbstractKunde kunde = getEntityManager().find(AbstractKunde.class, id);
 		
-		Lager lager = getEntityManager().createNamedQuery(Lager.FIND_Lager_BY_ID, Lager.class)
+		Lager lager = getEntityManager().createNamedQuery(Lager.FIND_LAGER_BY_ID, Lager.class)
 							.setParameter(Lager.PARAM_ID, id)
 							.getSingleResult();
-				
-				
+						
 		// Then
 		assertThat(lager.getId(), is(id));
 	}
-	
 	
 	@Test
 	public void findLagerByBezeichnung() {
@@ -72,11 +51,9 @@ public class LagerTest extends AbstractDomainTest {
 		final String bezeichnung = bezeichnung_VORHANDEN;
 		
 		// When
-		Lager lager = getEntityManager().createNamedQuery(Lager.FIND_Lager_BY_Bezeichnung, Lager.class)
+		Lager lager = getEntityManager().createNamedQuery(Lager.FIND_LAGER_BY_BEZEICHNUNG, Lager.class)
 								.setParameter(Lager.PARAM_Bezeichnung, bezeichnung)
-								.getSingleResult();
-				
-				
+								.getSingleResult();			
                                                                        
 		// Then
 		assertThat(lager.getBezeichnung(), is(bezeichnung));
@@ -89,12 +66,10 @@ public class LagerTest extends AbstractDomainTest {
 		
 		// When / Then
 		thrown.expect(NoResultException.class);
-		getEntityManager().createNamedQuery(Lager.FIND_Lager_BY_Bezeichnung, Lager.class)
+		getEntityManager().createNamedQuery(Lager.FIND_LAGER_BY_BEZEICHNUNG, Lager.class)
 					.setParameter(Lager.PARAM_Bezeichnung, bezeichnung)
-					.getSingleResult();
-                                                       
+					.getSingleResult();                                                 
 	}
-
 
 	@Test
 	public void createLager() {
@@ -104,7 +79,6 @@ public class LagerTest extends AbstractDomainTest {
 		lager.setBezeichnung(BEZEICHNUNG_CREATE);
 		//lager.setErstelltAm(ERSTELLT_AM_CREATE);
 		//lager.setGeaendertAm(GEANDERT_AM_CREATE);
-		
 		
 		// When
 		try {
@@ -123,11 +97,10 @@ public class LagerTest extends AbstractDomainTest {
 		}
 		
 		// Then
-		
 		final String bezeichnung = BEZEICHNUNG_CREATE;
 		
 		// Den abgespeicherten Kunden ueber eine Named Query ermitteln
-		List<Lager> lager_neu = getEntityManager().createNamedQuery(Lager.FIND_Lager_BY_Bezeichnung, Lager.class)
+		List<Lager> lager_neu = getEntityManager().createNamedQuery(Lager.FIND_LAGER_BY_BEZEICHNUNG, Lager.class)
 									.setParameter(Lager.PARAM_Bezeichnung, bezeichnung )
 									.getResultList();
 		

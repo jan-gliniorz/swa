@@ -34,8 +34,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.sun.xml.internal.rngom.util.Uri;
-
 import de.shop.Util.IdGroup;
 
 /**
@@ -45,26 +43,26 @@ import de.shop.Util.IdGroup;
 @Entity
 @Table(name = "Artikel")
 @NamedQueries({
-	  @NamedQuery(name = Artikel.FIND_Artikel_BY_Bezeichnung,
-			      query = "FROM Artikel a WHERE a.bezeichnung = :"+ Artikel.PARAM_Bezeichnung),	
-	  @NamedQuery(name = Artikel.FIND_Artikel_BY_Artikel_ID,
-			  	  query = "FROM Artikel a WHERE a.id = :"+ Artikel.PARAM_ID),
-	  @NamedQuery(name = Artikel.FIND_Artikel_BY_ID_Lagerpositionen,
+	  @NamedQuery(name = Artikel.FIND_ARTIKEL_BY_BEZEICHNUNG,
+			      query = "FROM Artikel a WHERE a.bezeichnung = :" + Artikel.PARAM_Bezeichnung),	
+	  @NamedQuery(name = Artikel.FIND_ARTIKEL_BY_ARTIKEL_ID,
+			  	  query = "FROM Artikel a WHERE a.id = :" + Artikel.PARAM_ID),
+	  @NamedQuery(name = Artikel.FIND_ARTIKEL_BY_ID_LAGERPOSITIONEN,
 				query = "SELECT DISTINCT la" +
-						" FROM Artikel la" +
-						" LEFT JOIN la.lagerpositionen"+
-						" WHERE la.id = :" + Artikel.PARAM_ID),
-	  @NamedQuery(name = Artikel.FIND_Artikel_All,
+						"FROM Artikel la" +
+						"LEFT JOIN la.lagerpositionen" +
+						"WHERE la.id = :" + Artikel.PARAM_ID),
+	  @NamedQuery(name = Artikel.FIND_ARTIKEL_ALL,
 			    query = "SELECT la FROM Artikel la"),
-	  @NamedQuery( name = Artikel.FIND_ARTIKEL_ALL_LAGERPOSITIONEN,
+	  @NamedQuery(name = Artikel.FIND_ARTIKEL_ALL_LAGERPOSITIONEN,
 			    	query = "SELECT a FROM Artikel a JOIN a.lagerpositionen"),
-	  @NamedQuery(name = Artikel.FIND_Artikel_BY_Artikel_IDs,
-	  			query = "FROM Artikel a WHERE a.id IN (:"+ Artikel.PARAM_ID + ")"),
-  	  @NamedQuery(name = Artikel.FIND_Artikel_BY_IDs_Lagerpositionen,
+	  @NamedQuery(name = Artikel.FIND_ARTIKEL_BY_ARTIKEL_IDS,
+	  			query = "FROM Artikel a WHERE a.id IN (:" + Artikel.PARAM_ID + ")"),
+  	  @NamedQuery(name = Artikel.FIND_ARTIKEL_BY_IDS_LAGERPOSITIONEN,
   	  		query = "SELECT DISTINCT la" +
-			" FROM Artikel la" +
-			" LEFT JOIN la.lagerpositionen"+
-			" WHERE la.id IN (:" + Artikel.PARAM_ID+")")
+			"FROM Artikel la" +
+			"LEFT JOIN la.lagerpositionen" +
+			"WHERE la.id IN (:" + Artikel.PARAM_ID + ")")
 	})
 
 @XmlRootElement
@@ -72,20 +70,20 @@ public class Artikel implements Serializable {
 
 	private static final String PREFIX = "Artikel.";
 
-	public static final String FIND_Artikel_BY_Bezeichnung=
-		PREFIX +"findArtikelByBezeichnung";
-	public static final String FIND_Artikel_BY_Artikel_ID =
+	public static final String FIND_ARTIKEL_BY_BEZEICHNUNG =
+		PREFIX + "findArtikelByBezeichnung";
+	public static final String FIND_ARTIKEL_BY_ARTIKEL_ID =
 		PREFIX + "findArtikelByArtikelid";
-	public static final String FIND_Artikel_BY_ID_Lagerpositionen=
-		PREFIX +"findArtikelByIdLagerposition";
-	public static final String FIND_Artikel_All=
-		PREFIX +"findArtikelAll";
+	public static final String FIND_ARTIKEL_BY_ID_LAGERPOSITIONEN =
+		PREFIX + "findArtikelByIdLagerposition";
+	public static final String FIND_ARTIKEL_ALL =
+		PREFIX + "findArtikelAll";
 	public static final String FIND_ARTIKEL_ALL_LAGERPOSITIONEN = 
-			PREFIX + "findArtikellAllLagerpositionen";
-	public static final String FIND_Artikel_BY_Artikel_IDs =
-			PREFIX + "findArtikelByIds";
-	public static final String FIND_Artikel_BY_IDs_Lagerpositionen =
-			PREFIX + "findArtikelByIDsLagerpositionen";
+		PREFIX + "findArtikellAllLagerpositionen";
+	public static final String FIND_ARTIKEL_BY_ARTIKEL_IDS =
+		PREFIX + "findArtikelByIDs";
+	public static final String FIND_ARTIKEL_BY_IDS_LAGERPOSITIONEN =
+		PREFIX + "findArtikelByIDsLagerpositionen";
 	
 	public static final String PARAM_ID = "id";
 	public static final String PARAM_Bezeichnung = "bezeichnung";
@@ -202,8 +200,7 @@ public class Artikel implements Serializable {
 		this.preis = preis;
 	}
 	
-	public Artikel addLagerposition(Lagerposition lagerposition){
-		
+	public Artikel addLagerposition(Lagerposition lagerposition) {
 		if(lagerpositionen == null){
 			lagerpositionen = new ArrayList<>();
 		}
@@ -212,13 +209,12 @@ public class Artikel implements Serializable {
 		return this;
 	}
 	
-	public List<Lagerposition> getLagerposition(){
+	public List<Lagerposition> getLagerposition() {
 		return Collections.unmodifiableList(lagerpositionen);
 	}
 	
-	public void setLagerposition(List<Lagerposition> lagerpositionen){
-		
-			if(this.lagerpositionen == null){
+	public void setLagerposition(List<Lagerposition> lagerpositionen) {
+			if(this.lagerpositionen == null) {
 				this.lagerpositionen = lagerpositionen;
 				return;
 			}
@@ -239,15 +235,13 @@ public class Artikel implements Serializable {
 	}
 	
 	@PrePersist
-	private void prePersist()
-	{
+	private void prePersist() {
 		erstelltAm = new Date();
 		geaendertAm = new Date();
 	}
 	
 	@PreUpdate
-	private void preUpdate()
-	{
+	private void preUpdate() {
 		geaendertAm = new Date();
 	}
 

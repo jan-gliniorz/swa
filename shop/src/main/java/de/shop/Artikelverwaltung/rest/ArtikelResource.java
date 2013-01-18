@@ -8,7 +8,6 @@ import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -26,7 +25,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
@@ -35,18 +33,8 @@ import javax.ws.rs.core.UriInfo;
 import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
-import de.shop.Artikelverwaltung.domain.Lagerposition;
-import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Artikelverwaltung.service.ArtikelService;
-
-import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Artikelverwaltung.service.LagerService;
-import de.shop.Artikelverwaltung.service.LieferungService;
-import de.shop.Artikelverwaltung.service.ArtikelService.FetchType;
-import de.shop.Artikelverwaltung.rest.UriHelperLieferung;
-import de.shop.Kundenverwaltung.domain.Kunde;
-
-
 import de.shop.Util.Log;
 import de.shop.Util.NotFoundException;
 
@@ -93,7 +81,9 @@ public class ArtikelResource {
 	
 	@GET
 	@Path("{id:[1-9][0-9]*}")
-	public Artikel findArtikelById(@PathParam("id") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+	public Artikel findArtikelById(@PathParam("id") Long id, 
+								   @Context UriInfo uriInfo, 
+								   @Context HttpHeaders headers) {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		final Artikel artikel = as.findArtikelByID(id, ArtikelService.FetchType.NUR_Artikel, locale); ///TODO: Fetchtype über die URL mitgeben????
@@ -111,7 +101,9 @@ public class ArtikelResource {
 	@POST
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	@Produces
-	public Response createArtikel(Artikel artikel, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+	public Response createArtikel(Artikel artikel, 
+								  @Context UriInfo uriInfo, 
+								  @Context HttpHeaders headers) {
 
 		// ein neuer Artikel kann noch nicht im Lager vorhanden sein
 		artikel.setLagerposition(null);
@@ -159,7 +151,8 @@ public class ArtikelResource {
 	@Path("{id:[0-9]+}")
 	@DELETE
 	@Produces
-	public void deleteArtikel(@PathParam("id") Long artikelId, @Context HttpHeaders headers) {
+	public void deleteArtikel(@PathParam("id") Long artikelId, 
+							  @Context HttpHeaders headers) {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		final Artikel artikel = as.findArtikelByID(artikelId, ArtikelService.FetchType.NUR_Artikel, locale);

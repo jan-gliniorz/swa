@@ -1,10 +1,7 @@
 package de.shop.Artikelverwaltung.service;
 
 import javax.ejb.ApplicationException;
-
 import de.shop.Artikelverwaltung.domain.Artikel;
-import de.shop.Kundenverwaltung.domain.Kunde;
-
 
 /**
  * Exception, die ausgel&ouml;st wird, wenn ein Kunde gel&ouml;scht werden soll, aber mindestens eine Bestellung hat

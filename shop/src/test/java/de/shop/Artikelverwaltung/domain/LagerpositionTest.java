@@ -2,21 +2,10 @@ package de.shop.Artikelverwaltung.domain;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Set;
 
-import de.shop.Artikelverwaltung.domain.Lagerposition;
-
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
@@ -36,9 +25,9 @@ import de.shop.Util.AbstractDomainTest;
 @RunWith(Arquillian.class)
 public class LagerpositionTest extends AbstractDomainTest {
 	private static final Long ID_VORHANDEN = Long.valueOf(400);	
-	private static final int ANZAHL_NEU = 60;
 	private static final int LAGER_VORHANDEN_ID = 350;
 	private static final Long ARTIKEL_VORHANDEN_ID = Long.valueOf(300);
+	
 	@Test
 	public void validate() {
 		assertThat(true, is(true));
@@ -50,7 +39,7 @@ public class LagerpositionTest extends AbstractDomainTest {
 		final long id = ID_VORHANDEN;
 		
 		// When
- TypedQuery<Lagerposition> query = getEntityManager().createNamedQuery(Lagerposition.FIND_Lagerposition_BY_ID,
+ TypedQuery<Lagerposition> query = getEntityManager().createNamedQuery(Lagerposition.FIND_LAGERPOSITION_BY_ID,
 				Lagerposition.class);
 		query.setParameter(Lagerposition.PARAM_ID, id);
 		Lagerposition lagerposition = query.getSingleResult();
@@ -64,10 +53,10 @@ public class LagerpositionTest extends AbstractDomainTest {
 	public void createLagerpositionOhneAnzahl() throws HeuristicMixedException, HeuristicRollbackException,
 	                                                  SystemException {
 		// Given
-		Lager lager = getEntityManager().createNamedQuery(Lager.FIND_Lager_BY_ID, Lager.class)
+		Lager lager = getEntityManager().createNamedQuery(Lager.FIND_LAGER_BY_ID, Lager.class)
 					  					.setParameter(Lager.PARAM_ID, LAGER_VORHANDEN_ID)
 					  					.getSingleResult();
-		Artikel artikel = getEntityManager().createNamedQuery(Artikel.FIND_Artikel_BY_Artikel_ID, Artikel.class)
+		Artikel artikel = getEntityManager().createNamedQuery(Artikel.FIND_ARTIKEL_BY_ARTIKEL_ID, Artikel.class)
 						  .setParameter(Artikel.PARAM_ID, ARTIKEL_VORHANDEN_ID)
 						  .getSingleResult();
 		
@@ -76,7 +65,6 @@ public class LagerpositionTest extends AbstractDomainTest {
 		lagerposition.setArtikel(artikel);
 		lager.addLagerpositionen(lagerposition);
 		getEntityManager().persist(lagerposition);
-		
 		
 		// Then
 		try {

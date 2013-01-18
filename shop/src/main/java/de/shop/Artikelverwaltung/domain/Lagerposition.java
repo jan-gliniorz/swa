@@ -1,23 +1,37 @@
 package de.shop.Artikelverwaltung.domain;
 
+import static de.shop.Util.Constants.KEINE_ID;
+import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+import static de.shop.Util.Constants.MIN_ID;
 import static javax.persistence.TemporalType.TIMESTAMP;
-import java.util.*;
+
 import java.io.Serializable;
 import java.net.URI;
+import java.util.Date;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OrderColumn;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.Transient;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import de.shop.Util.IdGroup;
-import static de.shop.Util.Constants.KEINE_ID;
-import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
-import static de.shop.Util.Constants.MIN_ID;
-
-import java.sql.Timestamp;
 
 
 /**
@@ -27,17 +41,17 @@ import java.sql.Timestamp;
 @Entity
 @Table(name ="Lagerposition")
 @NamedQueries({
-	@NamedQuery(name = Lagerposition.FIND_Lagerposition_BY_ID, 
+	@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_ID, 
 			query = "SELECT a" +
-					" FROM Lagerposition a"
-					+ " WHERE a.id = :" + Lagerposition.PARAM_ID),
-	@NamedQuery(name = Lagerposition.FIND_Lagerposition_ALL,
+					"FROM Lagerposition a"
+					+ "WHERE a.id = :" + Lagerposition.PARAM_ID),
+	@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_ALL,
 				    query = "SELECT lp FROM Lagerposition lp"),
-	@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_Artikel,
+	@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_ARTIKEL,
 				    query = "SELECT lp FROM Lagerposition lp WHERE lp.artikel.id = :" + Lagerposition.PARAM_ARTIKEL_ID),
 	@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_LAGER,
-					query = "select lagerposition "
-							+ "from Lagerposition as lagerposition " 
+					query = "select lagerposition"
+							+ "from Lagerposition as lagerposition" 
 							+ "where lagerposition.lager.id = :" + Lagerposition.PARAM_LAGER_ID)
 	
   })
@@ -46,15 +60,14 @@ public class Lagerposition implements Serializable {
 	
 	private static final String PREFIX = "Lagerposition.";
 
-
 	public static final String FIND_LAGERPOSITION_BY_LAGER =
 		PREFIX + "findLagerpositionByLagerId";
-	public static final String FIND_Lagerposition_BY_ID =
+	public static final String FIND_LAGERPOSITION_BY_ID =
 		PREFIX + "findLagerpositionById";
 	public static final String PARAM_ID = "id";
-	public static final String FIND_Lagerposition_ALL = 
+	public static final String FIND_LAGERPOSITION_ALL = 
 		PREFIX + "findLagerpositionAll";
-	public static final String FIND_LAGERPOSITION_BY_Artikel =
+	public static final String FIND_LAGERPOSITION_BY_ARTIKEL =
 		PREFIX + "findLagerpositionByArtikelId";
 	public static final String PARAM_ARTIKEL_ID = "artikelId";
 	public static final String PARAM_LAGER_ID = "lagerId";
@@ -82,8 +95,8 @@ public class Lagerposition implements Serializable {
 	private URI lagerUri;
 
 	@ManyToOne
-	@JoinColumn(name="artikel_FID", nullable = false)
-	@OrderColumn(name="erstellt_am")
+	@JoinColumn(name = "artikel_FID", nullable = false)
+	@OrderColumn(name = "erstellt_am")
 	@NotNull(message = "artikelverwaltung.lagerposition.artikel.notNull")
 	@XmlTransient
 	private Artikel artikel;
@@ -118,11 +131,11 @@ public class Lagerposition implements Serializable {
 		this.id = id;
 	}
 	
-	public Lager getLager(){
+	public Lager getLager() {
 		return lager;
 	}
 	
-	public void setLager(Lager lager){
+	public void setLager(Lager lager) {
 		this.lager = lager;
 	}
 	
@@ -134,11 +147,11 @@ public class Lagerposition implements Serializable {
 		this.lagerUri = lagerUri;
 	}
 
-	public void setArtikel(Artikel artikel){
+	public void setArtikel(Artikel artikel) {
 		this.artikel = artikel;
 	}
 	
-	public Artikel getArtikel(){
+	public Artikel getArtikel() {
 		return artikel;
 	}
 	
@@ -183,15 +196,13 @@ public class Lagerposition implements Serializable {
 	
 	
 	@PrePersist
-	private void prePersist()
-	{
+	private void prePersist() {
 		erstelltAm = new Date();
 		geaendertAm = new Date();
 	}
 	
 	@PreUpdate
-	private void preUpdate()
-	{
+	private void preUpdate() {
 		geaendertAm = new Date();
 	}
 	

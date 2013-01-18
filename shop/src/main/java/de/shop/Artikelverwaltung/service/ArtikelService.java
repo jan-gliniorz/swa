@@ -5,7 +5,6 @@ import static java.util.logging.Level.FINER;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -17,16 +16,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import javax.validation.groups.Default;
-
 
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Util.IdGroup;
@@ -67,15 +58,14 @@ public class ArtikelService implements Serializable {
 	/**
 	 */
 	public List<Artikel> findArtikelAll(FetchType fetch, OrderType order) {
-		
 		List<Artikel> artikel;
 		
 		switch (fetch) {
 			case NUR_Artikel:
 				artikel = OrderType.ID.equals(order)
-				         ? em.createNamedQuery(Artikel.FIND_Artikel_All, Artikel.class)
+				         ? em.createNamedQuery(Artikel.FIND_ARTIKEL_ALL, Artikel.class)
 				             .getResultList()
-				         : em.createNamedQuery(Artikel.FIND_Artikel_All, Artikel.class)
+				         : em.createNamedQuery(Artikel.FIND_ARTIKEL_ALL, Artikel.class)
 				             .getResultList();
 				break;
 			
@@ -86,9 +76,9 @@ public class ArtikelService implements Serializable {
 
 			default:
 				artikel = OrderType.ID.equals(order)
-		         		? em.createNamedQuery(Artikel.FIND_Artikel_All, Artikel.class)
+		         		? em.createNamedQuery(Artikel.FIND_ARTIKEL_ALL, Artikel.class)
 		         			.getResultList()
-		             	: em.createNamedQuery(Artikel.FIND_Artikel_All, Artikel.class)
+		             	: em.createNamedQuery(Artikel.FIND_ARTIKEL_ALL, Artikel.class)
 		             		.getResultList();
 				break;
 		}
@@ -100,7 +90,6 @@ public class ArtikelService implements Serializable {
 	 */
 	
 	public Artikel findArtikelByID(Long id, FetchType fetch, Locale locale) {
-		
 		validateArtikelId(id, locale);
 
 		Artikel artikel = null;
@@ -111,7 +100,7 @@ public class ArtikelService implements Serializable {
 					break;
 				
 				case MIT_POSITIONEN:
-					artikel = em.createNamedQuery(Artikel.FIND_Artikel_BY_ID_Lagerpositionen, Artikel.class)
+					artikel = em.createNamedQuery(Artikel.FIND_ARTIKEL_BY_ID_LAGERPOSITIONEN, Artikel.class)
 							  .setParameter(Artikel.PARAM_ID, id)
 							  .getSingleResult();
 					break;
@@ -130,7 +119,6 @@ public class ArtikelService implements Serializable {
 	}
 	
 	public List<Artikel> findArtikelByIDs(List<Long> ids, FetchType fetch, Locale locale) {
-		
 		for(Long id : ids){
 			validateArtikelId(id, locale);
 		}
@@ -139,19 +127,19 @@ public class ArtikelService implements Serializable {
 		try {
 			switch (fetch) {
 				case NUR_Artikel:
-					artikel = em.createNamedQuery(Artikel.FIND_Artikel_BY_Artikel_IDs, Artikel.class)
+					artikel = em.createNamedQuery(Artikel.FIND_ARTIKEL_BY_ARTIKEL_IDS, Artikel.class)
 					  .setParameter(Artikel.PARAM_ID, ids)
 					  .getResultList();
 					break;
 				
 				case MIT_POSITIONEN:
-					artikel = em.createNamedQuery(Artikel.FIND_Artikel_BY_IDs_Lagerpositionen, Artikel.class)
+					artikel = em.createNamedQuery(Artikel.FIND_ARTIKEL_BY_IDS_LAGERPOSITIONEN, Artikel.class)
 							  .setParameter(Artikel.PARAM_ID, ids)
 							  .getResultList();
 					break;
 	
 				default:
-					artikel = em.createNamedQuery(Artikel.FIND_Artikel_BY_Artikel_IDs, Artikel.class)
+					artikel = em.createNamedQuery(Artikel.FIND_ARTIKEL_BY_ARTIKEL_IDS, Artikel.class)
 							  .setParameter(Artikel.PARAM_ID, ids)
 							  .getResultList();
 					break;
@@ -215,7 +203,7 @@ public class ArtikelService implements Serializable {
 		
 		
 		try {
-			final Artikel vorhandeneArtikel = em.createNamedQuery(Artikel.FIND_Artikel_BY_Artikel_ID,
+			final Artikel vorhandeneArtikel = em.createNamedQuery(Artikel.FIND_ARTIKEL_BY_ARTIKEL_ID,
 					                                                   Artikel.class)
 					                                 .setParameter(Artikel.PARAM_ID, artikel.getId())
 					                                 .getSingleResult();

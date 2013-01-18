@@ -156,7 +156,9 @@ public class LagerpositionResource {
 	@POST
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	@Produces
-	public Response createLagerposition(Lagerposition lagerposition, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+	public Response createLagerposition(Lagerposition lagerposition,
+										@Context UriInfo uriInfo,
+										@Context HttpHeaders headers) {
 		// ein neuer Artikel kann noch nicht im Lager vorhanden sein
 		final Locale locale = RestLocaleHelper.getLocalFromHttpHeaders(headers);
 		
@@ -172,7 +174,8 @@ public class LagerpositionResource {
 	@Path("{id:[0-9]+}")
 	@DELETE
 	@Produces
-	public void deleteLagerposition(@PathParam("id") Long lagerpositionId, @Context HttpHeaders headers) {
+	public void deleteLagerposition(@PathParam("id") Long lagerpositionId, 
+									@Context HttpHeaders headers) {
 		final Locale locale = RestLocaleHelper.getLocalFromHttpHeaders(headers);
 		final Lagerposition lagerposition = ls.findLagerpositionById(lagerpositionId, locale);
 		if(lagerposition == null) {

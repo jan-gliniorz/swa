@@ -1,6 +1,5 @@
 package de.shop.Artikelverwaltung.rest;
 
-
 import java.net.URI;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -12,7 +11,6 @@ import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lager;
 import de.shop.Artikelverwaltung.domain.Lagerposition;
 import de.shop.Util.Log;
-
 
 @ApplicationScoped
 @Log

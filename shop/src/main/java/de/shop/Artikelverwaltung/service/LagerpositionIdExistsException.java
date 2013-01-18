@@ -10,7 +10,6 @@ public class LagerpositionIdExistsException extends LagerpositionServiceExceptio
 	public LagerpositionIdExistsException(long id) {
 		super("Die Lagerpositions-ID " + id + " existiert bereits");
 		this.id = id;
-		ArtikelService a;
 	}
 
 	public long getId() {

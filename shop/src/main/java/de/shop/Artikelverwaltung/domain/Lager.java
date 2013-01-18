@@ -1,31 +1,39 @@
 package de.shop.Artikelverwaltung.domain;
 
+import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
-
 import static de.shop.Util.Constants.MIN_ID;
 import static javax.persistence.TemporalType.TIMESTAMP;
-import static de.shop.Util.Constants.KEINE_ID;
+
 import java.io.Serializable;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
-import com.sun.istack.NotNull;
-
-import de.shop.Auftragsverwaltung.domain.Auftrag;
 import de.shop.Util.IdGroup;
-
-import java.sql.Timestamp;
-import java.util.*;
 
 /**
  * The persistent class for the lager database table.
@@ -34,15 +42,15 @@ import java.util.*;
 @Entity
 @Table(name = "Lager")
    @NamedQueries({
-	@NamedQuery(name = Lager.FIND_Lager_BY_ID, 
+	@NamedQuery(name = Lager.FIND_LAGER_BY_ID, 
 			query = "SELECT a" +
 					" FROM Lager a"
 					+ " WHERE a.id = :" + Lager.PARAM_ID),
-	@NamedQuery(name = Lager.FIND_Lager_BY_Bezeichnung, 
+	@NamedQuery(name = Lager.FIND_LAGER_BY_BEZEICHNUNG, 
 				query = "SELECT a" +
 						" FROM Lager a"
 						+ " WHERE a.bezeichnung = :" + Lager.PARAM_Bezeichnung),
-	@NamedQuery(name = Lager.FIND_Lager_All,
+	@NamedQuery(name = Lager.FIND_LAGER_All,
 				query = "SELECT la FROM Lager la"),
 	@NamedQuery( name = Lager.FIND_LAGER_ALL_LAGERPOSITIONEN,
 		    	query = "SELECT a FROM Lager a JOIN a.lagerpositionen"),
@@ -55,11 +63,11 @@ public class Lager implements Serializable {
 	
 	public static final String FIND_LAGER_ALL_LAGERPOSITIONEN =
 		PREFIX + "findLagerAllLagerpositionen";
-	public static final String FIND_Lager_All =
+	public static final String FIND_LAGER_All =
 		PREFIX + "findLagerAll";
-	public static final String FIND_Lager_BY_Bezeichnung=
-		PREFIX +"findLagerByBezeichnung";
-	public static final String FIND_Lager_BY_ID =
+	public static final String FIND_LAGER_BY_BEZEICHNUNG =
+		PREFIX + "findLagerByBezeichnung";
+	public static final String FIND_LAGER_BY_ID =
 		PREFIX + "findLagerByArtikelid";
 	public static final String PARAM_ID = "id";
 	public static final String PARAM_Bezeichnung = "bezeichnung";
@@ -130,23 +138,23 @@ public class Lager implements Serializable {
 		this.geaendertAm = geaendertAm == null ? null : (Date) geaendertAm.clone();
 	}
 	
-	public List<Lagerposition> getLagerpositionen(){
+	public List<Lagerposition> getLagerpositionen() {
 		return Collections.unmodifiableList(lagerpositionen);
 	}
 	
-	public void setLagerposition(List<Lagerposition> lagerpositionen){
+	public void setLagerposition(List<Lagerposition> lagerpositionen) {
 		if(this.lagerpositionen == null){
 			this.lagerpositionen = lagerpositionen;
 			return;
 		}
 	
 	this.lagerpositionen.clear();
-	if (lagerpositionen != null){
+	if (lagerpositionen != null) {
 		this.lagerpositionen.addAll(lagerpositionen);
 	}
 	}
 	
-	public Lager addLagerpositionen(Lagerposition lagerposition){
+	public Lager addLagerpositionen(Lagerposition lagerposition) {
 		if(lagerpositionen == null){
 			lagerpositionen = new ArrayList<>();
 		}
@@ -169,15 +177,13 @@ public class Lager implements Serializable {
 	}
 
 	@PrePersist
-	private void prePersist()
-	{
+	private void prePersist() {
 		erstelltAm = new Date();
 		geaendertAm = new Date();
 	}
 	
 	@PreUpdate
-	private void preUpdate()
-	{
+	private void preUpdate() {
 		geaendertAm = new Date();
 	}
 

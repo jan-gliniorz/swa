@@ -10,7 +10,6 @@ public class ArtikelIdExistsException extends ArtikelServiceException {
 	public ArtikelIdExistsException(long id) {
 		super("Die Artikels-ID " + id + " existiert bereits");
 		this.id = id;
-		ArtikelService a;
 	}
 
 	public long getId() {

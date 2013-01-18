@@ -5,8 +5,6 @@ import static java.util.logging.Level.FINER;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -18,26 +16,15 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import javax.validation.groups.Default;
 
-import de.shop.Artikelverwaltung.service.ArtikelService.FetchType;
-import de.shop.Artikelverwaltung.service.ArtikelService.OrderType;
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lager;
 import de.shop.Artikelverwaltung.domain.Lagerposition;
-
 import de.shop.Util.IdGroup;
 import de.shop.Util.Log;
 import de.shop.Util.ValidationService;
-
 
 @Log
 public class LagerService implements Serializable {
@@ -88,9 +75,7 @@ public class LagerService implements Serializable {
 	 * @throws Exception 
 	 */
 	public Lager findLagerById(Long id, Locale locale) {
-	
 		validateLagerId(id, locale);
-	
 		Lager lager = null;
 	
 		try {
@@ -111,9 +96,9 @@ public class LagerService implements Serializable {
 		switch (fetch) {
 		case NUR_Lager:
 			lager = OrderType.ID.equals(order)
-			         ? em.createNamedQuery(Lager.FIND_Lager_All, Lager.class)
+			         ? em.createNamedQuery(Lager.FIND_LAGER_All, Lager.class)
 			             .getResultList()
-			         : em.createNamedQuery(Lager.FIND_Lager_All, Lager.class)
+			         : em.createNamedQuery(Lager.FIND_LAGER_All, Lager.class)
 			             .getResultList();
 			break;
 		
@@ -124,9 +109,9 @@ public class LagerService implements Serializable {
 
 		default:
 			lager = OrderType.ID.equals(order)
-	         		? em.createNamedQuery(Lager.FIND_Lager_All, Lager.class)
+	         		? em.createNamedQuery(Lager.FIND_LAGER_All, Lager.class)
 	         			.getResultList()
-	             	: em.createNamedQuery(Lager.FIND_Lager_All, Lager.class)
+	             	: em.createNamedQuery(Lager.FIND_LAGER_All, Lager.class)
 	             		.getResultList();
 			break;
 		}
@@ -151,11 +136,10 @@ public class LagerService implements Serializable {
 		return lagerposition;
 	}
 	
-	
 	public Lagerposition findLagerpositionByLagerId(Long id, Locale locale) {
 		validateLagerId(id, locale);
-		
 		Lagerposition lagerposition;
+		
 		try {
 		lagerposition = em.createNamedQuery(Lagerposition.FIND_LAGERPOSITION_BY_LAGER, Lagerposition.class)
 									        .setParameter(Lagerposition.PARAM_LAGER_ID, id)
@@ -167,7 +151,6 @@ public class LagerService implements Serializable {
 		
 		return lagerposition;
 	}
-	
 	
 	private void validateLagerId(Long lagerId, Locale locale) {
 		final Validator validator = validationService.getValidator(locale);
@@ -195,7 +178,6 @@ public class LagerService implements Serializable {
 	
 	private void validateLager (Lager lager, Locale locale) {
 		
-
 		// Werden alle Constraints beim Einfuegen gewahrt?
 		final Validator validator = validationService.getValidator(locale);
 		
@@ -205,7 +187,6 @@ public class LagerService implements Serializable {
 		}
 	}
 	
-	
 	public Lager updateLager (Lager lager, Locale locale) {
 		if (lager == null) {
 				return null;
@@ -213,14 +194,12 @@ public class LagerService implements Serializable {
 
 		// Werden alle Constraints beim Modifizieren gewahrt?
 		validateLager(lager, locale);
-			
 		
 		try {
-			final Lager vorhandeneLager = em.createNamedQuery(Lager.FIND_Lager_BY_ID,
+			final Lager vorhandeneLager = em.createNamedQuery(Lager.FIND_LAGER_BY_ID,
 						                                               Lager.class)
 						                              .setParameter(Lager.PARAM_ID, lager.getId())
 						                              .getSingleResult();
-				
 		
 			if (vorhandeneLager.getId().longValue() != lager.getId().longValue()) {
 				throw new LagerIdExistsException(lager.getId());
@@ -238,7 +217,6 @@ public class LagerService implements Serializable {
 		if (lager == null) {
 			return;
 		}
-		
 		
 		try {
 			lager = findLagerById(lager.getId(), Locale.getDefault());
@@ -295,7 +273,6 @@ public class LagerService implements Serializable {
 			return;
 		}
 		
-		
 		try {
 			lagerposition = findLagerpositionById(lagerposition.getId(), Locale.getDefault());
 		}
@@ -310,14 +287,11 @@ public class LagerService implements Serializable {
 		em.remove(lagerposition);
 	}
 	
-	
-	
-	
 	public List<Lagerposition> findLagerpositionByArtikel(Artikel artikel, Locale locale) {
 		List<Lagerposition> lagerpositionen = null;
 	
 		try {
-			lagerpositionen = em.createNamedQuery(Lagerposition.FIND_LAGERPOSITION_BY_Artikel, Lagerposition.class)
+			lagerpositionen = em.createNamedQuery(Lagerposition.FIND_LAGERPOSITION_BY_ARTIKEL, Lagerposition.class)
 					        .setParameter(Lagerposition.PARAM_ARTIKEL_ID, artikel.getId())
 					        .getResultList();
 								
@@ -329,15 +303,13 @@ public class LagerService implements Serializable {
 		return lagerpositionen;
 	}
 	
-	public void removeArtikelAusLager(Artikel artikel, int anzahl){
-		
+	public void removeArtikelAusLager(Artikel artikel, int anzahl) {	
 			List<Lagerposition> lagerpositionen = null;
 			
 			try{
-				lagerpositionen = em.createNamedQuery(Lagerposition.FIND_LAGERPOSITION_BY_Artikel, Lagerposition.class)
+				lagerpositionen = em.createNamedQuery(Lagerposition.FIND_LAGERPOSITION_BY_ARTIKEL, Lagerposition.class)
 									.setParameter(Lagerposition.PARAM_ARTIKEL_ID, artikel.getId())
 									.getResultList();
-				
 			}
 			
 			catch (NoResultException e){
@@ -345,10 +317,10 @@ public class LagerService implements Serializable {
 			}
 		
 			for(Lagerposition el : lagerpositionen){
-				
-				int anz = 0;
+				int anz;
 				if(el.getAnzahl() > anzahl){
-				anz = el.getAnzahl() - anzahl;
+				///TODO: Muss noch implementiert werden
+					anz = el.getAnzahl() - anzahl;
 				}
 				else{
 					throw new NoArtikelInLagerException(artikel.getId());
@@ -365,14 +337,12 @@ public class LagerService implements Serializable {
 
 		// Werden alle Constraints beim Modifizieren gewahrt?
 		validateLagerposition(lagerpos, locale);
-			
 		
 		try {
-			final Lagerposition vorhandeneLagerposition = em.createNamedQuery(Lagerposition.FIND_Lagerposition_BY_ID,
+			final Lagerposition vorhandeneLagerposition = em.createNamedQuery(Lagerposition.FIND_LAGERPOSITION_BY_ID,
 						                                               Lagerposition.class)
 						                              .setParameter(Lagerposition.PARAM_ID, lagerpos.getId())
-						                              .getSingleResult();
-				
+						                              .getSingleResult();			
 		
 			if (vorhandeneLagerposition.getId().longValue() != lagerpos.getId().longValue()) {
 				throw new LagerIdExistsException(lagerpos.getId());

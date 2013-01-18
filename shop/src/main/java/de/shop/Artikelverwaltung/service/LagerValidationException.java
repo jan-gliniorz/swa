@@ -7,7 +7,6 @@ import javax.validation.ConstraintViolation;
 
 import de.shop.Artikelverwaltung.domain.Lager;
 
-
 /**
  * Exception, die ausgel&ouml;st wird, wenn die Attributwerte eines Kunden nicht korrekt sind
  */

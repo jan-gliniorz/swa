@@ -6,7 +6,6 @@ import javax.ejb.ApplicationException;
 import javax.validation.ConstraintViolation;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
-import de.shop.Kundenverwaltung.domain.Kunde;
 
 @ApplicationException(rollback = true)
 public class ArtikelInvalidIdException extends ArtikelServiceException {

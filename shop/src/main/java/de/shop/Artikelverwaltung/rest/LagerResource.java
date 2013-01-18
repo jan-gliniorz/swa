@@ -31,11 +31,8 @@ import javax.ws.rs.core.UriInfo;
 
 import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 
-import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lager;
-import de.shop.Artikelverwaltung.service.ArtikelService;
 import de.shop.Artikelverwaltung.service.LagerService;
-import de.shop.Artikelverwaltung.service.LieferungService.FetchType;
 import de.shop.Util.Log;
 import de.shop.Util.NotFoundException;
 import de.shop.Util.RestLocaleHelper;
@@ -67,11 +64,13 @@ public class LagerResource {
 	
 	@GET
 	@Path("{id:[1-9][0-9]*}")
-	public Lager findLagerById(@PathParam("id") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+	public Lager findLagerById(@PathParam("id") Long id,
+							   @Context UriInfo uriInfo, 
+							   @Context HttpHeaders headers) {
 		final Locale locale = RestLocaleHelper.getLocalFromHttpHeaders(headers);
 		final Lager lager = ls.findLagerById(id, locale);
 		if (lager == null) {
-			final String msg = "Keine Lager gefunden mit der ID " + id;
+			final String msg = "Keine Lager gefunden mit der ID" + id;
 			throw new NotFoundException(msg);
 		}
 		
@@ -96,7 +95,9 @@ public class LagerResource {
 	@PUT
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	@Produces
-	public void updateLager(Lager lager, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+	public void updateLager(Lager lager, 
+							@Context UriInfo uriInfo,
+							@Context HttpHeaders headers) {
 
 		//lager.setLagerposition(null); ///TODO: Was ist hier mit den URLs? Diese müssen ersetzt werden durch die collections?!
 		
@@ -105,7 +106,7 @@ public class LagerResource {
 		
 		Lager lagerOrig = ls.findLagerById(lager.getId(), locale);
 		if(lagerOrig == null) {
-			final String msg = "Kein Lager gefunden mit der ID " + lager.getId();
+			final String msg = "Kein Lager gefunden mit der ID" + lager.getId();
 			throw new NotFoundException(msg);
 		}
 		
@@ -123,12 +124,11 @@ public class LagerResource {
 	@POST
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	@Produces
-	public Response createLager(Lager lager, @Context UriInfo uriInfo, @Context HttpHeaders headers){
-	
-		Locale locale = RestLocaleHelper.getLocalFromHttpHeaders(headers);
-		
+	public Response createLager(Lager lager, 
+								@Context UriInfo uriInfo,
+								@Context HttpHeaders headers) {	
+		Locale locale = RestLocaleHelper.getLocalFromHttpHeaders(headers);		
 		ls.createLager(lager, locale);
-		
 		final URI lagerUri = uriHelperLager.getUriLager(lager, uriInfo);
 		final Response response = Response.created(lagerUri).build();
 		LOGGER.finest(lagerUri.toString());
