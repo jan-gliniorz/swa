@@ -81,8 +81,8 @@ public class ArtikelResource {
 	
 	
 	@GET
-	@Wrapped(element ="artikel") 
-	public Collection<Artikel>findArtikelAll(@Context UriInfo uriInfo) {
+	@Wrapped(element = "artikel") 
+	public Collection<Artikel> findArtikelAll(@Context UriInfo uriInfo) {
 		Collection<Artikel> artikel = as.findArtikelAll(ArtikelService.FetchType.NUR_Artikel,ArtikelService.OrderType.ID);
 		for(Artikel a : artikel) {
 			uriHelperArtikel.updateUriArtikel(a, uriInfo);
@@ -131,7 +131,7 @@ public class ArtikelResource {
 	@PUT
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	@Produces
-	public void updateArtikel(Artikel artikel, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
+	public void updateArtikel(Artikel artikel, @Context HttpHeaders headers) {
 
 		// ein neuer Artikel kann noch nicht im Lager vorhanden sein
 		//artikel.setLagerposition(null); ///TODO: Was ist hier mit den URLs? Diese müssen ersetzt werden durch die collections?!

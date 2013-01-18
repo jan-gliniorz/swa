@@ -9,6 +9,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
+import de.shop.Artikelverwaltung.domain.Lager;
 import de.shop.Artikelverwaltung.domain.Lagerposition;
 import de.shop.Util.Log;
 
@@ -39,8 +40,16 @@ public class UriHelperLagerposition {
 	public URI getUriLagerpositionenByArtikel(Artikel artikel, UriInfo uriInfo) {
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()
 		                             .path(LagerpositionResource.class)
-		                             .path(LagerpositionResource.class, "findLagerpositionenByArtikelId");
+		                             .queryParam("artikelid", artikel.getId());
 		final URI uri = ub.build(artikel.getId());
+		return uri;
+	}
+	
+	public URI getUriLagerpositionenByLager(Lager lager, UriInfo uriInfo) {
+		final UriBuilder ub = uriInfo.getBaseUriBuilder()
+		                             .path(LagerpositionResource.class)
+		                             .path(LagerpositionResource.class, "findLagerpositionByLagerId");
+		final URI uri = ub.build(lager.getId());
 		return uri;
 	}
 }

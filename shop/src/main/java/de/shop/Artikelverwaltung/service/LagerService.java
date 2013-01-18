@@ -29,6 +29,7 @@ import javax.validation.Validator;
 import javax.validation.groups.Default;
 
 import de.shop.Artikelverwaltung.service.ArtikelService.FetchType;
+import de.shop.Artikelverwaltung.service.ArtikelService.OrderType;
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lager;
 import de.shop.Artikelverwaltung.domain.Lagerposition;
@@ -46,6 +47,11 @@ public class LagerService implements Serializable {
 	public enum OrderType {
 		KEINE,
 		ID
+	}
+	
+	public enum FetchType {
+		NUR_Lager, 
+		MIT_POSITIONEN
 	}
 	
 	@PersistenceContext
@@ -98,6 +104,37 @@ public class LagerService implements Serializable {
 		return lager;
 	}
 	
+	public List<Lager> findLagerAll(FetchType fetch, OrderType order){
+		
+		List<Lager> lager; 
+		
+		switch (fetch) {
+		case NUR_Lager:
+			lager = OrderType.ID.equals(order)
+			         ? em.createNamedQuery(Lager.FIND_Lager_All, Lager.class)
+			             .getResultList()
+			         : em.createNamedQuery(Lager.FIND_Lager_All, Lager.class)
+			             .getResultList();
+			break;
+		
+		case MIT_POSITIONEN:
+			lager = em.createNamedQuery(Lager.FIND_LAGER_ALL_LAGERPOSITIONEN, Lager.class)
+					   .getResultList();
+			break;
+
+		default:
+			lager = OrderType.ID.equals(order)
+	         		? em.createNamedQuery(Lager.FIND_Lager_All, Lager.class)
+	         			.getResultList()
+	             	: em.createNamedQuery(Lager.FIND_Lager_All, Lager.class)
+	             		.getResultList();
+			break;
+		}
+		
+		return lager;
+		
+	}
+	
 	public Lagerposition findLagerpositionById(Long id, Locale locale) {
 		
 		validateLagerpositionId(id, locale);
@@ -113,6 +150,24 @@ public class LagerService implements Serializable {
 
 		return lagerposition;
 	}
+	
+	
+	public Lagerposition findLagerpositionByLagerId(Long id, Locale locale) {
+		validateLagerId(id, locale);
+		
+		Lagerposition lagerposition;
+		try {
+		lagerposition = em.createNamedQuery(Lagerposition.FIND_LAGERPOSITION_BY_LAGER, Lagerposition.class)
+									        .setParameter(Lagerposition.PARAM_LAGER_ID, id)
+											.getSingleResult();
+		}
+		catch (NoResultException e) {
+			return null;
+		}
+		
+		return lagerposition;
+	}
+	
 	
 	private void validateLagerId(Long lagerId, Locale locale) {
 		final Validator validator = validationService.getValidator(locale);
@@ -263,7 +318,7 @@ public class LagerService implements Serializable {
 	
 		try {
 			lagerpositionen = em.createNamedQuery(Lagerposition.FIND_LAGERPOSITION_BY_Artikel, Lagerposition.class)
-					        .setParameter(Lagerposition.PARAM_Artikel, artikel.getId())
+					        .setParameter(Lagerposition.PARAM_ARTIKEL_ID, artikel.getId())
 					        .getResultList();
 								
 		}
@@ -280,7 +335,7 @@ public class LagerService implements Serializable {
 			
 			try{
 				lagerpositionen = em.createNamedQuery(Lagerposition.FIND_LAGERPOSITION_BY_Artikel, Lagerposition.class)
-									.setParameter(Lagerposition.PARAM_Artikel, artikel.getId())
+									.setParameter(Lagerposition.PARAM_ARTIKEL_ID, artikel.getId())
 									.getResultList();
 				
 			}
@@ -302,6 +357,37 @@ public class LagerService implements Serializable {
 		
 		
 	}
+	
+	public Lagerposition updateLagerposition(Lagerposition lagerpos, Locale locale) {
+		if (lagerpos == null) {
+				return null;
+		}
+
+		// Werden alle Constraints beim Modifizieren gewahrt?
+		validateLagerposition(lagerpos, locale);
+			
+		
+		try {
+			final Lagerposition vorhandeneLagerposition = em.createNamedQuery(Lagerposition.FIND_Lagerposition_BY_ID,
+						                                               Lagerposition.class)
+						                              .setParameter(Lagerposition.PARAM_ID, lagerpos.getId())
+						                              .getSingleResult();
+				
+		
+			if (vorhandeneLagerposition.getId().longValue() != lagerpos.getId().longValue()) {
+				throw new LagerIdExistsException(lagerpos.getId());
+			}
+		}
+		catch (NoResultException e) {
+			LOGGER.finest("Lagerposition mit id:" + lagerpos.getId() + " konnte nicht gefunden werden");
+		}
+
+		em.merge(lagerpos);
+		return lagerpos;
+	}
+	
+	
+	
 	
 	
 	

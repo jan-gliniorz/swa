@@ -34,7 +34,12 @@ import java.sql.Timestamp;
 	@NamedQuery(name = Lagerposition.FIND_Lagerposition_ALL,
 				    query = "SELECT lp FROM Lagerposition lp"),
 	@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_Artikel,
-				    query = "SELECT lp FROM Lagerposition lp WHERE lp.artikel.id = :" + Lagerposition.PARAM_Artikel)
+				    query = "SELECT lp FROM Lagerposition lp WHERE lp.artikel.id = :" + Lagerposition.PARAM_ARTIKEL_ID),
+	@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_LAGER,
+					query = "select lagerposition "
+							+ "from Lagerposition as lagerposition " 
+							+ "where lagerposition.lager.id = :" + Lagerposition.PARAM_LAGER_ID)
+	
   })
 @XmlRootElement
 public class Lagerposition implements Serializable {	
@@ -42,14 +47,17 @@ public class Lagerposition implements Serializable {
 	private static final String PREFIX = "Lagerposition.";
 
 
+	public static final String FIND_LAGERPOSITION_BY_LAGER =
+		PREFIX + "findLagerpositionByLagerId";
 	public static final String FIND_Lagerposition_BY_ID =
 		PREFIX + "findLagerpositionById";
 	public static final String PARAM_ID = "id";
 	public static final String FIND_Lagerposition_ALL = 
 		PREFIX + "findLagerpositionAll";
 	public static final String FIND_LAGERPOSITION_BY_Artikel =
-		PREFIX + "findLagerpositionByArtikel";
-	public static final String PARAM_Artikel = "artikelId";
+		PREFIX + "findLagerpositionByArtikelId";
+	public static final String PARAM_ARTIKEL_ID = "artikelId";
+	public static final String PARAM_LAGER_ID = "lagerId";
 
 
 	
@@ -167,7 +175,12 @@ public class Lagerposition implements Serializable {
 		this.geaendertAm = geaendertAm == null ? null : (Date) geaendertAm.clone();
 	}
 
-
+	public void setValues(Lagerposition l) {
+		lager = l.lager;
+		artikel = l.artikel;
+		anzahl = l.anzahl;
+	}
+	
 	
 	@PrePersist
 	private void prePersist()

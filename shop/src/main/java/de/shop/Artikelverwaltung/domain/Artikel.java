@@ -52,7 +52,7 @@ import de.shop.Util.IdGroup;
 	  @NamedQuery(name = Artikel.FIND_Artikel_BY_ID_Lagerpositionen,
 				query = "SELECT DISTINCT la" +
 						" FROM Artikel la" +
-						" JOIN la.lagerpositionen"+
+						" LEFT JOIN la.lagerpositionen"+
 						" WHERE la.id = :" + Artikel.PARAM_ID),
 	  @NamedQuery(name = Artikel.FIND_Artikel_All,
 			    query = "SELECT la FROM Artikel la"),
@@ -63,7 +63,7 @@ import de.shop.Util.IdGroup;
   	  @NamedQuery(name = Artikel.FIND_Artikel_BY_IDs_Lagerpositionen,
   	  		query = "SELECT DISTINCT la" +
 			" FROM Artikel la" +
-			" JOIN la.lagerpositionen"+
+			" LEFT JOIN la.lagerpositionen"+
 			" WHERE la.id IN (:" + Artikel.PARAM_ID+")")
 	})
 

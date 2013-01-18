@@ -1,16 +1,20 @@
 package de.shop.Artikelverwaltung.domain;
 
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
+
 import static de.shop.Util.Constants.MIN_ID;
 import static javax.persistence.TemporalType.TIMESTAMP;
 import static de.shop.Util.Constants.KEINE_ID;
 import java.io.Serializable;
+import java.net.URI;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -37,14 +41,22 @@ import java.util.*;
 	@NamedQuery(name = Lager.FIND_Lager_BY_Bezeichnung, 
 				query = "SELECT a" +
 						" FROM Lager a"
-						+ " WHERE a.bezeichnung = :" + Lager.PARAM_Bezeichnung)
+						+ " WHERE a.bezeichnung = :" + Lager.PARAM_Bezeichnung),
+	@NamedQuery(name = Lager.FIND_Lager_All,
+				query = "SELECT la FROM Lager la"),
+	@NamedQuery( name = Lager.FIND_LAGER_ALL_LAGERPOSITIONEN,
+		    	query = "SELECT a FROM Lager a JOIN a.lagerpositionen"),
    })
 
 @XmlRootElement
 public class Lager implements Serializable {	
 	
 	private static final String PREFIX = "Lager.";
-
+	
+	public static final String FIND_LAGER_ALL_LAGERPOSITIONEN =
+		PREFIX + "findLagerAllLagerpositionen";
+	public static final String FIND_Lager_All =
+		PREFIX + "findLagerAll";
 	public static final String FIND_Lager_BY_Bezeichnung=
 		PREFIX +"findLagerByBezeichnung";
 	public static final String FIND_Lager_BY_ID =
@@ -62,9 +74,12 @@ public class Lager implements Serializable {
 	private Long id = KEINE_ID;
 
 	@OneToMany(mappedBy = "lager")
-	@XmlElementWrapper(name = "lagerpositionen", required = true)
-	@XmlElement(name = "lagerposition", required = true)
+	@XmlTransient
 	private List<Lagerposition> lagerpositionen;
+	
+	@Transient
+	@XmlElement(name = "lagerpositionen")
+	private URI lagerpositionenUri;
 
 	@NotBlank(message = "artikelverwaltung.lager.bezeichnung.notBlank")
 	@XmlElement
@@ -125,7 +140,6 @@ public class Lager implements Serializable {
 			return;
 		}
 	
-	
 	this.lagerpositionen.clear();
 	if (lagerpositionen != null){
 		this.lagerpositionen.addAll(lagerpositionen);
@@ -138,6 +152,20 @@ public class Lager implements Serializable {
 		}
 		lagerpositionen.add(lagerposition);
 		return this;
+	}
+	
+	
+	public URI getLagerpositionenUri() {
+		return lagerpositionenUri;
+	}
+
+	public void setLagerpositionenUri(URI lagerpositionenUri) {
+		this.lagerpositionenUri = lagerpositionenUri;
+	}
+	
+	public void setValues(Lager l) {
+		bezeichnung = l.bezeichnung;
+		lagerpositionen = l.lagerpositionen;
 	}
 
 	@PrePersist
@@ -212,6 +240,10 @@ public class Lager implements Serializable {
 				+ ", erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm
 				+ "]";
 	}
+
+	
+	
+	
 	
 	
 
