@@ -21,8 +21,8 @@ import org.junit.runner.RunWith;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.service.ArtikelService;
-import de.shop.Auftragsverwaltung.domain.Auftragsposition;
 import de.shop.Auftragsverwaltung.domain.Auftrag;
+import de.shop.Auftragsverwaltung.domain.Auftragsposition;
 import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Kundenverwaltung.service.KundeService;
 import de.shop.Kundenverwaltung.service.KundeService.FetchType;
@@ -36,6 +36,8 @@ public class AuftragServiceTest extends AbstractTest {
 	private static final Long ARTIKEL_2_ID = Long.valueOf(309);
 	private static final short ARTIKEL_2_ANZAHL = 2;
 	private static final Long AUFTRAG_ID_VORHANDEN = Long.valueOf(151);
+	private static final Long AUFTRAG_ID_VORHANDEN_KUNDE_ID = Long.valueOf(10);
+	private static final int AUFTRAG_ID_VORHANDEN_ANZAHL_POSITIONEN = 1;
 	private static final Long KUNDE_ID_AUFTRAGVORHANDEN = Long.valueOf(14);
 	private static final short KUNDE_ID_AUFTRAG_ANZ_AUFTRAGVORHANDEN = 2;
 	
@@ -111,8 +113,8 @@ public class AuftragServiceTest extends AbstractTest {
 		Auftrag testAuftrag = auftragService.findAuftragById(auftragId);
 		
 		// When
-		assertThat(testAuftrag.getKunde().getKundenNr() == AUFTRAG_ID_VORHANDEN, is(true));
-		assertThat(testAuftrag.getAuftragspositionen().size(), is(1));
+		assertThat(testAuftrag.getKunde().getKundenNr() == AUFTRAG_ID_VORHANDEN_KUNDE_ID, is(true));
+		assertThat(testAuftrag.getAuftragspositionen().size(), is(AUFTRAG_ID_VORHANDEN_ANZAHL_POSITIONEN));
 	}
 	
 	@Test

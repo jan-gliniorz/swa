@@ -6,17 +6,16 @@ import static org.junit.Assert.assertThat;
 import java.util.List;
 import java.util.Set;
 
-import de.shop.Artikelverwaltung.domain.Artikel;
-import de.shop.Kundenverwaltung.domain.Kunde;
 import javax.persistence.NoResultException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import de.shop.Artikelverwaltung.domain.Artikel;
+import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Util.AbstractDomainTest;
 
 
@@ -78,15 +77,13 @@ public class AuftragTest extends AbstractDomainTest {
 	}
 	
 	@Test
-	@Ignore
 	public void createAuftragTest() {
 		// Given
 		final Long kundeId = KUNDEID_NEU;
 		final int position1Anz = POSITION1ANZAHL_NEU;
 		final Long position1ArtikelId = POSITION1ARTIKELID_NEU;
 		final int auftragAnzahlVorCreate = getEntityManager()
-											.createNamedQuery(Auftrag.FIND_AUFTRAG_BY_ID, Auftrag.class)
-											.setParameter(Auftrag.PARAM_ID, kundeId)
+											.createNamedQuery(Auftrag.FIND_AUFTRAG_ALL, Auftrag.class)
 											.getResultList()
 											.size();
 		
@@ -105,9 +102,7 @@ public class AuftragTest extends AbstractDomainTest {
 		
 		// When
 		try {
-			getEntityManager().persist(auftrag);
-			getEntityManager().persist(position1);
-			
+			getEntityManager().persist(auftrag);			
 		}
 		catch (ConstraintViolationException e) {
 			// Es gibt Verletzungen bzgl. Bean Validation: auf der Console ausgeben

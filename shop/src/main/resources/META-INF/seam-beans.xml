@@ -14,10 +14,7 @@
 		</u:locales>
 		<s:modifies/>
 	</u:ValidationService>
-	
-	<!--
-	<m:BestellungObserver mailAbsender="abcd0011@hs-karlsruhe.de" nameAbsender="Joe Doe">
+	<m:AuftragObserver mailAbsender="krth1012@hs-karlsruhe.de" nameAbsender="SuperDuperShop">
 		<s:modifies/>
-	</m:BestellungObserver>
-	-->
+	</m:AuftragObserver>
 </beans>
