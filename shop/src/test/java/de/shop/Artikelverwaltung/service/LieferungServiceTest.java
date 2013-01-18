@@ -6,12 +6,14 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.transaction.HeuristicMixedException;
@@ -22,6 +24,7 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.logmanager.Level;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -65,6 +68,8 @@ public class LieferungServiceTest extends AbstractTest {
 	
 	@Inject
 	private LieferungService ls;
+	
+	@Inject
 	private ArtikelService as;
 	
 	/**
@@ -160,21 +165,15 @@ public class LieferungServiceTest extends AbstractTest {
 	@Test
 	public void createLieferung() throws RollbackException, HeuristicMixedException, HeuristicRollbackException,
 	                                       SystemException, NotSupportedException {
+		final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 		// Given
 		//Attribute neueLieferung
 		final Date bestelldatum = BESTELLDATUM_NEU;
 		final Date lieferungsdatum = LIEFERUNGSDATUM_NEU;
 		
 		final int anzahl = ANZAHL_NEU;
-		
-		//Attribute vorhandenerArtikel
-		final String bezeichnung = BEZEICHNUNG_VORHANDEN;
-		final String beschreibung = BESCHREIBUNG_VORHANDEN;
-		final BigDecimal preis = PREIS_VORHANDEN;
-		final String bild = BILD_VORHANDEN;
 
 		// When
-		
 		//Collection mit allen Lieferungen vorm Create
 		final Collection<Lieferung> lieferungenVorher = ls.findLieferungenAll(FetchType.NUR_LIEFERUNG, null);
 		final UserTransaction trans = getUserTransaction();
@@ -185,19 +184,10 @@ public class LieferungServiceTest extends AbstractTest {
 		lieferung.setBestelldatum(bestelldatum);
 		lieferung.setLieferungsdatum(lieferungsdatum);
 		
-//		Artikel vorhandenerArtikel = new Artikel();
-//		vorhandenerArtikel.setBezeichnung(bezeichnung+"kkk");
-//		vorhandenerArtikel.setBeschreibung(beschreibung+"lll");
-//		vorhandenerArtikel.setBild(bild);
-//		vorhandenerArtikel.setPreis(preis);
-//		trans.begin();
-//		vorhandenerArtikel = as.createArtikel(vorhandenerArtikel, LOCALE);
-//		trans.commit();
-		
 //		Objekt vorhandenerArtikel anhand einer vorgegebenen Artikelnummer erstellen
 		trans.begin();
 		Artikel vorhandenerArtikel = as.findArtikelByID(
-										Long.valueOf(ARTIKEL_ID_VORHANDEN), 
+										ARTIKEL_ID_VORHANDEN, 
 										de.shop.Artikelverwaltung.service.ArtikelService.FetchType.NUR_Artikel, 
 										LOCALE);
 		trans.commit();	

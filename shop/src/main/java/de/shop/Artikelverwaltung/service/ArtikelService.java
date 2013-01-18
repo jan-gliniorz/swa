@@ -102,7 +102,7 @@ public class ArtikelService implements Serializable {
 	public Artikel findArtikelByID(Long id, FetchType fetch, Locale locale) {
 		
 		validateArtikelId(id, locale);
-		
+
 		Artikel artikel = null;
 		try {
 			switch (fetch) {
@@ -123,6 +123,7 @@ public class ArtikelService implements Serializable {
 		}
 		catch (NoResultException e) {
 			return null;
+			
 		}
 
 		return artikel;
