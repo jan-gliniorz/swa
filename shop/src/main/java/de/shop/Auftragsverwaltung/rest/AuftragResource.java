@@ -23,6 +23,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
@@ -104,6 +105,23 @@ public class AuftragResource {
 		// URLs innerhalb der gefundenen Bestellung anpassen
 		uriHelperAuftrag.updateUriAuftrag(auftrag, uriInfo);
 		return auftrag;
+	}
+	
+	@GET
+	@QueryParam("{kundenr:[1-9][0-9]*}")
+	public List<Auftrag> findAuftragByKundeNr(@QueryParam("kundenr") Long id, @Context UriInfo uriInfo) {
+		final List<Auftrag> auftraege = auftragService.findAuftragByKundeId(id);
+		if (auftraege == null) {
+			final String msg = "Keine Auftraege gefunden zu Kunde mit der ID " + id;
+			throw new NotFoundException(msg);
+		}
+
+		// URLs innerhalb der gefundenen Bestellung anpassen
+		for(Auftrag auftrag : auftraege) {
+			uriHelperAuftrag.updateUriAuftrag(auftrag, uriInfo);
+		}
+		
+		return auftraege;
 	}
 	
 	/**

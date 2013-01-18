@@ -52,4 +52,12 @@ public class UriHelperAuftrag {
 		final URI uri = ub.build(auftrag.getId());
 		return uri;
 	}
+	
+	public URI getUriAuftragByKunde(Kunde kunde, UriInfo uriInfo) {
+		final UriBuilder ub = uriInfo.getBaseUriBuilder()
+		                             .path(AuftragResource.class)
+		                             .queryParam("kundenr", kunde.getKundenNr());
+		final URI uri = ub.build();
+		return uri;
+	}
 }
