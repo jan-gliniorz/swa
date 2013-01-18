@@ -6,14 +6,12 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.transaction.HeuristicMixedException;
@@ -24,7 +22,6 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.logmanager.Level;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -165,7 +162,7 @@ public class LieferungServiceTest extends AbstractTest {
 	@Test
 	public void createLieferung() throws RollbackException, HeuristicMixedException, HeuristicRollbackException,
 	                                       SystemException, NotSupportedException {
-		final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
+
 		// Given
 		//Attribute neueLieferung
 		final Date bestelldatum = BESTELLDATUM_NEU;
