@@ -188,7 +188,8 @@ public class KundeServiceTest extends AbstractTest {
 		
 		// Then
 		for (Kunde k : kunden) {
-			final Kunde kundeMitAuftraege = ks.findKundenByKundennummer(k.getKundenNr(), FetchType.MIT_BESTELLUNGEN, LOCALE);
+			final Kunde kundeMitAuftraege =
+					ks.findKundenByKundennummer(k.getKundenNr(), FetchType.MIT_BESTELLUNGEN, LOCALE);
 			final List<Auftrag> auftraege = kundeMitAuftraege.getAuftraege();
 			int bestellmenge = 0;   // short-Werte werden aufsummiert
 			for (Auftrag b : auftraege) {
