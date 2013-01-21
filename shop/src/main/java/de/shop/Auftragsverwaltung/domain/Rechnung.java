@@ -43,7 +43,10 @@ import de.shop.Util.IdGroup;
 	@NamedQuery(name = Rechnung.FIND_RECHNUNG_BY_ID, 
 				query = "SELECT r"
 						+ " FROM Rechnung r"
-						+ " WHERE r.id = :" + Rechnung.PARAM_ID)
+						+ " WHERE r.id = :" + Rechnung.PARAM_ID),
+	@NamedQuery(name = Rechnung.FIND_RECHNUNG_ALL, 
+				query = "SELECT r"
+						+ " FROM Rechnung r")
 })
 @XmlRootElement
 public class Rechnung implements Serializable {
@@ -51,6 +54,7 @@ public class Rechnung implements Serializable {
 	
 	private static final String PREFIX = "Rechnung.";
 	public static final String FIND_RECHNUNG_BY_ID = PREFIX + "findRechnungById";
+	public static final String FIND_RECHNUNG_ALL = PREFIX + "findRechnungAll";
 	
 	public static final String PARAM_ID = "id";
 

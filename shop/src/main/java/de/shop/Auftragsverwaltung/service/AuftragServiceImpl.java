@@ -117,7 +117,7 @@ public class AuftragServiceImpl implements Serializable, AuftragService {
 		
 		final Set<ConstraintViolation<Auftrag>> violations = validator.validate(auftrag);
 		if (violations != null && !violations.isEmpty()) {
-			LOGGER.exiting("BestellungService", "createBestellung", violations);
+			LOGGER.exiting("AuftragService", "createAuftrag", violations);
 			throw new AuftragValidationException(auftrag, violations);
 		}
 	}

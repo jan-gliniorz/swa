@@ -14,7 +14,7 @@ public abstract class AbstractDomainTest extends AbstractTest {
 	@PersistenceContext
 	private EntityManager em;
 	
-	@Before //TODO: After
+	@Before
 	public void before() throws SystemException {   // NotSupportedException
 		super.before();
 		

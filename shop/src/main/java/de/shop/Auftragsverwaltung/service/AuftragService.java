@@ -14,10 +14,6 @@ public interface AuftragService {
 
 	/**
 	 */
-	//Kunde findKundeById(Long id);
-
-	/**
-	 */
 	List<Auftrag> findAuftragByKundeId(Long kundeId);
 
 	/**
