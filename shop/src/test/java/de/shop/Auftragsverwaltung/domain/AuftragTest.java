@@ -94,7 +94,7 @@ public class AuftragTest extends AbstractDomainTest {
 		auftrag.setKunde(kunde);
 		
 		//Auftragsposition 1 erstellen und dem Auftrag hinzufuegen
-		Artikel artikel = getEntityManager().createNamedQuery(Artikel.FIND_Artikel_BY_Artikel_ID, Artikel.class)
+		Artikel artikel = getEntityManager().createNamedQuery(Artikel.FIND_ARTIKEL_BY_ARTIKEL_ID, Artikel.class)
 											.setParameter(Artikel.PARAM_ID, position1ArtikelId)
 											.getSingleResult();
 		Auftragsposition position1 = new Auftragsposition(artikel, position1Anz);
