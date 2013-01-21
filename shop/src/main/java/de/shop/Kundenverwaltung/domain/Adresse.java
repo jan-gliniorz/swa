@@ -112,6 +112,14 @@ public class Adresse implements Serializable {
 
 	public Adresse() {
 	}
+	
+	public void setValues(Adresse a) {
+		strasse = a.strasse;
+		hausNr = a.hausNr;
+		ort = a.ort;
+		plz = a.plz;
+		land = a.land;
+	}
 
 	public Kunde getKunde() {
 		return kunde;

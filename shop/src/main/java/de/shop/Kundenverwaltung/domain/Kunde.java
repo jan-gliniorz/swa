@@ -204,6 +204,7 @@ public class Kunde implements Serializable {
 		email = k.email;
 		passwort = k.passwort;
 		passwortWdh = k.passwort;
+		adresse.setValues(k.getAdresse());
 	}
 	
 	public Adresse getAdresse() {
