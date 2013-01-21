@@ -89,16 +89,16 @@ public class LagerService implements Serializable {
 		return lager;
 	}
 	
-	public List<Lager> findLagerAll(FetchType fetch, OrderType order){
+	public List<Lager> findLagerAll(FetchType fetch, OrderType order) {
 		
 		List<Lager> lager; 
 		
 		switch (fetch) {
 		case NUR_Lager:
 			lager = OrderType.ID.equals(order)
-			         ? em.createNamedQuery(Lager.FIND_LAGER_All, Lager.class)
+			         ? em.createNamedQuery(Lager.FIND_LAGER_ALL, Lager.class)
 			             .getResultList()
-			         : em.createNamedQuery(Lager.FIND_LAGER_All, Lager.class)
+			         : em.createNamedQuery(Lager.FIND_LAGER_ALL, Lager.class)
 			             .getResultList();
 			break;
 		
@@ -109,9 +109,9 @@ public class LagerService implements Serializable {
 
 		default:
 			lager = OrderType.ID.equals(order)
-	         		? em.createNamedQuery(Lager.FIND_LAGER_All, Lager.class)
+	         		? em.createNamedQuery(Lager.FIND_LAGER_ALL, Lager.class)
 	         			.getResultList()
-	             	: em.createNamedQuery(Lager.FIND_LAGER_All, Lager.class)
+	             	: em.createNamedQuery(Lager.FIND_LAGER_ALL, Lager.class)
 	             		.getResultList();
 			break;
 		}
@@ -176,7 +176,7 @@ public class LagerService implements Serializable {
 		return lager;		
 	}
 	
-	private void validateLager (Lager lager, Locale locale) {
+	private void validateLager(Lager lager, Locale locale) {
 		
 		// Werden alle Constraints beim Einfuegen gewahrt?
 		final Validator validator = validationService.getValidator(locale);
@@ -187,7 +187,7 @@ public class LagerService implements Serializable {
 		}
 	}
 	
-	public Lager updateLager (Lager lager, Locale locale) {
+	public Lager updateLager(Lager lager, Locale locale) {
 		if (lager == null) {
 				return null;
 		}
@@ -232,7 +232,7 @@ public class LagerService implements Serializable {
 		em.remove(lager);
 	}
 	
-	private void validateLagerposition (Lagerposition lagerposition, Locale locale) {
+	private void validateLagerposition(Lagerposition lagerposition, Locale locale) {
 		
 		// Werden alle Constraints beim Einfuegen gewahrt?
 		final Validator validator = validationService.getValidator(locale);
@@ -306,28 +306,30 @@ public class LagerService implements Serializable {
 	public void removeArtikelAusLager(Artikel artikel, int anzahl) {	
 			List<Lagerposition> lagerpositionen = null;
 			
-			try{
+			try {
 				lagerpositionen = em.createNamedQuery(Lagerposition.FIND_LAGERPOSITION_BY_ARTIKEL, Lagerposition.class)
 									.setParameter(Lagerposition.PARAM_ARTIKEL_ID, artikel.getId())
 									.getResultList();
 			}
 			
-			catch (NoResultException e){
+			catch (NoResultException e) {
 				throw new NoArtikelInLagerException(artikel.getId());
 			}
 		
-			for(Lagerposition el : lagerpositionen){
-				int anz;
-				if(el.getAnzahl() > anzahl){
-				///TODO: Muss noch implementiert werden
+			int anz = 0;
+			for (Lagerposition el : lagerpositionen) {
+				
+				if (el.getAnzahl() > anzahl) {
 					anz = el.getAnzahl() - anzahl;
 				}
-				else{
-					throw new NoArtikelInLagerException(artikel.getId());
+				else {
+					anz = el.getAnzahl();
 				}
 			}
-		
-		
+			if (anz < anzahl) {
+				throw new NoArtikelInLagerException(artikel.getId());
+			}
+			
 	}
 	
 	public Lagerposition updateLagerposition(Lagerposition lagerpos, Locale locale) {

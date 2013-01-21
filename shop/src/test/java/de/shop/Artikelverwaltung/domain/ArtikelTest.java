@@ -20,9 +20,9 @@ import de.shop.Util.AbstractDomainTest;
 
 @RunWith(Arquillian.class)
 public class ArtikelTest extends AbstractDomainTest {
-	private static final Long id_VORHANDEN = Long.valueOf(300);
-	private static final String bezeichnung_VORHANDEN = "Chino";
-	private static final String bezeichnung_NichtVORHANDEN = "Nicht";
+	private static final Long ID_VORHANDEN = Long.valueOf(300);
+	private static final String BEZEICHNUNG_VORHANDEN = "Chino";
+	private static final String BEZEICHNUNG_NICHTVORHANDEN = "Nicht";
 	private static final String BEZEICHNUNG_CREATE = "Hose";
 	private static final String BESCHREIBUNG_CREATE = "Chino";
 	private static final BigDecimal PREIS_CREATE = BigDecimal.valueOf(23.0);	
@@ -35,7 +35,7 @@ public class ArtikelTest extends AbstractDomainTest {
 	@Test
 	public void findArtikelByIdVorhanden() {
 		// Given
-		final Long id = id_VORHANDEN;
+		final Long id = ID_VORHANDEN;
 		
 		// When		
 		Artikel artikel = getEntityManager().createNamedQuery(Artikel.FIND_ARTIKEL_BY_ARTIKEL_ID, Artikel.class)
@@ -50,11 +50,11 @@ public class ArtikelTest extends AbstractDomainTest {
 	@Test
 	public void findArtikelByBezeichnung() {
 		// Given
-		final String bezeichnung = bezeichnung_VORHANDEN;
+		final String bezeichnung = BEZEICHNUNG_VORHANDEN;
 		
 		// When
 		List<Artikel> artikel = getEntityManager().createNamedQuery(Artikel.FIND_ARTIKEL_BY_BEZEICHNUNG, Artikel.class)
-								.setParameter(Artikel.PARAM_Bezeichnung, bezeichnung)
+								.setParameter(Artikel.PARAM_BEZEICHNUNG, bezeichnung)
 								.getResultList();
                                                                        
 		// Then
@@ -66,12 +66,12 @@ public class ArtikelTest extends AbstractDomainTest {
 	@Test
 	public void findArtikelByBezeichnungNichtVorhanden() {
 		// Given
-		final String bezeichnung = bezeichnung_NichtVORHANDEN;
+		final String bezeichnung = BEZEICHNUNG_NICHTVORHANDEN;
 		
 		// When / Then
 		thrown.expect(NoResultException.class);
 		getEntityManager().createNamedQuery(Artikel.FIND_ARTIKEL_BY_BEZEICHNUNG, Artikel.class)
-					.setParameter(Artikel.PARAM_Bezeichnung, bezeichnung)
+					.setParameter(Artikel.PARAM_BEZEICHNUNG, bezeichnung)
 					.getSingleResult();                                                  
 	}
 
@@ -102,13 +102,14 @@ public class ArtikelTest extends AbstractDomainTest {
 		
 		// Then
 		// Den abgespeicherten Kunden ueber eine Named Query ermitteln
-		List<Artikel> artikel_neu = getEntityManager().createNamedQuery(Artikel.FIND_ARTIKEL_BY_BEZEICHNUNG, Artikel.class)
-									.setParameter(Artikel.PARAM_Bezeichnung, BEZEICHNUNG_CREATE)
+		List<Artikel> artikelneu = getEntityManager()
+									.createNamedQuery(Artikel.FIND_ARTIKEL_BY_BEZEICHNUNG, Artikel.class)
+									.setParameter(Artikel.PARAM_BEZEICHNUNG, BEZEICHNUNG_CREATE)
 									.getResultList();
 		
 		// Ueberpruefung des ausgelesenen Objekts
-		assertThat(artikel_neu.size(), is(1));
-		artikel = (Artikel) artikel_neu.get(0);
+		assertThat(artikelneu.size(), is(1));
+		artikel = (Artikel) artikelneu.get(0);
 		assertThat(artikel.getId().longValue() > 0, is(true));
 		assertThat(artikel.getBezeichnung(), is(BEZEICHNUNG_CREATE));
 	}

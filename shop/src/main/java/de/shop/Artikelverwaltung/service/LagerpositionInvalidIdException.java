@@ -14,7 +14,8 @@ public class LagerpositionInvalidIdException extends LagerpositionServiceExcepti
 	private final Long lagerpositionId;
 	private final Collection<ConstraintViolation<Lagerposition>> violations;
 	
-	public LagerpositionInvalidIdException(Long lagerpositionId, Collection<ConstraintViolation<Lagerposition>> violations) {
+	public LagerpositionInvalidIdException(Long lagerpositionId, 
+											Collection<ConstraintViolation<Lagerposition>> violations) {
 		super("Ungueltige Lieferungs-ID: " + lagerpositionId + ", Violations: " + violations);
 		this.lagerpositionId = lagerpositionId;
 		this.violations = violations;

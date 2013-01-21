@@ -44,25 +44,25 @@ import de.shop.Util.IdGroup;
 @Table(name = "Artikel")
 @NamedQueries({
 	  @NamedQuery(name = Artikel.FIND_ARTIKEL_BY_BEZEICHNUNG,
-			      query = "FROM Artikel a WHERE a.bezeichnung = :" + Artikel.PARAM_Bezeichnung),	
+			      query = "FROM Artikel a WHERE a.bezeichnung = :" + Artikel.PARAM_BEZEICHNUNG),	
 	  @NamedQuery(name = Artikel.FIND_ARTIKEL_BY_ARTIKEL_ID,
 			  	  query = "FROM Artikel a WHERE a.id = :" + Artikel.PARAM_ID),
 	  @NamedQuery(name = Artikel.FIND_ARTIKEL_BY_ID_LAGERPOSITIONEN,
-				query = "SELECT DISTINCT la" +
-						"FROM Artikel la" +
-						"LEFT JOIN la.lagerpositionen" +
-						"WHERE la.id = :" + Artikel.PARAM_ID),
+				  query = "SELECT DISTINCT la "
+						+ "FROM Artikel la " 
+						+ "LEFT JOIN la.lagerpositionen " 
+						+ "WHERE la.id = :" + Lagerposition.PARAM_ID),
 	  @NamedQuery(name = Artikel.FIND_ARTIKEL_ALL,
-			    query = "SELECT la FROM Artikel la"),
+			      query = "SELECT la FROM Artikel la"),
 	  @NamedQuery(name = Artikel.FIND_ARTIKEL_ALL_LAGERPOSITIONEN,
-			    	query = "SELECT a FROM Artikel a JOIN a.lagerpositionen"),
+			      query = "SELECT a FROM Artikel a JOIN a.lagerpositionen"),
 	  @NamedQuery(name = Artikel.FIND_ARTIKEL_BY_ARTIKEL_IDS,
-	  			query = "FROM Artikel a WHERE a.id IN (:" + Artikel.PARAM_ID + ")"),
+	  			 query = "FROM Artikel a WHERE a.id IN (:" + Artikel.PARAM_ID + ")"),
   	  @NamedQuery(name = Artikel.FIND_ARTIKEL_BY_IDS_LAGERPOSITIONEN,
-  	  		query = "SELECT DISTINCT la" +
-			"FROM Artikel la" +
-			"LEFT JOIN la.lagerpositionen" +
-			"WHERE la.id IN (:" + Artikel.PARAM_ID + ")")
+  	  		     query = "SELECT DISTINCT la " 
+  	  		    		 +	"FROM Artikel la "
+  	  		    		 +	"LEFT JOIN la.lagerpositionen " 
+  	  		    		 +	"WHERE la.id IN (:" + Artikel.PARAM_ID + ")")
 	})
 
 @XmlRootElement
@@ -86,12 +86,12 @@ public class Artikel implements Serializable {
 		PREFIX + "findArtikelByIDsLagerpositionen";
 	
 	public static final String PARAM_ID = "id";
-	public static final String PARAM_Bezeichnung = "bezeichnung";
+	public static final String PARAM_BEZEICHNUNG = "bezeichnung";
 
 	private static final long serialVersionUID = 4651646021686650992L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "artikel_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "artikelverwaltung.artikel.id.min", groups = IdGroup.class)
 	@XmlAttribute
@@ -99,7 +99,6 @@ public class Artikel implements Serializable {
 
 
 	@OneToMany(mappedBy = "artikel")
-	//@NotEmpty(message = "artikelverwaltung.artikel.lagerposition.notEmpty") //TODO:Fehlermeldung entfernen.
 	@XmlTransient
 	private List<Lagerposition> lagerpositionen;
 	
@@ -118,13 +117,13 @@ public class Artikel implements Serializable {
 	@XmlElement
 	private String bild;
 
-	@Column(name="erstellt_am")
+	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
 	@XmlElement
 	private Date erstelltAm;
 	
 
-	@Column(name="geaendert_am")
+	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
 	@XmlElement
 	private Date geaendertAm;
@@ -201,7 +200,7 @@ public class Artikel implements Serializable {
 	}
 	
 	public Artikel addLagerposition(Lagerposition lagerposition) {
-		if(lagerpositionen == null){
+		if (lagerpositionen == null) {
 			lagerpositionen = new ArrayList<>();
 		}
 		
@@ -213,15 +212,15 @@ public class Artikel implements Serializable {
 		return Collections.unmodifiableList(lagerpositionen);
 	}
 	
-	public void setLagerposition(List<Lagerposition> lagerpositionen) {
-			if(this.lagerpositionen == null) {
+	public void setLagerpositionen(List<Lagerposition> lagerpositionen) {
+			if (this.lagerpositionen == null) {
 				this.lagerpositionen = lagerpositionen;
 				return;
 			}
 			
 			this.lagerpositionen.clear();
 			
-			if(lagerpositionen != null){
+			if (lagerpositionen != null) {
 				this.lagerpositionen.addAll(lagerpositionen);
 			}
 			
@@ -286,32 +285,38 @@ public class Artikel implements Serializable {
 		if (beschreibung == null) {
 			if (other.beschreibung != null)
 				return false;
-		} else if (!beschreibung.equals(other.beschreibung))
+		} 
+		else if (!beschreibung.equals(other.beschreibung))
 			return false;
 		if (bezeichnung == null) {
 			if (other.bezeichnung != null)
 				return false;
-		} else if (!bezeichnung.equals(other.bezeichnung))
+		} 
+		else if (!bezeichnung.equals(other.bezeichnung))
 			return false;
 		if (bild == null) {
 			if (other.bild != null)
 				return false;
-		} else if (!bild.equals(other.bild))
+		} 
+		else if (!bild.equals(other.bild))
 			return false;
 		if (erstelltAm == null) {
 			if (other.erstelltAm != null)
 				return false;
-		} else if (!erstelltAm.equals(other.erstelltAm))
+		} 
+		else if (!erstelltAm.equals(other.erstelltAm))
 			return false;
 		if (geaendertAm == null) {
 			if (other.geaendertAm != null)
 				return false;
-		} else if (!geaendertAm.equals(other.geaendertAm))
+		} 
+		else if (!geaendertAm.equals(other.geaendertAm))
 			return false;
 		if (preis == null) {
 			if (other.preis != null)
 				return false;
-		} else if (!preis.equals(other.preis))
+		} 
+		else if (!preis.equals(other.preis))
 			return false;
 		return true;
 	}

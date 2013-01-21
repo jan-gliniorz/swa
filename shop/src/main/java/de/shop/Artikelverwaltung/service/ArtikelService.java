@@ -119,7 +119,7 @@ public class ArtikelService implements Serializable {
 	}
 	
 	public List<Artikel> findArtikelByIDs(List<Long> ids, FetchType fetch, Locale locale) {
-		for(Long id : ids){
+		for (Long id : ids) {
 			validateArtikelId(id, locale);
 		}
 		
@@ -181,7 +181,7 @@ public class ArtikelService implements Serializable {
 		return artikel;		
 	}
 	
-	private void validateArtikel (Artikel artikel, Locale locale) {
+	private void validateArtikel(Artikel artikel, Locale locale) {
 		// Werden alle Constraints beim Einfuegen gewahrt?
 		final Validator validator = validationService.getValidator(locale);
 		
@@ -193,7 +193,7 @@ public class ArtikelService implements Serializable {
 	
 	/**
 	 */
-	public Artikel updateArtikel (Artikel artikel, Locale locale) {
+	public Artikel updateArtikel(Artikel artikel, Locale locale) {
 		if (artikel == null) {
 			return null;
 		}

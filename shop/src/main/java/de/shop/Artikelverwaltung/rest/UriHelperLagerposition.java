@@ -1,26 +1,81 @@
 package de.shop.Artikelverwaltung.rest;
 
 import java.net.URI;
+import java.util.Locale;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lager;
 import de.shop.Artikelverwaltung.domain.Lagerposition;
+import de.shop.Artikelverwaltung.service.ArtikelService;
+import de.shop.Artikelverwaltung.service.LagerService;
 import de.shop.Util.Log;
+import de.shop.Util.NotFoundException;
+import de.shop.Util.RestLocaleHelper;
 
 @ApplicationScoped
 @Log
 public class UriHelperLagerposition {
 	
 	@Inject
-	UriHelperArtikel uriHelperArtikel;
+	private LagerService lagerService;
 	
 	@Inject
-	UriHelperLager uriHelperLager;
+	private ArtikelService artikelService;
+	
+	@Inject
+	private UriHelperArtikel uriHelperArtikel;
+	
+	@Inject
+	private UriHelperLager uriHelperLager;
+	
+	public void updateReferenceLagerposition(Lagerposition lagerposition, HttpHeaders headers) {
+		final Locale locale = RestLocaleHelper.getLocalFromHttpHeaders(headers);
+		
+		// Lager Referenz setzen
+		String lagerUri = lagerposition.getLagerUri().toString();
+		int lagerIdStartPost = lagerUri.lastIndexOf('/') + 1;
+		String lagerIdStr = lagerUri.substring(lagerIdStartPost);
+		Long lagerId = null;
+		try {
+			lagerId = Long.valueOf(lagerIdStr);
+		}
+		catch (NumberFormatException e) {
+			throw new NotFoundException("Kein Lager vorhanden mit der ID " + lagerIdStr, e);
+		}
+		
+		Lager lager = lagerService.findLagerById(lagerId, locale);
+		if (lager == null) {
+			throw new NotFoundException("Kein Lager gefunden mit der ID " + lagerId);
+		}
+		
+		lagerposition.setLager(lager);
+		
+		// Artikel Referenz setzen
+		String artikelUri = lagerposition.getArtikelUri().toString();
+		int artikelIdStartPos = artikelUri.lastIndexOf('/') + 1;
+		String artikelIdStr = artikelUri.substring(artikelIdStartPos);
+		Long artikelId = null;
+		try {
+			artikelId = Long.valueOf(artikelIdStr);
+		}
+		catch (NumberFormatException e) {
+			throw new NotFoundException("Kein Artikel gefunden mit der ID " + artikelIdStr);
+		}
+		
+		Artikel artikel = artikelService.findArtikelByID(artikelId, ArtikelService.FetchType.NUR_Artikel, locale);
+		if (artikel == null) {
+			throw new NotFoundException("Kein Artikel gefunden mit der ID " + artikelId);
+		}
+		
+		lagerposition.setArtikel(artikel);
+	}
+	
 	
 	public void updateUriLagerposition(Lagerposition lagerposition, UriInfo uriInfo) {
 		lagerposition.setLagerUri(uriHelperLager.getUriLager(lagerposition.getLager(), uriInfo));

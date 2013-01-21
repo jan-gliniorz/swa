@@ -15,7 +15,7 @@ import de.shop.Util.Log;
 public class UriHelperArtikel {
 
 	@Inject
-	UriHelperLagerposition uriHelperLagerpositionen;
+	private UriHelperLagerposition uriHelperLagerpositionen;
 	
 	public void updateUriArtikel(Artikel artikel, UriInfo uriInfo) {	
 		artikel.setLagerpositionenUri(uriHelperLagerpositionen.getUriLagerpositionenByArtikel(artikel, uriInfo));

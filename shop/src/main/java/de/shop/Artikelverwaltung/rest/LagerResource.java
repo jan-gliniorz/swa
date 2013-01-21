@@ -18,6 +18,7 @@ import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -47,7 +48,7 @@ public class LagerResource {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	
 	@Inject
-	LagerService ls;
+	private LagerService ls;
 	
 	@Inject
 	private UriHelperLager uriHelperLager;
@@ -83,7 +84,7 @@ public class LagerResource {
 	@Wrapped(element = "lager")
 	public Collection<Lager> findLagerAll(@Context UriInfo uriInfo) {
 		Collection<Lager> lager = ls.findLagerAll(LagerService.FetchType.NUR_Lager, LagerService.OrderType.ID);
-		for(Lager a : lager) {
+		for (Lager a : lager) {
 			uriHelperLager.updateUriLager(a, uriInfo);
 		}
 		return lager;
@@ -98,14 +99,12 @@ public class LagerResource {
 	public void updateLager(Lager lager, 
 							@Context UriInfo uriInfo,
 							@Context HttpHeaders headers) {
-
-		//lager.setLagerposition(null); ///TODO: Was ist hier mit den URLs? Diese müssen ersetzt werden durch die collections?!
 		
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		
 		Lager lagerOrig = ls.findLagerById(lager.getId(), locale);
-		if(lagerOrig == null) {
+		if (lagerOrig == null) {
 			final String msg = "Kein Lager gefunden mit der ID" + lager.getId();
 			throw new NotFoundException(msg);
 		}
@@ -115,7 +114,7 @@ public class LagerResource {
 		LOGGER.log(FINEST, "Lager nachher: %s", lagerOrig);
 		lager = ls.updateLager(lagerOrig, locale);
 
-		if(lager == null) {
+		if (lager == null) {
 			final String msg = "Kein Lager gefunden mit der ID " + lagerOrig.getId();
 			throw new NotFoundException(msg);
 		}
@@ -135,4 +134,19 @@ public class LagerResource {
 		
 		return response;
 	}
+	
+	@Path("{id:[0-9]+}")
+	@DELETE
+	@Produces
+	public void deleteLager(@PathParam("id") Long id, 
+							@Context HttpHeaders headers) {
+	final Locale locale = RestLocaleHelper.getLocalFromHttpHeaders(headers);
+	final Lager lager = ls.findLagerById(id, locale);
+	if (lager == null) {
+		String msg = "Kein Lager gefunden mit der ID:" + id;
+		throw new NotFoundException(msg);
+	}
+	
+	ls.deleteLager(lager);		
+	}	
 }

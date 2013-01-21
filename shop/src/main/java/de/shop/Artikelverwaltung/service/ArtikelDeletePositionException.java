@@ -16,7 +16,7 @@ public class ArtikelDeletePositionException extends ArtikelServiceException {
 		super("Artikel mit der ID=" + artikel.getId() + " kann nicht geloescht werden: "
 			  + artikel.getLagerposition().size() + " Position(en)");
 		this.artikelId = artikel.getId();
-		this.anzahlPositionen = artikel.getLagerposition().size();;
+		this.anzahlPositionen = artikel.getLagerposition().size();
 	}
 
 	public Long getArtikelId() {

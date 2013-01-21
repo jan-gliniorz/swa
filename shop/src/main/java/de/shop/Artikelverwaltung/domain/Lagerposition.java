@@ -39,20 +39,20 @@ import de.shop.Util.IdGroup;
  * 
  */
 @Entity
-@Table(name ="Lagerposition")
-@NamedQueries({
-	@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_ID, 
-			query = "SELECT a" +
-					"FROM Lagerposition a"
+@Table(name = "Lagerposition")
+	@NamedQueries({
+		@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_ID, 
+			query = "SELECT a " 
+					+ "FROM Lagerposition a "
 					+ "WHERE a.id = :" + Lagerposition.PARAM_ID),
-	@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_ALL,
-				    query = "SELECT lp FROM Lagerposition lp"),
-	@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_ARTIKEL,
-				    query = "SELECT lp FROM Lagerposition lp WHERE lp.artikel.id = :" + Lagerposition.PARAM_ARTIKEL_ID),
-	@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_LAGER,
-					query = "select lagerposition"
-							+ "from Lagerposition as lagerposition" 
-							+ "where lagerposition.lager.id = :" + Lagerposition.PARAM_LAGER_ID)
+		@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_ALL,
+		    query = "SELECT lp FROM Lagerposition lp"),
+		@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_ARTIKEL,
+		    query = "SELECT lp FROM Lagerposition lp WHERE lp.artikel.id = :" + Lagerposition.PARAM_ARTIKEL_ID),
+		@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_LAGER,
+			query = "select lagerposition "
+					+ "from Lagerposition as lagerposition " 
+					+ "where lagerposition.lager.id = :" + Lagerposition.PARAM_LAGER_ID)
 	
   })
 @XmlRootElement
@@ -77,15 +77,15 @@ public class Lagerposition implements Serializable {
 	private static final long serialVersionUID = 6937895919585767805L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "lagerposition_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "artikelverwaltung.lagerposition.id.min", groups = IdGroup.class)
 	@XmlAttribute
 	private Long id = KEINE_ID;
 	
 	@ManyToOne
-	@JoinColumn(name="lager_FID", nullable = false)
-	@OrderColumn(name="erstellt_am")
+	@JoinColumn(name = "lager_FID", nullable = false)
+	@OrderColumn(name = "erstellt_am")
 	@NotNull(message = "artikelverwaltung.lagerposition.lager.notNull")
 	@XmlTransient
 	private Lager lager;
@@ -109,12 +109,12 @@ public class Lagerposition implements Serializable {
 	@XmlElement
 	private int anzahl;
 
-	@Column(name="erstellt_am")
+	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
 	@XmlElement
 	private Date erstelltAm;
 
-	@Column(name="geaendert_am")
+	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
 	@XmlElement
 	private Date geaendertAm;
@@ -233,7 +233,8 @@ public class Lagerposition implements Serializable {
 		if (artikel == null) {
 			if (other.artikel != null)
 				return false;
-		} else if (!artikel.equals(other.artikel))
+		} 
+		else if (!artikel.equals(other.artikel))
 			return false;
 		return true;
 	}

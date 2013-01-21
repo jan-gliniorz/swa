@@ -56,7 +56,6 @@ public class ArtikelResource {
 	@Inject
 	private UriHelperArtikel uriHelperArtikel;
 	
-	
 	@PostConstruct
 	private void postConstruct() {
 		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
@@ -71,8 +70,9 @@ public class ArtikelResource {
 	@GET
 	@Wrapped(element = "artikel") 
 	public Collection<Artikel> findArtikelAll(@Context UriInfo uriInfo) {
-		Collection<Artikel> artikel = as.findArtikelAll(ArtikelService.FetchType.NUR_Artikel,ArtikelService.OrderType.ID);
-		for(Artikel a : artikel) {
+		Collection<Artikel> artikel = 
+		as.findArtikelAll(ArtikelService.FetchType.NUR_Artikel, ArtikelService.OrderType.ID);
+		for (Artikel a : artikel) {
 			uriHelperArtikel.updateUriArtikel(a, uriInfo);
 		}
 		
@@ -86,7 +86,10 @@ public class ArtikelResource {
 								   @Context HttpHeaders headers) {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-		final Artikel artikel = as.findArtikelByID(id, ArtikelService.FetchType.NUR_Artikel, locale); ///TODO: Fetchtype über die URL mitgeben????
+		final Artikel artikel = as.findArtikelByID(id, 
+												   ArtikelService.FetchType.NUR_Artikel, 
+												   locale); 
+		
 		if (artikel == null) {
 			final String msg = "Kein Artikel gefunden mit der ID " + id;
 			throw new NotFoundException(msg);
@@ -106,7 +109,7 @@ public class ArtikelResource {
 								  @Context HttpHeaders headers) {
 
 		// ein neuer Artikel kann noch nicht im Lager vorhanden sein
-		artikel.setLagerposition(null);
+		artikel.setLagerpositionen(null);
 		
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
@@ -124,15 +127,12 @@ public class ArtikelResource {
 	@Consumes({ APPLICATION_XML, TEXT_XML })
 	@Produces
 	public void updateArtikel(Artikel artikel, @Context HttpHeaders headers) {
-
-		// ein neuer Artikel kann noch nicht im Lager vorhanden sein
-		//artikel.setLagerposition(null); ///TODO: Was ist hier mit den URLs? Diese müssen ersetzt werden durch die collections?!
 		
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		
 		Artikel artikelOrig = as.findArtikelByID(artikel.getId(), ArtikelService.FetchType.NUR_Artikel, locale);
-		if(artikelOrig == null) {
+		if (artikelOrig == null) {
 			final String msg = "Kein Artikel gefunden mit der ID " + artikel.getId();
 			throw new NotFoundException(msg);
 		}
@@ -142,7 +142,7 @@ public class ArtikelResource {
 		LOGGER.log(FINEST, "Artikel nachher: %s", artikelOrig);
 		artikel = as.updateArtikel(artikelOrig, locale);
 
-		if(artikel == null) {
+		if (artikel == null) {
 			final String msg = "Kein Artikel gefunden mit der ID " + artikelOrig.getId();
 			throw new NotFoundException(msg);
 		}
@@ -156,7 +156,7 @@ public class ArtikelResource {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		final Artikel artikel = as.findArtikelByID(artikelId, ArtikelService.FetchType.NUR_Artikel, locale);
-		if(artikel == null) {
+		if (artikel == null) {
 			final String msg = "Kein Artikel gefunden mit der ID " + artikelId;
 			throw new NotFoundException(msg);
 		}

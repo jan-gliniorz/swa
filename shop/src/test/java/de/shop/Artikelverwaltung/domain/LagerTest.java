@@ -18,9 +18,9 @@ import de.shop.Util.AbstractDomainTest;
 
 @RunWith(Arquillian.class)
 public class LagerTest extends AbstractDomainTest {
-	private static final Long id_VORHANDEN = Long.valueOf(350);
-	private static final String bezeichnung_VORHANDEN = "L1";
-	private static final String bezeichnung_NichtVORHANDEN = "Bezfalse";
+	private static final Long ID_VORHANDEN = Long.valueOf(350);
+	private static final String BEZEICHNUNG_VORHANDEN = "L1";
+	private static final String BEZEICHNUNG_NICHTVORHANDEN = "Bezfalse";
 		
 	private static final String BEZEICHNUNG_CREATE = "L11";	
 	
@@ -32,7 +32,7 @@ public class LagerTest extends AbstractDomainTest {
 	@Test
 	public void findLagerByIdVorhanden() {
 		// Given
-		final Long id = id_VORHANDEN;
+		final Long id = ID_VORHANDEN;
 		
 		// When
 		//final AbstractKunde kunde = getEntityManager().find(AbstractKunde.class, id);
@@ -48,11 +48,11 @@ public class LagerTest extends AbstractDomainTest {
 	@Test
 	public void findLagerByBezeichnung() {
 		// Given
-		final String bezeichnung = bezeichnung_VORHANDEN;
+		final String bezeichnung = BEZEICHNUNG_VORHANDEN;
 		
 		// When
 		Lager lager = getEntityManager().createNamedQuery(Lager.FIND_LAGER_BY_BEZEICHNUNG, Lager.class)
-								.setParameter(Lager.PARAM_Bezeichnung, bezeichnung)
+								.setParameter(Lager.PARAM_BEZEICHNUNG, bezeichnung)
 								.getSingleResult();			
                                                                        
 		// Then
@@ -62,12 +62,12 @@ public class LagerTest extends AbstractDomainTest {
 	@Test
 	public void findLagerByBezeichnungNichtVorhanden() {
 		// Given
-		final String bezeichnung = bezeichnung_NichtVORHANDEN;
+		final String bezeichnung = BEZEICHNUNG_NICHTVORHANDEN;
 		
 		// When / Then
 		thrown.expect(NoResultException.class);
 		getEntityManager().createNamedQuery(Lager.FIND_LAGER_BY_BEZEICHNUNG, Lager.class)
-					.setParameter(Lager.PARAM_Bezeichnung, bezeichnung)
+					.setParameter(Lager.PARAM_BEZEICHNUNG, bezeichnung)
 					.getSingleResult();                                                 
 	}
 
@@ -100,13 +100,13 @@ public class LagerTest extends AbstractDomainTest {
 		final String bezeichnung = BEZEICHNUNG_CREATE;
 		
 		// Den abgespeicherten Kunden ueber eine Named Query ermitteln
-		List<Lager> lager_neu = getEntityManager().createNamedQuery(Lager.FIND_LAGER_BY_BEZEICHNUNG, Lager.class)
-									.setParameter(Lager.PARAM_Bezeichnung, bezeichnung )
+		List<Lager> lagerneu = getEntityManager().createNamedQuery(Lager.FIND_LAGER_BY_BEZEICHNUNG, Lager.class)
+									.setParameter(Lager.PARAM_BEZEICHNUNG, bezeichnung)
 									.getResultList();
 		
 		// Ueberpruefung des ausgelesenen Objekts
-		assertThat(lager_neu.size(), is(1));
-		lager = (Lager) lager_neu.get(0);
+		assertThat(lagerneu.size(), is(1));
+		lager = (Lager) lagerneu.get(0);
 		assertThat(lager.getId().longValue() > 0, is(true));
 		assertThat(lager.getBezeichnung(), is(BEZEICHNUNG_CREATE));
 	}

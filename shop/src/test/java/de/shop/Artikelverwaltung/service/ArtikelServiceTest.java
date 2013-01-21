@@ -22,11 +22,14 @@ import de.shop.Util.AbstractTest;
 
 @RunWith(Arquillian.class)
 public class ArtikelServiceTest extends AbstractTest {
+	private static final Long ARTIKEL_LISTE_GROESSE = Long.valueOf(5);
 	private static final Long ARTIKEL_ID_VORHANDEN = Long.valueOf(301);
-	private static final List<Long> ARTIKEL_IDS_VORHANDEN = new ArrayList<Long>() {{
-		add(Long.valueOf(301));
-		add(Long.valueOf(302));
-		}};
+	private static final Long ARTIKEL_ID_LISTE1 = Long.valueOf(301);
+	private static final Long ARTIKEL_ID_LISTE2 = Long.valueOf(302);
+	private static final List<Long> ARTIKEL_IDS_VORHANDEN = new ArrayList<Long>() { {
+		add(ARTIKEL_ID_LISTE1);
+		add(ARTIKEL_ID_LISTE2);
+		} };
 	private static final Long ARTIKEL_ID_UPDATE = Long.valueOf(300);
 	private static final Long ARTIKEL_ID_DELETE = Long.valueOf(312);
 	private static final String ARTIKEL_BEZEICHNUNG_NEU = "Hose";
@@ -34,15 +37,16 @@ public class ArtikelServiceTest extends AbstractTest {
 	private static final BigDecimal ARTIKEL_PREIS_NEU = BigDecimal.valueOf(39.0);
 	
 	@Inject
-	ArtikelService as;
+	private ArtikelService as;
 		
 	@Test
 	public void findAlleArtikel() {
+		
 		//When
 		List<Artikel> artikel = as.findArtikelAll(FetchType.NUR_Artikel, OrderType.ID);
 		
 		//Then
-		assertThat(artikel.size()>5, is(true));
+		assertThat(artikel.size() > ARTIKEL_LISTE_GROESSE, is(true));
 	}
 	
 	@Test
@@ -90,7 +94,7 @@ public class ArtikelServiceTest extends AbstractTest {
 		as.createArtikel(neuerArtikel, LOCALE);
 		List<Artikel> artikelneu = as.findArtikelAll(FetchType.NUR_Artikel, OrderType.ID);
 		
-		assertThat(artikelneu.size(), is(artikelalt.size()+1));
+		assertThat(artikelneu.size(), is(artikelalt.size() + 1));
 	}
 	
 	@Test

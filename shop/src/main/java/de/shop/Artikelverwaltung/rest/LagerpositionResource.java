@@ -103,7 +103,7 @@ public class LagerpositionResource {
 		
 		return lagerposition;
 	}
-	///TODO: zwei Methoden mit QueryParam???
+
 	@GET
 	@QueryParam("{artikelid:[1-9][0-9]*}")
 	public List<Lagerposition> findLagerpositionenByArtikelId(@QueryParam("artikelid") Long artikelId, 
@@ -130,11 +130,11 @@ public class LagerpositionResource {
 	@Produces
 	public void updateLagerposition(Lagerposition lagerposition, 
 										@Context UriInfo uriInfo, 
-										@Context HttpHeaders headers) {
-		///TODO: Was ist hier mit den URLs? Diese müssen ersetzt werden durch die collections?!
-		//lagerposition.setLagerposition(null); 
+										@Context HttpHeaders headers) { 
 	
 		final Locale locale = RestLocaleHelper.getLocalFromHttpHeaders(headers);
+		
+		uriLagerpos.updateReferenceLagerposition(lagerposition, headers);
 		
 		Lagerposition lagerposOrig = ls.findLagerpositionById(lagerposition.getId(), locale);
 		if (lagerposOrig == null) {
@@ -162,6 +162,8 @@ public class LagerpositionResource {
 		// ein neuer Artikel kann noch nicht im Lager vorhanden sein
 		final Locale locale = RestLocaleHelper.getLocalFromHttpHeaders(headers);
 		
+		uriLagerpos.updateReferenceLagerposition(lagerposition, headers);
+		
 		lagerposition = ls.createLagerposition(lagerposition, locale);
 
 		final URI lagerpositionUri = uriLagerpos.getUriLagerposition(lagerposition, uriInfo);
@@ -178,7 +180,7 @@ public class LagerpositionResource {
 									@Context HttpHeaders headers) {
 		final Locale locale = RestLocaleHelper.getLocalFromHttpHeaders(headers);
 		final Lagerposition lagerposition = ls.findLagerpositionById(lagerpositionId, locale);
-		if(lagerposition == null) {
+		if (lagerposition == null) {
 			final String msg = "Keine Lagerposition gefunden mit der ID " + lagerpositionId;
 			throw new NotFoundException(msg);
 		}

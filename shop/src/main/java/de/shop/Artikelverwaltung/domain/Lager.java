@@ -41,19 +41,19 @@ import de.shop.Util.IdGroup;
  */
 @Entity
 @Table(name = "Lager")
-   @NamedQueries({
-	@NamedQuery(name = Lager.FIND_LAGER_BY_ID, 
-			query = "SELECT a" +
-					" FROM Lager a"
-					+ " WHERE a.id = :" + Lager.PARAM_ID),
-	@NamedQuery(name = Lager.FIND_LAGER_BY_BEZEICHNUNG, 
-				query = "SELECT a" +
-						" FROM Lager a"
-						+ " WHERE a.bezeichnung = :" + Lager.PARAM_Bezeichnung),
-	@NamedQuery(name = Lager.FIND_LAGER_All,
-				query = "SELECT la FROM Lager la"),
-	@NamedQuery( name = Lager.FIND_LAGER_ALL_LAGERPOSITIONEN,
-		    	query = "SELECT a FROM Lager a JOIN a.lagerpositionen"),
+   	@NamedQueries({
+   		@NamedQuery(name = Lager.FIND_LAGER_BY_ID, 
+   					query = "SELECT a "
+   					+ "FROM Lager a "
+					+ "WHERE a.id = :" + Lager.PARAM_ID),
+		@NamedQuery(name = Lager.FIND_LAGER_BY_BEZEICHNUNG, 
+					query = "SELECT a " 
+					+ "FROM Lager a "
+					+ "WHERE a.bezeichnung = :" + Lager.PARAM_BEZEICHNUNG),
+		@NamedQuery(name = Lager.FIND_LAGER_ALL,
+					query = "SELECT la FROM Lager la"),
+		@NamedQuery(name = Lager.FIND_LAGER_ALL_LAGERPOSITIONEN,
+		    		query = "SELECT a FROM Lager a JOIN a.lagerpositionen"),
    })
 
 @XmlRootElement
@@ -63,19 +63,19 @@ public class Lager implements Serializable {
 	
 	public static final String FIND_LAGER_ALL_LAGERPOSITIONEN =
 		PREFIX + "findLagerAllLagerpositionen";
-	public static final String FIND_LAGER_All =
+	public static final String FIND_LAGER_ALL =
 		PREFIX + "findLagerAll";
 	public static final String FIND_LAGER_BY_BEZEICHNUNG =
 		PREFIX + "findLagerByBezeichnung";
 	public static final String FIND_LAGER_BY_ID =
 		PREFIX + "findLagerByArtikelid";
 	public static final String PARAM_ID = "id";
-	public static final String PARAM_Bezeichnung = "bezeichnung";
+	public static final String PARAM_BEZEICHNUNG = "bezeichnung";
 
 	private static final long serialVersionUID = -2184864191060846895L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "lager_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "artikelverwaltung.lager.id.min", groups = IdGroup.class)
 	@XmlAttribute
@@ -93,12 +93,12 @@ public class Lager implements Serializable {
 	@XmlElement
 	private String bezeichnung;
 
-	@Column(name="erstellt_am")
+	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
 	@XmlElement
 	private Date erstelltAm;
 
-	@Column(name="geaendert_am")
+	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
 	@XmlElement
 	private Date geaendertAm;
@@ -142,8 +142,8 @@ public class Lager implements Serializable {
 		return Collections.unmodifiableList(lagerpositionen);
 	}
 	
-	public void setLagerposition(List<Lagerposition> lagerpositionen) {
-		if(this.lagerpositionen == null){
+	public void setLagerpositionen(List<Lagerposition> lagerpositionen) {
+		if (this.lagerpositionen == null) {
 			this.lagerpositionen = lagerpositionen;
 			return;
 		}
@@ -155,7 +155,7 @@ public class Lager implements Serializable {
 	}
 	
 	public Lager addLagerpositionen(Lagerposition lagerposition) {
-		if(lagerpositionen == null){
+		if (lagerpositionen == null) {
 			lagerpositionen = new ArrayList<>();
 		}
 		lagerpositionen.add(lagerposition);
@@ -220,17 +220,20 @@ public class Lager implements Serializable {
 		if (bezeichnung == null) {
 			if (other.bezeichnung != null)
 				return false;
-		} else if (!bezeichnung.equals(other.bezeichnung))
+		} 
+		else if (!bezeichnung.equals(other.bezeichnung))
 			return false;
 		if (erstelltAm == null) {
 			if (other.erstelltAm != null)
 				return false;
-		} else if (!erstelltAm.equals(other.erstelltAm))
+		} 
+		else if (!erstelltAm.equals(other.erstelltAm))
 			return false;
 		if (geaendertAm == null) {
 			if (other.geaendertAm != null)
 				return false;
-		} else if (!geaendertAm.equals(other.geaendertAm))
+		} 
+		else if (!geaendertAm.equals(other.geaendertAm))
 			return false;
 		if (id != other.id)
 			return false;
