@@ -117,7 +117,7 @@ public class AuftragResource {
 		}
 
 		// URLs innerhalb der gefundenen Bestellung anpassen
-		for(Auftrag auftrag : auftraege) {
+		for (Auftrag auftrag : auftraege) {
 			uriHelperAuftrag.updateUriAuftrag(auftrag, uriInfo);
 		}
 		
