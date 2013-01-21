@@ -15,7 +15,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -25,7 +24,7 @@ import de.shop.Util.AbstractDomainTest;
 @RunWith(Arquillian.class)
 public class LagerpositionTest extends AbstractDomainTest {
 	private static final Long ID_VORHANDEN = Long.valueOf(400);	
-	private static final int LAGER_VORHANDEN_ID = 350;
+	private static final Long LAGER_VORHANDEN_ID = Long.valueOf(354);
 	private static final Long ARTIKEL_VORHANDEN_ID = Long.valueOf(300);
 	
 	@Test
@@ -48,7 +47,6 @@ public class LagerpositionTest extends AbstractDomainTest {
 		assertThat(lagerposition.getId(), is(id));
 	}
 	
-	@Ignore
 	@Test
 	public void createLagerpositionOhneAnzahl() throws HeuristicMixedException, HeuristicRollbackException,
 	                                                  SystemException {

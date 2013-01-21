@@ -75,7 +75,7 @@ public class ArtikelTest extends AbstractDomainTest {
 					.getSingleResult();                                                  
 	}
 
-	@Ignore
+	
 	@Test
 	public void createArtikel() {
 		// Given
