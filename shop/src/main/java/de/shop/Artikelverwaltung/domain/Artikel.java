@@ -230,6 +230,7 @@ public class Artikel implements Serializable {
 		bezeichnung = a.bezeichnung;
 		beschreibung = a.beschreibung;
 		bild = a.bild;
+		preis = a.preis;
 		lagerpositionen = a.lagerpositionen;
 	}
 	
