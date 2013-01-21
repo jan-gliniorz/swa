@@ -157,7 +157,9 @@ public class LieferungResource {
 			throw new NotFoundException(sb.toString());
 		}
 
-		Collection<Artikel> gefundeneArtikel = as.findArtikelByIDs(artikelIds, ArtikelService.FetchType.NUR_Artikel, locale);
+		Collection<Artikel> gefundeneArtikel = as.findArtikelByIDs(artikelIds, 
+																   ArtikelService.FetchType.NUR_Artikel, 
+																   locale);
 		if (gefundeneArtikel.isEmpty()) {
 			throw new NotFoundException("Keine Artikel vorhanden mit den IDs: " + artikelIds);
 		}

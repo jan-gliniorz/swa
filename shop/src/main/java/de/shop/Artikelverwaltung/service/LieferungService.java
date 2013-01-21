@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -24,9 +23,6 @@ import javax.validation.Validator;
 
 import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Artikelverwaltung.domain.Lieferungsposition;
-import de.shop.Auftragsverwaltung.domain.Auftrag;
-import de.shop.Auftragsverwaltung.domain.Auftragsposition;
-import de.shop.Auftragsverwaltung.service.NeuerAuftrag;
 import de.shop.Util.IdGroup;
 import de.shop.Util.Log;
 import de.shop.Util.ValidationService;

@@ -43,7 +43,7 @@ public class UriHelperLieferungsposition {
 		try {
 			artikelId = Long.valueOf(artikelIdStr);
 		}
-		catch(NumberFormatException e) {
+		catch (NumberFormatException e) {
 			throw new NotFoundException("Kein Artikel gefunden mit der ID " + artikelIdStr);
 		}
 		
