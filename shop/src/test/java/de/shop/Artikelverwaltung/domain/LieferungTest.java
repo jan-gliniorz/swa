@@ -27,17 +27,20 @@ public class LieferungTest extends AbstractDomainTest {
 	private static final int TAG_BEST_VORH = 26;
 	private static final int MONAT_BEST_VORH = Calendar.SEPTEMBER;
 	private static final int JAHR_BEST_VORH = 2011;
-	private static final Date BESTELLDATUM_VORHANDEN = new GregorianCalendar(
-							  JAHR_BEST_VORH, MONAT_BEST_VORH, TAG_BEST_VORH).getTime();
+	private static final Date BESTELLDATUM_VORHANDEN = new GregorianCalendar(JAHR_BEST_VORH, 
+																			 MONAT_BEST_VORH, 
+																			 TAG_BEST_VORH).getTime();
 	
 	private static final int TAG_NEU = 31;
 	private static final int MONAT_NEU = Calendar.NOVEMBER;
 	private static final int JAHR_NEU = 2012;
-	private static final Date LIEFERUNGSDATUM_NEU = new GregorianCalendar(
-							  JAHR_NEU, MONAT_NEU, TAG_NEU).getTime();
+	private static final Date LIEFERUNGSDATUM_NEU = new GregorianCalendar(JAHR_NEU, 
+																		  MONAT_NEU, 
+																		  TAG_NEU).getTime();
 
-	private static final Date BESTELLDATUM_NEU = new GregorianCalendar(
-							  JAHR_NEU, MONAT_NEU, TAG_NEU).getTime();
+	private static final Date BESTELLDATUM_NEU = new GregorianCalendar(JAHR_NEU, 
+																	   MONAT_NEU, 
+																	   TAG_NEU).getTime();
 	
 	private static final int POS1ANZ_NEU = 3;
 	private static final Long POS1ARTIKELID_NEU = Long.valueOf(303);
@@ -107,7 +110,7 @@ public class LieferungTest extends AbstractDomainTest {
 		final Date bestelldatum = BESTELLDATUM_NEU;
 		final Date lieferungsdatum = LIEFERUNGSDATUM_NEU;
 
-		Artikel artikel = getEntityManager().createNamedQuery(Artikel.FIND_Artikel_BY_Artikel_ID, Artikel.class)
+		Artikel artikel = getEntityManager().createNamedQuery(Artikel.FIND_ARTIKEL_BY_ARTIKEL_ID, Artikel.class)
 											.setParameter(Artikel.PARAM_ID, position1ArtikelId)
 											.getSingleResult();
 		

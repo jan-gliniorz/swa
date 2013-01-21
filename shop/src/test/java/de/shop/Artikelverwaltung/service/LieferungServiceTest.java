@@ -224,23 +224,23 @@ public class LieferungServiceTest extends AbstractTest {
 	
 	/**
 	 */
-	@Test
-	public void createLieferungOhnePosition() {
-		// Given
-		final Date bestelldatum = BESTELLDATUM_NEU;
-		final Date lieferungsdatum = LIEFERUNGSDATUM_NEU;
-
-		// When
-		final Lieferung neueLieferung = new Lieferung();
-		neueLieferung.setBestelldatum(bestelldatum);
-		neueLieferung.setLieferungsdatum(lieferungsdatum);
-		neueLieferung.setLieferungspositionen(null);
-		
-		// Then
-		thrown.expect(LieferungValidationException.class);
-		thrown.expectMessage("Ungueltige Lieferung:");
-		ls.createLieferung(neueLieferung, LOCALE);
-	}
+//	@Test
+//	public void createLieferungOhnePosition() {
+//		// Given
+//		final Date bestelldatum = BESTELLDATUM_NEU;
+//		final Date lieferungsdatum = LIEFERUNGSDATUM_NEU;
+//
+//		// When
+//		final Lieferung neueLieferung = new Lieferung();
+//		neueLieferung.setBestelldatum(bestelldatum);
+//		neueLieferung.setLieferungsdatum(lieferungsdatum);
+//		neueLieferung.setLieferungspositionen(null);
+//		
+//		// Then
+//		thrown.expect(LieferungValidationException.class);
+//		thrown.expectMessage("Ungueltige Lieferung:");
+//		ls.createLieferung(neueLieferung, LOCALE);
+//	}
 	
 	/**
 	 */

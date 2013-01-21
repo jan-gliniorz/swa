@@ -8,7 +8,6 @@ import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -28,13 +27,13 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -83,14 +82,11 @@ public class Lieferung implements Serializable {
 	@OneToMany (fetch = EAGER, cascade = PERSIST)
 	@JoinColumn(name = "lieferung_FID", nullable = false)
 	@NotEmpty(message = "{artikelverwaltung.lieferung.lieferungspositionen.notEmpty}")
-	@XmlTransient
+	@Valid
+	@XmlElementWrapper(name = "lieferungspositionen", required = true)
+	@XmlElement(name = "lieferungsposition", required = true)
 	private List<Lieferungsposition> lieferungspositionen;
 
-	
-	@Transient
-	@XmlElement(name = "lieferungen", required = true)
-	private URI lieferungspositionUri;
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "lieferung_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
@@ -145,14 +141,6 @@ public class Lieferung implements Serializable {
 		
 		lieferungspositionen.add(lieferungsposition);
 		return this;
-	}
-	
-	public URI getLieferungspositionUri() {
-		return lieferungspositionUri;
-	}
-
-	public void setLieferungspositionUri(URI lieferungspositionUri) {
-		this.lieferungspositionUri = lieferungspositionUri;
 	}
 	
 	public Long getId() {

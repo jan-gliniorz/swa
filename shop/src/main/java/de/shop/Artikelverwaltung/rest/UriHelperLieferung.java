@@ -1,6 +1,7 @@
 package de.shop.Artikelverwaltung.rest;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -8,6 +9,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import de.shop.Artikelverwaltung.domain.Lieferung;
+import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Util.Log;
 
 
@@ -19,13 +21,10 @@ public class UriHelperLieferung {
 	private UriHelperLieferungsposition uriHelperLieferungsposition;
 	
 	public void updateUriLieferung(Lieferung lieferung, UriInfo uriInfo) {
-//
-//		final List<Lieferungsposition> lieferungspositionen = lieferung.getLieferungsposition();
-//		
-//		if (lieferungspositionen != null && !lieferungspositionen.isEmpty()) {
-
-			lieferung.setLieferungspositionUri(
-					  uriHelperLieferungsposition.getUriLieferungspositionenByLieferungId(lieferung, uriInfo));			
+		List<Lieferungsposition> lieferungspositionen = lieferung.getLieferungspositionen();
+		for (Lieferungsposition lp: lieferungspositionen) {
+			uriHelperLieferungsposition.updateUriLieferungsposition(lp, uriInfo);
+		}
 	}
 	
 	public URI getUriLieferung(Lieferung lieferung, UriInfo uriInfo) {

@@ -112,15 +112,26 @@ public class LieferungResource {
 	@Produces
 	public Response createLieferung(Lieferung lieferung, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		
+		final List<Locale> locales = headers.getAcceptableLanguages();
+		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
+		
 		Collection<Lieferungsposition> lieferungspositionen = lieferung.getLieferungspositionen();
+		
+		LOGGER.log(FINER, "Lieferungspositionen: " + lieferungspositionen);
 		
 		List<Long> artikelIds = new ArrayList<>(lieferungspositionen.size());
 		
 		for (Lieferungsposition lp : lieferungspositionen) {
+
 			final String artikelUriStr = lp.getArtikelUri().toString();
+			
+			LOGGER.log(FINER, "ArtikelUri: " + artikelUriStr);
+			
 			int startPos = artikelUriStr.lastIndexOf('/') + 1;
 			final String artikelIdStr = artikelUriStr.substring(startPos);
+			
 			Long artikelId = null;
+			
 			try {
 				artikelId = Long.valueOf(artikelIdStr);
 			}
@@ -128,6 +139,9 @@ public class LieferungResource {
 				// Ungueltige Artikel-ID: wird nicht beruecksichtigt
 				continue;
 			}
+			
+			LOGGER.log(FINER, "Artikel: " + artikelId);
+			
 			artikelIds.add(artikelId);
 		}
 		
@@ -143,7 +157,7 @@ public class LieferungResource {
 			throw new NotFoundException(sb.toString());
 		}
 
-		Collection<Artikel> gefundeneArtikel = as.findArtikelByIDs(artikelIds, null, null);
+		Collection<Artikel> gefundeneArtikel = as.findArtikelByIDs(artikelIds, ArtikelService.FetchType.NUR_Artikel, locale);
 		if (gefundeneArtikel.isEmpty()) {
 			throw new NotFoundException("Keine Artikel vorhanden mit den IDs: " + artikelIds);
 		}
@@ -166,11 +180,7 @@ public class LieferungResource {
 			}
 		}
 		lieferung.setLieferungspositionen(neueLieferungspositionen);
-		
-		
-		final List<Locale> locales = headers.getAcceptableLanguages();
-		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-		
+
 		lieferung = ls.createLieferung(lieferung, locale);
 
 		final URI lieferungUri = uriHelperLieferung.getUriLieferung(lieferung, uriInfo);
@@ -191,10 +201,10 @@ public class LieferungResource {
 		Lieferung vorhLieferung = ls.findLieferungById(lieferung.getId(), 
 								  LieferungService.FetchType.NUR_LIEFERUNG, locale);
 		
-//		if (vorhLieferung == null) {
-//			final String msg = "Keine Lieferung gefunden mit der ID " + lieferung.getId();
-//			throw new NotFoundException(msg);
-//		}
+		if (vorhLieferung == null) {
+			final String msg = "Keine Lieferung gefunden mit der ID " + lieferung.getId();
+			throw new NotFoundException(msg);
+		}
 		LOGGER.log(FINEST, "Kunde vorher: %s", vorhLieferung);
 			
 		// Daten der vorhandenen Lieferung überschreiben
