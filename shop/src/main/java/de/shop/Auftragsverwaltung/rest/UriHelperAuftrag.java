@@ -66,8 +66,8 @@ public class UriHelperAuftrag {
 	public URI getUriAuftragByKunde(Kunde kunde, UriInfo uriInfo) {
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()
 		                             .path(AuftragResource.class)
-		                             .queryParam("kundenr", kunde.getKundenNr());
-		final URI uri = ub.build();
+		                             .path(AuftragResource.class, "findAuftragByKundeNr");
+		final URI uri = ub.build(kunde.getKundenNr());
 		return uri;
 	}
 }

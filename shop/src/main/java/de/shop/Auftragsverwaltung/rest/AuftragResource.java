@@ -23,7 +23,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
@@ -80,6 +79,7 @@ public class AuftragResource {
 	@GET
 	@Wrapped(element = "auftraege") 
 	public Collection<Auftrag>findAuftraegeAll(@Context UriInfo uriInfo) {
+		LOGGER.fine("findAll");
 		Collection<Auftrag> auftraege = auftragService.findAuftragAll();
 		for (Auftrag a : auftraege) {
 			uriHelperAuftrag.updateUriAuftrag(a, uriInfo);
@@ -96,6 +96,7 @@ public class AuftragResource {
 	@GET
 	@Path("{id:[1-9][0-9]*}")
 	public Auftrag findAuftragById(@PathParam("id") Long id, @Context UriInfo uriInfo) {
+		LOGGER.fine("findById");
 		final Auftrag auftrag = auftragService.findAuftragById(id);
 		if (auftrag == null) {
 			final String msg = "Kein Auftrag gefunden mit der ID " + id;
@@ -108,8 +109,9 @@ public class AuftragResource {
 	}
 	
 	@GET
-	@QueryParam("{kundenr:[1-9][0-9]*}")
-	public List<Auftrag> findAuftragByKundeNr(@QueryParam("kundenr") Long id, @Context UriInfo uriInfo) {
+	@Path("byKunde/{kundenr:[1-9][0-9]*}")
+	public List<Auftrag> findAuftragByKundeNr(@PathParam("kundenr") Long id, @Context UriInfo uriInfo) {
+		LOGGER.fine("findKdnr");
 		final List<Auftrag> auftraege = auftragService.findAuftragByKundeId(id);
 		if (auftraege == null) {
 			final String msg = "Keine Auftraege gefunden zu Kunde mit der ID " + id;
