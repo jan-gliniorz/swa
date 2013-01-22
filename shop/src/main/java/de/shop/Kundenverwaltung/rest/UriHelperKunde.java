@@ -17,7 +17,7 @@ import de.shop.Util.Log;
 public class UriHelperKunde {
 	
 	@Inject
-	UriHelperAuftrag uriauftrag;
+	private UriHelperAuftrag uriauftrag;
 	
 	public URI getUriKunde(Kunde kunde, UriInfo uriInfo) {
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()

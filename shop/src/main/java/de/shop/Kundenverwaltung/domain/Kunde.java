@@ -340,7 +340,7 @@ public class Kunde implements Serializable {
 		}
 		else if (!geaendertAm.equals(other.geaendertAm))
 			return false;
-		if (kundenNr != other.kundenNr)
+		if (kundenNr.equals(other.kundenNr))
 			return false;
 		if (nachname == null) {
 			if (other.nachname != null)
