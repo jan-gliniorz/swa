@@ -235,7 +235,7 @@ public class Lager implements Serializable {
 		} 
 		else if (!geaendertAm.equals(other.geaendertAm))
 			return false;
-		if (id != other.id)
+		if (id.equals(other.id))
 			return false;
 		return true;
 	}
