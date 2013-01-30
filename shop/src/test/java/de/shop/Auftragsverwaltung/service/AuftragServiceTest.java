@@ -50,11 +50,10 @@ public class AuftragServiceTest extends AbstractTest {
 	@Inject
 	private ArtikelService artikelService;
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void createAuftrag() throws NotSupportedException, 
 										SystemException, 
-										SecurityException, 
-										IllegalStateException, 
 										RollbackException, 
 										HeuristicMixedException, 
 										HeuristicRollbackException {
