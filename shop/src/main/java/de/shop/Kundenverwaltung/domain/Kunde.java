@@ -2,7 +2,6 @@ package de.shop.Kundenverwaltung.domain;
 
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
-import static java.util.logging.Level.FINER;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,15 +28,14 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
+import org.jboss.logging.Logger;
 
 import de.shop.Auftragsverwaltung.domain.Auftrag;
 
@@ -70,7 +67,6 @@ import de.shop.Auftragsverwaltung.domain.Auftrag;
 					+ " LEFT JOIN FETCH k.auftraege"
 					+ " WHERE k.kundenNr = :" + Kunde.PARAM_KUNDENNUMMER)
 })
-@XmlRootElement
 public class Kunde implements Serializable {
 	
 	private static final long serialVersionUID = 3925016425151715847L;
@@ -93,7 +89,6 @@ public class Kunde implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
-	@XmlAttribute
 	private Long kundenNr = KEINE_ID;
 	
 	@Email
@@ -102,22 +97,23 @@ public class Kunde implements Serializable {
 
 	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date erstelltAm;
 
 	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date geaendertAm;
 
 	@NotNull(message = "{kundenverwaltung.kunde.nachname.notNull}")
-	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+", message = "{kundenverwaltung.kunde.nachname.pattern}")
+	@Pattern(regexp = "[A-Zï¿½ï¿½ï¿½][a-zï¿½ï¿½ï¿½ï¿½]+", message = "{kundenverwaltung.kunde.nachname.pattern}")
 	private String nachname;
 
 	@NotNull(message = "{kundenverwaltung.kunde.passwort.notNull}")
 	private String passwort;
 	
 	@Transient
+	@JsonIgnore
 	private String passwortWdh;
 	
 	@AssertTrue(groups = PasswordGroup.class, message = "{kundenverwaltung.kunde.passwort.notEqual}")
@@ -132,8 +128,8 @@ public class Kunde implements Serializable {
 	
 	//EAGER-Fetching
 	@OneToOne(mappedBy = "kunde", cascade = PERSIST)
+	@Valid
 	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
-	@XmlElement(required = true)
 	private Adresse adresse;
 	
 	@PrePersist
@@ -144,7 +140,7 @@ public class Kunde implements Serializable {
 	
 	@PostPersist
 	protected void postPersist() {
-		LOGGER.log(FINER, "Neuer Kunde mit Kundenummer={0}", kundenNr);
+		LOGGER.debugf("Neuer Kunde mit Kundenummer=%d", kundenNr);
 	}
 	
 	@PreUpdate
@@ -159,11 +155,10 @@ public class Kunde implements Serializable {
 
 	//LAZY-Fetching
 	@OneToMany(mappedBy = "kunde")
-	@XmlTransient
+	@JsonIgnore
 	private List<Auftrag> auftraege;
 	
 	@Transient
-	@XmlElement(name = "auftraege")
 	private URI auftraegeUri;
 	
 	public List<Auftrag> getAuftraege() {

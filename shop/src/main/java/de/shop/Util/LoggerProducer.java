@@ -1,4 +1,4 @@
-package de.shop.util;
+package de.shop.Util;
 
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;

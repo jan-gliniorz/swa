@@ -2,14 +2,11 @@ package de.shop.Kundenverwaltung.domain;
 
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
-import static java.util.logging.Level.FINER;
 import static javax.persistence.TemporalType.TIMESTAMP;
-import static javax.xml.bind.annotation.XmlAccessType.FIELD;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.Date;
-import java.util.logging.Logger;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,10 +23,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.jboss.logging.Logger;
 
 /**
  * The persistent class for the adresse database table.
@@ -37,8 +33,6 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "adresse")
-@XmlAccessorType(FIELD)
-
 @NamedQueries({
 @NamedQuery(name = Adresse.ADRESSE_BY_ID,
 			query = "FROM Adresse a WHERE a.id = :" + Adresse.PARAM_ID)
@@ -55,7 +49,6 @@ public class Adresse implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "adresse_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
-	@XmlAttribute
 	private Long id = KEINE_ID;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.hausNr.notNull}")
@@ -64,34 +57,30 @@ public class Adresse implements Serializable {
 	//EAGER-Fetching
 	@OneToOne
 	@JoinColumn(name = "kunde_FID", nullable = false, updatable = false)
-	@XmlTransient
+	@JsonIgnore
 	private Kunde kunde;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.land.notNull}")
-	@XmlElement(required = true)
 	private String land;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.ort.notNull}")
-	@XmlElement(required = true)
 	private String ort;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.plz.notNull}")
 	@Digits(integer = 5, fraction = 0, message = "{kundenverwaltung.adresse.plz.digits}")
-	@XmlElement(required = true)
 	private String plz;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.strasse.notNull}")
-	@XmlElement(required = true)
 	private String strasse;
 	
 	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date erstelltAm;
 
 	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
-	@XmlTransient
+	@JsonIgnore
 	private Date geaendertAm;
 	
 	@PrePersist
@@ -102,7 +91,7 @@ public class Adresse implements Serializable {
 	
 	@PostPersist
 	private void postPersist() {
-		LOGGER.log(FINER, "Neue Adresse mit ID={0}", id);
+		LOGGER.debugf("Neue Adresse mit ID=%d", id);
 	}
 	
 	@PreUpdate
