@@ -41,12 +41,14 @@ import de.shop.Kundenverwaltung.service.KundeService;
 import de.shop.Kundenverwaltung.service.KundeService.FetchType;
 import de.shop.Util.Log;
 import de.shop.Util.NotFoundException;
+import de.shop.Util.Transactional;
 
 
 @Path("/auftraege")
 @Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
 @Consumes
 @RequestScoped
+@Transactional
 @Log
 public class AuftragResource {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());

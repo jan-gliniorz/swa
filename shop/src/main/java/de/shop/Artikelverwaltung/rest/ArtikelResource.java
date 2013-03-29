@@ -37,12 +37,14 @@ import de.shop.Artikelverwaltung.service.ArtikelService;
 import de.shop.Artikelverwaltung.service.LagerService;
 import de.shop.Util.Log;
 import de.shop.Util.NotFoundException;
+import de.shop.Util.Transactional;
 
 
 @Path("/artikel")
 @Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
 @Consumes
 @RequestScoped
+@Transactional
 @Log
 public class ArtikelResource {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());

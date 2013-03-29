@@ -42,11 +42,13 @@ import de.shop.Kundenverwaltung.service.KundeService;
 import de.shop.Kundenverwaltung.service.KundeService.FetchType;
 import de.shop.Util.Log;
 import de.shop.Util.NotFoundException;
+import de.shop.Util.Transactional;
 
 @Path("/kunden")
 @Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
 @Consumes
 @RequestScoped
+@Transactional
 @Log
 public class KundeResource {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
@@ -155,7 +157,7 @@ public class KundeResource {
 			throw new NotFoundException(msg);
 		}
 		
-		// URLs innerhalb der gefundenen Aufträge anpassen
+		// URLs innerhalb der gefundenen Auftrï¿½ge anpassen
 		for (Auftrag auftrag : auftraege) {
 			uriHelperAuftrag.updateUriAuftrag(auftrag, uriInfo);
 		}
