@@ -1,36 +1,33 @@
-USE ${dbname.mysql};
-SHOW WARNINGS;
+DROP SEQUENCE hibernate_sequence;
+CREATE Sequence hibernate_sequence
+    START WITH 1000 INCREMENT BY 1 NOMAXVALUE NOCYCLE NOCACHE;
 
-DROP TABLE IF EXISTS hibernate_sequence;
-CREATE TABLE hibernate_sequence(
-	next_val BIGINT NOT NULL PRIMARY KEY
-);
-
-CREATE TABLE if not exists kunde (
+DROP TABLE kunde;
+CREATE TABLE kunde (
 	kundenNr INTEGER NOT NULL PRIMARY KEY, 
-	nachname NVARCHAR(30) NOT NULL, 
-	vorname NVARCHAR(30) NOT NULL, 
-	email NVARCHAR(128) NOT NULL UNIQUE,
-	passwort NVARCHAR(256) NOT NULL,
+	nachname VARCHAR2(30) NOT NULL, 
+	vorname VARCHAR2(30) NOT NULL, 
+	email VARCHAR2(128) NOT NULL UNIQUE,
+	passwort VARCHAR2(256) NOT NULL,
 	erstellt_am TIMESTAMP NOT NULL,
 	geaendert_am TIMESTAMP NOT NULL
 );
 
-create unique index kunde_email ON kunde(email);
-
-create table if not exists adresse (
+DROP TABLE adresse;
+CREATE table adresse (
 	adresse_ID INTEGER NOT NULL PRIMARY KEY, 
-	strasse NVARCHAR(30) NOT NULL, 
-	hausNr NVARCHAR(10) NOT NULL, 
+	strasse VARCHAR2(30) NOT NULL, 
+	hausNr VARCHAR(10) NOT NULL, 
 	plz CHAR(5) NOT NULL,
-	ort NVARCHAR(30) NOT NULL,
-	land NVARCHAR(50) NOT NULL,
+	ort VARCHAR2(30) NOT NULL,
+	land VARCHAR2(50) NOT NULL,
 	kunde_FID INTEGER NOT NULL,
 	erstellt_am TIMESTAMP NOT NULL,
 	geaendert_am TIMESTAMP NOT NULL
 );
 
-create table if not exists rechnung (
+DROP TABLE rechnung;
+CREATE TABLE rechnung (
 	rechnung_ID INTEGER NOT NULL PRIMARY KEY, 
 	auftrag_FID INTEGER NOT NULL,
 	rechnungsdatum DATE NOT NULL,
@@ -38,14 +35,16 @@ create table if not exists rechnung (
 	geaendert_am TIMESTAMP NOT NULL
 );
 
-create table if not exists auftrag (
+DROP TABLE auftrag;
+CREATE TABLE auftrag (
 	auftrag_ID INTEGER NOT NULL PRIMARY KEY, 
 	kunde_FID INTEGER NOT NULL,
 	erstellt_am TIMESTAMP NOT NULL,
 	geaendert_am TIMESTAMP NOT NULL
 );
 
-create table if not exists auftragsposition (
+DROP TABLE auftragsposition;
+CREATE TABLE auftragsposition (
 	auftragsposition_ID INTEGER NOT NULL PRIMARY KEY,
 	auftrag_FID INTEGER NOT NULL,
 	idx INTEGER NOT NULL,
@@ -54,24 +53,27 @@ create table if not exists auftragsposition (
 	preis Decimal NOT NULL
 );
 
-create table if not exists artikel (
+DROP TABLE artikel;
+CREATE TABLE artikel (
 	artikel_ID INTEGER NOT NULL PRIMARY KEY,
-	bezeichnung NVARCHAR(100) NOT NULL,
-	beschreibung TEXT NULL,
-	preis Decimal NOT NULL,
-	bild NVARCHAR(64) NULL,
+	bezeichnung VARCHAR2(100) NOT NULL,
+	beschreibung VARCHAR2(4000) NULL,
+	preis NUMBER(8,2) NOT NULL,
+	bild VARCHAR2(64) NULL,
 	erstellt_am TIMESTAMP NOT NULL,
 	geaendert_am TIMESTAMP NOT NULL
 );
 
-create table if not exists lager (
+DROP TABLE lager;
+CREATE TABLE lager (
 	lager_ID INTEGER NOT NULL PRIMARY KEY,
-	bezeichnung NVARCHAR(100) NOT NULL,
+	bezeichnung VARCHAR2(100) NOT NULL,
 	erstellt_am TIMESTAMP NOT NULL,
 	geaendert_am TIMESTAMP NOT NULL
 );
 
-create table if not exists lagerposition (
+DROP TABLE lagerposition;
+CREATE TABLE lagerposition (
 	lagerposition_ID INTEGER NOT NULL PRIMARY KEY,
 	lager_FID INTEGER NOT NULL,
 	artikel_FID INTEGER NOT NULL,
@@ -80,7 +82,8 @@ create table if not exists lagerposition (
 	geaendert_am TIMESTAMP NOT NULL
 );
 
-create table if not exists lieferung (
+DROP TABLE lieferung;
+CREATE TABLE lieferung (
 	lieferung_ID INTEGER NOT NULL PRIMARY KEY,
 	bestelldatum DATE NOT NULL,
 	lieferungsdatum DATE,
@@ -88,7 +91,8 @@ create table if not exists lieferung (
 	geaendert_am TIMESTAMP NOT NULL
 );
 
-create table if not exists lieferungsposition (
+DROP TABLE lieferungsposition;
+CREATE TABLE lieferungsposition (
 	lieferungsposition_ID INTEGER NOT NULL PRIMARY KEY,
 	artikel_FID INTEGER NOT NULL,
 	lieferung_FID INTEGER NOT NULL,
