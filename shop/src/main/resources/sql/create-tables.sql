@@ -50,7 +50,7 @@ CREATE TABLE auftragsposition (
 	idx INTEGER NOT NULL,
 	artikel_FID INTEGER NOT NULL,
 	anzahl INTEGER NOT NULL,
-	preis Decimal NOT NULL
+	preis NUMBER(8,2) NOT NULL
 );
 
 DROP TABLE artikel;
