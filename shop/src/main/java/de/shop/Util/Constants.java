@@ -5,6 +5,7 @@ public final class Constants {
 	public static final Long KEINE_ID = null;
 	public static final int LONG_ANZ_ZIFFERN = 20;
 	public static final long MIN_ID = 1L;
+	public static final int ERSTE_VERSION = 0;
 	
 	// REST
 	public static final String ARTIKELVERWALTUNG_NS = "urn:shop:artikelverwaltung";
