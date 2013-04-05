@@ -1,7 +1,5 @@
 package de.shop.Kundenverwaltung.rest;
 
-import static java.util.logging.Level.FINER;
-import static java.util.logging.Level.FINEST;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
@@ -12,7 +10,6 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -32,6 +29,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+
+import org.jboss.logging.Logger;
 
 import de.shop.Auftragsverwaltung.domain.Auftrag;
 import de.shop.Auftragsverwaltung.rest.UriHelperAuftrag;
@@ -68,12 +67,12 @@ public class KundeResource {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		LOGGER.debugf("CDI-faehiges Bean =%d wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		LOGGER.debugf("CDI-faehiges Bean =%d wird geloescht", this);
 	}
 	
 	@GET
@@ -181,7 +180,7 @@ public class KundeResource {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		kunde = ks.createKunde(kunde, locale);
-		LOGGER.log(FINEST, "Kunde: {0}", kunde);
+		LOGGER.debugf("Kunde: =%d", kunde);
 		
 		final URI kundeUri = uriHelperKunde.getUriKunde(kunde, uriInfo);
 		return Response.created(kundeUri).build();
@@ -203,11 +202,11 @@ public class KundeResource {
 			final String msg = "Kein Kunde gefunden mit der ID " + kunde.getKundenNr();
 			throw new NotFoundException(msg);
 		}
-		LOGGER.log(FINEST, "Kunde vorher: %s", origKunde);
+		LOGGER.debugf("Kunde vorher: =%s", origKunde);
 	
 		// Daten des vorhandenen Kunden ueberschreiben
 		origKunde.setValues(kunde);
-		LOGGER.log(FINEST, "Kunde nachher: %s", origKunde);
+		LOGGER.debugf("Kunde nachher: =%s", origKunde);
 		
 		// Update durchfuehren
 		kunde = ks.updateKunde(origKunde, locale);
