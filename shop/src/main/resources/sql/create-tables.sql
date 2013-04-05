@@ -24,7 +24,8 @@ CREATE table adresse (
 	land VARCHAR2(50) NOT NULL,
 	kunde_FID INTEGER NOT NULL,
 	erstellt_am TIMESTAMP NOT NULL,
-	geaendert_am TIMESTAMP NOT NULL
+	geaendert_am TIMESTAMP NOT NULL,
+	version NUMBER(8,0) NOT NULL
 );
 
 DROP TABLE rechnung;
@@ -33,7 +34,8 @@ CREATE TABLE rechnung (
 	auftrag_FID INTEGER NOT NULL,
 	rechnungsdatum DATE NOT NULL,
 	erstellt_am TIMESTAMP NOT NULL,
-	geaendert_am TIMESTAMP NOT NULL
+	geaendert_am TIMESTAMP NOT NULL,
+	version NUMBER(8,0) NOT NULL
 );
 
 DROP TABLE auftrag;
@@ -41,7 +43,8 @@ CREATE TABLE auftrag (
 	auftrag_ID INTEGER NOT NULL PRIMARY KEY, 
 	kunde_FID INTEGER NOT NULL,
 	erstellt_am TIMESTAMP NOT NULL,
-	geaendert_am TIMESTAMP NOT NULL
+	geaendert_am TIMESTAMP NOT NULL,
+	version NUMBER(8,0) NOT NULL
 );
 
 DROP TABLE auftragsposition;
@@ -51,7 +54,8 @@ CREATE TABLE auftragsposition (
 	idx INTEGER NOT NULL,
 	artikel_FID INTEGER NOT NULL,
 	anzahl INTEGER NOT NULL,
-	preis NUMBER(8,2) NOT NULL
+	preis NUMBER(8,2) NOT NULL,
+	version NUMBER(8,0) NOT NULL
 );
 
 DROP TABLE artikel;
@@ -62,7 +66,8 @@ CREATE TABLE artikel (
 	preis NUMBER(8,2) NOT NULL,
 	bild VARCHAR2(64) NULL,
 	erstellt_am TIMESTAMP NOT NULL,
-	geaendert_am TIMESTAMP NOT NULL
+	geaendert_am TIMESTAMP NOT NULL,
+	version NUMBER(8,0) NOT NULL
 );
 
 DROP TABLE lager;
@@ -70,7 +75,8 @@ CREATE TABLE lager (
 	lager_ID INTEGER NOT NULL PRIMARY KEY,
 	bezeichnung VARCHAR2(100) NOT NULL,
 	erstellt_am TIMESTAMP NOT NULL,
-	geaendert_am TIMESTAMP NOT NULL
+	geaendert_am TIMESTAMP NOT NULL,
+	version NUMBER(8,0) NOT NULL
 );
 
 DROP TABLE lagerposition;
@@ -80,7 +86,8 @@ CREATE TABLE lagerposition (
 	artikel_FID INTEGER NOT NULL,
 	anzahl INTEGER NOT NULL,
 	erstellt_am TIMESTAMP NOT NULL,
-	geaendert_am TIMESTAMP NOT NULL
+	geaendert_am TIMESTAMP NOT NULL,
+	version NUMBER(8,0) NOT NULL
 );
 
 DROP TABLE lieferung;
@@ -89,7 +96,8 @@ CREATE TABLE lieferung (
 	bestelldatum DATE NOT NULL,
 	lieferungsdatum DATE,
 	erstellt_am TIMESTAMP NOT NULL,
-	geaendert_am TIMESTAMP NOT NULL
+	geaendert_am TIMESTAMP NOT NULL,
+	version NUMBER(8,0) NOT NULL
 );
 
 DROP TABLE lieferungsposition;
@@ -97,5 +105,6 @@ CREATE TABLE lieferungsposition (
 	lieferungsposition_ID INTEGER NOT NULL PRIMARY KEY,
 	artikel_FID INTEGER NOT NULL,
 	lieferung_FID INTEGER NOT NULL,
-	anzahl INTEGER NOT NULL
+	anzahl INTEGER NOT NULL,
+	version NUMBER(8,0) NOT NULL
 );
