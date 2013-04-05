@@ -5,8 +5,10 @@ import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
 
 import java.io.Serializable;
+import java.lang.invoke.MethodHandles;
 import java.net.URI;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,13 +20,11 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.jboss.logging.Logger;
 
 import de.shop.Util.IdGroup;
 
@@ -51,7 +51,6 @@ import de.shop.Util.IdGroup;
 					+ " WHERE li.id = :" + Lieferungsposition.PARAM_ID)
 })
 
-@XmlRootElement
 public class Lieferungsposition implements Serializable {
 	
 	private static final long serialVersionUID = -895845732573641L;
@@ -63,28 +62,27 @@ public class Lieferungsposition implements Serializable {
 	
 	public static final String PARAM_ID = "id";
 	
-    @ManyToOne//(fetch=FetchType.LAZY, optional = false)
+    @ManyToOne
 	@JoinColumn(name = "artikel_FID", nullable = false)
     @OrderColumn(name = "erstellt_am")
 	@NotNull(message = "{artikelverwaltung.lieferungsposition.artikel.notNull}")
-	@XmlTransient
 	private Artikel artikel;
 	
-	@Transient
-	@XmlElement(name = "artikel", required = true)
 	private URI artikelUri;	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column (name = "lieferungsposition_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)	
 	@Min(value = MIN_ID, message = "{artikelverwaltung.lieferungsposition.id.min}", groups = IdGroup.class)
-	@XmlAttribute
 	private Long id = KEINE_ID;
 	
 	@NotNull(message = "{artikelverwaltung.lieferungsposition.anzahl.notNull}")
-	@XmlElement
 	private int anzahl;
 
+	@Version
+	@Basic(optional = false)
+	private int version = 0;
+	
 	public Lieferungsposition() {
 	}
 	
@@ -119,7 +117,15 @@ public class Lieferungsposition implements Serializable {
 	public void setAnzahl(int anzahl) {
 		this.anzahl = anzahl;
 	}
+	
+	public int getVersion() {
+		return version;
+	}
 
+	public void setVersion(int version) {
+		this.version = version;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
