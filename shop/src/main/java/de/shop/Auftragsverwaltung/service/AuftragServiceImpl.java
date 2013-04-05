@@ -28,7 +28,7 @@ import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Kundenverwaltung.service.KundeService;
 import de.shop.Kundenverwaltung.service.KundeService.FetchType;
 import de.shop.Util.Log;
-import de.shop.Util.ValidationService;
+import de.shop.Util.ValidatorProvider;
 
 @Log
 public class AuftragServiceImpl implements Serializable, AuftragService {
@@ -45,7 +45,7 @@ public class AuftragServiceImpl implements Serializable, AuftragService {
 	private ArtikelService artikelService;
 	
 	@Inject
-	private ValidationService validationService;
+	private ValidatorProvider validatorProvider;
 	
 	@Inject
 	@NeuerAuftrag
@@ -113,7 +113,7 @@ public class AuftragServiceImpl implements Serializable, AuftragService {
 	}
 	
 	private void validateAuftrag(Auftrag auftrag, Locale locale, Class<?>... groups) {
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validatorProvider.getValidator(locale);
 		
 		final Set<ConstraintViolation<Auftrag>> violations = validator.validate(auftrag);
 		if (violations != null && !violations.isEmpty()) {

@@ -22,7 +22,7 @@ import javax.validation.groups.Default;
 import de.shop.Auftragsverwaltung.domain.Auftrag;
 import de.shop.Auftragsverwaltung.domain.Rechnung;
 import de.shop.Util.Log;
-import de.shop.Util.ValidationService;
+import de.shop.Util.ValidatorProvider;
 
 @Log
 public class RechnungServiceImpl implements Serializable, RechnungService {
@@ -36,7 +36,7 @@ public class RechnungServiceImpl implements Serializable, RechnungService {
 	private AuftragService auftragService;
 	
 	@Inject
-	private ValidationService validationService;
+	private ValidatorProvider validatorProvider;
 	
 	@PostConstruct
 	private void postConstruct() {
@@ -83,7 +83,7 @@ public class RechnungServiceImpl implements Serializable, RechnungService {
 	}
 	
 	private void validateRechnung(Rechnung rechnung, Locale locale, Class<?>... groups) {
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validatorProvider.getValidator(locale);
 		
 		final Set<ConstraintViolation<Rechnung>> violations = validator.validate(rechnung);
 		if (violations != null && !violations.isEmpty()) {
