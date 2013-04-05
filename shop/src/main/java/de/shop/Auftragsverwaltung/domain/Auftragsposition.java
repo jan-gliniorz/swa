@@ -1,5 +1,6 @@
 package de.shop.Auftragsverwaltung.domain;
 
+import static de.shop.Util.Constants.ERSTE_VERSION;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
@@ -8,6 +9,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.net.URI;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,12 +20,11 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Util.IdGroup;
@@ -41,7 +42,6 @@ import de.shop.Util.IdGroup;
 					+ " FROM Auftragsposition a"
 					+ " WHERE a.id = :" + Auftrag.PARAM_ID)
 })
-@XmlRootElement
 public class Auftragsposition implements Serializable {
 	private static final long serialVersionUID = 3112053858805093020L;
 	
@@ -55,25 +55,25 @@ public class Auftragsposition implements Serializable {
 	@GeneratedValue
 	@Column(name = "auftragsposition_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "{auftragsverwaltung.auftragsposition.id.min}", groups = IdGroup.class)
-	@XmlAttribute
 	private Long id = KEINE_ID;
 
 	@Min(value = ANZAHL_MIN, message = "{artikelverwaltung.auftragsposition.anzahl.min}")
-	@XmlElement
 	private int anzahl;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "artikel_FID", nullable = false)
 	@NotNull(message = "{auftragsverwaltung.auftragsposition.artikel.notNull}")
-	@XmlTransient
+	@JsonIgnore
 	private Artikel artikel;
 	
 	@Transient
-	@XmlElement(name = "artikel", required = true)
 	private URI artikelUri;
 
-	@XmlElement
 	private BigDecimal preis;
+	
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
 
 	public Auftragsposition() {
 	}

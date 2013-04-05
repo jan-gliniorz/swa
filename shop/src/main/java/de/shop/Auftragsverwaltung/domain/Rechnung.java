@@ -3,12 +3,14 @@ package de.shop.Auftragsverwaltung.domain;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
+import static de.shop.Util.Constants.ERSTE_VERSION;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,12 +25,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import de.shop.Util.IdGroup;
 
@@ -48,7 +49,6 @@ import de.shop.Util.IdGroup;
 				query = "SELECT r"
 						+ " FROM Rechnung r")
 })
-@XmlRootElement
 public class Rechnung implements Serializable {
 	private static final long serialVersionUID = 4985112963755405161L;
 	
@@ -62,32 +62,31 @@ public class Rechnung implements Serializable {
 	@GeneratedValue
 	@Column(name = "rechnung_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "{auftragsverwaltung.rechnung.id.min}", groups = IdGroup.class)
-	@XmlAttribute
 	private Long id = KEINE_ID;
 
 	@OneToOne
 	@JoinColumn(name = "auftrag_FID")
 	@NotNull(message = "{auftragsverwaltung.rechnung.auftrag.notNull}")
-	@XmlTransient
+	@JsonIgnore
 	private Auftrag auftrag;
 	
 	@Transient
-	@XmlElement(name = "auftrag")
 	private URI auftragUri;
 
 	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
-	@XmlElement
 	private Date erstelltAm;
 
 	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
-	@XmlElement
 	private Date geaendertAm;
 
 	@Temporal(TemporalType.DATE)
-	@XmlElement
 	private Date rechnungsdatum;
+	
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
 
 	public Rechnung() {
 	}

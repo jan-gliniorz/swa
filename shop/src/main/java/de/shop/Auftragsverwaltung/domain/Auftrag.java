@@ -1,5 +1,6 @@
 package de.shop.Auftragsverwaltung.domain;
 
+import static de.shop.Util.Constants.ERSTE_VERSION;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
@@ -14,6 +15,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,14 +32,12 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import de.shop.Kundenverwaltung.domain.Kunde;
@@ -63,7 +63,6 @@ import de.shop.Util.IdGroup;
 						+ " FROM Auftrag a"
 						+ " WHERE a.kunde.id = :" + Auftrag.PARAM_KUNDEID)
 })
-@XmlRootElement
 public class Auftrag implements Serializable {	
 	private static final long serialVersionUID = 2465349694241738534L;
 	
@@ -79,7 +78,6 @@ public class Auftrag implements Serializable {
 	@GeneratedValue
 	@Column(name = "auftrag_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "{auftragsverwaltung.auftrag.id.min}", groups = IdGroup.class)
-	@XmlAttribute
 	private Long id = KEINE_ID;
 	
 	@OneToMany(fetch = EAGER, cascade = PERSIST)
@@ -87,12 +85,10 @@ public class Auftrag implements Serializable {
 	@OrderColumn(name = "idx")
 	@NotEmpty(message = "{auftragsverwaltung.auftrag.auftragspositionen.notEmpty}")
 	@Valid
-	@XmlElementWrapper(name = "bestellpositionen", required = true)
-	@XmlElement(name = "bestellposition", required = true)
 	private List<Auftragsposition> auftragspositionen;
 	
 	@OneToOne(mappedBy = "auftrag")
-	@XmlTransient
+	@JsonIgnore
 	private Rechnung rechnung;
 
 	@Transient
@@ -101,7 +97,7 @@ public class Auftrag implements Serializable {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "kunde_FID", nullable = false, updatable = false)
-	@XmlTransient
+	@JsonIgnore
 	private Kunde kunde;
 	
 	@Transient
@@ -110,13 +106,15 @@ public class Auftrag implements Serializable {
 
 	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
-	@XmlElement
 	private Date erstelltAm;
 
 	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
-	@XmlElement
 	private Date geaendertAm;
+	
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
 
 	public Auftrag() {
 	}

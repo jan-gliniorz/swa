@@ -1,15 +1,11 @@
 package de.shop.Auftragsverwaltung.service;
 
 import static de.shop.Util.Constants.KEINE_ID;
-import static java.util.logging.Level.FINER;
-import static java.util.logging.Level.FINEST;
 
 import java.io.Serializable;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -20,6 +16,8 @@ import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
+
+import org.jboss.logging.Logger;
 
 import de.shop.Artikelverwaltung.service.ArtikelService;
 import de.shop.Auftragsverwaltung.domain.Auftrag;
@@ -33,7 +31,9 @@ import de.shop.Util.ValidatorProvider;
 @Log
 public class AuftragServiceImpl implements Serializable, AuftragService {
 	private static final long serialVersionUID = -9145947650157430928L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
+
+	@Inject
+	private transient Logger logger;
 	
 	@PersistenceContext
 	private transient EntityManager em;
@@ -53,12 +53,12 @@ public class AuftragServiceImpl implements Serializable, AuftragService {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		logger.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		logger.debugf("CDI-faehiges Bean %s wird geloescht", this);
 	}
 	
 	@Override
@@ -91,7 +91,7 @@ public class AuftragServiceImpl implements Serializable, AuftragService {
 		}
 		
 		for (Auftragsposition ap : auftrag.getAuftragspositionen()) {
-			LOGGER.log(FINEST, "Auftragsposition {0}", ap);
+			logger.debugf("Auftragsposition %s", ap);
 		}
 		
 		// managed kunden holen; Auftrag dem Kunden zuordnen
@@ -117,7 +117,7 @@ public class AuftragServiceImpl implements Serializable, AuftragService {
 		
 		final Set<ConstraintViolation<Auftrag>> violations = validator.validate(auftrag);
 		if (violations != null && !violations.isEmpty()) {
-			LOGGER.exiting("AuftragService", "createAuftrag", violations);
+			//LOGGER.exiting("AuftragService", "createAuftrag", violations);
 			throw new AuftragValidationException(auftrag, violations);
 		}
 	}

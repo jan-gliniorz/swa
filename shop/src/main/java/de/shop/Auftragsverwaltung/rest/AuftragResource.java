@@ -1,17 +1,12 @@
 package de.shop.Auftragsverwaltung.rest;
 
-import static java.util.logging.Level.FINER;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.TEXT_XML;
 
-import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -28,6 +23,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
@@ -45,13 +41,14 @@ import de.shop.Util.Transactional;
 
 
 @Path("/auftraege")
-@Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
+@Produces({ APPLICATION_JSON })
 @Consumes
 @RequestScoped
 @Transactional
 @Log
 public class AuftragResource {
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
+	@Inject
+	private Logger logger;
 	
 	@Inject
 	private AuftragService auftragService;
@@ -70,18 +67,18 @@ public class AuftragResource {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		logger.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		logger.debugf("CDI-faehiges Bean %s wird geloescht", this);
 	}
 	
 	@GET
 	@Wrapped(element = "auftraege") 
 	public Collection<Auftrag>findAuftraegeAll(@Context UriInfo uriInfo) {
-		LOGGER.fine("findAll");
+		logger.debugf("findAll");
 		Collection<Auftrag> auftraege = auftragService.findAuftragAll();
 		for (Auftrag a : auftraege) {
 			uriHelperAuftrag.updateUriAuftrag(a, uriInfo);
@@ -98,7 +95,7 @@ public class AuftragResource {
 	@GET
 	@Path("{id:[1-9][0-9]*}")
 	public Auftrag findAuftragById(@PathParam("id") Long id, @Context UriInfo uriInfo) {
-		LOGGER.fine("findById");
+		logger.debugf("findById");
 		final Auftrag auftrag = auftragService.findAuftragById(id);
 		if (auftrag == null) {
 			final String msg = "Kein Auftrag gefunden mit der ID " + id;
@@ -113,7 +110,7 @@ public class AuftragResource {
 	@GET
 	@Path("byKunde/{kundenr:[1-9][0-9]*}")
 	public List<Auftrag> findAuftragByKundeNr(@PathParam("kundenr") Long id, @Context UriInfo uriInfo) {
-		LOGGER.fine("findKdnr");
+		logger.debugf("findKdnr");
 		final List<Auftrag> auftraege = auftragService.findAuftragByKundeId(id);
 		if (auftraege == null) {
 			final String msg = "Keine Auftraege gefunden zu Kunde mit der ID " + id;
@@ -134,7 +131,7 @@ public class AuftragResource {
 	 * @return Objekt mit Auftragsdaten, falls die ID vorhanden ist
 	 */
 	@POST
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes({ APPLICATION_JSON })
 	@Produces
 	public Response createAuftrag(Auftrag auftrag, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		// Schluessel des Kunden extrahieren
@@ -231,7 +228,7 @@ public class AuftragResource {
 
 		final URI auftragUri = uriHelperAuftrag.getUriAuftrag(auftrag, uriInfo);
 		final Response response = Response.created(auftragUri).build();
-		LOGGER.finest(auftragUri.toString());
+		logger.debugf(auftragUri.toString());
 		
 		return response;
 	}

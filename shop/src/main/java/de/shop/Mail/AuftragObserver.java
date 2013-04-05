@@ -2,13 +2,12 @@ package de.shop.Mail;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.lang.invoke.MethodHandles;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.inject.Inject;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -16,8 +15,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import de.shop.Auftragsverwaltung.domain.Auftragsposition;
+import org.jboss.logging.Logger;
+
 import de.shop.Auftragsverwaltung.domain.Auftrag;
+import de.shop.Auftragsverwaltung.domain.Auftragsposition;
 import de.shop.Auftragsverwaltung.service.NeuerAuftrag;
 import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Util.Log;
@@ -26,8 +27,10 @@ import de.shop.Util.Log;
 @Log
 public class AuftragObserver implements Serializable {
 	private static final long serialVersionUID = -1567643645881819340L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	private static final String NEWLINE = System.getProperty("line.separator");
+	
+	@Inject 
+	private transient Logger logger;
 	
 	@Resource(lookup = "java:jboss/mail/Default")
 	private transient Session mailSession;
@@ -38,10 +41,10 @@ public class AuftragObserver implements Serializable {
 	@PostConstruct
 	private void init() {
 		if (mailAbsender == null) {
-			LOGGER.warning("Der Absender fuer Bestellung-Emails ist nicht gesetzt.");
+			logger.warnf("Der Absender fuer Bestellung-Emails ist nicht gesetzt.");
 			return;
 		}
-		LOGGER.info("Absender fuer Bestellung-Emails: " + mailAbsender);
+		logger.info("Absender fuer Bestellung-Emails: " + mailAbsender);
 	}
 	
 	public void onCreateAuftrag(@Observes @NeuerAuftrag Auftrag auftrag) {
@@ -74,7 +77,7 @@ public class AuftragObserver implements Serializable {
 				sb.append(bp.getAnzahl() + "\t" + bp.getArtikel().getBezeichnung() + NEWLINE);
 			}
 			final String text = sb.toString();
-			LOGGER.finest(text);
+			//LOGGER.finest(text);
 			message.setText(text);
 
 			// Hohe Prioritaet einstellen
@@ -85,7 +88,7 @@ public class AuftragObserver implements Serializable {
 			Transport.send(message);
 		}
 		catch (MessagingException | UnsupportedEncodingException e) {
-			LOGGER.severe(e.getMessage());
+			logger.error(e.getMessage());
 			return;
 		}
 	}

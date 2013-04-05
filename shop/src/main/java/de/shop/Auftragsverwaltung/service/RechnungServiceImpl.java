@@ -1,14 +1,11 @@
 package de.shop.Auftragsverwaltung.service;
 
 import static de.shop.Util.Constants.KEINE_ID;
-import static java.util.logging.Level.FINER;
 
 import java.io.Serializable;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -19,6 +16,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
+import org.jboss.logging.Logger;
+
 import de.shop.Auftragsverwaltung.domain.Auftrag;
 import de.shop.Auftragsverwaltung.domain.Rechnung;
 import de.shop.Util.Log;
@@ -27,7 +26,9 @@ import de.shop.Util.ValidatorProvider;
 @Log
 public class RechnungServiceImpl implements Serializable, RechnungService {
 	private static final long serialVersionUID = -9145947650157430928L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
+	
+	@Inject
+	private transient Logger logger;
 	
 	@PersistenceContext
 	private transient EntityManager em;
@@ -40,12 +41,12 @@ public class RechnungServiceImpl implements Serializable, RechnungService {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		logger.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		logger.debugf("CDI-faehiges Bean %s wird geloescht", this);
 	}
 	
 	@Override
@@ -87,7 +88,7 @@ public class RechnungServiceImpl implements Serializable, RechnungService {
 		
 		final Set<ConstraintViolation<Rechnung>> violations = validator.validate(rechnung);
 		if (violations != null && !violations.isEmpty()) {
-			LOGGER.exiting("RechnungService", "createRechnung", violations);
+			//LOGGER.exiting("RechnungService", "createRechnung", violations);
 			throw new RechnungValidationException(rechnung, violations);
 		}
 	}

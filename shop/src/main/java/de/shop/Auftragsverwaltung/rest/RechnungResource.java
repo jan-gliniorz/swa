@@ -1,13 +1,8 @@
 package de.shop.Auftragsverwaltung.rest;
 
-import static java.util.logging.Level.FINER;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.TEXT_XML;
 
-import java.lang.invoke.MethodHandles;
 import java.util.Collection;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -21,6 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 
 import de.shop.Auftragsverwaltung.domain.Rechnung;
@@ -31,12 +27,13 @@ import de.shop.Util.NotFoundException;
 
 
 @Path("/rechnungen")
-@Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
+@Produces({ APPLICATION_JSON })
 @Consumes
 @RequestScoped
 @Log
 public class RechnungResource {
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
+	@Inject
+	private transient Logger logger;
 	
 	@Inject
 	private AuftragService auftragService;
@@ -52,12 +49,12 @@ public class RechnungResource {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		logger.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		logger.debugf("CDI-faehiges Bean %s wird geloescht", this);
 	}
 	
 	@GET
