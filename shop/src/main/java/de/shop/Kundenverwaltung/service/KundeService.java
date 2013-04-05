@@ -3,7 +3,6 @@ package de.shop.Kundenverwaltung.service;
 import static de.shop.Util.Constants.KEINE_ID;
 
 import java.io.Serializable;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -40,7 +39,7 @@ import de.shop.Util.ValidatorProvider;
 @Log
 public class KundeService implements Serializable {
 	private static final long serialVersionUID = -5520738420154763865L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
+
 	
 	public enum FetchType {
 		NUR_KUNDE,
@@ -52,6 +51,9 @@ public class KundeService implements Serializable {
 		ID
 	}
 	
+	@Inject
+	private transient Logger logger;
+	
 	@PersistenceContext
 	private transient EntityManager em;
 	
@@ -60,12 +62,12 @@ public class KundeService implements Serializable {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.debugf("CDI-faehiges Bean =%d wurde erzeugt", this);
+		logger.debugf("CDI-faehiges Bean =%d wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.debugf("CDI-faehiges Bean =%d wird geloescht", this);
+		logger.debugf("CDI-faehiges Bean =%d wird geloescht", this);
 	}
 
 	/**
@@ -229,7 +231,7 @@ public class KundeService implements Serializable {
 		}
 		catch (NoResultException e) {
 			// Noch kein Kunde mit dieser Email-Adresse
-			LOGGER.debugf("Email-Adresse existiert noch nicht");
+			logger.debugf("Email-Adresse existiert noch nicht");
 		}
 		
 		kunde.setKundenNr(KEINE_ID);
@@ -270,7 +272,7 @@ public class KundeService implements Serializable {
 			}
 		}
 		catch (NoResultException e) {
-			LOGGER.debugf("Neue Email-Adresse");
+			logger.debugf("Neue Email-Adresse");
 		}
 		
 		em.merge(kunde);
