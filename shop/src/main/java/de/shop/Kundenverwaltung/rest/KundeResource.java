@@ -1,9 +1,6 @@
 package de.shop.Kundenverwaltung.rest;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
-import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
@@ -44,7 +41,7 @@ import de.shop.Util.NotFoundException;
 import de.shop.Util.Transactional;
 
 @Path("/kunden")
-@Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
+@Produces({ APPLICATION_JSON })
 @Consumes
 @RequestScoped
 @Transactional
@@ -67,16 +64,16 @@ public class KundeResource {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.debugf("CDI-faehiges Bean =%d wurde erzeugt", this);
+		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.debugf("CDI-faehiges Bean =%d wird geloescht", this);
+		LOGGER.debugf("CDI-faehiges Bean %s wird geloescht", this);
 	}
 	
 	@GET
-	@Produces(TEXT_PLAIN)
+	@Produces(APPLICATION_JSON)
 	@Path("version")
 	public String getVersion() {
 		return VERSION;
@@ -169,7 +166,7 @@ public class KundeResource {
 	 * @return Response-Objekt mit URL des neuen Kunden
 	 */
 	@POST
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes({ APPLICATION_JSON })
 	@Produces
 	public Response createKunde(Kunde kunde, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		final Adresse adresse = kunde.getAdresse();
@@ -180,7 +177,7 @@ public class KundeResource {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		kunde = ks.createKunde(kunde, locale);
-		LOGGER.debugf("Kunde: =%d", kunde);
+		LOGGER.debugf("Kunde: %d", kunde);
 		
 		final URI kundeUri = uriHelperKunde.getUriKunde(kunde, uriInfo);
 		return Response.created(kundeUri).build();
@@ -191,7 +188,7 @@ public class KundeResource {
 	 * @param kunde zu aktualisierende Daten des Kunden
 	 */
 	@PUT
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes({ APPLICATION_JSON })
 	@Produces
 	public void updateKunde(Kunde kunde, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		// Vorhandenen Kunden ermitteln
@@ -202,11 +199,11 @@ public class KundeResource {
 			final String msg = "Kein Kunde gefunden mit der ID " + kunde.getKundenNr();
 			throw new NotFoundException(msg);
 		}
-		LOGGER.debugf("Kunde vorher: =%s", origKunde);
+		LOGGER.debugf("Kunde vorher: %d", origKunde);
 	
 		// Daten des vorhandenen Kunden ueberschreiben
 		origKunde.setValues(kunde);
-		LOGGER.debugf("Kunde nachher: =%s", origKunde);
+		LOGGER.debugf("Kunde nachher: %d", origKunde);
 		
 		// Update durchfuehren
 		kunde = ks.updateKunde(origKunde, locale);
