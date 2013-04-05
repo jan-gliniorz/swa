@@ -22,7 +22,7 @@ import javax.validation.Validator;
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Util.IdGroup;
 import de.shop.Util.Log;
-import de.shop.Util.ValidationService;
+import de.shop.Util.ValidatorProvider;
 
 @Log
 public class ArtikelService implements Serializable {
@@ -43,7 +43,7 @@ public class ArtikelService implements Serializable {
 	private transient EntityManager em;
 	
 	@Inject
-	private ValidationService validationService;
+	private ValidatorProvider validatorProvider;
 	
 	@PostConstruct
 	private void postConstruct() {
@@ -156,7 +156,7 @@ public class ArtikelService implements Serializable {
 	
 	
 	private void validateArtikelId(Long artikelId, Locale locale) {
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validatorProvider.getValidator(locale);
 		final Set<ConstraintViolation<Artikel>> violations = validator.validateValue(Artikel.class,
 				                                                                           "id",
 				                                                                           artikelId,
@@ -183,7 +183,7 @@ public class ArtikelService implements Serializable {
 	
 	private void validateArtikel(Artikel artikel, Locale locale) {
 		// Werden alle Constraints beim Einfuegen gewahrt?
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validatorProvider.getValidator(locale);
 		
 		final Set<ConstraintViolation<Artikel>> violations = validator.validate(artikel);
 		if (!violations.isEmpty()) {

@@ -25,7 +25,7 @@ import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Util.IdGroup;
 import de.shop.Util.Log;
-import de.shop.Util.ValidationService;
+import de.shop.Util.ValidatorProvider;
 
 @Log
 public class LieferungService implements Serializable {
@@ -46,7 +46,7 @@ public class LieferungService implements Serializable {
 	private transient EntityManager em;
 	
 	@Inject
-	private ValidationService validationService;
+	private ValidatorProvider validatorProvider;
 	
 	@PostConstruct
 	private void postConstruct() {
@@ -123,7 +123,7 @@ public class LieferungService implements Serializable {
 	}
 	
 	private void validateLieferungId(Long lieferungId, Locale locale) {
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validatorProvider.getValidator(locale);
 		final Set<ConstraintViolation<Lieferung>> violations = validator.validateValue(Lieferung.class,
 				                                                                           "id",
 				                                                                           lieferungId,
@@ -157,7 +157,7 @@ public class LieferungService implements Serializable {
 	
 	private void validateLieferung(Lieferung lieferung, Locale locale) {
 		// Werden alle Constraints beim Einfuegen gewahrt?
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validatorProvider.getValidator(locale);
 		
 		final Set<ConstraintViolation<Lieferung>> violations = validator.validate(lieferung);
 		if (!violations.isEmpty()) {
@@ -245,7 +245,7 @@ public class LieferungService implements Serializable {
 	}
 	
 	private void validateLieferungspositionId(Long lieferungspositionId, Locale locale) {
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validatorProvider.getValidator(locale);
 		final Set<ConstraintViolation<Lieferungsposition>> violations = 
 														   validator.validateValue(Lieferungsposition.class,
 				                                           "id",

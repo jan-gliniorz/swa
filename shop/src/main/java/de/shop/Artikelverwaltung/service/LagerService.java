@@ -24,7 +24,7 @@ import de.shop.Artikelverwaltung.domain.Lager;
 import de.shop.Artikelverwaltung.domain.Lagerposition;
 import de.shop.Util.IdGroup;
 import de.shop.Util.Log;
-import de.shop.Util.ValidationService;
+import de.shop.Util.ValidatorProvider;
 
 @Log
 public class LagerService implements Serializable {
@@ -45,7 +45,7 @@ public class LagerService implements Serializable {
 	private transient EntityManager em;
 	
 	@Inject
-	private ValidationService validationService;
+	private ValidatorProvider validatorProvider;
 	
 	@PostConstruct
 	private void postConstruct() {
@@ -153,7 +153,7 @@ public class LagerService implements Serializable {
 	}
 	
 	private void validateLagerId(Long lagerId, Locale locale) {
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validatorProvider.getValidator(locale);
 		final Set<ConstraintViolation<Lager>> violations = validator.validateValue(Lager.class,
 			                                                                           "id",
 			                                                                           lagerId,
@@ -179,7 +179,7 @@ public class LagerService implements Serializable {
 	private void validateLager(Lager lager, Locale locale) {
 		
 		// Werden alle Constraints beim Einfuegen gewahrt?
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validatorProvider.getValidator(locale);
 		
 		final Set<ConstraintViolation<Lager>> violations = validator.validate(lager);
 		if (!violations.isEmpty()) {
@@ -235,7 +235,7 @@ public class LagerService implements Serializable {
 	private void validateLagerposition(Lagerposition lagerposition, Locale locale) {
 		
 		// Werden alle Constraints beim Einfuegen gewahrt?
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validatorProvider.getValidator(locale);
 		
 		final Set<ConstraintViolation<Lagerposition>> violations = validator.validate(lagerposition);
 		if (!violations.isEmpty()) {
@@ -244,7 +244,7 @@ public class LagerService implements Serializable {
 	}
 	
 	private void validateLagerpositionId(Long lagerpositionId, Locale locale) {
-		final Validator validator = validationService.getValidator(locale);
+		final Validator validator = validatorProvider.getValidator(locale);
 		final Set<ConstraintViolation<Lagerposition>> violations = validator.validateValue(Lagerposition.class,
 			                                                                           "id",
 			                                                                           lagerpositionId,
