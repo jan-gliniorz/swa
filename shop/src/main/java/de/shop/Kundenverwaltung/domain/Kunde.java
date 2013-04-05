@@ -1,6 +1,7 @@
 package de.shop.Kundenverwaltung.domain;
 
 import static de.shop.Util.Constants.KEINE_ID;
+import static de.shop.Util.Constants.ERSTE_VERSION;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.TemporalType.TIMESTAMP;
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +30,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
@@ -90,6 +93,10 @@ public class Kunde implements Serializable {
 	@GeneratedValue
 	@Column(nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	private Long kundenNr = KEINE_ID;
+	
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
 	
 	@Email
 	@NotNull(message = "{kundenverwaltung.kunde.email.notNull}")
@@ -220,6 +227,14 @@ public class Kunde implements Serializable {
 	public void setKundenNr(Long kundenNr) {
 		this.kundenNr = kundenNr;
 	}
+	
+	public int getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
 
 	public String getEmail() {
 		return this.email;
@@ -277,31 +292,33 @@ public class Kunde implements Serializable {
 		this.vorname = vorname;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((adresse == null) ? 0 : adresse.hashCode());
+		result = prime * result
+				+ ((auftraege == null) ? 0 : auftraege.hashCode());
+		result = prime * result
+				+ ((auftraegeUri == null) ? 0 : auftraegeUri.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result
 				+ ((erstelltAm == null) ? 0 : erstelltAm.hashCode());
 		result = prime * result
 				+ ((geaendertAm == null) ? 0 : geaendertAm.hashCode());
 		result = prime * result
+				+ ((kundenNr == null) ? 0 : kundenNr.hashCode());
+		result = prime * result
 				+ ((nachname == null) ? 0 : nachname.hashCode());
 		result = prime * result
 				+ ((passwort == null) ? 0 : passwort.hashCode());
-		result = prime * result + ((kundenNr == null) ? 0 : kundenNr.hashCode());
+		result = prime * result
+				+ ((passwortWdh == null) ? 0 : passwortWdh.hashCode());
+		result = prime * result + version;
 		result = prime * result + ((vorname == null) ? 0 : vorname.hashCode());
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -314,53 +331,66 @@ public class Kunde implements Serializable {
 		if (adresse == null) {
 			if (other.adresse != null)
 				return false;
-		} 
-		else if (!adresse.equals(other.adresse))
+		} else if (!adresse.equals(other.adresse))
+			return false;
+		if (auftraege == null) {
+			if (other.auftraege != null)
+				return false;
+		} else if (!auftraege.equals(other.auftraege))
+			return false;
+		if (auftraegeUri == null) {
+			if (other.auftraegeUri != null)
+				return false;
+		} else if (!auftraegeUri.equals(other.auftraegeUri))
 			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
-		} 
-		else if (!email.equals(other.email))
+		} else if (!email.equals(other.email))
 			return false;
 		if (erstelltAm == null) {
 			if (other.erstelltAm != null)
 				return false;
-		} 
-		else if (!erstelltAm.equals(other.erstelltAm))
+		} else if (!erstelltAm.equals(other.erstelltAm))
 			return false;
 		if (geaendertAm == null) {
 			if (other.geaendertAm != null)
 				return false;
-		}
-		else if (!geaendertAm.equals(other.geaendertAm))
+		} else if (!geaendertAm.equals(other.geaendertAm))
 			return false;
-		if (kundenNr.equals(other.kundenNr))
+		if (kundenNr == null) {
+			if (other.kundenNr != null)
+				return false;
+		} else if (!kundenNr.equals(other.kundenNr))
 			return false;
 		if (nachname == null) {
 			if (other.nachname != null)
 				return false;
-		} 
-		else if (!nachname.equals(other.nachname))
+		} else if (!nachname.equals(other.nachname))
 			return false;
 		if (passwort == null) {
 			if (other.passwort != null)
 				return false;
-		}
-		else if (!passwort.equals(other.passwort))
+		} else if (!passwort.equals(other.passwort))
+			return false;
+		if (passwortWdh == null) {
+			if (other.passwortWdh != null)
+				return false;
+		} else if (!passwortWdh.equals(other.passwortWdh))
+			return false;
+		if (version != other.version)
 			return false;
 		if (vorname == null) {
 			if (other.vorname != null)
 				return false;
-		}
-		else if (!vorname.equals(other.vorname))
+		} else if (!vorname.equals(other.vorname))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Kunde [kundenNr=" + kundenNr + ", vorname=" + vorname + ", nachname=" + nachname
+		return "Kunde [kundenNr=" + kundenNr + ", version=" + version + " vorname=" + vorname + ", nachname=" + nachname
 				+ ", email=" + email + ", passwort=" + passwort + ", passwortWdh=" + passwortWdh
 				+ " erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm	+ "]";
 	}

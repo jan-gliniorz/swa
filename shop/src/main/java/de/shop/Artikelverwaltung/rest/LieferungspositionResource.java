@@ -1,14 +1,10 @@
 package de.shop.Artikelverwaltung.rest;
 
-import static java.util.logging.Level.FINER;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -24,6 +20,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriInfo;
 
+import org.jboss.logging.Logger;
+
 import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Artikelverwaltung.service.ArtikelService;
 import de.shop.Artikelverwaltung.service.LieferungService;
@@ -32,7 +30,7 @@ import de.shop.Util.NotFoundException;
 
 
 @Path("/lieferungspositionen")
-@Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
+@Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
 @Log
@@ -55,12 +53,12 @@ public class LieferungspositionResource {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		LOGGER.debugf("CDI-faehiges Bean {0} wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		LOGGER.debugf("CDI-faehiges Bean {0} wird geloescht", this);
 	}
 
 	

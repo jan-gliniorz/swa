@@ -1,10 +1,7 @@
 package de.shop.Artikelverwaltung.rest;
 
-import static java.util.logging.Level.FINER;
-import static java.util.logging.Level.FINEST;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.TEXT_XML;
+
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
@@ -12,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -31,6 +27,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
@@ -39,12 +36,11 @@ import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Artikelverwaltung.service.ArtikelService;
 import de.shop.Artikelverwaltung.service.LieferungService;
 import de.shop.Artikelverwaltung.service.LieferungService.FetchType;
-import de.shop.Util.Log;
 import de.shop.Util.NotFoundException;
-
+import de.shop.Util.Log;
 
 @Path("/lieferungen")
-@Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
+@Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
 @Log
@@ -66,12 +62,12 @@ public class LieferungResource {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		LOGGER.debugf("CDI-faehiges Bean {0} wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		LOGGER.debugf("CDI-faehiges Bean {0} wird geloescht", this);
 	}
 
 	
@@ -108,7 +104,7 @@ public class LieferungResource {
 	
 	
 	@POST
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response createLieferung(Lieferung lieferung, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		
@@ -117,7 +113,7 @@ public class LieferungResource {
 		
 		Collection<Lieferungsposition> lieferungspositionen = lieferung.getLieferungspositionen();
 		
-		LOGGER.log(FINER, "Lieferungspositionen: " + lieferungspositionen);
+		LOGGER.debugf("Lieferungspositionen: " + lieferungspositionen);
 		
 		List<Long> artikelIds = new ArrayList<>(lieferungspositionen.size());
 		
@@ -125,7 +121,7 @@ public class LieferungResource {
 
 			final String artikelUriStr = lp.getArtikelUri().toString();
 			
-			LOGGER.log(FINER, "ArtikelUri: " + artikelUriStr);
+			LOGGER.debugf("ArtikelUri: " + artikelUriStr);
 			
 			int startPos = artikelUriStr.lastIndexOf('/') + 1;
 			final String artikelIdStr = artikelUriStr.substring(startPos);
@@ -140,7 +136,7 @@ public class LieferungResource {
 				continue;
 			}
 			
-			LOGGER.log(FINER, "Artikel: " + artikelId);
+			LOGGER.debugf("Artikel: " + artikelId);
 			
 			artikelIds.add(artikelId);
 		}
@@ -187,13 +183,13 @@ public class LieferungResource {
 
 		final URI lieferungUri = uriHelperLieferung.getUriLieferung(lieferung, uriInfo);
 		final Response response = Response.created(lieferungUri).build();
-		LOGGER.finest(lieferungUri.toString());
+		LOGGER.debugf(lieferungUri.toString());
 		
 		return response;
 	}
 	
 	@PUT
-	@Consumes(APPLICATION_XML)
+	@Consumes(APPLICATION_JSON)
 	@Produces
 	public void updateLieferung(Lieferung lieferung, @Context UriInfo uriInfo, @Context HttpHeaders headers)
 	{
@@ -207,11 +203,11 @@ public class LieferungResource {
 			final String msg = "Keine Lieferung gefunden mit der ID " + lieferung.getId();
 			throw new NotFoundException(msg);
 		}
-		LOGGER.log(FINEST, "Kunde vorher: %s", vorhLieferung);
+		LOGGER.debugf("Kunde vorher: %s", vorhLieferung);
 			
 		// Daten der vorhandenen Lieferung überschreiben
 		vorhLieferung.setValues(lieferung);
-		LOGGER.log(FINEST, "Kunde nachher: %s", vorhLieferung);
+		LOGGER.debugf("Kunde nachher: %s", vorhLieferung);
 				
 		// Update durchfuehren		
 		lieferung = ls.updateLieferung(vorhLieferung, locale);

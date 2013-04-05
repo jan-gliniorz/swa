@@ -8,11 +8,13 @@ import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,20 +24,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PostPersist;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.jboss.logging.Logger;
 
 import de.shop.Util.IdGroup;
 
@@ -63,11 +65,10 @@ import de.shop.Util.IdGroup;
 	@NamedQuery(name = Lieferung.LIEFERUNGEN_ALL,
     		query = "SELECT li FROM Lieferung li")
 })
-
-@XmlRootElement
 public class Lieferung implements Serializable {
 	
 	private static final long serialVersionUID = -4645734623734341L;
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	
 	private static final String PREFIX = "Lieferung.";
 	public static final String LIEFERUNG_BY_ID = PREFIX + "findLieferungById";
@@ -83,36 +84,35 @@ public class Lieferung implements Serializable {
 	@JoinColumn(name = "lieferung_FID", nullable = false)
 	@NotEmpty(message = "{artikelverwaltung.lieferung.lieferungspositionen.notEmpty}")
 	@Valid
-	@XmlElementWrapper(name = "lieferungspositionen", required = true)
-	@XmlElement(name = "lieferungsposition", required = true)
 	private List<Lieferungsposition> lieferungspositionen;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "lieferung_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "{artikelverwaltung.lieferung.id.min}", groups = IdGroup.class)
-	@XmlAttribute
 	private Long id = KEINE_ID;
 
 	@Temporal(TemporalType.DATE)
 	@NotNull(message = "{artikelverwaltung.lieferung.bestelldatum.notNull}")
-	@XmlElement
 	private Date bestelldatum;
 
 	@Temporal(TemporalType.DATE)
-	@XmlElement
 	private Date lieferungsdatum;
 	
 	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
-	@XmlElement
+	@JsonIgnore
 	private Date erstelltAm;
 
 	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
-	@XmlElement
+	@JsonIgnore
 	private Date geaendertAm;
 
+	@Version
+	@Basic(optional = false)
+	private int version = 0;
+	
 	public Lieferung() {
 	}
 	
@@ -186,6 +186,19 @@ public class Lieferung implements Serializable {
 	public void setValues(Lieferung lieferung) {
 		lieferungsdatum = lieferung.lieferungsdatum;
 		bestelldatum = lieferung.bestelldatum; 
+	}
+	
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
+	
+	@PostPersist
+	protected void postPersist() {
+		LOGGER.debugf("Neue Lieferung mit ID=%d", id);
 	}
 	
 	@PrePersist

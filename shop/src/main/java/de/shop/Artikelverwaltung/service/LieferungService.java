@@ -1,8 +1,6 @@
 package de.shop.Artikelverwaltung.service;
 
 import static de.shop.Util.Constants.KEINE_ID;
-import static java.util.logging.Level.FINER;
-import static java.util.logging.Level.FINEST;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
@@ -10,7 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.logging.Logger;
+
+import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -24,13 +23,12 @@ import javax.validation.Validator;
 import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Util.IdGroup;
-import de.shop.Util.Log;
 import de.shop.Util.ValidatorProvider;
+import de.shop.Util.Log;
 
 @Log
 public class LieferungService implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	
 	public enum FetchType {
 		NUR_LIEFERUNG, 
@@ -48,14 +46,17 @@ public class LieferungService implements Serializable {
 	@Inject
 	private ValidatorProvider validatorProvider;
 	
+	@Inject
+	private transient Logger logger;
+	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		logger.debugf("CDI-faehiges Bean {0} wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		logger.debugf("CDI-faehiges Bean {0} wird geloescht", this);
 	}
 
 	/**
@@ -141,7 +142,7 @@ public class LieferungService implements Serializable {
 		}
 
 		for (Lieferungsposition lp : lieferung.getLieferungspositionen()) {
-			LOGGER.log(FINEST, "Lieferungsposition {0}", lp);
+			logger.debugf("Lieferungsposition {0}", lp);
 		}
 		
 		lieferung.setId(KEINE_ID);
@@ -188,7 +189,7 @@ public class LieferungService implements Serializable {
 			}
 		}
 		catch (NoResultException e) {
-			LOGGER.finest("Neue Lieferung");
+			logger.debugf("Neue Lieferung");
 		}
 
 		em.merge(lieferung);
