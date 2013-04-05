@@ -10,7 +10,8 @@ CREATE TABLE kunde (
 	email VARCHAR2(128) NOT NULL UNIQUE,
 	passwort VARCHAR2(256) NOT NULL,
 	erstellt_am TIMESTAMP NOT NULL,
-	geaendert_am TIMESTAMP NOT NULL
+	geaendert_am TIMESTAMP NOT NULL,
+	version NUMBER(8,0) NOT NULL
 );
 
 DROP TABLE adresse;
