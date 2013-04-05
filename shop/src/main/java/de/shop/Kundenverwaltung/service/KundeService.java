@@ -1,14 +1,12 @@
 package de.shop.Kundenverwaltung.service;
 
 import static de.shop.Util.Constants.KEINE_ID;
-import static java.util.logging.Level.FINER;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -25,6 +23,8 @@ import javax.persistence.criteria.Root;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
+
+import org.jboss.logging.Logger;
 
 import de.shop.Auftragsverwaltung.domain.Auftragsposition;
 import de.shop.Auftragsverwaltung.domain.Auftragsposition_;
@@ -60,12 +60,12 @@ public class KundeService implements Serializable {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		LOGGER.debugf("CDI-faehiges Bean =%d wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		LOGGER.debugf("CDI-faehiges Bean =%d wird geloescht", this);
 	}
 
 	/**
@@ -229,7 +229,7 @@ public class KundeService implements Serializable {
 		}
 		catch (NoResultException e) {
 			// Noch kein Kunde mit dieser Email-Adresse
-			LOGGER.finest("Email-Adresse existiert noch nicht");
+			LOGGER.debugf("Email-Adresse existiert noch nicht");
 		}
 		
 		kunde.setKundenNr(KEINE_ID);
@@ -270,7 +270,7 @@ public class KundeService implements Serializable {
 			}
 		}
 		catch (NoResultException e) {
-			LOGGER.finest("Neue Email-Adresse");
+			LOGGER.debugf("Neue Email-Adresse");
 		}
 		
 		em.merge(kunde);
