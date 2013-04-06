@@ -1,17 +1,12 @@
 
 package de.shop.Artikelverwaltung.rest;
 
-import static java.util.logging.Level.FINER;
-import static java.util.logging.Level.FINEST;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -31,6 +26,8 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.jboss.logging.Logger;
+
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lagerposition;
 import de.shop.Artikelverwaltung.service.ArtikelService;
@@ -41,7 +38,7 @@ import de.shop.Util.RestLocaleHelper;
 
 
 @Path("/lagerpositionen")
-@Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
+@Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
 @Log
@@ -59,12 +56,12 @@ public class LagerpositionResource {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		LOGGER.debugf("CDI-faehiges Bean %s {0} wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		LOGGER.debugf("CDI-faehiges Bean %s {0} wird geloescht", this);
 	}	
 	
 	@GET
@@ -126,7 +123,7 @@ public class LagerpositionResource {
 	}
 	
 	@PUT
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes(APPLICATION_JSON)
 	@Produces
 	public void updateLagerposition(Lagerposition lagerposition, 
 										@Context UriInfo uriInfo, 
@@ -142,9 +139,9 @@ public class LagerpositionResource {
 			throw new NotFoundException(msg);
 		}
 		
-		LOGGER.log(FINEST, "Artikel vorher: %s", lagerposOrig);
+		LOGGER.debugf("Artikel vorher: %s", lagerposOrig);
 		lagerposOrig.setValues(lagerposition);
-		LOGGER.log(FINEST, "Artikel nachher: %s", lagerposOrig);
+		LOGGER.debugf("Artikel nachher: %s", lagerposOrig);
 		lagerposition = ls.updateLagerposition(lagerposOrig, locale);
 		
 		if (lagerposition == null) {
@@ -154,7 +151,7 @@ public class LagerpositionResource {
 	}
 	
 	@POST
-	@Consumes({ APPLICATION_XML, TEXT_XML })
+	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response createLagerposition(Lagerposition lagerposition,
 										@Context UriInfo uriInfo,

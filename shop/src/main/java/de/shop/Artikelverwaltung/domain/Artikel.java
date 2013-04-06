@@ -1,5 +1,6 @@
 package de.shop.Artikelverwaltung.domain;
 
+import static de.shop.Util.Constants.ERSTE_VERSION;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,12 +29,12 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import de.shop.Util.IdGroup;
 
@@ -65,7 +67,6 @@ import de.shop.Util.IdGroup;
   	  		    		 +	"WHERE la.id IN (:" + Artikel.PARAM_ID + ")")
 	})
 
-@XmlRootElement
 public class Artikel implements Serializable {
 
 	private static final String PREFIX = "Artikel.";
@@ -90,49 +91,54 @@ public class Artikel implements Serializable {
 
 	private static final long serialVersionUID = 4651646021686650992L;
 	
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "artikel_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "artikelverwaltung.artikel.id.min", groups = IdGroup.class)
-	@XmlAttribute
 	private Long id = KEINE_ID;
 
 
 	@OneToMany(mappedBy = "artikel")
-	@XmlTransient
+	@JsonIgnore
 	private List<Lagerposition> lagerpositionen;
 	
 	@Transient
-	@XmlElement(name = "lagerpositionen")
+	@JsonProperty("lagerpositionen")
 	private URI lagerpositionenUri; 
 
 	@Lob
-	@XmlElement
 	private String beschreibung;
 
 	@NotNull(message = "artikelverwaltung.artikel.bezeichnung.notNull")
-	@XmlElement
 	private String bezeichnung;
 
-	@XmlElement
 	private String bild;
 
 	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
-	@XmlElement
 	private Date erstelltAm;
 	
 
 	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
-	@XmlElement
 	private Date geaendertAm;
 
 	@NotNull(message = "artikelverwaltung.artikel.preis.notNull")
-	@XmlElement
 	private BigDecimal preis;
 
 	public Artikel() {
+	}
+	
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	public Long getId() {

@@ -1,14 +1,11 @@
 package de.shop.Artikelverwaltung.service;
 
 import static de.shop.Util.Constants.KEINE_ID;
-import static java.util.logging.Level.FINER;
 
 import java.io.Serializable;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -19,6 +16,8 @@ import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import org.jboss.logging.Logger;
+
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Util.IdGroup;
 import de.shop.Util.Log;
@@ -27,7 +26,9 @@ import de.shop.Util.ValidatorProvider;
 @Log
 public class ArtikelService implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
+	
+	@Inject
+	private transient Logger logger;
 	
 	public enum FetchType {
 		NUR_Artikel, 
@@ -47,12 +48,12 @@ public class ArtikelService implements Serializable {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		logger.debugf("CDI-faehiges Bean %s {0} wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		logger.debugf("CDI-faehiges Bean %s {0} wird geloescht", this);
 	}
 
 	/**
@@ -214,7 +215,7 @@ public class ArtikelService implements Serializable {
 			}
 		}
 		catch (NoResultException e) {
-			LOGGER.finest("Neuer Artikel");
+			logger.debugf("Neuer Artikel");
 		}
 
 		em.merge(artikel);

@@ -1,5 +1,6 @@
 package de.shop.Artikelverwaltung.domain;
 
+import static de.shop.Util.Constants.ERSTE_VERSION;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
@@ -12,6 +13,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,12 +27,11 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.Min;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.hibernate.validator.constraints.NotBlank;
 
 import de.shop.Util.IdGroup;
@@ -56,7 +57,6 @@ import de.shop.Util.IdGroup;
 		    		query = "SELECT a FROM Lager a JOIN a.lagerpositionen"),
    })
 
-@XmlRootElement
 public class Lager implements Serializable {	
 	
 	private static final String PREFIX = "Lager.";
@@ -74,36 +74,44 @@ public class Lager implements Serializable {
 
 	private static final long serialVersionUID = -2184864191060846895L;
 
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "lager_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "artikelverwaltung.lager.id.min", groups = IdGroup.class)
-	@XmlAttribute
 	private Long id = KEINE_ID;
 
 	@OneToMany(mappedBy = "lager")
-	@XmlTransient
+	@JsonIgnore
 	private List<Lagerposition> lagerpositionen;
 	
 	@Transient
-	@XmlElement(name = "lagerpositionen")
+	@JsonProperty("lagerpositionen")
 	private URI lagerpositionenUri;
 
 	@NotBlank(message = "artikelverwaltung.lager.bezeichnung.notBlank")
-	@XmlElement
 	private String bezeichnung;
 
 	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
-	@XmlElement
 	private Date erstelltAm;
 
 	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
-	@XmlElement
 	private Date geaendertAm;
 
 	public Lager() {
+	}
+	
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	public Long getId() {
@@ -250,10 +258,6 @@ public class Lager implements Serializable {
 				+ "]";
 	}
 
-	
-	
-	
-	
 	
 
 }

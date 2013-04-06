@@ -1,5 +1,6 @@
 package de.shop.Artikelverwaltung.domain;
 
+import static de.shop.Util.Constants.ERSTE_VERSION;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,12 +26,12 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import de.shop.Util.IdGroup;
 
@@ -55,7 +57,7 @@ import de.shop.Util.IdGroup;
 					+ "where lagerposition.lager.id = :" + Lagerposition.PARAM_LAGER_ID)
 	
   })
-@XmlRootElement
+
 public class Lagerposition implements Serializable {	
 	
 	private static final String PREFIX = "Lagerposition.";
@@ -71,58 +73,64 @@ public class Lagerposition implements Serializable {
 		PREFIX + "findLagerpositionByArtikelId";
 	public static final String PARAM_ARTIKEL_ID = "artikelId";
 	public static final String PARAM_LAGER_ID = "lagerId";
-
-
 	
 	private static final long serialVersionUID = 6937895919585767805L;
 
+	@Version
+	@Basic(optional = false)
+	private int version = ERSTE_VERSION;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "lagerposition_ID", nullable = false, updatable = false, precision = LONG_ANZ_ZIFFERN)
 	@Min(value = MIN_ID, message = "artikelverwaltung.lagerposition.id.min", groups = IdGroup.class)
-	@XmlAttribute
 	private Long id = KEINE_ID;
 	
 	@ManyToOne
 	@JoinColumn(name = "lager_FID", nullable = false)
 	@OrderColumn(name = "erstellt_am")
 	@NotNull(message = "artikelverwaltung.lagerposition.lager.notNull")
-	@XmlTransient
+	@JsonIgnore
 	private Lager lager;
 	
 	@Transient
-	@XmlElement(name = "lager", required = true)
+	@JsonProperty("lager")
 	private URI lagerUri;
 
 	@ManyToOne
 	@JoinColumn(name = "artikel_FID", nullable = false)
 	@OrderColumn(name = "erstellt_am")
 	@NotNull(message = "artikelverwaltung.lagerposition.artikel.notNull")
-	@XmlTransient
+	@JsonIgnore
 	private Artikel artikel;
 	
 	@Transient
-	@XmlElement(name = "artikel", required = true)
+	@JsonProperty("artikel")
 	private URI artikelUri;
 
 	@Min(value = 1, message = "artikelverwaltung.lagerposition.anzahl.min")
-	@XmlElement
 	private int anzahl;
 
 	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
-	@XmlElement
 	private Date erstelltAm;
 
 	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
-	@XmlElement
 	private Date geaendertAm;
 
 
 	public Lagerposition() {
 	}
 
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
+	
 	public Long getId() {
 		return this.id;
 	}

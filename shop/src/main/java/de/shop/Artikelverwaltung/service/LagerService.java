@@ -1,14 +1,11 @@
 package de.shop.Artikelverwaltung.service;
 
 import static de.shop.Util.Constants.KEINE_ID;
-import static java.util.logging.Level.FINER;
 
 import java.io.Serializable;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -18,6 +15,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+
+import org.jboss.logging.Logger;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lager;
@@ -29,7 +28,9 @@ import de.shop.Util.ValidatorProvider;
 @Log
 public class LagerService implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
+	
+	@Inject
+	private transient Logger logger;
 	
 	public enum OrderType {
 		KEINE,
@@ -49,12 +50,12 @@ public class LagerService implements Serializable {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wurde erzeugt", this);
+		logger.debugf("CDI-faehiges Bean %s {0} wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.log(FINER, "CDI-faehiges Bean {0} wird geloescht", this);
+		logger.debugf("CDI-faehiges Bean %s {0} wird geloescht", this);
 	}
 
 	/**
@@ -206,7 +207,7 @@ public class LagerService implements Serializable {
 			}
 		}
 		catch (NoResultException e) {
-			LOGGER.finest("Lager mit id:" + lager.getId() + " konnte nicht gefunden werden");
+			logger.debugf("Lager mit id:" + lager.getId() + " konnte nicht gefunden werden");
 		}
 
 		em.merge(lager);
@@ -351,16 +352,12 @@ public class LagerService implements Serializable {
 			}
 		}
 		catch (NoResultException e) {
-			LOGGER.finest("Lagerposition mit id:" + lagerpos.getId() + " konnte nicht gefunden werden");
+			logger.debugf("Lagerposition mit id:" + lagerpos.getId() + " konnte nicht gefunden werden");
 		}
 
 		em.merge(lagerpos);
 		return lagerpos;
 	}
-	
-	
-	
-	
 	
 	
 	
