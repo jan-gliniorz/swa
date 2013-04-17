@@ -110,7 +110,6 @@ public class Artikel implements Serializable {
 	@JsonProperty("lagerpositionen")
 	private URI lagerpositionenUri; 
 
-	@Lob
 	private String beschreibung;
 
 	@NotNull(message = "artikelverwaltung.artikel.bezeichnung.notNull")
