@@ -19,7 +19,7 @@ import javax.validation.Validator;
 import org.jboss.logging.Logger;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
-import de.shop.Artikelverwaltung.domain.Lager;
+//import de.shop.Artikelverwaltung.domain.Lager;
 import de.shop.Artikelverwaltung.domain.Lagerposition;
 import de.shop.Util.IdGroup;
 import de.shop.Util.Log;
@@ -75,51 +75,51 @@ public class LagerService implements Serializable {
 	/**
 	 * @throws Exception 
 	 */
-	public Lager findLagerById(Long id, Locale locale) {
-		validateLagerId(id, locale);
-		Lager lager = null;
-	
-		try {
-			lager = em.find(Lager.class, id);	
-		}
-		catch (NoResultException e) {
-			//throw new Exception("kein Lager mit Id:" + id + "gefunden");
-			return null;
-		}
-
-		return lager;
-	}
-	
-	public List<Lager> findLagerAll(FetchType fetch, OrderType order) {
-		
-		List<Lager> lager; 
-		
-		switch (fetch) {
-		case NUR_Lager:
-			lager = OrderType.ID.equals(order)
-			         ? em.createNamedQuery(Lager.FIND_LAGER_ALL, Lager.class)
-			             .getResultList()
-			         : em.createNamedQuery(Lager.FIND_LAGER_ALL, Lager.class)
-			             .getResultList();
-			break;
-		
-		case MIT_POSITIONEN:
-			lager = em.createNamedQuery(Lager.FIND_LAGER_ALL_LAGERPOSITIONEN, Lager.class)
-					   .getResultList();
-			break;
-
-		default:
-			lager = OrderType.ID.equals(order)
-	         		? em.createNamedQuery(Lager.FIND_LAGER_ALL, Lager.class)
-	         			.getResultList()
-	             	: em.createNamedQuery(Lager.FIND_LAGER_ALL, Lager.class)
-	             		.getResultList();
-			break;
-		}
-		
-		return lager;
-		
-	}
+//	public Lager findLagerById(Long id, Locale locale) {
+//		validateLagerId(id, locale);
+//		Lager lager = null;
+//	
+//		try {
+//			lager = em.find(Lager.class, id);	
+//		}
+//		catch (NoResultException e) {
+//			//throw new Exception("kein Lager mit Id:" + id + "gefunden");
+//			return null;
+//		}
+//
+//		return lager;
+//	}
+//	
+//	public List<Lager> findLagerAll(FetchType fetch, OrderType order) {
+//		
+//		List<Lager> lager; 
+//		
+//		switch (fetch) {
+//		case NUR_Lager:
+//			lager = OrderType.ID.equals(order)
+//			         ? em.createNamedQuery(Lager.FIND_LAGER_ALL, Lager.class)
+//			             .getResultList()
+//			         : em.createNamedQuery(Lager.FIND_LAGER_ALL, Lager.class)
+//			             .getResultList();
+//			break;
+//		
+//		case MIT_POSITIONEN:
+//			lager = em.createNamedQuery(Lager.FIND_LAGER_ALL_LAGERPOSITIONEN, Lager.class)
+//					   .getResultList();
+//			break;
+//
+//		default:
+//			lager = OrderType.ID.equals(order)
+//	         		? em.createNamedQuery(Lager.FIND_LAGER_ALL, Lager.class)
+//	         			.getResultList()
+//	             	: em.createNamedQuery(Lager.FIND_LAGER_ALL, Lager.class)
+//	             		.getResultList();
+//			break;
+//		}
+//		
+//		return lager;
+//		
+//	}
 	
 	public Lagerposition findLagerpositionById(Long id, Locale locale) {
 		
@@ -137,101 +137,101 @@ public class LagerService implements Serializable {
 		return lagerposition;
 	}
 	
-	public Lagerposition findLagerpositionByLagerId(Long id, Locale locale) {
-		validateLagerId(id, locale);
-		Lagerposition lagerposition;
-		
-		try {
-		lagerposition = em.createNamedQuery(Lagerposition.FIND_LAGERPOSITION_BY_LAGER, Lagerposition.class)
-									        .setParameter(Lagerposition.PARAM_LAGER_ID, id)
-											.getSingleResult();
-		}
-		catch (NoResultException e) {
-			return null;
-		}
-		
-		return lagerposition;
-	}
+//	public Lagerposition findLagerpositionByLagerId(Long id, Locale locale) {
+//		validateLagerId(id, locale);
+//		Lagerposition lagerposition;
+//		
+//		try {
+//		lagerposition = em.createNamedQuery(Lagerposition.FIND_LAGERPOSITION_BY_LAGER, Lagerposition.class)
+//									        .setParameter(Lagerposition.PARAM_LAGER_ID, id)
+//											.getSingleResult();
+//		}
+//		catch (NoResultException e) {
+//			return null;
+//		}
+//		
+//		return lagerposition;
+//	}
 	
-	private void validateLagerId(Long lagerId, Locale locale) {
-		final Validator validator = validatorProvider.getValidator(locale);
-		final Set<ConstraintViolation<Lager>> violations = validator.validateValue(Lager.class,
-			                                                                           "id",
-			                                                                           lagerId,
-			                                                                           IdGroup.class);
-	
-		if (!violations.isEmpty())
-			throw new LagerInvalidIdException(lagerId, violations);
-	}
-	
-	public Lager createLager(Lager lager, Locale locale) {
-		if (lager == null) {
-			return lager;
-		}
-
-		// Werden alle Constraints beim Einfuegen gewahrt?
-		validateLager(lager, locale);
-		
-		lager.setId(KEINE_ID);
-		em.persist(lager);
-		return lager;		
-	}
-	
-	private void validateLager(Lager lager, Locale locale) {
-		
-		// Werden alle Constraints beim Einfuegen gewahrt?
-		final Validator validator = validatorProvider.getValidator(locale);
-		
-		final Set<ConstraintViolation<Lager>> violations = validator.validate(lager);
-		if (!violations.isEmpty()) {
-			throw new LagerValidationException(lager, violations);
-		}
-	}
-	
-	public Lager updateLager(Lager lager, Locale locale) {
-		if (lager == null) {
-				return null;
-		}
-
-		// Werden alle Constraints beim Modifizieren gewahrt?
-		validateLager(lager, locale);
-		
-		try {
-			final Lager vorhandeneLager = em.createNamedQuery(Lager.FIND_LAGER_BY_ID,
-						                                               Lager.class)
-						                              .setParameter(Lager.PARAM_ID, lager.getId())
-						                              .getSingleResult();
-		
-			if (vorhandeneLager.getId().longValue() != lager.getId().longValue()) {
-				throw new LagerIdExistsException(lager.getId());
-			}
-		}
-		catch (NoResultException e) {
-			logger.debugf("Lager mit id:" + lager.getId() + " konnte nicht gefunden werden");
-		}
-
-		em.merge(lager);
-		return lager;
-	}
-	
-	public void deleteLager(Lager lager) {
-		if (lager == null) {
-			return;
-		}
-		
-		try {
-			lager = findLagerById(lager.getId(), Locale.getDefault());
-		}
-		catch (LagerInvalidIdException e) {
-			return;
-		}
-		
-		if (lager == null) {
-			return;
-		}
-
-		em.remove(lager);
-	}
+//	private void validateLagerId(Long lagerId, Locale locale) {
+//		final Validator validator = validatorProvider.getValidator(locale);
+//		final Set<ConstraintViolation<Lager>> violations = validator.validateValue(Lager.class,
+//			                                                                           "id",
+//			                                                                           lagerId,
+//			                                                                           IdGroup.class);
+//	
+//		if (!violations.isEmpty())
+//			throw new LagerInvalidIdException(lagerId, violations);
+//	}
+//	
+//	public Lager createLager(Lager lager, Locale locale) {
+//		if (lager == null) {
+//			return lager;
+//		}
+//
+//		// Werden alle Constraints beim Einfuegen gewahrt?
+//		validateLager(lager, locale);
+//		
+//		lager.setId(KEINE_ID);
+//		em.persist(lager);
+//		return lager;		
+//	}
+//	
+//	private void validateLager(Lager lager, Locale locale) {
+//		
+//		// Werden alle Constraints beim Einfuegen gewahrt?
+//		final Validator validator = validatorProvider.getValidator(locale);
+//		
+//		final Set<ConstraintViolation<Lager>> violations = validator.validate(lager);
+//		if (!violations.isEmpty()) {
+//			throw new LagerValidationException(lager, violations);
+//		}
+//	}
+//	
+//	public Lager updateLager(Lager lager, Locale locale) {
+//		if (lager == null) {
+//				return null;
+//		}
+//
+//		// Werden alle Constraints beim Modifizieren gewahrt?
+//		validateLager(lager, locale);
+//		
+//		try {
+//			final Lager vorhandeneLager = em.createNamedQuery(Lager.FIND_LAGER_BY_ID,
+//						                                               Lager.class)
+//						                              .setParameter(Lager.PARAM_ID, lager.getId())
+//						                              .getSingleResult();
+//		
+//			if (vorhandeneLager.getId().longValue() != lager.getId().longValue()) {
+//				throw new LagerIdExistsException(lager.getId());
+//			}
+//		}
+//		catch (NoResultException e) {
+//			logger.debugf("Lager mit id:" + lager.getId() + " konnte nicht gefunden werden");
+//		}
+//
+//		em.merge(lager);
+//		return lager;
+//	}
+//	
+//	public void deleteLager(Lager lager) {
+//		if (lager == null) {
+//			return;
+//		}
+//		
+//		try {
+//			lager = findLagerById(lager.getId(), Locale.getDefault());
+//		}
+//		catch (LagerInvalidIdException e) {
+//			return;
+//		}
+//		
+//		if (lager == null) {
+//			return;
+//		}
+//
+//		em.remove(lager);
+//	}
 	
 	private void validateLagerposition(Lagerposition lagerposition, Locale locale) {
 		
@@ -274,12 +274,12 @@ public class LagerService implements Serializable {
 			return;
 		}
 		
-		try {
+//		try {
 			lagerposition = findLagerpositionById(lagerposition.getId(), Locale.getDefault());
-		}
-		catch (LagerInvalidIdException e) {
-			return;
-		}
+//		}
+//		catch (LagerInvalidIdException e) {
+//			return;
+//		}
 		
 		if (lagerposition == null) {
 			return;

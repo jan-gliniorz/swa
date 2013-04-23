@@ -82,24 +82,24 @@ public class LagerpositionResource {
 		return lagerposition;
 	}
 	
-	@GET
-	@Path("ByLagerId/{lagerid:[1-9][0-9]*}")
-	public Lagerposition findLagerpositionByLagerId(@PathParam("lagerid") Long id,
-													@Context HttpHeaders headers,
-													@Context UriInfo uriInfo) {
-		
-		Locale locale = RestLocaleHelper.getLocalFromHttpHeaders(headers);
-		
-		final Lagerposition lagerposition = ls.findLagerpositionByLagerId(id, locale);
-		if (lagerposition == null) {
-			String msg = "Lager nicht vorhanden mit der ID: " + id;
-			throw new NotFoundException(msg);
-		}
-			
-		uriLagerpos.updateUriLagerposition(lagerposition, uriInfo);
-		
-		return lagerposition;
-	}
+//	@GET
+//	@Path("ByLagerId/{lagerid:[1-9][0-9]*}")
+//	public Lagerposition findLagerpositionByLagerId(@PathParam("lagerid") Long id,
+//													@Context HttpHeaders headers,
+//													@Context UriInfo uriInfo) {
+//		
+//		Locale locale = RestLocaleHelper.getLocalFromHttpHeaders(headers);
+//		
+//		final Lagerposition lagerposition = ls.findLagerpositionByLagerId(id, locale);
+//		if (lagerposition == null) {
+//			String msg = "Lager nicht vorhanden mit der ID: " + id;
+//			throw new NotFoundException(msg);
+//		}
+//			
+//		uriLagerpos.updateUriLagerposition(lagerposition, uriInfo);
+//		
+//		return lagerposition;
+//	}
 
 	@GET
 	@QueryParam("{artikelid:[1-9][0-9]*}")

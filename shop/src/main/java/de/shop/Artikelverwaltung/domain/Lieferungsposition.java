@@ -20,10 +20,12 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.jboss.logging.Logger;
 
 import de.shop.Util.IdGroup;
@@ -58,16 +60,17 @@ public class Lieferungsposition implements Serializable {
 	private static final String PREFIX = "Lieferungsposition.";
 	public static final String LIEFERUNGSPOSITION_BY_ID = PREFIX + "findLieferungspositionById";
 	public static final String LIEFERUNGSPOSITION_BY_ID_ARTIKEL = PREFIX  + "findLieferungspositionByIdArtikel";
-	public static final String LIEFERUNGSPOSITIONEN_BY_LIEFERUNG_ID = PREFIX + "findLieferungspositionenByLieferungId";
+	public static final String LIEFERUNGSPOSITIONEN_BY_LIEFERUNG_ID = PREFIX + "findLieferungspositionenByLieferungId"; 
 	
 	public static final String PARAM_ID = "id";
 	
     @ManyToOne
 	@JoinColumn(name = "artikel_FID", nullable = false)
-    @OrderColumn(name = "erstellt_am")
 	@NotNull(message = "{artikelverwaltung.lieferungsposition.artikel.notNull}")
+    @JsonIgnore
 	private Artikel artikel;
 	
+    @Transient
 	private URI artikelUri;	
 	
 	@Id

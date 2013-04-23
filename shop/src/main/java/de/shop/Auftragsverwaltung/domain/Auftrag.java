@@ -92,16 +92,17 @@ public class Auftrag implements Serializable {
 	private Rechnung rechnung;
 
 	@Transient
-	@XmlElement(name = "rechnung")
+	//@XmlElement(name = "rechnung")
 	private URI rechnungUri;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "kunde_FID", nullable = false, updatable = false)
+	//@OrderColumn(name="idx")
 	@JsonIgnore
 	private Kunde kunde;
 	
 	@Transient
-	@XmlElement(name = "kunde", required = true)
+	//@XmlElement(name = "kunde", required = true)
 	private URI kundeUri;
 
 	@Column(name = "erstellt_am")

@@ -31,7 +31,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import de.shop.Util.IdGroup;
 
@@ -50,11 +49,11 @@ import de.shop.Util.IdGroup;
 		@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_ALL,
 		    query = "SELECT lp FROM Lagerposition lp"),
 		@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_ARTIKEL,
-		    query = "SELECT lp FROM Lagerposition lp WHERE lp.artikel.id = :" + Lagerposition.PARAM_ARTIKEL_ID),
-		@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_LAGER,
-			query = "select lagerposition "
-					+ "from Lagerposition as lagerposition " 
-					+ "where lagerposition.lager.id = :" + Lagerposition.PARAM_LAGER_ID)
+		    query = "SELECT lp FROM Lagerposition lp WHERE lp.artikel.id = :" + Lagerposition.PARAM_ARTIKEL_ID)//,
+//		@NamedQuery(name = Lagerposition.FIND_LAGERPOSITION_BY_LAGER,
+//			query = "select lagerposition "
+//					+ "from Lagerposition as lagerposition " 
+//					+ "where lagerposition.lager.id = :" + Lagerposition.PARAM_LAGER_ID)
 	
   })
 
@@ -62,8 +61,8 @@ public class Lagerposition implements Serializable {
 	
 	private static final String PREFIX = "Lagerposition.";
 
-	public static final String FIND_LAGERPOSITION_BY_LAGER =
-		PREFIX + "findLagerpositionByLagerId";
+//	public static final String FIND_LAGERPOSITION_BY_LAGER =
+//		PREFIX + "findLagerpositionByLagerId";
 	public static final String FIND_LAGERPOSITION_BY_ID =
 		PREFIX + "findLagerpositionById";
 	public static final String PARAM_ID = "id";
@@ -86,16 +85,15 @@ public class Lagerposition implements Serializable {
 	@Min(value = MIN_ID, message = "artikelverwaltung.lagerposition.id.min", groups = IdGroup.class)
 	private Long id = KEINE_ID;
 	
-	@ManyToOne
-	@JoinColumn(name = "lager_FID", nullable = false)
-	@OrderColumn(name = "erstellt_am")
-	@NotNull(message = "artikelverwaltung.lagerposition.lager.notNull")
-	@JsonIgnore
-	private Lager lager;
+//	@ManyToOne
+//	@JoinColumn(name = "lager_FID", nullable = false)
+//	@OrderColumn(name = "erstellt_am")
+//	@NotNull(message = "artikelverwaltung.lagerposition.lager.notNull")
+//	@JsonIgnore
+//	private Lager lager;
 	
-	@Transient
-	@JsonProperty("lager")
-	private URI lagerUri;
+//	@Transient
+//	private URI lagerUri;
 
 	@ManyToOne
 	@JoinColumn(name = "artikel_FID", nullable = false)
@@ -105,7 +103,6 @@ public class Lagerposition implements Serializable {
 	private Artikel artikel;
 	
 	@Transient
-	@JsonProperty("artikel")
 	private URI artikelUri;
 
 	@Min(value = 1, message = "artikelverwaltung.lagerposition.anzahl.min")
@@ -139,21 +136,21 @@ public class Lagerposition implements Serializable {
 		this.id = id;
 	}
 	
-	public Lager getLager() {
-		return lager;
-	}
-	
-	public void setLager(Lager lager) {
-		this.lager = lager;
-	}
-	
-	public URI getLagerUri() {
-		return lagerUri;
-	}
-
-	public void setLagerUri(URI lagerUri) {
-		this.lagerUri = lagerUri;
-	}
+//	public Lager getLager() {
+//		return lager;
+//	}
+//	
+//	public void setLager(Lager lager) {
+//		this.lager = lager;
+//	}
+//	
+//	public URI getLagerUri() {
+//		return lagerUri;
+//	}
+//
+//	public void setLagerUri(URI lagerUri) {
+//		this.lagerUri = lagerUri;
+//	}
 
 	public void setArtikel(Artikel artikel) {
 		this.artikel = artikel;
@@ -197,7 +194,7 @@ public class Lagerposition implements Serializable {
 	}
 
 	public void setValues(Lagerposition l) {
-		lager = l.lager;
+		//lager = l.lager;
 		artikel = l.artikel;
 		anzahl = l.anzahl;
 	}

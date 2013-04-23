@@ -4,6 +4,7 @@ import static de.shop.Util.Constants.ERSTE_VERSION;
 import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
@@ -20,10 +21,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -34,7 +35,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import de.shop.Util.IdGroup;
 
@@ -102,15 +102,16 @@ public class Artikel implements Serializable {
 	private Long id = KEINE_ID;
 
 
-	@OneToMany(mappedBy = "artikel")
+	@OneToMany(mappedBy = "artikel", fetch = EAGER)
+	// TODO @OrderColumn
+	@OrderColumn(name="idx")
 	@JsonIgnore
 	private List<Lagerposition> lagerpositionen;
 	
 	@Transient
-	@JsonProperty("lagerpositionen")
 	private URI lagerpositionenUri; 
 
-	@Lob
+	
 	private String beschreibung;
 
 	@NotNull(message = "artikelverwaltung.artikel.bezeichnung.notNull")
@@ -336,7 +337,7 @@ public class Artikel implements Serializable {
 		return "Artikel [artikel_ID=" + id + ", beschreibung=" + beschreibung
 				+ ", bezeichung=" + bezeichnung + ", bild=" + bild
 				+ ", erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm
-				+ ", preis=" + preis + "]";
+				+ ", preis=" + preis + ", lagerpositionenUri=" + lagerpositionenUri + "]";
 	}
 
 	

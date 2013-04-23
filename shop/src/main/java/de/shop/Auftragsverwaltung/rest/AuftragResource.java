@@ -2,6 +2,7 @@ package de.shop.Auftragsverwaltung.rest;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -209,6 +210,8 @@ public class AuftragResource {
 				if (artikel.getId().longValue() == artikelId) {
 					// Der Artikel wurde gefunden
 					ap.setArtikel(artikel);
+					//Gesammtpreis der Auftragsposition berechnen. Der Preis, der eventuell über das JSON Objekt geliefert wird, muss nicht korrekt sein.
+					ap.setPreis(artikel.getPreis().multiply(new BigDecimal(ap.getAnzahl())));
 					neueAuftragspositionen.add(ap);
 					break;					
 				}
