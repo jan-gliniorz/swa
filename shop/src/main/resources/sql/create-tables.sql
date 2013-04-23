@@ -14,6 +14,19 @@ CREATE TABLE kunde (
 	version NUMBER(8,0) NOT NULL
 );
 
+DROP TABLE kunde_rolle;
+CREATE TABLE kunde_rolle (
+	kunde_FID INTEGER NOT NULL,
+	rolle_FID INTEGER NOT NULL,
+	PRIMARY KEY (rolle_FID,kunde_FID)
+);
+
+DROP TABLE rolle;
+CREATE TABLE rolle (
+	id INTEGER NOT NULL PRIMARY KEY,
+	name VARCHAR2(30) NOT NULL
+);
+
 DROP TABLE adresse;
 CREATE table adresse (
 	adresse_ID INTEGER NOT NULL PRIMARY KEY, 
