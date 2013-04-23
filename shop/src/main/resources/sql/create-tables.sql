@@ -14,6 +14,19 @@ CREATE TABLE kunde (
 	version NUMBER(8,0) NOT NULL
 );
 
+DROP TABLE kunde_rolle;
+CREATE TABLE kunde_rolle (
+	kunde_FID INTEGER NOT NULL,
+	rolle_FID INTEGER NOT NULL,
+	PRIMARY KEY (rolle_FID,kunde_FID)
+);
+
+DROP TABLE rolle;
+CREATE TABLE rolle (
+	id INTEGER NOT NULL PRIMARY KEY,
+	name VARCHAR2(30) NOT NULL
+);
+
 DROP TABLE adresse;
 CREATE table adresse (
 	adresse_ID INTEGER NOT NULL PRIMARY KEY, 
@@ -83,6 +96,7 @@ DROP TABLE lagerposition;
 CREATE TABLE lagerposition (
 	lagerposition_ID INTEGER NOT NULL PRIMARY KEY,
 	lager_FID INTEGER NOT NULL,
+	idx INTEGER NOT NULL,
 	artikel_FID INTEGER NOT NULL,
 	anzahl INTEGER NOT NULL,
 	erstellt_am TIMESTAMP NOT NULL,

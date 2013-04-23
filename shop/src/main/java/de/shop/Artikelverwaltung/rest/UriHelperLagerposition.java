@@ -10,7 +10,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
-import de.shop.Artikelverwaltung.domain.Lager;
+//import de.shop.Artikelverwaltung.domain.Lager;
 import de.shop.Artikelverwaltung.domain.Lagerposition;
 import de.shop.Artikelverwaltung.service.ArtikelService;
 import de.shop.Artikelverwaltung.service.LagerService;
@@ -31,30 +31,30 @@ public class UriHelperLagerposition {
 	@Inject
 	private UriHelperArtikel uriHelperArtikel;
 	
-	@Inject
-	private UriHelperLager uriHelperLager;
+//	@Inject
+//	private UriHelperLager uriHelperLager;
 	
 	public void updateReferenceLagerposition(Lagerposition lagerposition, HttpHeaders headers) {
 		final Locale locale = RestLocaleHelper.getLocalFromHttpHeaders(headers);
 		
 		// Lager Referenz setzen
-		String lagerUri = lagerposition.getLagerUri().toString();
-		int lagerIdStartPost = lagerUri.lastIndexOf('/') + 1;
-		String lagerIdStr = lagerUri.substring(lagerIdStartPost);
-		Long lagerId = null;
-		try {
-			lagerId = Long.valueOf(lagerIdStr);
-		}
-		catch (NumberFormatException e) {
-			throw new NotFoundException("Kein Lager vorhanden mit der ID " + lagerIdStr, e);
-		}
+//		String lagerUri = lagerposition.getLagerUri().toString();
+//		int lagerIdStartPost = lagerUri.lastIndexOf('/') + 1;
+//		String lagerIdStr = lagerUri.substring(lagerIdStartPost);
+//		Long lagerId = null;
+//		try {
+//			lagerId = Long.valueOf(lagerIdStr);
+//		}
+//		catch (NumberFormatException e) {
+//			throw new NotFoundException("Kein Lager vorhanden mit der ID " + lagerIdStr, e);
+//		}
 		
-		Lager lager = lagerService.findLagerById(lagerId, locale);
-		if (lager == null) {
-			throw new NotFoundException("Kein Lager gefunden mit der ID " + lagerId);
-		}
+//		Lager lager = lagerService.findLagerById(lagerId, locale);
+//		if (lager == null) {
+//			throw new NotFoundException("Kein Lager gefunden mit der ID " + lagerId);
+//		}
 		
-		lagerposition.setLager(lager);
+//		lagerposition.setLager(lager);
 		
 		// Artikel Referenz setzen
 		String artikelUri = lagerposition.getArtikelUri().toString();
@@ -78,7 +78,7 @@ public class UriHelperLagerposition {
 	
 	
 	public void updateUriLagerposition(Lagerposition lagerposition, UriInfo uriInfo) {
-		lagerposition.setLagerUri(uriHelperLager.getUriLager(lagerposition.getLager(), uriInfo));
+//		lagerposition.setLagerUri(uriHelperLager.getUriLager(lagerposition.getLager(), uriInfo));
 		lagerposition.setArtikelUri(uriHelperArtikel.getUriArtikel(lagerposition.getArtikel(), uriInfo));
 	}
 
@@ -98,11 +98,11 @@ public class UriHelperLagerposition {
 		return uri;
 	}
 	
-	public URI getUriLagerpositionenByLager(Lager lager, UriInfo uriInfo) {
-		final UriBuilder ub = uriInfo.getBaseUriBuilder()
-		                             .path(LagerpositionResource.class)
-		                             .path(LagerpositionResource.class, "findLagerpositionByLagerId");
-		final URI uri = ub.build(lager.getId());
-		return uri;
-	}
+//	public URI getUriLagerpositionenByLager(Lager lager, UriInfo uriInfo) {
+//		final UriBuilder ub = uriInfo.getBaseUriBuilder()
+//		                             .path(LagerpositionResource.class)
+//		                             .path(LagerpositionResource.class, "findLagerpositionByLagerId");
+//		final URI uri = ub.build(lager.getId());
+//		return uri;
+//	}
 }

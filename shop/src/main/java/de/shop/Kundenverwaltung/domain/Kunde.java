@@ -23,6 +23,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
 import javax.persistence.PrePersist;
@@ -163,6 +164,7 @@ public class Kunde implements Serializable {
 	//LAZY-Fetching
 	@OneToMany(mappedBy = "kunde")
 	@JsonIgnore
+	//@OrderColumn(name = "idx")
 	private List<Auftrag> auftraege;
 	
 	@Transient
