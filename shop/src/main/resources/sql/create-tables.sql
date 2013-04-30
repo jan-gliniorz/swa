@@ -83,20 +83,9 @@ CREATE TABLE artikel (
 	version NUMBER(8,0) NOT NULL
 );
 
-DROP TABLE lager;
-CREATE TABLE lager (
-	lager_ID INTEGER NOT NULL PRIMARY KEY,
-	bezeichnung VARCHAR2(100) NOT NULL,
-	erstellt_am TIMESTAMP NOT NULL,
-	geaendert_am TIMESTAMP NOT NULL,
-	version NUMBER(8,0) NOT NULL
-);
-
 DROP TABLE lagerposition;
 CREATE TABLE lagerposition (
 	lagerposition_ID INTEGER NOT NULL PRIMARY KEY,
-	lager_FID INTEGER NOT NULL,
-	idx INTEGER NOT NULL,
 	artikel_FID INTEGER NOT NULL,
 	anzahl INTEGER NOT NULL,
 	erstellt_am TIMESTAMP NOT NULL,

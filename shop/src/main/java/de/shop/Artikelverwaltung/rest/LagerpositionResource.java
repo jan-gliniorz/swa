@@ -35,6 +35,7 @@ import de.shop.Artikelverwaltung.service.LagerService;
 import de.shop.Util.Log;
 import de.shop.Util.NotFoundException;
 import de.shop.Util.RestLocaleHelper;
+import de.shop.Util.Transactional;
 
 
 @Path("/lagerpositionen")
@@ -42,6 +43,7 @@ import de.shop.Util.RestLocaleHelper;
 @Consumes
 @RequestScoped
 @Log
+@Transactional
 public class LagerpositionResource {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	

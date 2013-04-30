@@ -10,10 +10,10 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -24,7 +24,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -104,9 +103,8 @@ public class Artikel implements Serializable {
 
 	@OneToMany(mappedBy = "artikel", fetch = EAGER)
 	// TODO @OrderColumn
-	@OrderColumn(name="idx")
 	@JsonIgnore
-	private List<Lagerposition> lagerpositionen;
+	private Set<Lagerposition> lagerpositionen;
 	
 	@Transient
 	private URI lagerpositionenUri; 
@@ -209,18 +207,18 @@ public class Artikel implements Serializable {
 	
 	public Artikel addLagerposition(Lagerposition lagerposition) {
 		if (lagerpositionen == null) {
-			lagerpositionen = new ArrayList<>();
+			lagerpositionen = new HashSet<>();
 		}
 		
 		lagerpositionen.add(lagerposition);
 		return this;
 	}
 	
-	public List<Lagerposition> getLagerposition() {
-		return Collections.unmodifiableList(lagerpositionen);
+	public Set<Lagerposition> getLagerposition() {
+		return Collections.unmodifiableSet(lagerpositionen);
 	}
 	
-	public void setLagerpositionen(List<Lagerposition> lagerpositionen) {
+	public void setLagerpositionen(Set<Lagerposition> lagerpositionen) {
 			if (this.lagerpositionen == null) {
 				this.lagerpositionen = lagerpositionen;
 				return;
