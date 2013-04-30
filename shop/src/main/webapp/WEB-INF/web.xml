@@ -42,6 +42,7 @@
    <url-pattern>/rest/kunden</url-pattern>
    <http-method>POST</http-method>
    <http-method>PUT</http-method>
+   <http-method>GET</http-method>
   </web-resource-collection>
   <auth-constraint>
    <role-name>admin</role-name>
@@ -50,7 +51,7 @@
  </security-constraint>
  <security-constraint>
   <web-resource-collection>
-   <web-resource-name>Privatkunden durch ein "Formular" erzeugen</web-resource-name>
+   <web-resource-name>Kunden durch ein "Formular" erzeugen</web-resource-name>
    <url-pattern>/rest/kunden/form</url-pattern>
    <http-method>POST</http-method>
   </web-resource-collection>
