@@ -112,12 +112,10 @@ public class Kunde implements Serializable {
 
 	@Column(name = "erstellt_am")
 	@Temporal(TIMESTAMP)
-	@JsonIgnore
 	private Date erstelltAm;
 
 	@Column(name = "geaendert_am")
 	@Temporal(TIMESTAMP)
-	@JsonIgnore
 	private Date geaendertAm;
 
 	@NotNull(message = "{kundenverwaltung.kunde.nachname.notNull}")

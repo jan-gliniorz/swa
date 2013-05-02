@@ -8,6 +8,7 @@ import static de.shop.util.TestConstants.KUNDEN_PATH;
 import static java.net.HttpURLConnection.HTTP_CONFLICT;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
+import static java.net.HttpURLConnection.HTTP_OK;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -46,14 +47,15 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 	private static final Long KUNDE_ID_UPDATE = Long.valueOf(11);
 	private static final String NEUER_NACHNAME = "Testname";
 	private static final String NEUER_NACHNAME_2 = "Neuername";
-	private static final Long KUNDE_ID_DELETE1 = Long.valueOf(12);
-	private static final Long KUNDE_ID_DELETE2 = Long.valueOf(13);
+	private static final Long KUNDE_ID_DELETE1 = Long.valueOf(20);
+	private static final Long KUNDE_ID_DELETE2 = Long.valueOf(21);
 
 	@Test
 	public void validate() {
 		assertThat(true, is(true));
 	}
-
+	
+	@Ignore
 	@Test
 	public void updateUpdate() throws InterruptedException, ExecutionException {
 		LOGGER.finer("BEGINN");
@@ -68,8 +70,6 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 		// When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)
 				                   .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-				                   .auth()
-				                   .basic(username, password)
                                    .get(KUNDEN_ID_PATH);
 		JsonObject jsonObject;
 		try (final JsonReader jsonReader =
@@ -118,6 +118,7 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 		LOGGER.finer("ENDE");
 	}
 	
+	@Ignore	
 	@Test
 	public void updateDelete() throws InterruptedException, ExecutionException {
 		LOGGER.finer("BEGINN");
@@ -133,14 +134,17 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 		// When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)
 				                   .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-				                   .auth()
-				                   .basic(username, password)
                                    .get(KUNDEN_ID_PATH);
+		
+		assertThat(response.getStatusCode(), is(HTTP_OK));
+		
 		JsonObject jsonObject;
 		try (final JsonReader jsonReader =
 				              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
 			jsonObject = jsonReader.readObject();
 		}
+		
+		
 
 		// Konkurrierendes Delete
     	final ConcurrentDelete concurrentDelete = new ConcurrentDelete(KUNDEN_PATH + '/' + kundeId,
@@ -172,7 +176,7 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 		
 		LOGGER.finer("ENDE");
 	}
-	
+
 	@Test
 	public void deleteUpdate() throws InterruptedException, ExecutionException {
 		LOGGER.finer("BEGINN");
@@ -188,8 +192,6 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 		// When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)
 				                   .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-				                   .auth()
-				                   .basic(username, password)
                                    .get(KUNDEN_ID_PATH);
 		
 		JsonObject jsonObject;
