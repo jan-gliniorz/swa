@@ -161,51 +161,51 @@ public class LieferungResourceTest extends AbstractResourceTest {
 	}
 	
 	
-//	@Test
-//	public void updateLieferung() {
-//		LOGGER.finer("BEGINN");
-//		
-//		// Given
-//		final DateFormat formatter = FORMATTER;
-//		final Long lieferungId = LIEFERUNG_ID_UPDATE;
-//		final Date neuesLieferungsdatum = LIEFERUNGSDATUM_UPDATE;
-//		final String username = USERNAME;
-//		final String password = PASSWORD;
-//		
-//		// When
-//		Response response = given().header(ACCEPT, APPLICATION_JSON)
-//				                   .pathParameter(LIEFERUNGEN_ID_PATH_PARAM, lieferungId)
-//                                   .get(LIEFERUNGEN_ID_PATH);
-//		
-//		JsonObject jsonObject;
-//		try (final JsonReader jsonReader =
-//				              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
-//			jsonObject = jsonReader.readObject();
-//		}
-//    	assertThat(jsonObject.getJsonNumber("id").longValue(), is(lieferungId.longValue()));
-//    	
-//    	// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Lieferungsdatum bauen
-//    	final JsonObjectBuilder job = getJsonBuilderFactory().createObjectBuilder();
-//    	final Set<String> keys = jsonObject.keySet();
-//    	for (String k : keys) {
-//    		if ("lieferungsdatum".equals(k)) {
-//    			job.add("lieferungsdatum",formatter.format(neuesLieferungsdatum));
-//    		}
-//    		else {
-//    			job.add(k, jsonObject.get(k));
-//    		}
-//    	}
-//    	jsonObject = job.build();
-//    	
-//		response = given().contentType(APPLICATION_JSON)
-//				          .body(jsonObject.toString())
-//                          .auth()
-//                          .basic(username, password)
-//                          .put(LIEFERUNGEN_PATH);
-//		
-//		// Then
-//		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
-//   	}
+	@Test
+	public void updateLieferung() {
+		LOGGER.finer("BEGINN");
+		
+		// Given
+		final DateFormat formatter = FORMATTER;
+		final Long lieferungId = LIEFERUNG_ID_UPDATE;
+		final Date neuesLieferungsdatum = LIEFERUNGSDATUM_UPDATE;
+		final String username = USERNAME;
+		final String password = PASSWORD;
+		
+		// When
+		Response response = given().header(ACCEPT, APPLICATION_JSON)
+				                   .pathParameter(LIEFERUNGEN_ID_PATH_PARAM, lieferungId)
+                                   .get(LIEFERUNGEN_ID_PATH);
+		
+		JsonObject jsonObject;
+		try (final JsonReader jsonReader =
+				              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
+			jsonObject = jsonReader.readObject();
+		}
+    	assertThat(jsonObject.getJsonNumber("id").longValue(), is(lieferungId.longValue()));
+    	
+    	// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Lieferungsdatum bauen
+    	final JsonObjectBuilder job = getJsonBuilderFactory().createObjectBuilder();
+    	final Set<String> keys = jsonObject.keySet();
+    	for (String k : keys) {
+    		if ("lieferungsdatum".equals(k)) {
+    			job.add("lieferungsdatum",formatter.format(neuesLieferungsdatum));
+    		}
+    		else {
+    			job.add(k, jsonObject.get(k));
+    		}
+    	}
+    	jsonObject = job.build();
+    	
+		response = given().contentType(APPLICATION_JSON)
+				          .body(jsonObject.toString())
+                          .auth()
+                          .basic(username, password)
+                          .put(LIEFERUNGEN_PATH);
+		
+		// Then
+		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
+   	}
 	
 	@Test
 	public void deleteLieferungMitBestellung() {
@@ -218,7 +218,9 @@ public class LieferungResourceTest extends AbstractResourceTest {
 		
 		// When
 		final Response response = given().pathParameter(LIEFERUNGEN_ID_PATH_PARAM, lieferungId)
-                                         .delete(LIEFERUNGEN_ID_PATH);
+                						.auth()
+                						.basic(username, password)
+                                        .delete(LIEFERUNGEN_ID_PATH);
 		
 		// Then
 		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
