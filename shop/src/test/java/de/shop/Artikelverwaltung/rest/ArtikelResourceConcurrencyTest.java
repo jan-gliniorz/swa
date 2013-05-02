@@ -5,7 +5,6 @@ import static de.shop.util.TestConstants.ACCEPT;
 import static de.shop.util.TestConstants.ARTIKEL_ID_PATH;
 import static de.shop.util.TestConstants.ARTIKEL_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.ARTIKEL_PATH;
-import static de.shop.util.TestConstants.LAGERPOSITION_URI;
 import static java.net.HttpURLConnection.HTTP_CONFLICT;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
@@ -16,7 +15,6 @@ import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
 import java.io.StringReader;
 import java.lang.invoke.MethodHandles;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,7 +22,6 @@ import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 
 import org.jboss.arquillian.junit.Arquillian;
@@ -59,8 +56,6 @@ public class ArtikelResourceConcurrencyTest extends AbstractResourceTest {
 		final String neueBezeichnung1 = NEUE_BEZEICHNUNG1;
 		final String username = USERNAME;
 		final String password = PASSWORD;
-		final String username_admin = USERNAME_ADMIN;
-		final String password_admin = PASSWORD_ADMIN;
 		
 		// When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)

@@ -1,11 +1,10 @@
 package de.shop.Artikelverwaltung.rest;
 import static com.jayway.restassured.RestAssured.given;
 import static de.shop.util.TestConstants.ACCEPT;
+import static de.shop.util.TestConstants.ARTIKEL_URI;
 import static de.shop.util.TestConstants.LAGERPOSITION_ID_PATH;
 import static de.shop.util.TestConstants.LAGERPOSITION_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.LAGERPOSITION_PATH;
-import static de.shop.util.TestConstants.ARTIKEL_ID_PATH;
-import static de.shop.util.TestConstants.ARTIKEL_URI;
 import static de.shop.util.TestConstants.LOCATION;
 import static java.net.HttpURLConnection.HTTP_CREATED;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
@@ -21,7 +20,6 @@ import java.io.StringReader;
 import java.lang.invoke.MethodHandles;
 
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 
 import org.jboss.arquillian.junit.Arquillian;
@@ -33,8 +31,6 @@ import org.junit.runner.RunWith;
 
 import com.jayway.restassured.response.Response;
 
-import de.shop.Artikelverwaltung.domain.Artikel;
-import de.shop.Artikelverwaltung.domain.Artikel_;
 import de.shop.util.AbstractResourceTest;
 
 
@@ -115,6 +111,8 @@ public class LagerpositionResourceTest extends AbstractResourceTest {
 		// Given
 		final Long anzahl = NEUE_ANZAHL;	
 		final Long artikelId = ARTIKEL_ID_VORHANDEN;
+		final String username = USERNAME;
+		final String password = PASSWORD;
 		
 		final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
 		 		             		  .add("artikelUri", ARTIKEL_URI + "/" + artikelId)
@@ -124,6 +122,8 @@ public class LagerpositionResourceTest extends AbstractResourceTest {
 		// When
 		final Response response = given().contentType(APPLICATION_JSON)
 				                         .body(jsonObject.toString())
+				                         .auth()
+                                         .basic(username, password)
                                          .post(LAGERPOSITION_PATH);
 		
 		// Then
@@ -145,6 +145,8 @@ public class LagerpositionResourceTest extends AbstractResourceTest {
 		final Long lagerposId = LAGERPOS_ID_UPDATE;
 		final Long neueAnzahl = UPDATE_ANZAHL;	
 		final Long artikel = NEUER_ARTIKEL;
+		final String username = USERNAME;
+		final String password = PASSWORD;
 		
 		// When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)
@@ -166,6 +168,8 @@ public class LagerpositionResourceTest extends AbstractResourceTest {
     	
 		response = given().contentType(APPLICATION_JSON)
 				          .body(changedJsonObject.toString())
+				          .auth()
+                          .basic(username, password)
                           .put(LAGERPOSITION_PATH);
 		
 		// Then
@@ -178,9 +182,13 @@ public class LagerpositionResourceTest extends AbstractResourceTest {
 		
 		// Given
 		final Long lagerposId = LAGERPOSITION_ID_DELETE;
+		final String username = USERNAME;
+		final String password = PASSWORD;
 		
 		// When
 		final Response response = given().pathParameter(LAGERPOSITION_ID_PATH_PARAM, lagerposId)
+										 .auth()
+										 .basic(username, password)
                                          .delete(LAGERPOSITION_ID_PATH);
                                          
 		

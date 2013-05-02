@@ -4,7 +4,6 @@ import static de.shop.util.TestConstants.ACCEPT;
 import static de.shop.util.TestConstants.ARTIKEL_ID_PATH;
 import static de.shop.util.TestConstants.ARTIKEL_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.ARTIKEL_PATH;
-import static de.shop.util.TestConstants.ARTIKEL_URI;
 import static de.shop.util.TestConstants.LAGERPOSITION_URI;
 import static de.shop.util.TestConstants.LOCATION;
 import static java.net.HttpURLConnection.HTTP_CREATED;
@@ -22,7 +21,6 @@ import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 
 import org.jboss.arquillian.junit.Arquillian;
@@ -45,7 +43,7 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 	
 	private static final Long ARTIKEL_ID_VORHANDEN = Long.valueOf(300);
 	private static final Long ARTIKEL_ID_NICHT_VORHANDEN = Long.valueOf(660);
-	private static final Long ARTIKEL_ID_DELETE = Long.valueOf(312);
+	//private static final Long ARTIKEL_ID_DELETE = Long.valueOf(312);
 	private static final String NEU_BEZEICHNUNG = "Regenjacke";
 	private static final String NEUE_BESCHREIBUNG = "Jacke";
 	private static final BigDecimal NEU_PREIS = BigDecimal.valueOf(23);
@@ -108,7 +106,8 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 		final String bezeichnung = NEU_BEZEICHNUNG;
 		final String beschreibung = NEUE_BESCHREIBUNG;
 		final BigDecimal preis = NEU_PREIS;
-		
+		final String username = USERNAME;
+		final String password = PASSWORD;
 		
 		final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
 				                                             .add("bezeichnung", bezeichnung)
@@ -118,6 +117,8 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 																		   
 	    final Response response = given().contentType(APPLICATION_JSON)
 	    								 .body(jsonObject.toString())
+	    								 .auth()
+                                         .basic(username, password)
 	    								 .post(ARTIKEL_PATH);
 										
 																		   
@@ -144,10 +145,14 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 		final BigDecimal neuerPreis = UPDATE_PREIS;
 		final Long lagerpos = UPDATE_ARTIKEL_LP;
 		final String neuesBild = UPDATE_BILD;
+		final String username = USERNAME;
+		final String password = PASSWORD;
 		
 		// When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)
 				                   .pathParameter(ARTIKEL_ID_PATH_PARAM, artikelId)
+				                   .auth()
+                                   .basic(username, password)
                                    .get(ARTIKEL_ID_PATH);
 		
 		JsonObject jsonObject;
