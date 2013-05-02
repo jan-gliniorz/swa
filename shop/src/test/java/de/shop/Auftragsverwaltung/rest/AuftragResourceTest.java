@@ -12,6 +12,7 @@ import static de.shop.util.TestConstants.KUNDEN_URI;
 import static de.shop.util.TestConstants.LOCATION;
 import static java.net.HttpURLConnection.HTTP_CREATED;
 import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.is;
@@ -156,6 +157,41 @@ public class AuftragResourceTest extends AbstractResourceTest {
 		final String idStr = location.substring(startPos + 1);
 		final Long id = Long.valueOf(idStr);
 		assertThat(id.longValue() > 0, is(true));
+
+		LOGGER.finer("ENDE");
+	}
+	
+	@Test
+	public void createAuftragWrongPassword() {
+		LOGGER.finer("BEGINN");
+		
+		// Given
+		final Long kundeId = KUNDE_ID_VORHANDEN;
+		final Long artikelId1 = ARTIKEL_ID_VORHANDEN_1;
+		final Long artikelId2 = ARTIKEL_ID_VORHANDEN_2;
+		final String username = USERNAME;
+		final String password = PASSWORD_FALSCH;
+		
+		// Neues, client-seitiges Bestellungsobjekt als JSON-Datensatz
+		final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
+				                      .add("kundeUri", KUNDEN_URI + "/" + kundeId)
+				                      .add("auftragspositionen", getJsonBuilderFactory().createArrayBuilder()
+				            		                            .add(getJsonBuilderFactory().createObjectBuilder()
+				            		                                 .add("artikelUri", ARTIKEL_URI + "/" + artikelId1)
+				            		                                 .add("anzahl", 1))
+				            		                            .add(getJsonBuilderFactory().createObjectBuilder()
+				            		                                 .add("artikelUri", ARTIKEL_URI + "/" + artikelId2)
+				            		                                 .add("anzahl", 2)))
+				                      .build();
+
+		// When
+		final Response response = given().contentType(APPLICATION_JSON)
+				                         .body(jsonObject.toString())
+				                         .auth()
+				                         .basic(username, password)
+				                         .post(AUFTRAEGE_PATH);
+		
+		assertThat(response.getStatusCode(), is(HTTP_UNAUTHORIZED));
 
 		LOGGER.finer("ENDE");
 	}

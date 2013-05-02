@@ -72,8 +72,8 @@
  </security-constraint>
  <security-constraint>
   <web-resource-collection>
-   <web-resource-name>Bestellungen erzeugen</web-resource-name>
-   <url-pattern>/rest/bestellungen</url-pattern>
+   <web-resource-name>Auftraege erzeugen</web-resource-name>
+   <url-pattern>/rest/auftraege</url-pattern>
    <http-method>POST</http-method>
   </web-resource-collection>
   <auth-constraint>
