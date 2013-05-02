@@ -1,10 +1,9 @@
 package de.shop.Kundenverwaltung.domain;
 
-import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.ERSTE_VERSION;
+import static de.shop.Util.Constants.KEINE_ID;
 import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static javax.persistence.CascadeType.PERSIST;
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
@@ -14,12 +13,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Basic;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -27,7 +23,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.OrderColumn;
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
 import javax.persistence.PrePersist;
@@ -36,8 +31,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.persistence.Version;
-import javax.persistence.JoinColumn;
-import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
@@ -48,7 +41,6 @@ import org.hibernate.validator.constraints.Email;
 import org.jboss.logging.Logger;
 
 import de.shop.Auftragsverwaltung.domain.Auftrag;
-import de.shop.Auth.service.jboss.AuthService.RolleType;
 
 /**
  * The persistent class for the kunde database table.
@@ -350,63 +342,74 @@ public class Kunde implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Kunde other = (Kunde) obj;
+		final Kunde other = (Kunde) obj;
 		if (adresse == null) {
 			if (other.adresse != null)
 				return false;
-		} else if (!adresse.equals(other.adresse))
+		} 
+		else if (!adresse.equals(other.adresse))
 			return false;
 		if (auftraege == null) {
 			if (other.auftraege != null)
 				return false;
-		} else if (!auftraege.equals(other.auftraege))
+		} 
+		else if (!auftraege.equals(other.auftraege))
 			return false;
 		if (auftraegeUri == null) {
 			if (other.auftraegeUri != null)
 				return false;
-		} else if (!auftraegeUri.equals(other.auftraegeUri))
+		} 
+		else if (!auftraegeUri.equals(other.auftraegeUri))
 			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
-		} else if (!email.equals(other.email))
+		} 
+		else if (!email.equals(other.email))
 			return false;
 		if (erstelltAm == null) {
 			if (other.erstelltAm != null)
 				return false;
-		} else if (!erstelltAm.equals(other.erstelltAm))
+		} 
+		else if (!erstelltAm.equals(other.erstelltAm))
 			return false;
 		if (geaendertAm == null) {
 			if (other.geaendertAm != null)
 				return false;
-		} else if (!geaendertAm.equals(other.geaendertAm))
+		} 
+		else if (!geaendertAm.equals(other.geaendertAm))
 			return false;
 		if (kundenNr == null) {
 			if (other.kundenNr != null)
 				return false;
-		} else if (!kundenNr.equals(other.kundenNr))
+		} 
+		else if (!kundenNr.equals(other.kundenNr))
 			return false;
 		if (nachname == null) {
 			if (other.nachname != null)
 				return false;
-		} else if (!nachname.equals(other.nachname))
+		} 
+		else if (!nachname.equals(other.nachname))
 			return false;
 		if (passwort == null) {
 			if (other.passwort != null)
 				return false;
-		} else if (!passwort.equals(other.passwort))
+		}
+		else if (!passwort.equals(other.passwort))
 			return false;
 		if (passwortWdh == null) {
 			if (other.passwortWdh != null)
 				return false;
-		} else if (!passwortWdh.equals(other.passwortWdh))
+		} 
+		else if (!passwortWdh.equals(other.passwortWdh))
 			return false;
 		if (version != other.version)
 			return false;
 		if (vorname == null) {
 			if (other.vorname != null)
 				return false;
-		} else if (!vorname.equals(other.vorname))
+		} 
+		else if (!vorname.equals(other.vorname))
 			return false;
 		return true;
 	}
@@ -418,5 +421,4 @@ public class Kunde implements Serializable {
 				+ " erstelltAm=" + erstelltAm + ", geaendertAm=" + geaendertAm	+ "]";
 	}
 	
-
 }

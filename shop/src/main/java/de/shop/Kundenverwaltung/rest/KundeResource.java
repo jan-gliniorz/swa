@@ -194,7 +194,7 @@ public class KundeResource {
 		// Vorhandenen Kunden ermitteln
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-		Kunde origKunde = ks.findKundenByKundennummer(kunde.getKundenNr(), FetchType.NUR_KUNDE, locale);
+		final Kunde origKunde = ks.findKundenByKundennummer(kunde.getKundenNr(), FetchType.NUR_KUNDE, locale);
 		if (origKunde == null) {
 			final String msg = "Kein Kunde gefunden mit der ID " + kunde.getKundenNr();
 			throw new NotFoundException(msg);

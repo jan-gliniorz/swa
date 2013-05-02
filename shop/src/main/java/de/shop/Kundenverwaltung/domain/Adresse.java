@@ -222,7 +222,7 @@ public class Adresse implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Adresse other = (Adresse) obj;
+		final Adresse other = (Adresse) obj;
 		if (id != other.id)
 			return false;
 		if (erstelltAm == null) {
@@ -278,6 +278,4 @@ public class Adresse implements Serializable {
 				+ ", strasse=" + strasse + "]";
 	}
 	
-	
-
 }

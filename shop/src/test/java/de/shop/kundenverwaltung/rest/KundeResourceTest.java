@@ -2,11 +2,10 @@ package de.shop.kundenverwaltung.rest;
 
 import static com.jayway.restassured.RestAssured.given;
 import static de.shop.util.TestConstants.ACCEPT;
-import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_ID_PATH;
+import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_NACHNAME_QUERY_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_PATH;
-import static de.shop.util.TestConstants.LAGERPOSITION_URI;
 import static de.shop.util.TestConstants.LOCATION;
 import static java.net.HttpURLConnection.HTTP_CONFLICT;
 import static java.net.HttpURLConnection.HTTP_CREATED;
@@ -18,16 +17,12 @@ import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import static java.util.logging.Level.FINER;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
 import java.io.StringReader;
 import java.lang.invoke.MethodHandles;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -39,7 +34,6 @@ import javax.json.JsonReader;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -56,7 +50,6 @@ public class KundeResourceTest extends AbstractResourceTest {
 	private static final Long KUNDE_ID_NICHT_VORHANDEN = Long.valueOf(1500);
 	private static final Long KUNDE_ID_UPDATE = Long.valueOf(19);
 	private static final Long KUNDE_ID_DELETE = Long.valueOf(18);
-	private static final Long KUNDE_ID_DELETE_MIT_BESTELLUNGEN = Long.valueOf(16);
 	private static final Long KUNDE_ID_DELETE_FORBIDDEN = Long.valueOf(17);
 	private static final String NACHNAME_VORHANDEN = "Loya";
 	private static final String NACHNAME_NICHT_VORHANDEN = "Wrongname";
