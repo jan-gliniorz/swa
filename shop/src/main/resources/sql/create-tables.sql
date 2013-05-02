@@ -108,6 +108,7 @@ CREATE TABLE lieferungsposition (
 	lieferungsposition_ID INTEGER NOT NULL PRIMARY KEY,
 	artikel_FID INTEGER NOT NULL,
 	lieferung_FID INTEGER NOT NULL,
+	idx INTEGER NOT NULL,
 	anzahl INTEGER NOT NULL,
 	version NUMBER(8,0) NOT NULL
 );
