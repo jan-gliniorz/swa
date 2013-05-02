@@ -5,7 +5,7 @@ import static de.shop.util.TestConstants.ACCEPT;
 import static de.shop.util.TestConstants.KUNDEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.KUNDEN_ID_PATH;
 import static de.shop.util.TestConstants.KUNDEN_PATH;
-import static java.net.HttpURLConnection.HTTP_CONFLICT;
+//import static java.net.HttpURLConnection.HTTP_CONFLICT;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static java.net.HttpURLConnection.HTTP_OK;
@@ -29,7 +29,7 @@ import javax.json.JsonReader;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
+//import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -44,9 +44,9 @@ import de.shop.util.ConcurrentUpdate;
 public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 
-	private static final Long KUNDE_ID_UPDATE = Long.valueOf(11);
+	//private static final Long KUNDE_ID_UPDATE = Long.valueOf(11);
 	private static final String NEUER_NACHNAME = "Testname";
-	private static final String NEUER_NACHNAME_2 = "Neuername";
+	//private static final String NEUER_NACHNAME_2 = "Neuername";
 	private static final Long KUNDE_ID_DELETE1 = Long.valueOf(20);
 	private static final Long KUNDE_ID_DELETE2 = Long.valueOf(21);
 
@@ -55,68 +55,68 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 		assertThat(true, is(true));
 	}
 	
-	@Ignore
-	@Test
-	public void updateUpdate() throws InterruptedException, ExecutionException {
-		LOGGER.finer("BEGINN");
-		
-		// Given
-		final Long kundeId = KUNDE_ID_UPDATE;
-    	final String neuerNachname = NEUER_NACHNAME;
-    	final String neuerNachname2 = NEUER_NACHNAME_2;
-		final String username = USERNAME;
-		final String password = PASSWORD;
-		
-		// When
-		Response response = given().header(ACCEPT, APPLICATION_JSON)
-				                   .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-                                   .get(KUNDEN_ID_PATH);
-		JsonObject jsonObject;
-		try (final JsonReader jsonReader =
-				              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
-			jsonObject = jsonReader.readObject();
-		}
-
-    	JsonObjectBuilder job = getJsonBuilderFactory().createObjectBuilder();
-    	Set<String> keys = jsonObject.keySet();
-    	for (String k : keys) {
-    		if ("nachname".equals(k)) {
-    			job.add("nachname", neuerNachname2);
-    		}
-    		else {
-    			job.add(k, jsonObject.get(k));
-    		}
-    	}
-    	final JsonObject jsonObject2 = job.build();
-    	final ConcurrentUpdate concurrentUpdate = new ConcurrentUpdate(jsonObject2, KUNDEN_PATH,
-    			                                                       username, password);
-    	final ExecutorService executorService = Executors.newSingleThreadExecutor();
-		final Future<Response> future = executorService.submit(concurrentUpdate);
-		response = future.get();   // Warten bis der "parallele" Thread fertig ist
-		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
-
-    	job = getJsonBuilderFactory().createObjectBuilder();
-    	keys = jsonObject.keySet();
-    	for (String k : keys) {
-    		if ("nachname".equals(k)) {
-    			job.add("nachname", neuerNachname);
-    		}
-    		else {
-    			job.add(k, jsonObject.get(k));
-    		}
-    	}
-    	jsonObject = job.build();
-		response = given().contentType(APPLICATION_JSON)
-				          .body(jsonObject.toString())
-		                  .auth()
-		                  .basic(username, password)
-		                  .put(KUNDEN_PATH);
-    	
-		// Then
-		assertThat(response.getStatusCode(), is(HTTP_CONFLICT));
-		
-		LOGGER.finer("ENDE");
-	}
+//	@Ignore
+//	@Test
+//	public void updateUpdate() throws InterruptedException, ExecutionException {
+//		LOGGER.finer("BEGINN");
+//		
+//		// Given
+//		final Long kundeId = KUNDE_ID_UPDATE;
+//    	final String neuerNachname = NEUER_NACHNAME;
+//    	final String neuerNachname2 = NEUER_NACHNAME_2;
+//		final String username = USERNAME;
+//		final String password = PASSWORD;
+//		
+//		// When
+//		Response response = given().header(ACCEPT, APPLICATION_JSON)
+//				                   .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
+//                                   .get(KUNDEN_ID_PATH);
+//		JsonObject jsonObject;
+//		try (final JsonReader jsonReader =
+//				              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
+//			jsonObject = jsonReader.readObject();
+//		}
+//
+//    	JsonObjectBuilder job = getJsonBuilderFactory().createObjectBuilder();
+//    	Set<String> keys = jsonObject.keySet();
+//    	for (String k : keys) {
+//    		if ("nachname".equals(k)) {
+//    			job.add("nachname", neuerNachname2);
+//    		}
+//    		else {
+//    			job.add(k, jsonObject.get(k));
+//    		}
+//    	}
+//    	final JsonObject jsonObject2 = job.build();
+//    	final ConcurrentUpdate concurrentUpdate = new ConcurrentUpdate(jsonObject2, KUNDEN_PATH,
+//    			                                                       username, password);
+//    	final ExecutorService executorService = Executors.newSingleThreadExecutor();
+//		final Future<Response> future = executorService.submit(concurrentUpdate);
+//		response = future.get();   // Warten bis der "parallele" Thread fertig ist
+//		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
+//
+//    	job = getJsonBuilderFactory().createObjectBuilder();
+//    	keys = jsonObject.keySet();
+//    	for (String k : keys) {
+//    		if ("nachname".equals(k)) {
+//    			job.add("nachname", neuerNachname);
+//    		}
+//    		else {
+//    			job.add(k, jsonObject.get(k));
+//    		}
+//    	}
+//    	jsonObject = job.build();
+//		response = given().contentType(APPLICATION_JSON)
+//				          .body(jsonObject.toString())
+//		                  .auth()
+//		                  .basic(username, password)
+//		                  .put(KUNDEN_PATH);
+//    	
+//		// Then
+//		assertThat(response.getStatusCode(), is(HTTP_CONFLICT));
+//		
+//		LOGGER.finer("ENDE");
+//	}
 	
 	@Test
 	public void updateDelete() throws InterruptedException, ExecutionException {

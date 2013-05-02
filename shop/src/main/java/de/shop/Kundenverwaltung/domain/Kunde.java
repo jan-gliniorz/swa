@@ -184,9 +184,9 @@ public class Kunde implements Serializable {
 	}
 	
 	public void setAuftraege(List<Auftrag> auftraege) {
-		if (auftraege == null) {
-		this.auftraege = auftraege;
-		return;
+		if (this.auftraege == null) {
+			this.auftraege = auftraege;
+			return;
 		}
 		// Wiederverwendung der vorhandenen Collection
 		auftraege.clear();
