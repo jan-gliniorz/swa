@@ -60,6 +60,8 @@ Insert into SHOP.KUNDE (KUNDENNR,NACHNAME,VORNAME,EMAIL,PASSWORT,ERSTELLT_AM,GEA
 Insert into SHOP.KUNDE (KUNDENNR,NACHNAME,VORNAME,EMAIL,PASSWORT,ERSTELLT_AM,GEAENDERT_AM,VERSION) values ('17','Jost','Sonya','Jost@gmail.com','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=',to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),'1');
 Insert into SHOP.KUNDE (KUNDENNR,NACHNAME,VORNAME,EMAIL,PASSWORT,ERSTELLT_AM,GEAENDERT_AM,VERSION) values ('18','Parsley','Marsha','Parsley@gmail.com','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=',to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),'1');
 Insert into SHOP.KUNDE (KUNDENNR,NACHNAME,VORNAME,EMAIL,PASSWORT,ERSTELLT_AM,GEAENDERT_AM,VERSION) values ('19','Whitmore','Paula','Whitmore@gmail.com','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=',to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),'1');
+Insert into SHOP.KUNDE (KUNDENNR,NACHNAME,VORNAME,EMAIL,PASSWORT,ERSTELLT_AM,GEAENDERT_AM,VERSION) values ('20','Heinz','Paula','Heinz@gmail.com','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ',to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),'1');
+Insert into SHOP.KUNDE (KUNDENNR,NACHNAME,VORNAME,EMAIL,PASSWORT,ERSTELLT_AM,GEAENDERT_AM,VERSION) values ('21','Berger','Paula','Berger@gmail.com','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ',to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),'1');
 
 Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Loya@gmail.com','13');
 Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Allan@gmail.com','12');
@@ -71,6 +73,8 @@ Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Keegan@gmail.com','13')
 Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Jost@gmail.com','12');
 Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Parsley@gmail.com','11');
 Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Whitmore@gmail.com','11');
+Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Heinz@gmail.com','12');
+Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Berger@gmail.com','12');
 
 Insert into SHOP.LAGERPOSITION (LAGERPOSITION_ID,ARTIKEL_FID,ANZAHL,ERSTELLT_AM,GEAENDERT_AM,VERSION) values ('400','300','50',to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),'1');
 Insert into SHOP.LAGERPOSITION (LAGERPOSITION_ID,ARTIKEL_FID,ANZAHL,ERSTELLT_AM,GEAENDERT_AM,VERSION) values ('401','301','100',to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),'1');

@@ -53,7 +53,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	
 	private static final Long KUNDE_ID_VORHANDEN = Long.valueOf(10);
-	private static final Long KUNDE_ID_NICHT_VORHANDEN = Long.valueOf(1000);
+	private static final Long KUNDE_ID_NICHT_VORHANDEN = Long.valueOf(1500);
 	private static final Long KUNDE_ID_UPDATE = Long.valueOf(19);
 	private static final Long KUNDE_ID_DELETE = Long.valueOf(18);
 	private static final Long KUNDE_ID_DELETE_MIT_BESTELLUNGEN = Long.valueOf(16);
@@ -76,7 +76,6 @@ public class KundeResourceTest extends AbstractResourceTest {
 		assertThat(true, is(true));
 	}
 
-	@Ignore
 	@Test
 	public void findKundeById() {
 		LOGGER.finer("BEGINN");
@@ -100,8 +99,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 		
 		LOGGER.finer("ENDE");
 	}
-
-	@Ignore
+	
 	@Test
 	public void findKundeByIdNichtVorhanden() {
 		LOGGER.finer("BEGINN");
@@ -119,13 +117,9 @@ public class KundeResourceTest extends AbstractResourceTest {
 		LOGGER.finer("ENDE");
 	}
 
-	@Ignore
 	@Test
 	public void findKundenByNachnameVorhanden() {
 		LOGGER.finer("BEGINN");
-		
-		final String username = USERNAME;
-		final String password = PASSWORD;
 		
 		// Given
 		final String nachname = NACHNAME_VORHANDEN;
@@ -133,8 +127,6 @@ public class KundeResourceTest extends AbstractResourceTest {
 		// When
 		final Response response = given().header(ACCEPT, APPLICATION_JSON)
 				                         .queryParam(KUNDEN_NACHNAME_QUERY_PARAM, nachname)
-				                         .auth()
-                                         .basic(username, password)
                                          .get(KUNDEN_PATH);
 		
 		// Then
@@ -151,13 +143,9 @@ public class KundeResourceTest extends AbstractResourceTest {
 		LOGGER.finer("ENDE");
 	}
 
-	@Ignore
 	@Test
 	public void findKundenByNachnameNichtVorhanden() {
 		LOGGER.finer("BEGINN");
-		
-		final String username = USERNAME;
-		final String password = PASSWORD;
 		
 		// Given
 		final String nachname = NACHNAME_NICHT_VORHANDEN;
@@ -165,8 +153,6 @@ public class KundeResourceTest extends AbstractResourceTest {
 		// When
 		final Response response = given().header(ACCEPT, APPLICATION_JSON)
 				                         .queryParam(KUNDEN_NACHNAME_QUERY_PARAM, nachname)
-				                         .auth()
-                                         .basic(username, password)
                                          .get(KUNDEN_PATH);
 		
 		// Then
@@ -209,7 +195,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 		// When
 		final Response response = given().contentType(APPLICATION_JSON)
 				                         .body(jsonObject.toString())
-                                         .auth()
+				                         .auth()
                                          .basic(username, password)
                                          .post(KUNDEN_PATH);
 		
@@ -224,7 +210,6 @@ public class KundeResourceTest extends AbstractResourceTest {
 		LOGGER.finer("ENDE");
 	}
 
-	@Ignore
 	@Test
 	public void createFalschesPassword() {
 		LOGGER.finer("BEGINN");
@@ -251,7 +236,6 @@ public class KundeResourceTest extends AbstractResourceTest {
 		LOGGER.finer("ENDE");
 	}
 	
-	@Ignore
 	@Test
 	public void createkundeInvalid() {
 		LOGGER.finer("BEGINN");
@@ -284,7 +268,6 @@ public class KundeResourceTest extends AbstractResourceTest {
 		LOGGER.finer("ENDE");
 	}
 	
-	@Ignore
 	@Test
 	public void updateKunde() {
 		LOGGER.log(FINER, "BEGINN updateTest");
@@ -298,8 +281,6 @@ public class KundeResourceTest extends AbstractResourceTest {
 		// When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)
 				                   .pathParameter(KUNDEN_ID_PATH_PARAM, kundeId)
-				                   .auth()
-				                   .basic(username, password)
                                    .get(KUNDEN_ID_PATH);
 		
 		JsonObject jsonObject;
@@ -333,7 +314,6 @@ public class KundeResourceTest extends AbstractResourceTest {
 
    	}
 	
-	@Ignore
 	@Test
 	public void deleteKunde() {
 		LOGGER.finer("BEGINN");
@@ -354,7 +334,6 @@ public class KundeResourceTest extends AbstractResourceTest {
 		LOGGER.finer("ENDE");
 	}
 		
-	@Ignore
 	@Test
 	public void deleteKundeFehlendeBerechtigung() {
 		LOGGER.finer("BEGINN");
