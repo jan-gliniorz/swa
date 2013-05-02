@@ -56,7 +56,7 @@ public class LieferungResourceConcurrencyTest extends AbstractResourceTest {
 	
 	private final DateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-	@Ignore
+
 	@Test
 	public void updateUpdate() throws InterruptedException, ExecutionException {
 		LOGGER.finer("BEGINN");
@@ -111,7 +111,7 @@ public class LieferungResourceConcurrencyTest extends AbstractResourceTest {
     			job.add(k, jsonObject.get(k));
     		}
     	}
-    	jsonObject = job.build();
+//    	jsonObject = job.build();
 		response = given().contentType(APPLICATION_JSON)
 				          .body(jsonObject.toString())
 		                  .auth()
