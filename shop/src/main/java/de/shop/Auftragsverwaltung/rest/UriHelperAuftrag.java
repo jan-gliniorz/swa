@@ -1,6 +1,5 @@
 package de.shop.Auftragsverwaltung.rest;
 
-
 import java.net.URI;
 import java.util.List;
 

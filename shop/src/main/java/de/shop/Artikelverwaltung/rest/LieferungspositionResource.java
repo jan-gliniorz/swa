@@ -27,11 +27,13 @@ import de.shop.Artikelverwaltung.service.ArtikelService;
 import de.shop.Artikelverwaltung.service.LieferungService;
 import de.shop.Util.Log;
 import de.shop.Util.NotFoundException;
+import de.shop.Util.Transactional;
 
 
 @Path("/lieferungspositionen")
-@Produces(APPLICATION_JSON)
+@Produces({ APPLICATION_JSON })
 @Consumes
+@Transactional
 @RequestScoped
 @Log
 public class LieferungspositionResource {

@@ -3,6 +3,9 @@ package de.shop.Artikelverwaltung.rest;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 
+
+
+
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.ArrayList;
@@ -38,14 +41,17 @@ import de.shop.Artikelverwaltung.service.LieferungService;
 import de.shop.Artikelverwaltung.service.LieferungService.FetchType;
 import de.shop.Util.NotFoundException;
 import de.shop.Util.Log;
+import de.shop.Util.Transactional;
 
 @Path("/lieferungen")
-@Produces(APPLICATION_JSON)
+@Produces({APPLICATION_JSON})
+@Transactional
 @Consumes
 @RequestScoped
 @Log
 public class LieferungResource {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
+	private static final String VERSION = "1.0";
 	
 	@Inject
 	private LieferungService ls;
@@ -62,25 +68,32 @@ public class LieferungResource {
 	
 	@PostConstruct
 	private void postConstruct() {
-		LOGGER.debugf("CDI-faehiges Bean {0} wurde erzeugt", this);
+		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		LOGGER.debugf("CDI-faehiges Bean {0} wird geloescht", this);
+		LOGGER.debugf("CDI-faehiges Bean %s wird geloescht", this);
 	}
 
+	@GET
+	@Produces(APPLICATION_JSON)
+	@Path("version")
+	public String getVersion() {
+		return VERSION;
+	}
 	
 	@GET
 	@Wrapped(element = "lieferungen") 
 	public Collection<Lieferung>findLieferungenAll(@Context UriInfo uriInfo) {
-		Collection<Lieferung> lieferung = ls.findLieferungenAll(
+		LOGGER.debugf("findAll");
+		Collection<Lieferung> lieferungen = ls.findLieferungenAll(
 										  LieferungService.FetchType.NUR_LIEFERUNG, LieferungService.OrderType.ID);
-		for (Lieferung l : lieferung) {
+		for (Lieferung l : lieferungen) {
 			uriHelperLieferung.updateUriLieferung(l, uriInfo);
 		}
 		
-		return lieferung;
+		return lieferungen;
 	} 
 	
 	
@@ -104,7 +117,7 @@ public class LieferungResource {
 	
 	
 	@POST
-	@Consumes(APPLICATION_JSON)
+	@Consumes({APPLICATION_JSON})
 	@Produces
 	public Response createLieferung(Lieferung lieferung, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		
@@ -189,7 +202,7 @@ public class LieferungResource {
 	}
 	
 	@PUT
-	@Consumes(APPLICATION_JSON)
+	@Consumes({APPLICATION_JSON})
 	@Produces
 	public void updateLieferung(Lieferung lieferung, @Context UriInfo uriInfo, @Context HttpHeaders headers)
 	{
