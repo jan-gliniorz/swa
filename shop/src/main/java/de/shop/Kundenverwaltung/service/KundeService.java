@@ -29,6 +29,7 @@ import de.shop.Auftragsverwaltung.domain.Auftragsposition;
 import de.shop.Auftragsverwaltung.domain.Auftragsposition_;
 import de.shop.Auftragsverwaltung.domain.Auftrag;
 import de.shop.Auftragsverwaltung.domain.Auftrag_;
+import de.shop.Auth.service.jboss.AuthService;
 import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Kundenverwaltung.domain.Kunde_;
 import de.shop.Kundenverwaltung.domain.PasswordGroup;
@@ -56,6 +57,9 @@ public class KundeService implements Serializable {
 	
 	@PersistenceContext
 	private transient EntityManager em;
+	
+	@Inject
+	private AuthService authService;
 	
 	@Inject
 	private ValidatorProvider validatorProvider;
@@ -234,6 +238,9 @@ public class KundeService implements Serializable {
 			logger.debugf("Email-Adresse existiert noch nicht");
 		}
 		
+		// Password verschluesseln
+		passwordVerschluesseln(kunde);
+		
 		kunde.setKundenNr(KEINE_ID);
 		em.persist(kunde);
 		return kunde;		
@@ -274,6 +281,12 @@ public class KundeService implements Serializable {
 		catch (NoResultException e) {
 			logger.debugf("Neue Email-Adresse");
 		}
+		
+		// Password verschluesseln
+		///TODO: pwd geaendert
+//		if (geaendertPassword) {
+//			passwordVerschluesseln(kunde);
+//		}
 		
 		em.merge(kunde);
 
@@ -348,8 +361,16 @@ public class KundeService implements Serializable {
 		final List<Kunde> kunden = em.createQuery(criteriaQuery).getResultList();
 		return kunden;
 	}
-	
-	/**
-	 */
+
+	private void passwordVerschluesseln(Kunde kunde) {
+		logger.debugf("passwordVerschluesseln BEGINN: %s", kunde);
+
+		final String unverschluesselt = kunde.getPasswort();
+		final String verschluesselt = authService.verschluesseln(unverschluesselt);
+		kunde.setPasswort(verschluesselt);
+		kunde.setPasswortWdh(verschluesselt);
+
+		logger.debugf("passwordVerschluesseln ENDE: %s", verschluesselt);
+	}
 
 }

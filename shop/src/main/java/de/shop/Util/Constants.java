@@ -12,6 +12,14 @@ public final class Constants {
 	public static final String AUFTRAGSVERWALTUNG_NS = "urn:shop:auftragsverwaltung";
 	public static final String KUNDENVERWALTUNG_NS = "urn:shop:kundenverwaltung";
 	
+	// JAAS
+	public static final String SECURITY_DOMAIN = "shop";
+	public static final String KUNDE_ROLLE_TABELLE = "kunde_rolle";
+	
+	public static final String HASH_ALGORITHM = "SHA-256";
+	public static final String HASH_ENCODING = "base64";
+	public static final String HASH_CHARSET = "UTF-8";
+	
 	private Constants() {
 	}
 }
