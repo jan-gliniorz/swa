@@ -15,7 +15,6 @@ import java.io.Serializable;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.security.Principal;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;

@@ -175,7 +175,7 @@ public class Rechnung implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		Rechnung other = (Rechnung) obj;
+		final Rechnung other = (Rechnung) obj;
 		if (erstelltAm == null) {
 			if (other.erstelltAm != null) {
 				return false;
@@ -218,4 +218,3 @@ public class Rechnung implements Serializable {
 						id, erstelltAm, geaendertAm, rechnungsdatum);
 	}	
 }
-	

@@ -73,7 +73,7 @@ public class RechnungServiceImpl implements Serializable, RechnungService {
 		rechnung.setId(KEINE_ID);
 		
 		// managed Auftrag holen; Rechnung dem Auftrag zuordnen
-		Auftrag auftrag = auftragService.findAuftragById(rechnung.getAuftrag().getId());
+		final Auftrag auftrag = auftragService.findAuftragById(rechnung.getAuftrag().getId());
 		auftrag.setRechnung(rechnung);
 		rechnung.setAuftrag(auftrag);
 		

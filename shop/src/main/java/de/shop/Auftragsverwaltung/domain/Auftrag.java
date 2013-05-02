@@ -35,7 +35,6 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import javax.xml.bind.annotation.XmlElement;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -236,7 +235,7 @@ public class Auftrag implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		Auftrag other = (Auftrag) obj;
+		final Auftrag other = (Auftrag) obj;
 		if (erstelltAm == null) {
 			if (other.erstelltAm != null) {
 				return false;
