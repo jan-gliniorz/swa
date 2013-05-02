@@ -67,10 +67,14 @@ public class LagerpositionResourceTest extends AbstractResourceTest {
 	
 		//Given
 		final Long lagerposId = LAGERPOS_ID_VORHANDEN;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_ADMIN;
 		
 		//When
 		final Response response = given().header(ACCEPT, APPLICATION_JSON)
 										 .pathParameter(LAGERPOSITION_ID_PATH_PARAM, lagerposId)
+										 .auth()
+										 .basic(username, password)
 										 .get(LAGERPOSITION_ID_PATH);
 		
 		//Then
@@ -93,10 +97,14 @@ public class LagerpositionResourceTest extends AbstractResourceTest {
 		
 		//Given
 		final Long lagerposId = LAGERPOS_ID_NICHT_VORHANDEN;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_ADMIN;
 		
 		//WHEN
 		final Response response = given().header(ACCEPT, APPLICATION_JSON)
 										 .pathParam(LAGERPOSITION_ID_PATH_PARAM, lagerposId)
+										 .auth()
+										 .basic(username, password)
 										 .get(LAGERPOSITION_ID_PATH);
 		//Then
 		assertThat(response.getStatusCode(), is(HTTP_NOT_FOUND));
@@ -145,13 +153,17 @@ public class LagerpositionResourceTest extends AbstractResourceTest {
 		final Long lagerposId = LAGERPOS_ID_UPDATE;
 		final Long neueAnzahl = UPDATE_ANZAHL;	
 		final Long artikel = NEUER_ARTIKEL;
-		final String username = USERNAME;
-		final String password = PASSWORD;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_ADMIN;
 		
 		// When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)
 				                   .pathParameter(LAGERPOSITION_ID_PATH_PARAM, lagerposId)
+				                   .auth()
+				                   .basic(username, password)
                                    .get(LAGERPOSITION_ID_PATH);
+		
+		assertThat(response.getStatusCode(), is(HTTP_OK));
 		
 		JsonObject jsonObject;
 		try (final JsonReader jsonReader =
@@ -182,8 +194,8 @@ public class LagerpositionResourceTest extends AbstractResourceTest {
 		
 		// Given
 		final Long lagerposId = LAGERPOSITION_ID_DELETE;
-		final String username = USERNAME;
-		final String password = PASSWORD;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_ADMIN;
 		
 		// When
 		final Response response = given().pathParameter(LAGERPOSITION_ID_PATH_PARAM, lagerposId)

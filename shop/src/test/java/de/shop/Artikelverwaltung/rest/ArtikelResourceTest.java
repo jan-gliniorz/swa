@@ -145,8 +145,8 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 		final BigDecimal neuerPreis = UPDATE_PREIS;
 		final Long lagerpos = UPDATE_ARTIKEL_LP;
 		final String neuesBild = UPDATE_BILD;
-		final String username = USERNAME;
-		final String password = PASSWORD;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_ADMIN;
 		
 		// When
 		Response response = given().header(ACCEPT, APPLICATION_JSON)
@@ -174,6 +174,8 @@ public class ArtikelResourceTest extends AbstractResourceTest {
     	
 		response = given().contentType(APPLICATION_JSON)
 				          .body(changedJsonObject.toString())
+				          .auth()
+				          .basic(username, password)
                           .put(ARTIKEL_PATH);
 		
 		// Then
