@@ -125,6 +125,7 @@ public class Kunde implements Serializable {
 	private String passwortWdh;
 	
 	@AssertTrue(groups = PasswordGroup.class, message = "{kundenverwaltung.kunde.passwort.notEqual}")
+	@JsonIgnore
 	public boolean isPasswordEqual() {
 	if (passwort == null)
 	return passwortWdh == null;

@@ -177,7 +177,7 @@ public class KundeResource {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		kunde = ks.createKunde(kunde, locale);
-		LOGGER.debugf("Kunde: %d", kunde);
+		LOGGER.debugf("Kunde: %s", kunde);
 		
 		final URI kundeUri = uriHelperKunde.getUriKunde(kunde, uriInfo);
 		return Response.created(kundeUri).build();
@@ -199,11 +199,11 @@ public class KundeResource {
 			final String msg = "Kein Kunde gefunden mit der ID " + kunde.getKundenNr();
 			throw new NotFoundException(msg);
 		}
-		LOGGER.debugf("Kunde vorher: %d", origKunde);
+		LOGGER.debugf("Kunde vorher: %s", origKunde);
 	
 		// Daten des vorhandenen Kunden ueberschreiben
 		origKunde.setValues(kunde);
-		LOGGER.debugf("Kunde nachher: %d", origKunde);
+		LOGGER.debugf("Kunde nachher: %s", origKunde);
 		
 		// Update durchfuehren
 		kunde = ks.updateKunde(origKunde, locale);

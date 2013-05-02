@@ -62,12 +62,12 @@ public class KundeService implements Serializable {
 	
 	@PostConstruct
 	private void postConstruct() {
-		logger.debugf("CDI-faehiges Bean =%d wurde erzeugt", this);
+		logger.debugf("CDI-faehiges Bean =%s wurde erzeugt", this);
 	}
 	
 	@PreDestroy
 	private void preDestroy() {
-		logger.debugf("CDI-faehiges Bean =%d wird geloescht", this);
+		logger.debugf("CDI-faehiges Bean =%s wird geloescht", this);
 	}
 
 	/**
