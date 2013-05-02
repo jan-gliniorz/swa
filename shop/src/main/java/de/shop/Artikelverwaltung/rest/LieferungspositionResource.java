@@ -92,7 +92,7 @@ public class LieferungspositionResource {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		
-		final List <Lieferungsposition> lieferungspositionen = ls.findLieferungspositionenByLieferungId(id, locale);
+		final List<Lieferungsposition> lieferungspositionen = ls.findLieferungspositionenByLieferungId(id, locale);
 		
 		if (lieferungspositionen == null) {
 			final String msg = "Keine Lieferungspositionen gefunden fuer Lieferungs-ID " + id;

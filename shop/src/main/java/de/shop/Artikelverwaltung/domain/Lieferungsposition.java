@@ -5,7 +5,6 @@ import static de.shop.Util.Constants.LONG_ANZ_ZIFFERN;
 import static de.shop.Util.Constants.MIN_ID;
 
 import java.io.Serializable;
-import java.lang.invoke.MethodHandles;
 import java.net.URI;
 
 import javax.persistence.Basic;
@@ -18,7 +17,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -26,7 +24,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.jboss.logging.Logger;
 
 import de.shop.Util.IdGroup;
 
@@ -147,7 +144,7 @@ public class Lieferungsposition implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		
-		Lieferungsposition other = (Lieferungsposition) obj;
+		final Lieferungsposition other = (Lieferungsposition) obj;
 		
 		if (anzahl != other.anzahl)
 			return false;

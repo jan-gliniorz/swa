@@ -44,7 +44,7 @@ import de.shop.Util.Log;
 import de.shop.Util.Transactional;
 
 @Path("/lieferungen")
-@Produces({APPLICATION_JSON})
+@Produces({ APPLICATION_JSON })
 @Transactional
 @Consumes
 @RequestScoped
@@ -85,9 +85,9 @@ public class LieferungResource {
 	
 	@GET
 	@Wrapped(element = "lieferungen") 
-	public Collection<Lieferung>findLieferungenAll(@Context UriInfo uriInfo) {
+	public Collection<Lieferung> findLieferungenAll(@Context UriInfo uriInfo) {
 		LOGGER.debugf("findAll");
-		Collection<Lieferung> lieferungen = ls.findLieferungenAll(
+		final Collection<Lieferung> lieferungen = ls.findLieferungenAll(
 										  LieferungService.FetchType.NUR_LIEFERUNG, LieferungService.OrderType.ID);
 		for (Lieferung l : lieferungen) {
 			uriHelperLieferung.updateUriLieferung(l, uriInfo);
@@ -117,18 +117,18 @@ public class LieferungResource {
 	
 	
 	@POST
-	@Consumes({APPLICATION_JSON})
+	@Consumes({ APPLICATION_JSON })
 	@Produces
 	public Response createLieferung(Lieferung lieferung, @Context UriInfo uriInfo, @Context HttpHeaders headers) {
 		
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		
-		Collection<Lieferungsposition> lieferungspositionen = lieferung.getLieferungspositionen();
+		final Collection<Lieferungsposition> lieferungspositionen = lieferung.getLieferungspositionen();
 		
 		LOGGER.debugf("Lieferungspositionen: " + lieferungspositionen);
 		
-		List<Long> artikelIds = new ArrayList<>(lieferungspositionen.size());
+		final List<Long> artikelIds = new ArrayList<>(lieferungspositionen.size());
 		
 		for (Lieferungsposition lp : lieferungspositionen) {
 
@@ -136,7 +136,7 @@ public class LieferungResource {
 			
 			LOGGER.debugf("ArtikelUri: " + artikelUriStr);
 			
-			int startPos = artikelUriStr.lastIndexOf('/') + 1;
+			final int startPos = artikelUriStr.lastIndexOf('/') + 1;
 			final String artikelIdStr = artikelUriStr.substring(startPos);
 			
 			Long artikelId = null;
@@ -159,14 +159,14 @@ public class LieferungResource {
 			final StringBuilder sb = new StringBuilder("Keine Artikel vorhanden mit den IDs: ");
 			for (Lieferungsposition lp : lieferungspositionen) {
 				final String artikelUriStr = lp.getArtikelUri().toString();
-				int startPos = artikelUriStr.lastIndexOf('/') + 1;
+				final int startPos = artikelUriStr.lastIndexOf('/') + 1;
 				sb.append(artikelUriStr.substring(startPos));
 				sb.append(" ");
 			}
 			throw new NotFoundException(sb.toString());
 		}
 
-		Collection<Artikel> gefundeneArtikel = as.findArtikelByIDs(artikelIds, 
+		final Collection<Artikel> gefundeneArtikel = as.findArtikelByIDs(artikelIds, 
 																   ArtikelService.FetchType.NUR_Artikel, 
 																   locale);
 		if (gefundeneArtikel.isEmpty()) {
@@ -202,14 +202,14 @@ public class LieferungResource {
 	}
 	
 	@PUT
-	@Consumes({APPLICATION_JSON})
+	@Consumes({ APPLICATION_JSON })
 	@Produces
 	public void updateLieferung(Lieferung lieferung, @Context UriInfo uriInfo, @Context HttpHeaders headers)
 	{
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		
-		Lieferung vorhLieferung = ls.findLieferungById(lieferung.getId(), 
+		final Lieferung vorhLieferung = ls.findLieferungById(lieferung.getId(), 
 								  LieferungService.FetchType.NUR_LIEFERUNG, locale);
 		
 		if (vorhLieferung == null) {

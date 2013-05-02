@@ -21,7 +21,7 @@ public class UriHelperLieferung {
 	private UriHelperLieferungsposition uriHelperLieferungsposition;
 	
 	public void updateUriLieferung(Lieferung lieferung, UriInfo uriInfo) {
-		List<Lieferungsposition> lieferungspositionen = lieferung.getLieferungspositionen();
+		final List<Lieferungsposition> lieferungspositionen = lieferung.getLieferungspositionen();
 		for (Lieferungsposition lp: lieferungspositionen) {
 			uriHelperLieferungsposition.updateUriLieferungsposition(lp, uriInfo);
 		}

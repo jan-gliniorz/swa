@@ -2,8 +2,8 @@ package de.shop.Artikelverwaltung.rest;
 
 import static com.jayway.restassured.RestAssured.given;
 import static de.shop.util.TestConstants.ACCEPT;
-import static de.shop.util.TestConstants.LIEFERUNGEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.LIEFERUNGEN_ID_PATH;
+import static de.shop.util.TestConstants.LIEFERUNGEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.LIEFERUNGEN_PATH;
 import static java.net.HttpURLConnection.HTTP_CONFLICT;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
@@ -33,14 +33,13 @@ import javax.json.JsonReader;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.jayway.restassured.response.Response;
 
-import de.shop.util.ConcurrentDelete;
 import de.shop.util.AbstractResourceTest;
+import de.shop.util.ConcurrentDelete;
 import de.shop.util.ConcurrentUpdate;
 
 @RunWith(Arquillian.class)
@@ -48,9 +47,16 @@ import de.shop.util.ConcurrentUpdate;
 public class LieferungResourceConcurrencyTest extends AbstractResourceTest {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 
+	private static final int YEAR_1 = 2011;
+	private static final int MONTH_1 = 9;
+	private static final int DAY_1 = 28;
+	private static final int DAY_2 = 29;
+	
 	private static final Long LIEFERUNG_ID_UPDATE = Long.valueOf(455);
-	private static final Date NEUES_LIEFERUNGSDATUM_1 = new GregorianCalendar(2011,9,28).getTime();
-	private static final Date NEUES_LIEFERUNGSDATUM_2 = new GregorianCalendar(2011,9,29).getTime();
+
+	private static final Date NEUES_LIEFERUNGSDATUM_1 = new GregorianCalendar(YEAR_1, MONTH_1, DAY_1).getTime();
+	private static final Date NEUES_LIEFERUNGSDATUM_2 = new GregorianCalendar(YEAR_1, MONTH_1, DAY_2).getTime();
+	
 	private static final Long LIEFERUNG_ID_DELETE1 = Long.valueOf(453);
 	private static final Long LIEFERUNG_ID_DELETE2 = Long.valueOf(454);
 	
@@ -85,7 +91,7 @@ public class LieferungResourceConcurrencyTest extends AbstractResourceTest {
     	Set<String> keys = jsonObject.keySet();
     	for (String k : keys) {
     		if ("lieferungdatum".equals(k)) {
-    			job.add("lieferungsdatum",formatter.format(neuesLieferungsdatum2));
+    			job.add("lieferungsdatum", formatter.format(neuesLieferungsdatum2));
     		}
     		else {
     			job.add(k, jsonObject.get(k));

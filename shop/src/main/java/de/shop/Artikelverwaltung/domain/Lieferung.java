@@ -83,7 +83,7 @@ public class Lieferung implements Serializable {
 	
 	@OneToMany (fetch = EAGER, cascade = PERSIST)
 	@JoinColumn(name = "lieferung_FID", nullable = false)
-	@OrderColumn(name="idx")
+	@OrderColumn(name = "idx")
 	@NotEmpty(message = "{artikelverwaltung.lieferung.lieferungspositionen.notEmpty}")
 	@NotNull
 	@Valid
@@ -242,7 +242,7 @@ public class Lieferung implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		
-		Lieferung other = (Lieferung) obj;
+		final Lieferung other = (Lieferung) obj;
 		
 		if (bestelldatum == null) {
 			if (other.bestelldatum != null)

@@ -3,13 +3,10 @@ package de.shop.Artikelverwaltung.service;
 import static de.shop.Util.Constants.KEINE_ID;
 
 import java.io.Serializable;
-import java.lang.invoke.MethodHandles;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-
-import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -20,11 +17,13 @@ import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import org.jboss.logging.Logger;
+
 import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Util.IdGroup;
-import de.shop.Util.ValidatorProvider;
 import de.shop.Util.Log;
+import de.shop.Util.ValidatorProvider;
 
 @Log
 public class LieferungService implements Serializable {
@@ -261,7 +260,7 @@ public class LieferungService implements Serializable {
 	/**
 	 */
 	
-public List <Lieferungsposition> findLieferungspositionenByLieferungId(Long id, Locale locale) {
+public List<Lieferungsposition> findLieferungspositionenByLieferungId(Long id, Locale locale) {
 		
 		validateLieferungId(id, locale);
 		

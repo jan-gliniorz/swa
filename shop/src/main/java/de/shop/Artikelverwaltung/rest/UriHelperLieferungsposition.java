@@ -35,10 +35,10 @@ public class UriHelperLieferungsposition {
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		
 		// Artikel Referenz setzen
-		String artikelUri = lieferungsposition.getArtikelUri().toString();
+		final String artikelUri = lieferungsposition.getArtikelUri().toString();
 //		LOGGER.fine("Artikelreferenz setzen URI: " + artikelUri);
-		int artikelIdStartPos = artikelUri.lastIndexOf('/') + 1;
-		String artikelIdStr = artikelUri.substring(artikelIdStartPos);
+		final int artikelIdStartPos = artikelUri.lastIndexOf('/') + 1;
+		final String artikelIdStr = artikelUri.substring(artikelIdStartPos);
 		Long artikelId = null;
 		try {
 			artikelId = Long.valueOf(artikelIdStr);
@@ -47,7 +47,7 @@ public class UriHelperLieferungsposition {
 			throw new NotFoundException("Kein Artikel gefunden mit der ID " + artikelIdStr);
 		}
 		
-		Artikel artikel = as.findArtikelByID(artikelId, ArtikelService.FetchType.NUR_Artikel, locale);
+		final Artikel artikel = as.findArtikelByID(artikelId, ArtikelService.FetchType.NUR_Artikel, locale);
 		if (artikel == null) {
 			throw new NotFoundException("Kein Artikel gefunden mit der ID " + artikelId);
 		}

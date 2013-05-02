@@ -49,6 +49,14 @@ import de.shop.util.AbstractResourceTest;
 public class LieferungResourceTest extends AbstractResourceTest {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	
+	private static final int YEAR_1 = 2011;
+	private static final int YEAR_2 = 2012;
+	private static final int MONTH_1 = 9;
+	private static final int MONTH_2 = 4;
+	private static final int DAY_1 = 28;
+	private static final int DAY_2 = 15;
+	private static final int DAY_3 = 19;
+	
 	private static final Long LIEFERUNG_ID_VORHANDEN = Long.valueOf(450);
 	private static final Long LIEFERUNGSPOSITION_ID_VORHANDEN_1 = Long.valueOf(500);
 	private static final Long ARTIKEL_ID_VORHANDEN_1 = Long.valueOf(304);
@@ -57,10 +65,10 @@ public class LieferungResourceTest extends AbstractResourceTest {
 	private static final Long LIEFERUNG_ID_DELETE = Long.valueOf(452);
 	
 	private static final Long LIEFERUNG_ID_UPDATE = Long.valueOf(451);
-	private static final Date LIEFERUNGSDATUM_UPDATE = new GregorianCalendar(2011,9,28).getTime();
+	private static final Date LIEFERUNGSDATUM_UPDATE = new GregorianCalendar(YEAR_1, MONTH_1, DAY_1).getTime();
 	
-	private static final Date BESTELLDATUM_NEU = new GregorianCalendar(2013,4,15).getTime();
-	private static final Date LIEFERUNGSDATUM_NEU = new GregorianCalendar(2013,4,19).getTime();
+	private static final Date BESTELLDATUM_NEU = new GregorianCalendar(YEAR_2, MONTH_2, DAY_2).getTime();
+	private static final Date LIEFERUNGSDATUM_NEU = new GregorianCalendar(YEAR_2, MONTH_2, DAY_3).getTime();
 			
 	private static final Long LIEFERUNG_ID_NICHT_VORHANDEN = Long.valueOf(475);
 	
@@ -90,7 +98,7 @@ public class LieferungResourceTest extends AbstractResourceTest {
 		try (final JsonReader jsonReader = getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
 			 final JsonObject jsonObject = jsonReader.readObject();
 			assertThat(jsonObject.getJsonNumber("id").longValue(), is(lieferungId.longValue()));
-			assertThat(jsonObject.getJsonArray("lieferungspositionen").size()>0, is(true));
+			assertThat(jsonObject.getJsonArray("lieferungspositionen").size() > 0, is(true));
 		}
 
 		LOGGER.finer("ENDE");
@@ -189,7 +197,7 @@ public class LieferungResourceTest extends AbstractResourceTest {
     	final Set<String> keys = jsonObject.keySet();
     	for (String k : keys) {
     		if ("lieferungsdatum".equals(k)) {
-    			job.add("lieferungsdatum",formatter.format(neuesLieferungsdatum));
+    			job.add("lieferungsdatum", formatter.format(neuesLieferungsdatum));
     		}
     		else {
     			job.add(k, jsonObject.get(k));
@@ -228,7 +236,7 @@ public class LieferungResourceTest extends AbstractResourceTest {
 	}
 
 
-//=================================Lieferungspositionen============================================================================
+//=================================Lieferungspositionen==============================
 
 	@Test
 	public void findLieferungspositionenById() {
@@ -272,7 +280,7 @@ public class LieferungResourceTest extends AbstractResourceTest {
 	
 		try (final JsonReader jsonReader = getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
 			final JsonArray jsonArray = jsonReader.readArray();
-			assertThat(jsonArray.size()> 0, is(true));
+			assertThat(jsonArray.size() > 0, is(true));
 		}
 
 		LOGGER.finer("ENDE");
