@@ -213,6 +213,7 @@ public class Kunde implements Serializable {
 		email = k.email;
 		passwort = k.passwort;
 		passwortWdh = k.passwort;
+		version = k.version;
 		if(k.getAdresse() != null)
 			adresse.setValues(k.getAdresse());
 		else
