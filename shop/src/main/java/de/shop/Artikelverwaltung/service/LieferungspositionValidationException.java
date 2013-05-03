@@ -12,7 +12,7 @@ import de.shop.Artikelverwaltung.domain.Lieferungsposition;
  * Exception, die ausgel&ouml;st wird, wenn die Attributwerte eines Kunden nicht korrekt sind
  */
 @ApplicationException(rollback = true)
-public class LieferungspositionValidationException extends LieferungspositionServiceException {
+public class LieferungspositionValidationException extends AbstractLieferungspositionServiceException {
 	private static final long serialVersionUID = 1L;
 	private final Lieferungsposition lieferungsposition;
 	private final Collection<ConstraintViolation<Lieferungsposition>> violations;

@@ -8,7 +8,7 @@ import javax.validation.ConstraintViolation;
 import de.shop.Artikelverwaltung.domain.Lieferung;
 
 @ApplicationException(rollback = true)
-public class LieferungInvalidIdException extends LieferungServiceException {
+public class LieferungInvalidIdException extends AbstractLieferungServiceException {
 	private static final long serialVersionUID = 1L;
 	
 	private final Long lieferungId;

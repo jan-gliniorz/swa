@@ -3,7 +3,7 @@ package de.shop.Artikelverwaltung.service;
 import javax.ejb.ApplicationException;
 
 @ApplicationException(rollback = true)
-public class LieferungIdExistsException extends LieferungServiceException {
+public class LieferungIdExistsException extends AbstractLieferungServiceException {
 	private static final long serialVersionUID = 1L;
 	private final long id;
 	

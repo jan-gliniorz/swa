@@ -9,7 +9,7 @@ import de.shop.Artikelverwaltung.domain.Lieferung;
  * Exception, die ausgel&ouml;st wird, wenn ein Kunde gel&ouml;scht werden soll, aber mindestens eine Bestellung hat
  */
 @ApplicationException(rollback = true)
-public class LieferungDeletePositionException extends LieferungServiceException {
+public class LieferungDeletePositionException extends AbstractLieferungServiceException {
 	private static final long serialVersionUID = 1L;
 	private final Long lieferungId;
 	private final int anzahlPositionen;

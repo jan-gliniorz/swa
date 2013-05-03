@@ -9,7 +9,7 @@ import javax.validation.ConstraintViolation;
 import de.shop.Artikelverwaltung.domain.Lieferung;
 
 @ApplicationException(rollback = true)
-public class LieferungInvalidBestelldatumException extends LieferungServiceException {
+public class LieferungInvalidBestelldatumException extends AbstractLieferungServiceException {
 	private static final long serialVersionUID = 1L;
 	
 	private final Date bestelldatum;
