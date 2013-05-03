@@ -135,7 +135,7 @@ public class LagerpositionResource {
 		
 		uriLagerpos.updateReferenceLagerposition(lagerposition, headers);
 		
-		Lagerposition lagerposOrig = ls.findLagerpositionById(lagerposition.getId(), locale);
+		final Lagerposition lagerposOrig = ls.findLagerpositionById(lagerposition.getId(), locale);
 		if (lagerposOrig == null) {
 			final String msg = "keine Lagerposition gefunden mit der ID:" + lagerposition.getId();
 			throw new NotFoundException(msg);

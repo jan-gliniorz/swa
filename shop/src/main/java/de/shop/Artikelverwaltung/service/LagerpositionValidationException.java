@@ -10,7 +10,7 @@ import de.shop.Artikelverwaltung.domain.Lagerposition;
  * Exception, die ausgel&ouml;st wird, wenn die Attributwerte eines Kunden nicht korrekt sind
  */
 @ApplicationException(rollback = true)
-public class LagerpositionValidationException extends LagerServiceException {
+public class LagerpositionValidationException extends AbstractLagerServiceException {
 	private static final long serialVersionUID = 1L;
 	private final Lagerposition lagerposition;
 	private final Collection<ConstraintViolation<Lagerposition>> violations;

@@ -3,7 +3,7 @@ package de.shop.Artikelverwaltung.service;
 import javax.ejb.ApplicationException;
 
 @ApplicationException(rollback = true)
-public class NoArtikelInLagerException extends LagerServiceException {
+public class NoArtikelInLagerException extends AbstractLagerServiceException {
 	private static final long serialVersionUID = 1L;
 	
 	private final Long artikelId;

@@ -11,7 +11,7 @@ import de.shop.Artikelverwaltung.domain.Artikel;
  * Exception, die ausgel&ouml;st wird, wenn die Attributwerte eines Kunden nicht korrekt sind
  */
 @ApplicationException(rollback = true)
-public class ArtikelValidationException extends ArtikelServiceException {
+public class ArtikelValidationException extends AbstractArtikelServiceException {
 	private static final long serialVersionUID = 1L;
 	private final Artikel artikel;
 	private final Collection<ConstraintViolation<Artikel>> violations;
