@@ -234,7 +234,7 @@ public class Lagerposition implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Lagerposition other = (Lagerposition) obj;
+		final Lagerposition other = (Lagerposition) obj;
 		if (artikel == null) {
 			if (other.artikel != null)
 				return false;

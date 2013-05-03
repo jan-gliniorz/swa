@@ -8,7 +8,7 @@ import javax.validation.ConstraintViolation;
 import de.shop.Artikelverwaltung.domain.Lagerposition;
 
 @ApplicationException(rollback = true)
-public class LagerpositionInvalidIdException extends LagerpositionServiceException {
+public class LagerpositionInvalidIdException extends AbstractLagerpositionServiceException {
 	private static final long serialVersionUID = 1L;
 	
 	private final Long lagerpositionId;

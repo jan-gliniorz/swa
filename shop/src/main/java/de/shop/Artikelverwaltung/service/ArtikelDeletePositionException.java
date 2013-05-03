@@ -7,7 +7,7 @@ import de.shop.Artikelverwaltung.domain.Artikel;
  * Exception, die ausgel&ouml;st wird, wenn ein Kunde gel&ouml;scht werden soll, aber mindestens eine Bestellung hat
  */
 @ApplicationException(rollback = true)
-public class ArtikelDeletePositionException extends ArtikelServiceException {
+public class ArtikelDeletePositionException extends AbstractArtikelServiceException {
 	private static final long serialVersionUID = 1L;
 	private final Long artikelId;
 	private final int anzahlPositionen;

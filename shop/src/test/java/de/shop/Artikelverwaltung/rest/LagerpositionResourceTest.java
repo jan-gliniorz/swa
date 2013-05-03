@@ -13,7 +13,6 @@ import static java.net.HttpURLConnection.HTTP_OK;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
 import java.io.StringReader;
@@ -25,7 +24,6 @@ import javax.json.JsonReader;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.logging.Logger;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -55,12 +53,6 @@ public class LagerpositionResourceTest extends AbstractResourceTest {
 		assertThat(true, is(true));
 	}
 	
-	@Ignore
-   	@Test
-	public void notYetImplemented() {
-		fail();
-	}
-	
 	@Test
 	public void findLagerposById() {
 		LOGGER.debugf("BEGINN", this);
@@ -82,16 +74,17 @@ public class LagerpositionResourceTest extends AbstractResourceTest {
 		
 		//stimmt JSON-Datensatz mit gesuchter ID Überein
 		try (final JsonReader jsonReader =  
-											getJsonReaderFactory().createReader(new StringReader(response.asString()))){
+											getJsonReaderFactory()
+											.createReader(new StringReader(response.asString()))) {
 			final JsonObject jsonObject = jsonReader.readObject();
-			assertThat(jsonObject.getJsonNumber("id").longValue(), is (lagerposId.longValue()));
+			assertThat(jsonObject.getJsonNumber("id").longValue(), is(lagerposId.longValue()));
 		}
 		
 		LOGGER.debugf("ENDE", this);
 	}
 	
 	@Test
-	public void findLagerpositionByIdNichtVorhanden(){
+	public void findLagerpositionByIdNichtVorhanden() {
 		
 		LOGGER.debugf("Beginn", this);
 		
@@ -119,8 +112,8 @@ public class LagerpositionResourceTest extends AbstractResourceTest {
 		// Given
 		final Long anzahl = NEUE_ANZAHL;	
 		final Long artikelId = ARTIKEL_ID_VORHANDEN;
-		final String username = USERNAME;
-		final String password = PASSWORD;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_ADMIN;
 		
 		final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
 		 		             		  .add("artikelUri", ARTIKEL_URI + "/" + artikelId)
@@ -172,7 +165,7 @@ public class LagerpositionResourceTest extends AbstractResourceTest {
 		}
     	assertThat(jsonObject.getJsonNumber("id").longValue(), is(lagerposId.longValue()));
     	
-        JsonObject changedJsonObject = getJsonBuilderFactory().createObjectBuilder()
+        final JsonObject changedJsonObject = getJsonBuilderFactory().createObjectBuilder()
         									.add("id", lagerposId)
         									.add("artikelUri", ARTIKEL_URI + "/" + artikel)
         		  					  		.add("anzahl", neueAnzahl)

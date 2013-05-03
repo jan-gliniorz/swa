@@ -8,7 +8,7 @@ import javax.validation.ConstraintViolation;
 import de.shop.Artikelverwaltung.domain.Artikel;
 
 @ApplicationException(rollback = true)
-public class ArtikelInvalidIdException extends ArtikelServiceException {
+public class ArtikelInvalidIdException extends AbstractArtikelServiceException {
 	private static final long serialVersionUID = 1L;
 	
 	private final Long artikelId;
