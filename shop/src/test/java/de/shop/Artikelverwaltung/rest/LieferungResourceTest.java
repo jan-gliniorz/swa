@@ -72,7 +72,7 @@ public class LieferungResourceTest extends AbstractResourceTest {
 			
 	private static final Long LIEFERUNG_ID_NICHT_VORHANDEN = Long.valueOf(475);
 	
-	private final DateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+	private static final DateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
 	@Test
 	public void validate() {

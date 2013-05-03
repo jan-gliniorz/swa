@@ -56,7 +56,7 @@ public class LieferungResourceConcurrencyTest extends AbstractResourceTest {
 	private static final Long LIEFERUNG_ID_DELETE1 = Long.valueOf(453);
 	private static final Long LIEFERUNG_ID_DELETE2 = Long.valueOf(454);
 	
-	private final DateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+	private static final DateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 	
 
 	@Test
