@@ -286,7 +286,7 @@ public class Artikel implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Artikel other = (Artikel) obj;
+		final Artikel other = (Artikel) obj;
 		if (id.equals(other.id))
 			return false;
 		if (beschreibung == null) {

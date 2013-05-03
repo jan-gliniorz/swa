@@ -3,7 +3,7 @@ package de.shop.Artikelverwaltung.service;
 import javax.ejb.ApplicationException;
 
 @ApplicationException(rollback = true)
-public class ArtikelIdExistsException extends ArtikelServiceException {
+public class ArtikelIdExistsException extends AbstractArtikelServiceException {
 	private static final long serialVersionUID = 1L;
 	private final long id;
 	

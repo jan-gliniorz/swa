@@ -13,7 +13,6 @@ import static java.net.HttpURLConnection.HTTP_OK;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
 import java.io.StringReader;
@@ -26,7 +25,6 @@ import javax.json.JsonReader;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.logging.Logger;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -59,14 +57,8 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 		assertThat(true, is(true));
 	}
 	
-	@Ignore
-   	@Test
-	public void notYetImplemented() {
-		fail();
-	}
-	
 	@Test
-	public void findArtikelById(){
+	public void findArtikelById() {
 		LOGGER.debugf("Beginn", this);
 		
 		final Long artikelId = ARTIKEL_ID_VORHANDEN;
@@ -77,8 +69,8 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 		
 		assertThat(response.getStatusCode(), is(HTTP_OK));
 		
-		try(final JsonReader jsonReader = 
-				 			getJsonReaderFactory().createReader(new StringReader(response.asString()))){
+		try (final JsonReader jsonReader = 
+				 			getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
 			final JsonObject jsonObject = jsonReader.readObject();
 			assertThat(jsonObject.getJsonNumber("id").longValue(), is(artikelId.longValue()));
 		}
@@ -106,8 +98,8 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 		final String bezeichnung = NEU_BEZEICHNUNG;
 		final String beschreibung = NEUE_BESCHREIBUNG;
 		final BigDecimal preis = NEU_PREIS;
-		final String username = USERNAME;
-		final String password = PASSWORD;
+		final String username = USERNAME_ADMIN;
+		final String password = PASSWORD_ADMIN;
 		
 		final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
 				                                             .add("bezeichnung", bezeichnung)
@@ -163,7 +155,7 @@ public class ArtikelResourceTest extends AbstractResourceTest {
     	assertThat(jsonObject.getJsonNumber("id").longValue(), is(artikelId.longValue()));
     	
     	// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Nachnamen bauen
-        JsonObject changedJsonObject = getJsonBuilderFactory().createObjectBuilder()
+        final JsonObject changedJsonObject = getJsonBuilderFactory().createObjectBuilder()
         								.add("id", artikelId)
         								.add("lagerpositionenUri", LAGERPOSITION_URI + "/" + lagerpos)
         								.add("bezeichnung", neueBezeichnung)

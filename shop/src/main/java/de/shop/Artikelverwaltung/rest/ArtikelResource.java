@@ -68,7 +68,7 @@ public class ArtikelResource {
 	@GET
 	@Wrapped(element = "artikel") 
 	public Collection<Artikel> findArtikelAll(@Context UriInfo uriInfo) {
-		Collection<Artikel> artikel = 
+		final Collection<Artikel> artikel = 
 		as.findArtikelAll(ArtikelService.FetchType.NUR_Artikel, ArtikelService.OrderType.ID);
 		for (Artikel a : artikel) {
 			uriHelperArtikel.updateUriArtikel(a, uriInfo);
@@ -129,7 +129,7 @@ public class ArtikelResource {
 		final List<Locale> locales = headers.getAcceptableLanguages();
 		final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 		
-		Artikel artikelOrig = as.findArtikelByID(artikel.getId(), ArtikelService.FetchType.NUR_Artikel, locale);
+		final Artikel artikelOrig = as.findArtikelByID(artikel.getId(), ArtikelService.FetchType.NUR_Artikel, locale);
 		if (artikelOrig == null) {
 			final String msg = "Kein Artikel gefunden mit der ID " + artikel.getId();
 			throw new NotFoundException(msg);

@@ -57,9 +57,9 @@ public class UriHelperLagerposition {
 //		lagerposition.setLager(lager);
 		
 		// Artikel Referenz setzen
-		String artikelUri = lagerposition.getArtikelUri().toString();
-		int artikelIdStartPos = artikelUri.lastIndexOf('/') + 1;
-		String artikelIdStr = artikelUri.substring(artikelIdStartPos);
+		final String artikelUri = lagerposition.getArtikelUri().toString();
+		final int artikelIdStartPos = artikelUri.lastIndexOf('/') + 1;
+		final String artikelIdStr = artikelUri.substring(artikelIdStartPos);
 		Long artikelId = null;
 		try {
 			artikelId = Long.valueOf(artikelIdStr);
@@ -68,7 +68,7 @@ public class UriHelperLagerposition {
 			throw new NotFoundException("Kein Artikel gefunden mit der ID " + artikelIdStr);
 		}
 		
-		Artikel artikel = artikelService.findArtikelByID(artikelId, ArtikelService.FetchType.NUR_Artikel, locale);
+		final Artikel artikel = artikelService.findArtikelByID(artikelId, ArtikelService.FetchType.NUR_Artikel, locale);
 		if (artikel == null) {
 			throw new NotFoundException("Kein Artikel gefunden mit der ID " + artikelId);
 		}
