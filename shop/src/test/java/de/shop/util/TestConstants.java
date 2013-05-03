@@ -27,9 +27,13 @@ public final class TestConstants {
 	public static final String LIEFERUNGSPOSITIONEN_PATH = "/lieferungspositionen";
 	public static final String LIEFERUNGSPOSITIONEN_URI = BASEURI + ":" + PORT + BASEPATH + LIEFERUNGSPOSITIONEN_PATH;
 	public static final String LIEFERUNGSPOSITIONEN_ID_PATH_PARAM = "lpId";
-	public static final String LIEFERUNGSPOSITIONEN_ID_PATH = LIEFERUNGSPOSITIONEN_PATH + "/{" + LIEFERUNGSPOSITIONEN_ID_PATH_PARAM + "}";
+	public static final String LIEFERUNGSPOSITIONEN_ID_PATH = LIEFERUNGSPOSITIONEN_PATH 
+																+ "/{" + LIEFERUNGSPOSITIONEN_ID_PATH_PARAM + "}";
 
-	public static final String LIEFERUNGSPOSITION_ID_QUERY_PARAM = LIEFERUNGSPOSITIONEN_PATH + "?lieferungid={" + LIEFERUNGEN_ID_PATH_PARAM + "}";
+	public static final String LIEFERUNGSPOSITION_ID_QUERY_PARAM = LIEFERUNGSPOSITIONEN_PATH 
+																	+ "?lieferungid={" 
+																	+ LIEFERUNGEN_ID_PATH_PARAM 
+																	+ "}";
 	
 	public static final String KUNDEN_PATH = "/kunden";
 	public static final String KUNDEN_URI = BASEURI + ":" + PORT + BASEPATH + KUNDEN_PATH;
@@ -42,12 +46,12 @@ public final class TestConstants {
 	public static final String AUFTRAEGE_ID_PATH_PARAM = "auftragId";
 	public static final String AUFTRAEGE_ID_PATH = AUFTRAEGE_PATH + "/{" + AUFTRAEGE_ID_PATH_PARAM + "}";
 	public static final String AUFTRAEGE_BY_KUNDE_ID_PATH_PARAM = "kundenr";
-	public static final String AUFTRAEGE_BY_KUNDE_ID_PATH = AUFTRAEGE_PATH + "/byKunde/{" + AUFTRAEGE_BY_KUNDE_ID_PATH_PARAM + "}";
+	public static final String AUFTRAEGE_BY_KUNDE_ID_PATH = AUFTRAEGE_PATH 
+															+ "/byKunde/{" + AUFTRAEGE_BY_KUNDE_ID_PATH_PARAM + "}";
 	
 	public static final String LAGER_PATH = "/lager";
 	public static final String LAGER_ID_PATH_PARAM = "lagerId";
 	public static final String LAGER_ID_PATH = LAGER_PATH + "/{" + LAGER_ID_PATH_PARAM + "}";
-	//public static final String BESTELLUNGEN_ID_KUNDE_PATH = BESTELLUNGEN_ID_PATH + "/kunde";
 	
 	public static final String ARTIKEL_PATH = "/artikel";
 	public static final String ARTIKEL_URI = BASEURI + ":" + PORT + BASEPATH + ARTIKEL_PATH;
@@ -61,7 +65,7 @@ public final class TestConstants {
 
 	
 	// Testklassen fuer Service- und Domain-Tests
-	public static final Class<?>[] TEST_CLASSES = { };
+	public static final Class<?>[] TEST_CLASSES = {};
 	
 	private TestConstants() {
 	}

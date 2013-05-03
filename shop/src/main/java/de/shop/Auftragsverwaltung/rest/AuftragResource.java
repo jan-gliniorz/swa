@@ -78,9 +78,9 @@ public class AuftragResource {
 	
 	@GET
 	@Wrapped(element = "auftraege") 
-	public Collection<Auftrag>findAuftraegeAll(@Context UriInfo uriInfo) {
+	public Collection<Auftrag> findAuftraegeAll(@Context UriInfo uriInfo) {
 		logger.debugf("findAll");
-		Collection<Auftrag> auftraege = auftragService.findAuftragAll();
+		final Collection<Auftrag> auftraege = auftragService.findAuftragAll();
 		for (Auftrag a : auftraege) {
 			uriHelperAuftrag.updateUriAuftrag(a, uriInfo);
 		}
@@ -158,8 +158,8 @@ public class AuftragResource {
 		}
 		
 		// persistente Artikel ermitteln
-		Collection<Auftragsposition> auftragspositionen = auftrag.getAuftragspositionen();
-		List<Long> artikelIds = new ArrayList<>(auftragspositionen.size());
+		final Collection<Auftragsposition> auftragspositionen = auftrag.getAuftragspositionen();
+		final List<Long> artikelIds = new ArrayList<>(auftragspositionen.size());
 		for (Auftragsposition ap : auftragspositionen) {
 			final String artikelUriStr = ap.getArtikelUri().toString();
 			startPos = artikelUriStr.lastIndexOf('/') + 1;
@@ -187,7 +187,7 @@ public class AuftragResource {
 			throw new NotFoundException(sb.toString());
 		}
 
-		Collection<Artikel> gefundeneArtikel = as.findArtikelByIDs(artikelIds, 
+		final Collection<Artikel> gefundeneArtikel = as.findArtikelByIDs(artikelIds, 
 																	ArtikelService.FetchType.NUR_Artikel, 
 																	locale);
 		if (gefundeneArtikel.isEmpty()) {
@@ -210,7 +210,8 @@ public class AuftragResource {
 				if (artikel.getId().longValue() == artikelId) {
 					// Der Artikel wurde gefunden
 					ap.setArtikel(artikel);
-					//Gesammtpreis der Auftragsposition berechnen. Der Preis, der eventuell über das JSON Objekt geliefert wird, muss nicht korrekt sein.
+					//Gesammtpreis der Auftragsposition berechnen. 
+					//Der Preis, der eventuell über das JSON Objekt geliefert wird, muss nicht korrekt sein.
 					ap.setPreis(artikel.getPreis().multiply(new BigDecimal(ap.getAnzahl())));
 					neueAuftragspositionen.add(ap);
 					break;					

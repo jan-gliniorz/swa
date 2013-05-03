@@ -145,7 +145,7 @@ public class Auftragsposition implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		Auftragsposition other = (Auftragsposition) obj;
+		final Auftragsposition other = (Auftragsposition) obj;
 		if (anzahl != other.anzahl) {
 			return false;
 		}

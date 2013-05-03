@@ -1,7 +1,6 @@
 package de.shop.Kundenverwaltung.rest;
 
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
-import static javax.ws.rs.core.Response.Status.CONFLICT;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
 import javax.enterprise.context.ApplicationScoped;

@@ -59,8 +59,8 @@ public class RechnungResource {
 	
 	@GET
 	@Wrapped(element = "rechnungen") 
-	public Collection<Rechnung>findRechnungenAll(@Context UriInfo uriInfo) {
-		Collection<Rechnung> rechnungen = rechnungService.findRechnungAll();
+	public Collection<Rechnung> findRechnungenAll(@Context UriInfo uriInfo) {
+		final Collection<Rechnung> rechnungen = rechnungService.findRechnungAll();
 		for (Rechnung r : rechnungen) {
 			uriHelperRechnung.updateUriRechnung(r, uriInfo);
 		}

@@ -282,12 +282,6 @@ public class KundeService implements Serializable {
 			logger.debugf("Neue Email-Adresse");
 		}
 		
-		// Password verschluesseln
-		///TODO: pwd geaendert
-//		if (geaendertPassword) {
-//			passwordVerschluesseln(kunde);
-//		}
-		
 		em.merge(kunde);
 
 		return kunde;

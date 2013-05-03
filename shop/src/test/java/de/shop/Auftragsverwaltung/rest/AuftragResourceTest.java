@@ -62,8 +62,8 @@ public class AuftragResourceTest extends AbstractResourceTest {
 		// Then
 		assertThat(response.getStatusCode(), is(HTTP_OK));
 		try (JsonReader jsonReader = getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
-			JsonArray jsonArray = jsonReader.readArray();
-			assertThat(jsonArray.size()>0, is(true));
+			final JsonArray jsonArray = jsonReader.readArray();
+			assertThat(jsonArray.size() > 0, is(true));
 		}
 	}
 
@@ -111,8 +111,8 @@ public class AuftragResourceTest extends AbstractResourceTest {
 		try (final JsonReader jsonReader = getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
 			final JsonArray jsonObjects = jsonReader.readArray();
 			assertThat(jsonObjects.size()  > 0, is(true));
-			for(int i=0; i < jsonObjects.size(); i++) {
-				JsonObject jsonObject = jsonObjects.getJsonObject(i);
+			for (int i = 0; i < jsonObjects.size(); i++) {
+				final JsonObject jsonObject = jsonObjects.getJsonObject(i);
 				assertThat(jsonObject.getString("kundeUri"), endsWith("/kunden/" + kundeMitBestellung));
 			}
 			
