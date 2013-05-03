@@ -5,7 +5,6 @@ import static de.shop.util.TestConstants.ACCEPT;
 import static de.shop.util.TestConstants.LIEFERUNGEN_ID_PATH;
 import static de.shop.util.TestConstants.LIEFERUNGEN_ID_PATH_PARAM;
 import static de.shop.util.TestConstants.LIEFERUNGEN_PATH;
-import static java.net.HttpURLConnection.HTTP_CONFLICT;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -50,85 +49,14 @@ public class LieferungResourceConcurrencyTest extends AbstractResourceTest {
 	private static final int YEAR_1 = 2011;
 	private static final int MONTH_1 = 9;
 	private static final int DAY_1 = 28;
-	private static final int DAY_2 = 29;
 	
-	private static final Long LIEFERUNG_ID_UPDATE = Long.valueOf(455);
 
 	private static final Date NEUES_LIEFERUNGSDATUM_1 = new GregorianCalendar(YEAR_1, MONTH_1, DAY_1).getTime();
-	private static final Date NEUES_LIEFERUNGSDATUM_2 = new GregorianCalendar(YEAR_1, MONTH_1, DAY_2).getTime();
 	
 	private static final Long LIEFERUNG_ID_DELETE1 = Long.valueOf(453);
 	private static final Long LIEFERUNG_ID_DELETE2 = Long.valueOf(454);
 	
 	private final DateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-
-
-	@Test
-	public void updateUpdate() throws InterruptedException, ExecutionException {
-		LOGGER.finer("BEGINN");
-		
-		// Given
-		final Long lieferungId = LIEFERUNG_ID_UPDATE;
-    	final Date neuesLieferungsdatum1 = NEUES_LIEFERUNGSDATUM_1;
-    	final Date neuesLieferungsdatum2 = NEUES_LIEFERUNGSDATUM_2;
-		final String username = USERNAME;
-		final String password = PASSWORD;
-		final DateFormat formatter = FORMATTER;
-		
-		// When
-		Response response = given().header(ACCEPT, APPLICATION_JSON)
-				                   .pathParameter(LIEFERUNGEN_ID_PATH_PARAM, lieferungId)
-                                   .get(LIEFERUNGEN_ID_PATH);
-		JsonObject jsonObject;
-		try (final JsonReader jsonReader =
-				              getJsonReaderFactory().createReader(new StringReader(response.asString()))) {
-			jsonObject = jsonReader.readObject();
-		}
-
-    	// Konkurrierendes Update
-		// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Nachnamen bauen
-    	JsonObjectBuilder job = getJsonBuilderFactory().createObjectBuilder();
-    	Set<String> keys = jsonObject.keySet();
-    	for (String k : keys) {
-    		if ("lieferungdatum".equals(k)) {
-    			job.add("lieferungsdatum", formatter.format(neuesLieferungsdatum2));
-    		}
-    		else {
-    			job.add(k, jsonObject.get(k));
-    		}
-    	}
-    	final JsonObject jsonObject2 = job.build();
-    	final ConcurrentUpdate concurrentUpdate = new ConcurrentUpdate(jsonObject2, LIEFERUNGEN_PATH,
-    			                                                       username, password);
-    	final ExecutorService executorService = Executors.newSingleThreadExecutor();
-		final Future<Response> future = executorService.submit(concurrentUpdate);
-		response = future.get();   // Warten bis der "parallele" Thread fertig ist
-		assertThat(response.getStatusCode(), is(HTTP_NO_CONTENT));
-		
-    	// Fehlschlagendes Update
-		// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Nachnamen bauen
-    	job = getJsonBuilderFactory().createObjectBuilder();
-    	keys = jsonObject.keySet();
-    	for (String k : keys) {
-    		if ("lieferungsdatum".equals(k)) {
-    			job.add("lieferungsdatum", formatter.format(neuesLieferungsdatum1));
-    		}
-    		else {
-    			job.add(k, jsonObject.get(k));
-    		}
-    	}
-//    	jsonObject = job.build();
-		response = given().contentType(APPLICATION_JSON)
-				          .body(jsonObject.toString())
-		                  .auth()
-		                  .basic(username, password)
-		                  .put(LIEFERUNGEN_PATH);
-    	
-		// Then
-		assertThat(response.getStatusCode(), is(HTTP_CONFLICT));
-		
-		LOGGER.finer("ENDE");
-	}
 	
 
 	@Test
