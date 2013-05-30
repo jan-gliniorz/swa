@@ -10,37 +10,51 @@
 	  xmlns:a4j="http://richfaces.org/a4j">
 
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
-		<ui:param name="pageTitle" value="#{msgAv['listArtikel.title']}"/>
+		<ui:param name="pageTitle" value="#{msgAr['listArtikel.title']}"/>
 	
 		<ui:define name="article">
 			<h:form id="form">
 				<rich:focus id="sucheFocus"/>
 				
-				<rich:panel id="suchePanel" header="#{msgAv['listArtikel.sucheNeu']}">
-					<h:panelGrid id="sucheGrid" columns="4">
+				<rich:panel id="suchePanel" header="#{msgAr['listArtikel.sucheNeu']}">
+					<h:panelGrid id="sucheGrid" columns="3">
 						<h:outputLabel id="bezeichnungLabel"
-						               value="#{msgAv['listArtikel.bezeichnung']}"
+						               value="#{msgAr['listArtikel.bezeichnung']}"
 						               for="bezeichnung"/>
+			              
 		
-						<h:inputText id="bezeichnung" value="#{ac.bezeichnung}"/>
+						<h:inputText id="bezeichnung" value="#{arc.bezeichnung}"/>
 		
 						<a4j:commandButton id="findButton"
-						                   action="#{ac.findArtikelByBezeichnung}"
-								           value="#{msgAv['listArtikel.submit']}"
+						                   action="#{arc.findArtikelByBezeichnung}"
+								           value="#{msgAr['listArtikel.submit']}"
 								           render="artikelPanel sucheForm:fehlermeldungBezeichnung"/>
-						
+								           
+						 <h:outputLabel id="idLabel"
+						               value="#{msgAr['listArtikel.id']}"
+						               for="id"/>	
+						               
+						 <h:inputText id="id" value="#{arc.id}"/>
+						 
+						 	<a4j:commandButton id="findButtonId"
+						                   action="#{arc.findArtikelById}"
+								           value="#{msgAr['listArtikel.submit']}"
+								           render="artikelPanel sucheForm:fehlermeldungId"/>
+								           						    
+									           
 						<a4j:status id="statusStart">
 							<f:facet name="start">
 								<h:panelGroup id="waitingGroup">
 									<h:graphicImage id="waitingGif"
 									                name="waiting.gif"
 									                library="images"/>
-									#{msgAv['listArtikel.inBearbeitung']}
+									#{msgAr['listArtikel.inBearbeitung']}
 								</h:panelGroup>
 							</f:facet>
 						</a4j:status>
 					</h:panelGrid>
-				</rich:panel>
+				</rich:panel>	
+						
 			
 				<p id="abstand1"/>
 			
@@ -53,21 +67,21 @@
 						                value="#{artikel}"
 						                var="art"
 						                rows="5"
-						                noDataLabel="#{msgAv['listArtikel.keineDaten']}"
+						                noDataLabel="#{msgAr['listArtikel.keineDaten']}"
 						                rowClasses="odd-row, even-row"
 						                styleClass="tabelleMitZebrastil"
 						                cellspacing="10"
 						                rendered="#{not empty artikel or param.init ne 'true'}">
 							<rich:column id="idSpalte">
 								<f:facet name="header">
-									#{msgAv['listArtikel.id']}
+									#{msgAr['listArtikel.id']}
 								</f:facet>
 								#{art.id}
 							</rich:column>
 							
 							<rich:column id="bezeichnungSpalte">
 								<f:facet name="header">
-									#{msgAv['listArtikel.bezeichnung']}
+									#{msgAr['listArtikel.bezeichnung']}
 								</f:facet>
 								#{art.bezeichnung}
 							</rich:column>
@@ -77,7 +91,7 @@
 								<h:commandButton id="warenkorbButton"
 												 image="#{resource['images:warenkorb.gif']}"
 										         action="#{wk.add(art)}"
-										         alt="#{msgAv['listArtikel.alt.warenkorb']}"/>
+										         alt="#{msgAr['listArtikel.alt.warenkorb']}"/>
 							</rich:column>
 						</rich:dataTable>
 						

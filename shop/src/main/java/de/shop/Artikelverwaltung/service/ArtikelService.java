@@ -119,6 +119,18 @@ public class ArtikelService implements Serializable {
 		return artikel;
 	}
 	
+	public List<Artikel> findArtikelByBezeichnung(String bez) {
+		//validateArtikelId(bez, locale);
+
+		List<Artikel> artikel = null;
+		
+					artikel = em.createNamedQuery(Artikel.FIND_ARTIKEL_BY_BEZEICHNUNG, Artikel.class)
+							  .setParameter(Artikel.PARAM_BEZEICHNUNG, bez)
+							  .getResultList();
+
+		return artikel;
+	}
+	
 	public List<Artikel> findArtikelByIDs(List<Long> ids, FetchType fetch, Locale locale) {
 		for (Long id : ids) {
 			validateArtikelId(id, locale);

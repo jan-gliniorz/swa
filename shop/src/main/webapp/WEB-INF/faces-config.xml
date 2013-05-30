@@ -16,6 +16,11 @@
   </resource-bundle>
   
   <resource-bundle>
+   <base-name>de.shop.ARmessages</base-name>
+   <var>msgAr</var>
+  </resource-bundle>
+  
+  <resource-bundle>
    <base-name>de.shop.AVmessages</base-name>
    <var>msgAv</var>
   </resource-bundle>

@@ -2,7 +2,9 @@ package de.shop.Artikelverwaltung.controller;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -16,6 +18,9 @@ import org.jboss.logging.Logger;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.service.ArtikelService;
+import de.shop.Artikelverwaltung.service.ArtikelService.FetchType;
+import de.shop.Artikelverwaltung.service.ArtikelService.OrderType;
+import de.shop.Util.Client;
 import de.shop.Util.Log;
 import de.shop.Util.Transactional;
 
@@ -40,6 +45,8 @@ public class ArtikelController implements Serializable {
 
 	private String bezeichnung;
 	
+	private Long id;
+	
 	private List<Artikel> ladenhueter;
 
 	@Inject
@@ -50,6 +57,10 @@ public class ArtikelController implements Serializable {
 	
 	@Inject
 	private transient HttpSession session;
+	
+	@Inject
+	@Client
+	private Locale locale;
 
 	
 	@PostConstruct
@@ -80,13 +91,26 @@ public class ArtikelController implements Serializable {
 		return ladenhueter;
 	}
 
-//	@Transactional
-//	public String findArtikelByBezeichnung() {
-//		final List<Artikel> artikel = as.findArtikelByBezeichnung(bezeichnung);
-//		flash.put(FLASH_ARTIKEL, artikel);
-//
-//		return JSF_LIST_ARTIKEL;
-//	}
+	@Transactional
+	public String findArtikelByBezeichnung() {
+		final List<Artikel> artikel = as.findArtikelByBezeichnung(bezeichnung);
+		flash.put(FLASH_ARTIKEL, artikel);
+
+		return JSF_LIST_ARTIKEL;
+	}
+	
+	@Transactional
+	public String findArtikelById() {
+		
+		final Artikel artikel = as.findArtikelByID(id, FetchType.NUR_Artikel, locale);
+		
+		List<Artikel> artikelList = new ArrayList<Artikel>();
+		artikelList.add(artikel);
+		
+		flash.put(FLASH_ARTIKEL, artikelList);
+
+		return JSF_LIST_ARTIKEL;
+	}
 	
 
 //	@Transactional
@@ -94,14 +118,23 @@ public class ArtikelController implements Serializable {
 //		ladenhueter = as.ladenhueter(ANZAHL_LADENHUETER);
 //	}
 	
-//	@Transactional
-//	public String selectArtikel() {
-//		if (session.getAttribute(SESSION_VERFUEGBARE_ARTIKEL) != null) {
-//			return JSF_SELECT_ARTIKEL;
-//		}
-//		
-//		final List<Artikel> alleArtikel = as.findVerfuegbareArtikel();
-//		session.setAttribute(SESSION_VERFUEGBARE_ARTIKEL, alleArtikel);
-//		return JSF_SELECT_ARTIKEL;
-//	}
+	@Transactional
+	public String selectArtikel() {
+		if (session.getAttribute(SESSION_VERFUEGBARE_ARTIKEL) != null) {
+			return JSF_SELECT_ARTIKEL;
+		}
+		
+		final List<Artikel> alleArtikel = as.findArtikelAll(FetchType.NUR_Artikel, OrderType.KEINE);
+		session.setAttribute(SESSION_VERFUEGBARE_ARTIKEL, alleArtikel);
+		return JSF_SELECT_ARTIKEL;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 }
