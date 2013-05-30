@@ -32,14 +32,23 @@ public class Messages implements Serializable {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static final String PREFIX_PACKAGES = "de.shop.";
-	private static final String SUFFIX = ".controller.messages";
+	//TODO: wenn die sprachdateien wieder zurueck in die Ordnerstruktur verschoben werden, muss hier der pfad entsprechend angepasst werden
+	//private static final String SUFFIX = ".controller.messages";
+	private static final String SUFFIX = "messages";
 
 	public enum MessagesType implements Serializable {
 		SHOP(PREFIX_PACKAGES + "messages"),
-		KUNDENVERWALTUNG(PREFIX_PACKAGES + "kundenverwaltung" + SUFFIX),
-		AUFTRAGSVERWALTUNG(PREFIX_PACKAGES + "auftragsverwaltung" + SUFFIX),
-		ARTIKELVERWALTUNG(PREFIX_PACKAGES + "artikelverwaltung" + SUFFIX),
-		AUTH(PREFIX_PACKAGES + "auth" + SUFFIX);
+		//KUNDENVERWALTUNG(PREFIX_PACKAGES + "kundenverwaltung" + SUFFIX),
+		//AUFTRAGSVERWALTUNG(PREFIX_PACKAGES + "auftragsverwaltung" + SUFFIX),
+		//ARTIKELVERWALTUNG(PREFIX_PACKAGES + "artikelverwaltung" + SUFFIX),
+		
+		//AUTH(PREFIX_PACKAGES + "auth" + SUFFIX);
+		
+		KUNDENVERWALTUNG(PREFIX_PACKAGES + "KV" + SUFFIX),
+		AUFTRAGSVERWALTUNG(PREFIX_PACKAGES + "AV" + SUFFIX),
+		//ARTIKELVERWALTUNG(PREFIX_PACKAGES + "AR" + SUFFIX),
+		
+		AUTH(PREFIX_PACKAGES + "AT" + SUFFIX);
 		
 		private String value;
 		
