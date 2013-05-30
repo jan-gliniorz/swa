@@ -66,7 +66,7 @@
 						<f:facet name="header">
 			                 #{msgKv['listKunden.kundenr']}
 						</f:facet>
-						#{kunde.id}
+						#{kunde.kundenNr}
 					</rich:column>
 					
 					<rich:column id="nachnameSpalte">
@@ -167,7 +167,7 @@
 						          image="#{resource['images:details2.gif']}"
 								  outcome="/kundenverwaltung/viewKundeGET"
 								  alt="#{msgKv['listKunden.detailsButtonGETAlt']}">
-							<f:param id="idParam" name="kundeId" value="#{kunde.id}"/>
+							<f:param id="idParam" name="kundeId" value="#{kunde.kundenNr}"/>
 						</h:button>
 					</rich:column>
 									

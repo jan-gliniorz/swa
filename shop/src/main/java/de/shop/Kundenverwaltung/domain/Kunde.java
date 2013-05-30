@@ -59,6 +59,10 @@ import de.shop.Auth.service.jboss.AuthService.RolleType;
 			query = "FROM Kunde k WHERE k.nachname = :" + Kunde.PARAM_NACHNAME),
 @NamedQuery(name = Kunde.KUNDE_BY_EMAIL,
 			query = "FROM Kunde k WHERE k.email = :" + Kunde.PARAM_EMAIL),
+@NamedQuery(name  = Kunde.FIND_NACHNAMEN_BY_PREFIX,
+	        query = "SELECT DISTINCT k.nachname"  + " FROM Kunde k "
+	            	+ " WHERE UPPER(k.nachname) LIKE UPPER(:"
+	            	+ Kunde.PARAM_KUNDE_NACHNAME_PREFIX + ")"),
 @NamedQuery(name = Kunde.KUNDE_BY_PLZ,
 			query = "FROM Kunde k WHERE k.adresse.plz = :" + Kunde.PARAM_PLZ),
 @NamedQuery(name = Kunde.KUNDE_BY_KNR,
@@ -74,7 +78,12 @@ import de.shop.Auth.service.jboss.AuthService.RolleType;
 			query = "SELECT DISTINCT k"
 					+ " FROM Kunde k"
 					+ " LEFT JOIN FETCH k.auftraege"
-					+ " WHERE k.kundenNr = :" + Kunde.PARAM_KUNDENNUMMER)
+					+ " WHERE k.kundenNr = :" + Kunde.PARAM_KUNDENNUMMER),
+@NamedQuery(name  = Kunde.FIND_KUNDEN_BY_KUNDENR_PREFIX,
+			 query = "SELECT   k"
+			                + " FROM  Kunde k"
+			                + " WHERE CONCAT('', k.id) LIKE :" + Kunde.PARAM_KUNDE_KUNDENUMMER_PREFIX
+			                + " ORDER BY k.id"),				
 })
 public class Kunde implements Serializable {
 	
@@ -85,14 +94,18 @@ public class Kunde implements Serializable {
 	public static final String KUNDEN_ALL = PREFIX + "findKundenAll";
 	public static final String KUNDE_BY_EMAIL = PREFIX + "findKundenByEmail";
 	public static final String KUNDE_BY_NACHNAME = PREFIX + "findKundenByNachname";
+	public static final String FIND_NACHNAMEN_BY_PREFIX = PREFIX + "findNachnamenByPrefix";
 	public static final String KUNDE_BY_PLZ = PREFIX + "findKundenByPlz";
 	public static final String KUNDE_BY_KNR = PREFIX + "findKundenByKundennummer";
+	public static final String FIND_KUNDEN_BY_KUNDENR_PREFIX = PREFIX + "findKundenByKundenNrPrefix";
 	public static final String KUNDE_BY_NAME_AUFTRAEGE = PREFIX + "findKundenByNachnameFetchAufraege";
 	public static final String KUNDE_BY_ID_AUFTRAEGE = PREFIX + "findKundenByIdFetchAufraege";
 	
 	public static final String PARAM_PLZ = "plz";
 	public static final String PARAM_NACHNAME = "nachname";
+	public static final String PARAM_KUNDE_NACHNAME_PREFIX = "nachnamePrefix";
 	public static final String PARAM_KUNDENNUMMER = "kundenNr";
+	public static final String PARAM_KUNDE_KUNDENUMMER_PREFIX = "kundenNrPrefix";
 	public static final String PARAM_EMAIL = "email";
 	
 	@Id

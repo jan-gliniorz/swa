@@ -31,7 +31,7 @@
 						                   fetchValue="#{kunde.kundenNr}"
 						                   converter="javax.faces.Number"
 						                   converterMessage="#{msgKv['viewKunde.kundenr.converterError']}">
-							#{kunde.id} : #{kunde.nachname}, #{kunde.vorname}
+							#{kunde.kundenNr} : #{kunde.nachname}, #{kunde.vorname}
 						</rich:autocomplete> 
 	
 						<a4j:commandButton id="findButton"

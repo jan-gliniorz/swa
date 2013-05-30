@@ -3,6 +3,7 @@ package de.shop.Kundenverwaltung.service;
 import static de.shop.Util.Constants.KEINE_ID;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -133,6 +134,13 @@ public class KundeService implements Serializable {
 		return kunden;
 	}
 	
+	public List<String> findNachnamenByPrefix(String nachnamePrefix) {
+		final List<String> nachnamen = em.createNamedQuery(Kunde.FIND_NACHNAMEN_BY_PREFIX, String.class)
+				                         .setParameter(Kunde.PARAM_KUNDE_NACHNAME_PREFIX, nachnamePrefix + '%')
+				                         .getResultList();
+		return nachnamen;
+	}
+	
 	private void validateNachname(String nachname, Locale locale) {
 		final Validator validator = validatorProvider.getValidator(locale);
 		final Set<ConstraintViolation<Kunde>> violations = validator.validateValue(Kunde.class,
@@ -179,6 +187,18 @@ public class KundeService implements Serializable {
 		}
 
 		return kunde;
+	}
+	
+	public List<Kunde> findKundenByKundenNrPrefix(Long id) {
+		if (id == null) {
+			return Collections.emptyList();
+		}
+		
+		final List<Kunde> kunden = em.createNamedQuery(Kunde.FIND_KUNDEN_BY_KUNDENR_PREFIX,
+				                                               Kunde.class)
+				                             .setParameter(Kunde.PARAM_KUNDE_KUNDENUMMER_PREFIX, id.toString() + '%')
+				                             .getResultList();
+		return kunden;
 	}
 	
 	private void validateKundeId(Long kundeId, Locale locale) {
