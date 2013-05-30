@@ -75,7 +75,32 @@
 					               action="#{ac.selectArtikel}">
 						#{msg['nav.artikelverwaltung.selectArtikel']}
 					</h:commandLink>
-				</rich:panelMenuItem>				
+				</rich:panelMenuItem>	
+				<rich:panelMenuItem id="artikelverwaltungListLieferungItem">
+					<h:outputLink id="artikelverwaltungListLieferung"
+					              value="#{request.contextPath}/artikelverwaltung/listLieferung.jsf">
+						#{msg['nav.artikelverwaltung.listLieferung']}
+						<f:param id="initParamListLieferung" name="init" value="true"/>
+						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
+							<f:param id="listLieferungCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+						</c:if>
+					</h:outputLink>
+				</rich:panelMenuItem>
+				<rich:panelMenuItem id="artikelverwaltungSelectLieferungItem">
+					<h:commandLink id="artikelverwaltungSelectLieferung"
+					               action="#{ac.selectLieferung}">
+						#{msg['nav.artikelverwaltung.selectLieferung']}
+					</h:commandLink>
+				</rich:panelMenuItem>	
+				<rich:panelMenuItem id="artikelverwaltungViewLieferungItem">
+					<h:outputLink id="artikelverwaltungViewLieferung"
+					              value="#{request.contextPath}/artikelverwaltung/viewLieferung.jsf">
+						#{msg['nav.artikelverwaltung.viewLieferung']}
+						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
+							<f:param id="viewLieferungCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+						</c:if>
+					</h:outputLink>
+				</rich:panelMenuItem>			
 			</rich:panelMenuGroup>
 
 			<rich:panelMenuGroup id="auftragsverwaltung"
