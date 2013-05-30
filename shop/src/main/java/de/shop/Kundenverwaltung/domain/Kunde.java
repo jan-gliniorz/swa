@@ -13,9 +13,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -31,6 +34,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.persistence.Version;
+import javax.persistence.JoinColumn;
+import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
@@ -41,6 +46,7 @@ import org.hibernate.validator.constraints.Email;
 import org.jboss.logging.Logger;
 
 import de.shop.Auftragsverwaltung.domain.Auftrag;
+import de.shop.Auth.service.jboss.AuthService.RolleType;
 
 /**
  * The persistent class for the kunde database table.
@@ -138,12 +144,12 @@ public class Kunde implements Serializable {
 	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
 	private Adresse adresse;
 	
-//	@ElementCollection(fetch = EAGER)
-//	@CollectionTable(name = "kunde_rolle",
-//	                 joinColumns = @JoinColumn(name = "email", nullable = false),
-//	                 uniqueConstraints =  @UniqueConstraint(columnNames = { "email", "rolle_FID" }))
-//	@Column(table = "kunde_rolle", name = "rolle_FID", nullable = false)
-//	private Set<RolleType> rollen;
+	@ElementCollection(fetch = javax.persistence.FetchType.EAGER)
+	@CollectionTable(name = "kunde_rolle",
+	                 joinColumns = {@JoinColumn(name = "kunde_FID", nullable = false)},
+	                 uniqueConstraints =  @UniqueConstraint(columnNames = { "kunde_FID", "rolle_FID" }))
+	@Column(table = "kunde_rolle", name = "rolle_FID", nullable = false)
+	private Set<RolleType> rollen;
 	
 	@PrePersist
 	protected void prePersist() {
@@ -303,13 +309,13 @@ public class Kunde implements Serializable {
 		this.vorname = vorname;
 	}
 	
-//	public Set<RolleType> getRollen() {
-//		return rollen;
-//	}
-//
-//	public void setRollen(Set<RolleType> rollen) {
-//		this.rollen = rollen;
-//	}
+	public Set<RolleType> getRollen() {
+		return rollen;
+	}
+
+	public void setRollen(Set<RolleType> rollen) {
+		this.rollen = rollen;
+	}
 
 	@Override
 	public int hashCode() {

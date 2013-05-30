@@ -16,9 +16,9 @@ CREATE TABLE kunde (
 
 DROP TABLE kunde_rolle;
 CREATE TABLE kunde_rolle (
-	email VARCHAR2(128) NOT NULL,
+	kunde_FID INTEGER NOT NULL,
 	rolle_FID INTEGER NOT NULL,
-	PRIMARY KEY (rolle_FID, email)
+	PRIMARY KEY (rolle_FID, kunde_FID)
 );
 
 DROP TABLE rolle;

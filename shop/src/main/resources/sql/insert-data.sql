@@ -66,18 +66,22 @@ Insert into SHOP.KUNDE (KUNDENNR,NACHNAME,VORNAME,EMAIL,PASSWORT,ERSTELLT_AM,GEA
 Insert into SHOP.KUNDE (KUNDENNR,NACHNAME,VORNAME,EMAIL,PASSWORT,ERSTELLT_AM,GEAENDERT_AM,VERSION) values ('20','Heinz','Paula','Heinz@gmail.com','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ',to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),'1');
 Insert into SHOP.KUNDE (KUNDENNR,NACHNAME,VORNAME,EMAIL,PASSWORT,ERSTELLT_AM,GEAENDERT_AM,VERSION) values ('21','Berger','Paula','Berger@gmail.com','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ',to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),'1');
 
-Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Loya@gmail.com','13');
-Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Allan@gmail.com','12');
-Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Boss@gmail.com','11');
-Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('hs@krug-it.de','13');
-Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Timberlake@gmail.com','12');
-Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Hooks@gmail.com','13');
-Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Keegan@gmail.com','13');
-Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Jost@gmail.com','12');
-Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Parsley@gmail.com','11');
-Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Whitmore@gmail.com','11');
-Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Heinz@gmail.com','12');
-Insert into SHOP.KUNDE_ROLLE (email, ROLLE_FID) values ('Berger@gmail.com','12');
+Insert into SHOP.KUNDE_ROLLE (KUNDE_FID, ROLLE_FID) values ('10','1');
+Insert into SHOP.KUNDE_ROLLE (KUNDE_FID, ROLLE_FID) values ('11','0');
+Insert into SHOP.KUNDE_ROLLE (KUNDE_FID, ROLLE_FID) values ('12','2');
+Insert into SHOP.KUNDE_ROLLE (KUNDE_FID, ROLLE_FID) values ('13','1');
+Insert into SHOP.KUNDE_ROLLE (KUNDE_FID, ROLLE_FID) values ('14','0');
+Insert into SHOP.KUNDE_ROLLE (KUNDE_FID, ROLLE_FID) values ('15','1');
+Insert into SHOP.KUNDE_ROLLE (KUNDE_FID, ROLLE_FID) values ('16','1');
+Insert into SHOP.KUNDE_ROLLE (KUNDE_FID, ROLLE_FID) values ('17','0');
+Insert into SHOP.KUNDE_ROLLE (KUNDE_FID, ROLLE_FID) values ('18','2');
+Insert into SHOP.KUNDE_ROLLE (KUNDE_FID, ROLLE_FID) values ('19','2');
+Insert into SHOP.KUNDE_ROLLE (KUNDE_FID, ROLLE_FID) values ('20','0');
+Insert into SHOP.KUNDE_ROLLE (KUNDE_FID, ROLLE_FID) values ('21','0');
+
+Insert into SHOP.ROLLE (ID, NAME) values ('2','kunde');
+Insert into SHOP.ROLLE (ID, NAME) values ('0','admin');
+Insert into SHOP.ROLLE (ID, NAME) values ('1','mitarbeiter');
 
 Insert into SHOP.LAGERPOSITION (LAGERPOSITION_ID,ARTIKEL_FID,ANZAHL,ERSTELLT_AM,GEAENDERT_AM,VERSION) values ('400','300','50',to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),'1');
 Insert into SHOP.LAGERPOSITION (LAGERPOSITION_ID,ARTIKEL_FID,ANZAHL,ERSTELLT_AM,GEAENDERT_AM,VERSION) values ('401','301','100',to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),to_timestamp('01.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),'1');
@@ -154,8 +158,4 @@ Insert into SHOP.RECHNUNG (RECHNUNG_ID,AUFTRAG_FID,RECHNUNGSDATUM,ERSTELLT_AM,GE
 Insert into SHOP.RECHNUNG (RECHNUNG_ID,AUFTRAG_FID,RECHNUNGSDATUM,ERSTELLT_AM,GEAENDERT_AM,VERSION) values ('257','157',to_date('04.10.11','DD.MM.RR'),to_timestamp('04.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),to_timestamp('04.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),'1');
 Insert into SHOP.RECHNUNG (RECHNUNG_ID,AUFTRAG_FID,RECHNUNGSDATUM,ERSTELLT_AM,GEAENDERT_AM,VERSION) values ('258','158',to_date('04.10.11','DD.MM.RR'),to_timestamp('04.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),to_timestamp('04.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),'1');
 Insert into SHOP.RECHNUNG (RECHNUNG_ID,AUFTRAG_FID,RECHNUNGSDATUM,ERSTELLT_AM,GEAENDERT_AM,VERSION) values ('259','159',to_date('04.10.11','DD.MM.RR'),to_timestamp('04.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),to_timestamp('04.10.11 00:00:00,000000000','DD.MM.RR HH24:MI:SS,FF'),'1');
-
-Insert into SHOP.ROLLE (ID, NAME) values ('11','kunde');
-Insert into SHOP.ROLLE (ID, NAME) values ('12','admin');
-Insert into SHOP.ROLLE (ID, NAME) values ('13','mitarbeiter');
 

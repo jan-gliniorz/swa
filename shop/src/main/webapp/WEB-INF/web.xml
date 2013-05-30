@@ -100,6 +100,31 @@
     <param-name>fileStoreContext</param-name>
     <param-value>/../shopFiles</param-value>
   </context-param>
+   <env-entry>
+    <env-entry-name>absenderMail</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>abcd0011@hs-karlsruhe.de</env-entry-value>
+  </env-entry>
+  <env-entry>
+    <env-entry-name>absenderName</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>Joe Doe</env-entry-value>
+  </env-entry>
+  <env-entry>
+    <env-entry-name>empfaengerMail</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>abcd0013@hs-karlsruhe.de</env-entry-value>
+  </env-entry>
+  <env-entry>
+    <env-entry-name>empfaengerName</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>Joe Test</env-entry-value>
+  </env-entry>
+  <env-entry>
+    <env-entry-name>locales</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>de,en</env-entry-value>
+  </env-entry>
   <session-config>
     <session-timeout>15</session-timeout>
     <tracking-mode>COOKIE</tracking-mode>

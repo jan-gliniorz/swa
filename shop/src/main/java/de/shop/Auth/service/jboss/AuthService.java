@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.security.Principal;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -120,29 +121,29 @@ public class AuthService implements Serializable {
 	
 	/**
 	 */
-//	public void addRollen(String username, Collection<RolleType> rollen) {
-//		if (rollen == null || rollen.isEmpty()) {
-//			return;
-//		}
-//
-//		ks.findKundeByEmail(username, null)
-//		  .getRollen()
-//		  .addAll(rollen);
-//		flushSecurityCache(username);
-//	}
-//
-//	/**
-//	 */
-//	public void removeRollen(String username, Collection<RolleType> rollen) {
-//		if (rollen == null || rollen.isEmpty()) {
-//			return;
-//		}
-//
-//		ks.findKundeByEmail(username, null)
-//		  .getRollen()
-//		  .removeAll(rollen);
-//		flushSecurityCache(username.toString());
-//	}
+	public void addRollen(String username, Collection<RolleType> rollen) {
+		if (rollen == null || rollen.isEmpty()) {
+			return;
+		}
+
+		ks.findKundeByEmail(username, null)
+		  .getRollen()
+		  .addAll(rollen);
+		flushSecurityCache(username);
+	}
+
+	/**
+	 */
+	public void removeRollen(String username, Collection<RolleType> rollen) {
+		if (rollen == null || rollen.isEmpty()) {
+			return;
+		}
+
+		ks.findKundeByEmail(username, null)
+		  .getRollen()
+		  .removeAll(rollen);
+		flushSecurityCache(username.toString());
+	}
 	
 	/**
 	 * siehe http://community.jboss.org/thread/169263
