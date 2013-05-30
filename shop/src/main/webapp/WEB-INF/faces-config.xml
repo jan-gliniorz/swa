@@ -16,7 +16,7 @@
   </resource-bundle>
   
   <resource-bundle>
-   <base-name>de.shop.auftragsverwaltung.controller.messages</base-name>
+   <base-name>de.shop.AVmessages</base-name>
    <var>msgAv</var>
   </resource-bundle>
  </application>

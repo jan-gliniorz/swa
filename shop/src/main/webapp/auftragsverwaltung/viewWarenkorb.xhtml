@@ -9,11 +9,11 @@
 	  xmlns:a4j="http://richfaces.org/a4j">
 
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
-		<ui:param name="pageTitle" value="#{msgBv['viewWarenkorb.title']}"/>
+		<ui:param name="pageTitle" value="#{msgAv['viewWarenkorb.title']}"/>
 	
 		<ui:define name="article">
 			<h1><h:outputText id="heading"
-			                  value="#{msgBv['viewWarenkorb.heading']}"
+			                  value="#{msgAv['viewWarenkorb.heading']}"
 			                  rendered="#{not empty wk.positionen}"/></h1>
 			
 			<h:form id="warenkorbForm"
@@ -25,21 +25,21 @@
 				                styleClass="tabelleMitZebrastil">
 					<rich:column id="artikelIdSpalte">
 						<f:facet name="header">
-							#{msgBv['viewWarenkorb.artikel.id']}
+							#{msgAv['viewWarenkorb.artikel.id']}
 						</f:facet>
 						#{position.artikel.id}
 					</rich:column>
 					
 					<rich:column id="bezeichnungSpalte">
 						<f:facet name="header">
-							#{msgBv['viewWarenkorb.artikel.bezeichnung']}
+							#{msgAv['viewWarenkorb.artikel.bezeichnung']}
 						</f:facet>
 						#{position.artikel.bezeichnung}
 					</rich:column>
 		
 					<rich:column id="anzahlSpalte">
 						<f:facet name="header">
-							#{msgBv['viewWarenkorb.anzahl']}
+							#{msgAv['viewWarenkorb.anzahl']}
 						</f:facet>
 						<rich:inputNumberSpinner id="anzahl"
 					                             value="#{position.anzahl}"
@@ -51,21 +51,21 @@
 					<rich:column id="deleteButton">
 						<h:commandButton image="#{resource['images:delete.gif']}"
 								         action="#{wk.remove(position)}"
-								         alt="#{msgBv['viewWarenkorb.deleteButtonAlt']}"
-								         onclick="return confirm('#{msgBv['viewWarenkorb.deletePositionBestaetigung']}')"/>
+								         alt="#{msgAv['viewWarenkorb.deleteButtonAlt']}"
+								         onclick="return confirm('#{msgAv['viewWarenkorb.deletePositionBestaetigung']}')"/>
 					</rich:column>
 					
 					<f:facet name="footer">
 	    				<h:panelGroup id="buttons">
 							<h:commandButton id="updateButton"
 							                 action="/artikelverwaltung/listArtikel?init=true"
-									         value="#{msgBv['viewWarenkorb.update']}"/>
+									         value="#{msgAv['viewWarenkorb.update']}"/>
 							#{' '}
-							<h:commandButton type="reset" value="#{msgBv['viewWarenkorb.reset']}"/>
+							<h:commandButton type="reset" value="#{msgAv['viewWarenkorb.reset']}"/>
 							#{' '}
 							<h:commandButton id="bestellButton"
-											 action="/bestellverwaltung/confirmBestellung"
-									         value="#{msgBv['viewWarenkorb.bestellen']}"/>
+											 action="/auftragsverwaltung/confirmBestellung"
+									         value="#{msgAv['viewWarenkorb.bestellen']}"/>
 							<rich:message id="bestellButtonFehlermeldung" for="bestellButton" rendered="#{auth.loggedIn}"/>
 						</h:panelGroup>
 					</f:facet>

@@ -9,10 +9,10 @@
 	  xmlns:a4j="http://richfaces.org/a4j">
 
 <ui:composition template="/WEB-INF/templates/desktop/main.xml">
-	<ui:param name="pageTitle" value="#{msgBv['confirmBestellung.title']}"/>
+	<ui:param name="pageTitle" value="#{msgAv['confirmAuftrag.title']}"/>
 
 	<ui:define name="article">
-		<h1>#{msgBv['confirmBestellung.header']}</h1>
+		<h1>#{msgAv['confirmAuftrag.header']}</h1>
 		
 		<h:form id="bestellungForm">
 			<rich:dataTable id="positionenTabelle"
@@ -22,21 +22,21 @@
 			                styleClass="tabelleMitZebrastil">
 				<rich:column id="artikelIdSpalte">
 					<f:facet name="header">
-						#{msgBv['confirmBestellung.artikel.id']}
+						#{msgAv['confirmAuftrag.artikel.id']}
 					</f:facet>
 					#{pos.artikel.id}
 				</rich:column>
 	
 				<rich:column id="bezeichnungSpalte">
 					<f:facet name="header">
-						#{msgBv['confirmBestellung.artikel.bezeichnung']}
+						#{msgAv['confirmAuftrag.artikel.bezeichnung']}
 					</f:facet>
 					#{pos.artikel.bezeichnung}
 				</rich:column>
 	
 				<rich:column id="anzahlSpalte">
 					<f:facet name="header">
-						#{msgBv['confirmBestellung.artikel.anzahl']}
+						#{msgAv['confirmAuftrag.artikel.anzahl']}
 					</f:facet>
 					#{pos.anzahl}
 				</rich:column>
@@ -44,7 +44,7 @@
 				<f:facet name="footer">
     				<h:panelGroup id="buttons">
     					<h:commandButton id="bestellungButton"
-						                 value="#{msgBv['confirmBestellung.bestellen']}"
+						                 value="#{msgAv['confirmAuftrag.bestellen']}"
 						                 action="#{auc.bestellen}"/>
     				</h:panelGroup>
     			</f:facet>

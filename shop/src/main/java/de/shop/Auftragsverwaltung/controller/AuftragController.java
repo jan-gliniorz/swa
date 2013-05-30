@@ -103,7 +103,7 @@ public class AuftragController implements Serializable {
 		}
 		
 		// Auftrag im Flash speichern wegen anschliessendem Redirect
-		flash.put("bestellung", auftrag);
+		flash.put("auftrag", auftrag);
 		
 		return JSF_VIEW_AUFTRAG;
 	}

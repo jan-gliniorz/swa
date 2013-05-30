@@ -9,22 +9,22 @@
 	  xmlns:rich="http://richfaces.org/rich">
 
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
-		<ui:param name="pageTitle" value="#{msgBv['viewBestellung.title']}"/>
+		<ui:param name="pageTitle" value="#{msgAv['viewAuftrag.title']}"/>
 	
 		<ui:define name="article">
-			<c:set var="bestellung" value="#{flash.bestellung}" scope="view"/>
+			<c:set var="auftrag" value="#{flash.auftrag}" scope="view"/>
 					
-			<rich:panel id="bestellungMainPanel" header="#{msgBv['viewBestellung.heading']}">  
+			<rich:panel id="bestellungMainPanel" header="#{msgBv['viewAuftrag.heading']}">  
 				<h:panelGrid id="bestellungGrid" columns="2">
 		
-					<h:outputText id="idLabel" value="#{msgBv['viewBestellung.id']}"/>
-					<h:outputText id="id" value="#{bestellung.id}"/>
+					<h:outputText id="idLabel" value="#{msgBv['viewAuftrag.id']}"/>
+					<h:outputText id="id" value="#{auftrag.id}"/>
 		
-					<h:outputText id="kundeIdLabel" value="#{msgBv['viewBestellung.kundeId']}"/>
-					<h:outputText id="kundeId" value="#{bestellung.kunde.id}"/>
+					<h:outputText id="kundeIdLabel" value="#{msgBv['viewAuftrag.kundeId']}"/>
+					<h:outputText id="kundeId" value="#{auftrag.kunde.id}"/>
 		
-					<h:outputText id="erzeugtLabel" value="#{msgBv['viewBestellung.zeitstempel']}"/>
-					<h:outputText id="erzeugt" value="#{bestellung.erzeugt}">
+					<h:outputText id="erzeugtLabel" value="#{msgBv['viewAuftrag.zeitstempel']}"/>
+					<h:outputText id="erzeugt" value="#{auftrag.erzeugt}">
 						<f:convertDateTime type="date" style="full"/>
 					</h:outputText>
 				</h:panelGrid>
@@ -32,27 +32,27 @@
 			
 			<p id="abstand"/>
 	
-			<rich:panel id="positionen" header="#{msgBv['viewBestellung.positionen']}"> 
+			<rich:panel id="positionen" header="#{msgAv['viewAuftrag.positionen']}"> 
 				<rich:dataTable id="positionenTabelle"
-				                value="#{bestellung.bestellpositionen}"
+				                value="#{auftrag.bestellpositionen}"
 				                var="pos">
 					<rich:column id="artikelIdSpalte">
 						<f:facet name="header">
-							#{msgBv['viewBestellung.artikel.id']}
+							#{msgAv['viewAuftrag.artikel.id']}
 						</f:facet>
 						#{pos.artikel.id}
 					</rich:column>
 		
 					<rich:column id="bezeichnungSpalte">
 						<f:facet name="header">
-							#{msgBv['viewBestellung.artikel.bezeichnung']}
+							#{msgAv['viewAuftrag.artikel.bezeichnung']}
 						</f:facet>
 						#{pos.artikel.bezeichnung}
 					</rich:column>
 		
 					<rich:column id="anzahlSpalte">
 						<f:facet name="header">
-							#{msgBv['viewBestellung.artikel.anzahl']}
+							#{msgAv['viewAuftrag.artikel.anzahl']}
 						</f:facet>
 						#{pos.anzahl}
 					</rich:column>
