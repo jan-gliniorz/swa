@@ -19,5 +19,10 @@
    <base-name>de.shop.AVmessages</base-name>
    <var>msgAv</var>
   </resource-bundle>
+  
+   <resource-bundle>
+   <base-name>de.shop.LRmessages</base-name>
+   <var>msgLr</var>
+  </resource-bundle>
  </application>
 </faces-config>
