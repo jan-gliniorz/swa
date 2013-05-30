@@ -38,7 +38,7 @@ public class ArtikelController implements Serializable {
 	
 	private static final String JSF_LIST_ARTIKEL = "/artikelverwaltung/listArtikel";
 	private static final String FLASH_ARTIKEL = "artikel";
-	private static final int ANZAHL_LADENHUETER = 5;
+	private static final int ANZAHL_LADENHUETER = 10;
 	
 	private static final String JSF_SELECT_ARTIKEL = "/artikelverwaltung/selectArtikel";
 	private static final String SESSION_VERFUEGBARE_ARTIKEL = "verfuegbareArtikel";
