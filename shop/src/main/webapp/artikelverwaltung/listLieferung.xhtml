@@ -10,74 +10,72 @@
 	  xmlns:a4j="http://richfaces.org/a4j">
 
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
-		<ui:param name="pageTitle" value="#{msgLr['listLieferung.title']}"/>
-	
+		<ui:param name="pageTitle" value="#{msgLr['viewLieferung.title']}"/>
 		<ui:define name="article">
+			<c:set var="lieferungNurLieferung" value="#{flash.lieferungNurLieferung}" scope="view"/>
 			<h:form id="form">
-				<rich:focus id="sucheFocus"/>
-				
+				<rich:focus id="sucheFocus"/>	
 				<rich:panel id="suchePanel" header="#{msgLr['listLieferung.sucheNeu']}">
 					<h:panelGrid id="sucheGrid" columns="4">
 						<h:outputLabel id="idLabel"
-						               value="#{msgLr['listLieferung.id']}"
-						               for="id"/>
-		
+								       value="#{msgLr['listLieferung.id']}"
+								       for="id"/>
+				
 						<h:inputText id="id" value="#{lic.id}"/>
-		
+				
 						<a4j:commandButton id="findButton"
-						                   action="#{lic.findLieferungByIdNurLieferung}"
-								           value="#{msgLr['listLieferung.submit']}"
-								           render="lieferungPanel sucheForm:fehlermeldungId"/>
-						
+								           action="#{lic.findLieferungByIdNurLieferung()}"
+										   value="#{msgLr['listLieferung.submit']}"
+										   render="lieferungPanel sucheForm:fehlermeldungId"/>
+								
 						<a4j:status id="statusStart">
 							<f:facet name="start">
 								<h:panelGroup id="waitingGroup">
 									<h:graphicImage id="waitingGif"
-									                name="waiting.gif"
-									                library="images"/>
+											        name="waiting.gif"
+											        library="images"/>
 									#{msgLr['listLieferung.inBearbeitung']}
 								</h:panelGroup>
 							</f:facet>
 						</a4j:status>
 					</h:panelGrid>
-				</rich:panel>
-			
+				</rich:panel>	
+						
 				<p id="abstand1"/>
 			
 				<a4j:outputPanel id="lieferungPanel">
-					<c:if test="#{not empty flash.lieferung or param.init ne 'true'}">
-						<c:set var="lieferung" value="#{flash.lieferung}" scope="view"/>
-						<c:set target="#{flash}" property="lieferung" value="#{lieferung}"/>
+					<c:if test="#{not empty flash.lieferungNurLieferung or param.init ne 'true'}">
+						<c:set var="lieferungNurLieferung" value="#{flash.lieferungNurLieferung}" scope="view"/>
+						<c:set target="#{flash}" property="lieferungNurLieferung" value="#{lieferungNurLieferung}"/>
 						
 						<rich:dataTable id="lieferungTabelle"
-						                value="#{lic}"
+						                value="#{lieferungNurLieferung}"
 						                var="lief"
 						                rows="5"
 						                noDataLabel="#{msgLr['listLieferung.keineDaten']}"
 						                rowClasses="odd-row, even-row"
 						                styleClass="tabelleMitZebrastil"
 						                cellspacing="10"
-						                rendered="#{not empty artikel or param.init ne 'true'}">
-							
+						                rendered="#{not empty lieferungNurLieferung or param.init ne 'true'}">
 							<rich:column id="idSpalte">
 								<f:facet name="header">
 									#{msgLr['listLieferung.id']}
 								</f:facet>
-								#{lief.id}
+								#{lic.lieferungNurLieferung.id}
 							</rich:column>
 							
 							<rich:column id="bestelldatumSpalte">
 								<f:facet name="header">
 									#{msgLr['listLieferung.bestelldatum']}
 								</f:facet>
-								#{lief.bestelldatum}
+								#{lic.lieferungNurLieferung.bestelldatum}
 							</rich:column>
 							
 							<rich:column id="lieferungsdatumSpalte">
 								<f:facet name="header">
 									#{msgLr['listLieferung.lieferungsdatum']}
 								</f:facet>
-								#{lief.lieferungsdatum}
+								#{lic.lieferungNurLieferung.lieferungsdatum}
 							</rich:column>
 						</rich:dataTable>
 						
