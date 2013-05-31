@@ -12,52 +12,21 @@
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 		<ui:param name="pageTitle" value="#{msgLr['viewLieferung.title']}"/>
 		<ui:define name="article">
-			<c:set var="auftrag" value="#{flash.auftrag}" scope="view"/>
+			<c:set var="lief" value="#{flash.FLASH_LIEFERUNG_MIT_POSITIONEN}" scope="view"/>
 			<h:form id="form">
-				<rich:focus id="sucheFocus"/>	
-				<rich:panel id="suchePanel" header="#{msgLr['listLieferung.sucheNeu']}">
-					<h:panelGrid id="sucheGrid" columns="4">
-						<h:outputLabel id="idLabel"
-								       value="#{msgLr['listLieferung.id']}"
-								       for="id"/>
 				
-						<h:inputText id="id" value="#{lic.id}"/>
-				
-						<a4j:commandButton id="findButton"
-								           action="#{lic.findLieferungByIdNurLieferung}"
-										   value="#{msgLr['listLieferung.submit']}"
-										   render="lieferungPanel sucheForm:fehlermeldungId"/>
-								
-						<a4j:status id="statusStart">
-							<f:facet name="start">
-								<h:panelGroup id="waitingGroup">
-									<h:graphicImage id="waitingGif"
-											        name="waiting.gif"
-											        library="images"/>
-									#{msgLr['listLieferung.inBearbeitung']}
-								</h:panelGroup>
-							</f:facet>
-						</a4j:status>
-					</h:panelGrid>
-				</rich:panel>	
-				<p id="abstand2"/>
-				<rich:panel id="lieferungMainPanel" header="#{msgLr['viewLieferung.heading']}">  
+				<rich:panel id="lieferungMainPanel" header="#{msgLr['viewLieferung.heading']}" rendered="#{not empty lief}">  
 					<h:panelGrid id="lieferungGrid" columns="2">
 			
-						<h:outputText id="idLabel" value="#{msgLr['viewLieferung.id']}"/>
-						<h:outputText id="id" value="#{lieferung.id}"/>
+						<h:outputText id="idLabel2" value="#{msgLr['viewLieferung.id']}"/>
+						<h:outputText id="id2" value="#{lief.id}"/>
 			
 						<h:outputText id="bestelldatumLabel" value="#{msgLr['viewLieferung.bestelldatum']}"/>
-						<h:outputText id="bestelldatum" value="#{lieferung.bestelldatum}"/>
+						<h:outputText id="bestelldatum" value="#{lic.lieferungNurLieferung.bestelldatum}"/>
 						
 						<h:outputText id="lieferungsdatumLabel" value="#{msgLr['viewLieferung.lieferungsdatum']}"/>
-						<h:outputText id="lieferungsdatum" value="#{lieferung.lieferungsdatum}"/>
+						<h:outputText id="lieferungsdatum" value="#{lic.lieferungNurLieferung.lieferungsdatum}"/>
 						
-						<h:outputText id="erzeugtLabel" value="#{msgLr['viewLieferung.zeitstempel']}"/>
-						<h:outputText id="erzeugt" value="#{lieferung.erzeugt}">
-						
-						<f:convertDateTime type="date" style="full"/>
-						</h:outputText>
 					</h:panelGrid>
 				</rich:panel>
 				

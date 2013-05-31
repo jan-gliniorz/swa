@@ -76,7 +76,7 @@
 						#{msg['nav.artikelverwaltung.selectArtikel']}
 					</h:commandLink>
 				</rich:panelMenuItem>	
-				<rich:panelMenuItem id="artikelverwaltungListLieferungItem">
+				<rich:panelMenuItem id="artikelverwaltungListLieferungItem" rendered="#{rich:isUserInRole('admin')}">
 					<h:outputLink id="artikelverwaltungListLieferung"
 					              value="#{request.contextPath}/artikelverwaltung/listLieferung.jsf">
 						#{msg['nav.artikelverwaltung.listLieferung']}
@@ -86,13 +86,23 @@
 						</c:if>
 					</h:outputLink>
 				</rich:panelMenuItem>
-				<rich:panelMenuItem id="artikelverwaltungSelectLieferungItem">
+				<rich:panelMenuItem id="artikelverwaltungListLieferungenAllItem" rendered="#{rich:isUserInRole('admin')}">
+					<h:outputLink id="artikelverwaltungListLieferungenAll"
+					              value="#{request.contextPath}/artikelverwaltung/listLieferungenAll.jsf">
+						#{msg['nav.artikelverwaltung.listLieferungenAll']}
+						<f:param id="initParamListLieferungenAll" name="init" value="true"/>
+						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
+							<f:param id="listLieferungenAllCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+						</c:if>
+					</h:outputLink>
+				</rich:panelMenuItem>
+				<rich:panelMenuItem id="artikelverwaltungSelectLieferungItem" rendered="#{rich:isUserInRole('admin')}">
 					<h:commandLink id="artikelverwaltungSelectLieferung"
 					               action="#{ac.selectLieferung}">
 						#{msg['nav.artikelverwaltung.selectLieferung']}
 					</h:commandLink>
 				</rich:panelMenuItem>	
-				<rich:panelMenuItem id="artikelverwaltungViewLieferungItem">
+				<rich:panelMenuItem id="artikelverwaltungViewLieferungItem" rendered="#{rich:isUserInRole('admin')}">
 					<h:outputLink id="artikelverwaltungViewLieferung"
 					              value="#{request.contextPath}/artikelverwaltung/viewLieferung.jsf">
 						#{msg['nav.artikelverwaltung.viewLieferung']}
@@ -101,8 +111,16 @@
 						</c:if>
 					</h:outputLink>
 				</rich:panelMenuItem>			
+				<rich:panelMenuItem id="artikelverwaltungCreateLieferungItem" rendered="#{rich:isUserInRole('admin')}">
+					<h:outputLink id="artikelverwaltungCreateLieferung"
+					              value="#{request.contextPath}/artikelverwaltung/createLieferung.jsf">
+						#{msg['nav.artikelverwaltung.createLieferung']}
+						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
+							<f:param id="createLieferungCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+						</c:if>
+					</h:outputLink>
+				</rich:panelMenuItem>
 			</rich:panelMenuGroup>
-
 			<rich:panelMenuGroup id="auftragsverwaltung"
 			                     label="#{msg['nav.auftragsverwaltung']}"
 			                     expanded="true"

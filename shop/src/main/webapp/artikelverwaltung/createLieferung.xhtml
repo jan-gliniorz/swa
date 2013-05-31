@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+		<ui:define name="metadata">
+			<f:event type="preRenderView" listener="#{lic.createEmptyLieferung}"/>
+		</ui:define>
+		
+		<ui:param name="pageTitle" value="#{msgLr['createLieferung.title']}"/>
+	
+		<ui:define name="article">
+			<h1>
+				#{msgLr['createLieferung.heading']}
+			</h1>
+	
+			<h:form id="createLieferungForm">
+				<rich:jQuery id="#{lic.id}" selector="#{lic.id}" query="focus()"/>
+				<!-- fokussiert auf id="kategorie" statt auf id="nachname" WARUM?
+				<rich:focus id="createKundeFormFocus"/>
+				-->
+				
+				<!--
+					https://issues.jboss.org/browse/AS7-1348
+					http://community.jboss.org/thread/169487 
+				-->
+				<rich:graphValidator id="lieferungValidator"
+				                     value="#{lic.neueLieferung}">
+					<rich:messages for="lieferungValidator"/>
+					
+					<p id="abstand"/>
+					
+					<h:panelGrid id="createLieferungTabelle"
+					             columns="3">
+			
+						<h:outputLabel id="BestelldatumLabel" for="bestelldatum" value="#{msgLr['createLieferung.bestelldatum']}"/>
+						<h:inputText id="bestelldatum" value="#{lic.neueLieferung.bestelldatum}">
+							<rich:validator oninvalid="$(#{rich:element('bestelldatum')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('bestelldatum')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungenBestelldatum" for="bestelldatum"/>
+			
+			
+						<h:outputLabel id="LieferungsdatumLabel" for="lieferungsdatum" value="#{msgLr['createLieferung.lieferungsdatum']}"/>
+						<h:inputText id="lieferungsdatum" value="#{lic.neueLieferung.lieferungsdatum}">
+							<rich:validator oninvalid="$(#{rich:element('lieferungsdatum')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('lieferungsdatum')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungenLieferungsdatum" for="lieferungsdatum"/>
+
+
+						<h:outputLabel id="artikelIdLabel" for="artId" value="#{msgLr['createLieferung.artId']}"/>
+						<h:inputText id="artId"
+						             value="#{lic.neueLieferung.lieferungspositionen.id}">
+							<rich:validator oninvalid="$(#{rich:element('artId')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('artId')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungArtId" for="artId"/>
+						
+						
+						<h:outputLabel id="anzahlLabel" for="anzahl" value="#{msgLr['createLieferung.anzahl']}"/>
+						<h:inputText id="anzahl"
+						             value="#{lic.neueLieferung.lieferungspositionen.anzahl}">
+							<rich:validator oninvalid="$(#{rich:element('anzahl')}).addClass('invalid')"
+                                            onvalid="$(#{rich:element('anzahl')}).removeClass('invalid')"/>
+						</h:inputText>
+						<rich:messages id="fehlermeldungAnzahl" for="anzahl"/>
+					</h:panelGrid>	
+						
+					<p id="buttons">
+						<h:commandButton id="createSubmit" action="#{lic.createLieferung}" value="#{msgLr['createLieferung.submit']}"/>
+						#{' '}
+						<h:commandButton id="reset" type="reset" value="#{msLr['createLieferung.reset']}"/>
+					</p>
+				</rich:graphValidator>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>
