@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:rich="http://richfaces.org/rich"
+	  xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+		<ui:param name="pageTitle" value="#{msgAr['listLager.title']}" />
+	
+			<ui:define name="article">
+			<h:form id="form">
+			<rich:panel id="listPanel" header="#{msgAr['listLager.listLagerpos']}">
+			<rich:dataTable id="lagerposTabelle"
+				                value="#{la.lagerposition}"
+				                var="lager"
+				                rows="5"
+				                noDataLabel="#{msgAr['listLager.keineDaten']}"
+				                rowClasses="odd-row, even-row"
+				                styleClass="tabelleMitZebrastil"
+				                cellspacing="10"
+				                rendered="#{not empty la.lagerposition}">
+					
+					<rich:column id="idSpalte">
+						<f:facet name="header">
+			                 #{msgAr['listLager.LagerposNr']}
+						</f:facet>
+						#{lagerposition.id}
+					</rich:column>
+					
+					<rich:column id="AnzahlSpalte">
+						<f:facet name="header">
+							#{msgAr['listLager.anzahl']}
+						</f:facet>
+						#{lagerposition.anzahl}
+					</rich:column>
+					
+					<rich:column id="ArtikelFidSpalte">
+						<f:facet name="header">
+							#{msgAr['listLager.artikel']}
+						</f:facet>
+						#{lagerposition.artikel.id}
+					</rich:column>
+					
+					<rich:column id="ArtikelBezSpalte">
+						<f:facet name="header">
+							#{msgAr['listLager.artikelbez']}
+						</f:facet>
+						#{lagerposition.artikel.bezeichnung}
+					</rich:column>
+
+				</rich:dataTable>
+				</rich:panel>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

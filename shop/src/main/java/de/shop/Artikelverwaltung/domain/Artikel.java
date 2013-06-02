@@ -53,6 +53,16 @@ import de.shop.Util.IdGroup;
 						+ "FROM Artikel la " 
 						+ "LEFT JOIN la.lagerpositionen " 
 						+ "WHERE la.id = :" + Lagerposition.PARAM_ID),
+	  @NamedQuery(name  = Artikel.FIND_ARTIKEL_BY_ID_PREFIX,
+				        query = "SELECT   k"
+				                + " FROM  Artikel k"
+				                + " WHERE CONCAT('', k.id) LIKE :" + Artikel.PARAM_ID
+				                + " ORDER BY k.id"),
+      @NamedQuery(name  = Artikel.FIND_BEZEICHNUNG_BY_PREFIX,
+				   	     query = "SELECT   DISTINCT k.bezeichnung"
+								 + " FROM  Artikel k "
+				   	           	 + " WHERE UPPER(k.bezeichnung) LIKE UPPER(:"
+				   	             + Artikel.PARAM_BEZEICHNUNG + ")"),
 	  @NamedQuery(name = Artikel.FIND_ARTIKEL_ALL,
 			      query = "SELECT la FROM Artikel la"),
 	  @NamedQuery(name = Artikel.FIND_ARTIKEL_ALL_LAGERPOSITIONEN,
@@ -84,7 +94,10 @@ public class Artikel implements Serializable {
 		PREFIX + "findArtikelByIDs";
 	public static final String FIND_ARTIKEL_BY_IDS_LAGERPOSITIONEN =
 		PREFIX + "findArtikelByIDsLagerpositionen";
-	
+	public static final String FIND_ARTIKEL_BY_ID_PREFIX = 
+		PREFIX + "findArtikelByIDPrefix";
+	public static final String FIND_BEZEICHNUNG_BY_PREFIX =
+		PREFIX + "findArtikelByBezeichnungPrefix";
 	public static final String PARAM_ID = "id";
 	public static final String PARAM_BEZEICHNUNG = "bezeichnung";
 

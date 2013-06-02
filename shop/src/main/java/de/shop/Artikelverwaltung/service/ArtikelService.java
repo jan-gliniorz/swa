@@ -3,6 +3,7 @@ package de.shop.Artikelverwaltung.service;
 import static de.shop.Util.Constants.KEINE_ID;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -118,6 +119,29 @@ public class ArtikelService implements Serializable {
 
 		return artikel;
 	}
+	
+	
+	public List<Artikel> findArtikelByIdPrefix(Long id) {
+		if (id == null) {
+			return Collections.emptyList();
+		}
+		
+		final List<Artikel> artikel = em.createNamedQuery(Artikel.FIND_ARTIKEL_BY_ID_PREFIX,
+				                                               Artikel.class)
+				                             .setParameter(Artikel.PARAM_ID, id.toString() + '%')
+				                             .getResultList();
+		return artikel;
+	}
+	
+	
+	public List<String> findBezeichnungByPrefix(String nachnamePrefix) {
+		final List<String> bezeichnung = em.createNamedQuery(Artikel.FIND_BEZEICHNUNG_BY_PREFIX, String.class)
+				                         .setParameter(Artikel.PARAM_BEZEICHNUNG, nachnamePrefix + '%')
+				                         .getResultList();
+		return bezeichnung;
+	}
+	
+	
 	
 	public List<Artikel> findArtikelByBezeichnung(String bez) {
 		//validateArtikelId(bez, locale);

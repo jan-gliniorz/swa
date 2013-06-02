@@ -21,6 +21,8 @@ import org.jboss.logging.Logger;
 import de.shop.Artikelverwaltung.domain.Artikel;
 //import de.shop.Artikelverwaltung.domain.Lager;
 import de.shop.Artikelverwaltung.domain.Lagerposition;
+import de.shop.Artikelverwaltung.service.ArtikelService.FetchType;
+import de.shop.Artikelverwaltung.service.ArtikelService.OrderType;
 import de.shop.Util.IdGroup;
 import de.shop.Util.Log;
 import de.shop.Util.ValidatorProvider;
@@ -38,7 +40,7 @@ public class LagerService implements Serializable {
 	}
 	
 	public enum FetchType {
-		NUR_Lager, 
+		NUR_Lagerposition, 
 		MIT_POSITIONEN
 	}
 	
@@ -60,18 +62,14 @@ public class LagerService implements Serializable {
 
 	/**
 	 */
-//	public List<Lagerposition> findLagerpositionenAll(FetchType fetch, OrderType order) {
-//		
-//		List<Lagerposition> lagerpositionen;
-//		
-//		lagerpositionen = OrderType.ID.equals(order)
-//				         ? em.createNamedQuery(Lagerposition.FIND_Lagerposition_BY_ID, Lagerposition.class)
-//				             .getResultList()
-//				         : em.createNamedQuery(Lagerposition.FIND_Lagerposition_ALL, Lagerposition.class)
-//				             .getResultList();
-//		
-//		return lagerpositionen;
-//	}
+	public List<Lagerposition> findLagerpositionlAll() {
+		List<Lagerposition> lagerpos;
+		
+				lagerpos = em.createNamedQuery(Lagerposition.FIND_LAGERPOSITION_ALL, Lagerposition.class)
+				            .getResultList();
+
+		return lagerpos;
+	}
 	/**
 	 * @throws Exception 
 	 */

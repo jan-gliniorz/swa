@@ -17,29 +17,23 @@
 				<rich:focus id="sucheFocus"/>
 				
 				<rich:panel id="suchePanel" header="#{msgAr['listArtikel.sucheNeu']}">
-					<h:panelGrid id="sucheGrid" columns="3">
+					<h:panelGrid id="sucheGrid" columns="4">
 						<h:outputLabel id="bezeichnungLabel"
 						               value="#{msgAr['listArtikel.bezeichnung']}"
 						               for="bezeichnung"/>
 			              
 		
-						<h:inputText id="bezeichnung" value="#{arc.bezeichnung}"/>
+						<rich:autocomplete id="bezeichnung"
+					                   	   value="#{arc.bezeichnung}"
+					                       mode="ajax"
+					                       minChars="1"
+					                       autocompleteMethod="#{arc.findBezeichnungByPrefix}"/>
 		
 						<a4j:commandButton id="findButton"
 						                   action="#{arc.findArtikelByBezeichnung}"
 								           value="#{msgAr['listArtikel.submit']}"
 								           render="artikelPanel sucheForm:fehlermeldungBezeichnung"/>
 								           
-						 <h:outputLabel id="idLabel"
-						               value="#{msgAr['listArtikel.id']}"
-						               for="id"/>	
-						               
-						 <h:inputText id="id" value="#{arc.id}"/>
-						 
-						 	<a4j:commandButton id="findButtonId"
-						                   action="#{arc.findArtikelById}"
-								           value="#{msgAr['listArtikel.submit']}"
-								           render="artikelPanel sucheForm:fehlermeldungId"/>
 								           						    
 									           
 						<a4j:status id="statusStart">

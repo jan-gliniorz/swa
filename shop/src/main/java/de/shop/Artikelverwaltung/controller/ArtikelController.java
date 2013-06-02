@@ -1,5 +1,8 @@
 package de.shop.Artikelverwaltung.controller;
 
+import static javax.ejb.TransactionAttributeType.REQUIRED;
+import static de.shop.Util.Messages.MessagesType.ARTIKELVERWALTUNG;
+
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -8,12 +11,13 @@ import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.ejb.TransactionAttribute;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.Flash;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
-
+import de.shop.Util.Messages;
 import org.jboss.logging.Logger;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
@@ -42,7 +46,14 @@ public class ArtikelController implements Serializable {
 	
 	private static final String JSF_SELECT_ARTIKEL = "/artikelverwaltung/selectArtikel";
 	private static final String SESSION_VERFUEGBARE_ARTIKEL = "verfuegbareArtikel";
+	
+	private static final String CLIENT_ID_ARTIKEL_BEZEICHNUNG = "form:bezeichnung";
+	private static final String MSG_KEY_ARTIKEL_NOT_FOUND_BY_BEZEICHNUNG = "listArtikel.notFound";
+	
+	private static final String CLIENT_ID_ARTIKELID = "form:artikelIdInput";
+	private static final String MSG_KEY_ARTIKEL_NOT_FOUND_BY_ID = "listArtikel.notFound";
 
+	private static final int MAX_AUTOCOMPLETE = 10;
 	private String bezeichnung;
 	
 	private Long id;
@@ -61,7 +72,9 @@ public class ArtikelController implements Serializable {
 	@Inject
 	@Client
 	private Locale locale;
-
+	
+	@Inject
+	private Messages messages;
 	
 	@PostConstruct
 	private void postConstruct() {
@@ -137,4 +150,50 @@ public class ArtikelController implements Serializable {
 		this.id = id;
 	}
 	
+	
+	private String findArtikelByIdErrorMsg(String id) {
+		messages.error(ARTIKELVERWALTUNG, MSG_KEY_ARTIKEL_NOT_FOUND_BY_ID, CLIENT_ID_ARTIKELID, id);
+		return null;
+	}
+	
+	@TransactionAttribute(REQUIRED)
+	public List<Artikel> findArtikelByIdPrefix(String idPrefix) {
+		List<Artikel> artikelPrefix = null;
+		Long id = null; 
+		try {
+			id = Long.valueOf(idPrefix);
+		}
+		catch (NumberFormatException e) {
+			findArtikelByIdErrorMsg(idPrefix);
+			return null;
+		}
+		
+		artikelPrefix = as.findArtikelByIdPrefix(id);
+		if (artikelPrefix == null || artikelPrefix.isEmpty()) {
+			// Kein Kunde zu gegebenem ID-Praefix vorhanden
+			findArtikelByIdErrorMsg(idPrefix);
+			return null;
+		}
+		
+		if (artikelPrefix.size() > MAX_AUTOCOMPLETE) {
+			return artikelPrefix.subList(0, MAX_AUTOCOMPLETE);
+		}
+		return artikelPrefix;
+	}
+	
+	@TransactionAttribute(REQUIRED)
+	public List<String> findBezeichnungByPrefix(String bezPrefix) {
+		
+		final List<String> bezeichnung = as.findBezeichnungByPrefix(bezPrefix);
+		if (bezeichnung.isEmpty()) {
+			messages.error(ARTIKELVERWALTUNG, MSG_KEY_ARTIKEL_NOT_FOUND_BY_BEZEICHNUNG, CLIENT_ID_ARTIKEL_BEZEICHNUNG);
+			return bezeichnung;
+		}
+
+		if (bezeichnung.size() > MAX_AUTOCOMPLETE) {
+			return bezeichnung.subList(0, MAX_AUTOCOMPLETE);
+		}
+
+		return bezeichnung;
+	}
 }
