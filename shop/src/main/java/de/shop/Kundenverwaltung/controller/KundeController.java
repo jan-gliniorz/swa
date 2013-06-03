@@ -138,7 +138,6 @@ public class KundeController implements Serializable {
 
 	private Long kundeId;
 	private Kunde kunde;
-	private List<String> hobbies;
 	
 	private String nachname;
 	
@@ -148,6 +147,7 @@ public class KundeController implements Serializable {
 	private String vornameFilter = "";
 	
 	private boolean geaendertKunde;    // fuer ValueChangeListener
+	private Kunde neuerKunde;
 
 	private byte[] bytes;
 	private String contentType;
@@ -201,14 +201,6 @@ public class KundeController implements Serializable {
 		return kunde;
 	}
 
-	public List<String> getHobbies() {
-		return hobbies;
-	}
-	
-	public void setHobbies(List<String> hobbies) {
-		this.hobbies = hobbies;
-	}
-
 	public String getNachname() {
 		return nachname;
 	}
@@ -241,6 +233,10 @@ public class KundeController implements Serializable {
 	
 	public void setVornameFilter(String vornameFilter) {
 		this.vornameFilter = vornameFilter;
+	}
+	
+	public Kunde getNeuerKunde() {
+		return neuerKunde;
 	}
 	
 	public void setMenuItemEmail(UIPanelMenuItem menuItemEmail) {
@@ -381,55 +377,52 @@ public class KundeController implements Serializable {
 		return JSF_VIEW_KUNDE;
 	}
 	
-//	@TransactionAttribute(REQUIRED)
-//	public String createPrivatkunde() {
-//		
-//		try {
-//			neuerKunde = (Kunde) ks.createKunde(neuerKunde, locale);
-//		}
-//		catch (InvalidKundeException | EmailExistsException e) {
-//			final String outcome = createKundeErrorMsg(e);
-//			return outcome;
-//		}
-//
-//		// Push-Event fuer Webbrowser
-//		neuerKundeEvent.fire(String.valueOf(neuerKunde.getId()));
-//		
-//		// Aufbereitung fuer viewKunde.xhtml
-//		kundeId = neuerKunde.getId();
-//		kunde = neuerKunde;
-//		neuerKunde = null;  // zuruecksetzen
-//		hobbies = null;
-//		
-//		return JSF_VIEW_KUNDE + JSF_REDIRECT_SUFFIX;
-//	}
-//
-//	private String createKundeErrorMsg(AbstractShopException e) {
-//		final Class<? extends AbstractShopException> exceptionClass = e.getClass();
-//		if (exceptionClass.equals(EmailExistsException.class)) {
-//			messages.error(KUNDENVERWALTUNG, MSG_KEY_CREATE_PRIVATKUNDE_EMAIL_EXISTS, CLIENT_ID_CREATE_EMAIL);
-//		}
-//		else if (exceptionClass.equals(InvalidKundeException.class)) {
-//			final InvalidKundeException orig = (InvalidKundeException) e;
-//			messages.error(orig.getViolations(), null);
-//		}
-//		
-//		return null;
-//	}
+	@TransactionAttribute(REQUIRED)
+	public String createKunde() {
+		
+		try {
+			neuerKunde = (Kunde) ks.createKunde(kunde, locale);
+		}
+		catch (InvalidKundeIdException | EmailExistsException e) {
+			final String outcome = createKundeErrorMsg(e);
+			return outcome;
+		}
 
-//	public void createEmptyPrivatkunde() {
-//		if (neuerPrivatkunde != null) {
-//			return;
-//		}
-//
-//		neuerPrivatkunde = new Privatkunde();
-//		final Adresse adresse = new Adresse();
-//		adresse.setKunde(neuerPrivatkunde);
-//		neuerPrivatkunde.setAdresse(adresse);
-//		
-//		final int anzahlHobbies = HobbyType.values().length;
-//		hobbies = new ArrayList<>(anzahlHobbies);
-//	}
+		// Push-Event fuer Webbrowser
+		neuerKundeEvent.fire(String.valueOf(neuerKunde.getKundenNr()));
+		
+		// Aufbereitung fuer viewKunde.xhtml
+		kundeId = neuerKunde.getKundenNr();
+		kunde = neuerKunde;
+		neuerKunde = null;  // zuruecksetzen
+		
+		return JSF_VIEW_KUNDE + JSF_REDIRECT_SUFFIX;
+	}
+
+	private String createKundeErrorMsg(AbstractShopException e) {
+		final Class<? extends AbstractShopException> exceptionClass = e.getClass();
+		if (exceptionClass.equals(EmailExistsException.class)) {
+			messages.error(KUNDENVERWALTUNG, MSG_KEY_CREATE_KUNDE_EMAIL_EXISTS, CLIENT_ID_CREATE_EMAIL);
+		}
+		else if (exceptionClass.equals(InvalidKundeIdException.class)) {
+			final InvalidKundeIdException orig = (InvalidKundeIdException) e;
+			messages.error(orig.getViolations(), null);
+		}
+		
+		return null;
+	}
+
+	public void createEmptyKunde() {
+		if (neuerKunde != null) {
+			return;
+		}
+
+		neuerKunde = new Kunde();
+		final Adresse adresse = new Adresse();
+		adresse.setKunde(neuerKunde);
+		neuerKunde.setAdresse(adresse);
+		
+	}
 //	
 	/**
 	 * https://issues.jboss.org/browse/AS7-1348

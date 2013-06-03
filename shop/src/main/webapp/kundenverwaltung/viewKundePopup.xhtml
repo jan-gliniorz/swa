@@ -19,8 +19,8 @@
 			
 			<rich:panel id="stammdatenPanel">
 				<h:panelGrid id="stammdatenGrid" columns="2">
-					<h:outputText id="idLabel" value="#{msgKv['viewKundePopup.kundenr']}"/>
-					<h:outputText id="id" value="#{kunde.kundenNr}"/>
+					<h:outputText id="kundenNrLabel" value="#{msgKv['viewKundePopup.kundenr']}"/>
+					<h:outputText id="kundenNr" value="#{kunde.kundenNr}"/>
 			
 					<h:outputText id="nachnameLabel" value="#{msgKv['viewKundePopup.nachname']}"/>
 					<h:outputText id="nachname" value="#{kunde.nachname}"/>
@@ -30,6 +30,18 @@
 		
 					<h:outputText id="emailLabel" value="#{msgKv['viewKundePopup.email']}"/>
 					<h:outputText id="email" value="#{kunde.email}"/>
+					
+					<h:outputText id="StrasseLabel" value="#{msgKv['viewKundePopup.adresse.strasse']}"/>
+					<h:outputText id="strasse" value="#{kc.kunde.adresse.strasse}"/>
+									
+					<h:outputText id="hausNrLabel" value="#{msgKv['viewKundePopup.adresse.hausNr']}"/>
+					<h:outputText id="hausNr" value="#{kc.kunde.adresse.hausNr}"/>
+									
+					<h:outputText id="plzLabel" value="#{msgKv['viewKundePopup.adresse.plz']}"/>
+					<h:outputText id="plz" value="#{kc.kunde.adresse.plz}"/>
+									
+					<h:outputText id="ortLabel" value="#{msgKv['viewKundePopup.adresse.ort']}"/>
+					<h:outputText id="ort" value="#{kc.kunde.adresse.ort}"/>
 	
 				</h:panelGrid>
 			</rich:panel>
