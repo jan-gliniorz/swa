@@ -127,12 +127,6 @@
 							<f:param id="listLieferungenAllCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
 						</c:if>
 					</h:outputLink>
-				</rich:panelMenuItem>
-				<rich:panelMenuItem id="artikelverwaltungSelectLieferungItem" rendered="#{rich:isUserInRole('admin')}">
-					<h:commandLink id="artikelverwaltungSelectLieferung"
-					               action="#{ac.selectLieferung}">
-						#{msg['nav.artikelverwaltung.selectLieferung']}
-					</h:commandLink>
 				</rich:panelMenuItem>	
 				<rich:panelMenuItem id="artikelverwaltungViewLieferungItem" rendered="#{rich:isUserInRole('admin')}">
 					<h:outputLink id="artikelverwaltungViewLieferung"
@@ -149,6 +143,18 @@
 						#{msg['nav.artikelverwaltung.createLieferung']}
 						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
 							<f:param id="createLieferungCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+						</c:if>
+					</h:outputLink>
+				</rich:panelMenuItem>
+				<rich:panelMenuItem id="LieferungUpdateItem" 
+			                     	expanded="true"
+			                     	rendered="#{rich:isUserInRole('admin')}">
+					<h:outputLink id="artikelverwaltungUpdateLieferung"
+					              value="#{request.contextPath}/artikelverwaltung/updateLieferung.jsf">
+						#{msg['nav.artikelverwaltung.updateLieferung']}
+						<f:param id="initParamUpdateLieferung" name="init" value="true"/>
+						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
+							<f:param id="UpdateLieferungCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
 						</c:if>
 					</h:outputLink>
 				</rich:panelMenuItem>

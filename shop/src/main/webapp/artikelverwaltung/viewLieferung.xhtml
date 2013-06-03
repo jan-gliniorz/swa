@@ -12,30 +12,19 @@
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 		<ui:param name="pageTitle" value="#{msgLr['viewLieferung.title']}"/>
 		<ui:define name="article">
-			<c:set var="lief" value="#{flash.FLASH_LIEFERUNG_MIT_POSITIONEN}" scope="view"/>
+			<c:set var="lief" value="#{flash.lieferung}" scope="view"/>
+			<c:set target="#{flash}" property="lieferung" value="#{lieferung}"/>
 			<h:form id="form">
-				
-				<rich:panel id="lieferungMainPanel" header="#{msgLr['viewLieferung.heading']}" rendered="#{not empty lief}">  
-					<h:panelGrid id="lieferungGrid" columns="2">
-			
-						<h:outputText id="idLabel2" value="#{msgLr['viewLieferung.id']}"/>
-						<h:outputText id="id2" value="#{lief.id}"/>
-			
-						<h:outputText id="bestelldatumLabel" value="#{msgLr['viewLieferung.bestelldatum']}"/>
-						<h:outputText id="bestelldatum" value="#{lic.lieferungNurLieferung.bestelldatum}"/>
-						
-						<h:outputText id="lieferungsdatumLabel" value="#{msgLr['viewLieferung.lieferungsdatum']}"/>
-						<h:outputText id="lieferungsdatum" value="#{lic.lieferungNurLieferung.lieferungsdatum}"/>
-						
-					</h:panelGrid>
-				</rich:panel>
-				
-				<p id="abstand"/>
-		
+				<a4j:outputPanel id="lieferungPanel">
+				<c:set var="lief" value="#{flash.lieferung}" scope="view"/>
 				<rich:panel id="positionen" header="#{msgLr['viewLieferung.positionen']}"> 
 					<rich:dataTable id="positionenTabelle"
-					                value="#{lieferung.lieferungspositionen}"
-					                var="pos">
+									value="#{lief.lieferungspositionen}"
+			                		var="pos"
+			                		rows = "10"
+			                		oDataLabel="#{msgLr['viewLieferung.keineDaten']}"
+				                	rowClasses="odd-row; even-row"
+				                	styleClass="tabelleMitZebrastil">
 						<rich:column id="artikelIdSpalte">
 							<f:facet name="header">
 								#{msgLr['viewLieferung.artikel.id']}
@@ -58,6 +47,32 @@
 						</rich:column>
 					</rich:dataTable>
 				</rich:panel>
+				<h:panelGroup id="scrollerGroup" rendered="#{not empty lic.lieferung}">	
+					<rich:dataScroller id="dataScroller"
+						               for="positionenTabelle"
+						               maxPages="5"/>			
+					<a4j:outputPanel id="outputPanelZebra" ajaxRendered="true">
+						<rich:jQuery id="odd"
+						             selector=".tabelleMitZebrastil tr:odd"
+						             query="addClass('odd-row')"
+						             timing="domready"/>
+						<rich:jQuery id="even"
+						             selector=".tabelleMitZebrastil tr:even"
+						             query="addClass('even-row')"
+						             timing="domready"/>
+						<rich:jQuery id="mouseover"
+						             selector=".tabelleMitZebrastil tr"
+						             event="mouseover"
+						             query="jQuery(this).addClass('active-row')"
+						             timing="domready"/>
+						<rich:jQuery id="mouseout"
+						             selector=".tabelleMitZebrastil tr"
+						             event="mouseout"
+						             query="jQuery(this).removeClass('active-row')"
+						             timing="domready"/>
+					</a4j:outputPanel>
+				</h:panelGroup>
+				</a4j:outputPanel>
 			</h:form>
 		</ui:define>
 	</ui:composition>

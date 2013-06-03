@@ -13,7 +13,7 @@
 		<ui:param name="pageTitle" value="#{msgLr['listLieferung.title']}"/>
 		<ui:define name="article">
 			<h1>
-				#{msgLr['listLieferung.heading']}
+				#{msgLr['updateLieferung.heading']}
 			</h1>
 			<h:form id="form">
 				<rich:focus id="sucheFocus"/>	
@@ -44,26 +44,27 @@
 				</rich:panel>	
 						
 				<p id="abstand1"/>
-							
-				<a4j:outputPanel id="lieferungPanel">	
 					<c:set var="lieferung" value="#{flash.lieferung}" scope="view"/>
 					<c:set target="#{flash}" property="lieferung" value="#{lieferung}"/>			
-						<rich:panel id="lieferungMainPanel" 
+						<rich:panel id="lieferungDetailPanel" 
 									header="#{msgLr['listLieferung.heading']}"
-									value="#{lieferung}"
+									value="#{lic.lieferung}"
 						            var="lief"
 						            rendered="#{not empty lieferung or param.init ne 'true'}">
 							<h:panelGrid id="lieferungGrid" columns="2">
-					
 								<h:outputText id="idLabel2" value="#{msgLr['listLieferung.id']}"/>
-								<h:outputText id="id2" value="#{lieferung.id}"/>
+								<h:outputText id="id2" value="#{lief.id}"/>
 					
 								<h:outputText id="bestelldatumLabel" value="#{msgLr['listLieferung.bestelldatum']}"/>
-								<h:outputText id="bestelldatum" value="#{lieferung.bestelldatum}"/>
+								<h:outputText id="bestelldatum" value="#{lief.bestelldatum}"/>
 								
-								<h:outputText id="lieferungsdatumLabel" value="#{msgLr['listLieferung.lieferungsdatum']}"/>
-								<h:outputText id="lieferungsdatum" value="#{lieferung.lieferungsdatum}"/>
-								
+								<h:outputLabel id="lieferungsdatumLabel" for="lieferungsdatum" value="#{msgLr['updateLieferung.lieferungsdatum']}"/>
+								<rich:calendar id="lieferungsdatum"
+						               		   datePattern="#{msgLr['updateLieferung.calendar.pattern']}"
+						                       value="#{lief.lieferungsdatum}"
+						                       timezone="CET">
+									<rich:placeholder id="lieferungsdatumPlaceholder" value="#{msgLr['updateLieferung.lieferungsdatum.placeholder']}" />
+								</rich:calendar>
 							</h:panelGrid>				
 						</rich:panel>
 						<p id="abstand2"/>
@@ -91,7 +92,7 @@
 									<f:facet name="header">
 										#{msgLr['viewLieferung.artikel.anzahl']}
 									</f:facet>
-									#{pos.anzahl}
+									<h:inputText id="anzahl" value="#{pos.artikel.anzahl}"/>
 								</rich:column>
 							</rich:dataTable>
 						</rich:panel>
@@ -118,7 +119,10 @@
 								             timing="domready"/>
 							</a4j:outputPanel>
 						</h:panelGroup>
-				</a4j:outputPanel>
+						<p id="buttons">
+							<h:commandButton id="button" action="#{lic.updateLieferung}" value="#{msgKv['updateLieferung.submit']}"/>
+							<h:commandButton type="reset" value="#{msgKv['updateLieferung.reset']}"/>
+						</p>
 			</h:form>
 		</ui:define>
 	</ui:composition>

@@ -12,18 +12,17 @@
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 		<ui:param name="pageTitle" value="#{msgLr['listLieferungenAll.title']}"/>
 		<ui:define name="article">
-			<c:set var="lieferungen" value="#{flash.lieferungen}" scope="view"/>
+			<f:event type="preRenderView" listener="#{lic.findLieferungenAll}"/>
 			<h:form id="form">
-				<rich:focus id="sucheFocus"/>	
-				<rich:panel id="lieferungenAllMain" header="#{msgLr['listLieferungenAll.head']}"> 
-
+				<a4j:outputPanel id="lieferungenAllPanel">	
 					<rich:dataTable id="lieferungenTabelle"
-				                value="#{lic.lieferungen}"
-				                var="liefe"
-				                rows="7"
-				                noDataLabel="#{msgLr['listLieferungenAll.keineDaten']}"
-				                rowClasses="odd-row; even-row"
-				                styleClass="tabelleMitZebrastil">
+				                	value="#{lic.lieferungen}"
+				                	var="liefe"
+				                	rows ="10"
+				                	noDataLabel="#{msgLr['listLieferungenAll.keineDaten']}"
+				                	rowClasses="odd-row; even-row"
+				                	styleClass="tabelleMitZebrastil">
+				                
 						<rich:column id="idSpalte">
 							<f:facet name="header">
 								#{msgLr['listLieferungenAll.id']}
@@ -45,8 +44,34 @@
 							#{liefe.lieferungsdatum}
 						</rich:column>
 					</rich:dataTable>
-					
-				</rich:panel>
+					<p id="abstand2"/>
+					<h:panelGroup id="scrollerGroup" rendered="#{not empty lic.lieferungen}">
+						<rich:dataScroller id="dataScroller"
+						                   for="lieferungenTabelle"
+						                   maxPages="10"/>
+						
+						<a4j:outputPanel id="outputPanelZebra" ajaxRendered="true">
+							<rich:jQuery id="odd"
+							             selector=".tabelleMitZebrastil tr:odd"
+							             query="addClass('odd-row')"
+							             timing="domready"/>
+							<rich:jQuery id="even"
+							             selector=".tabelleMitZebrastil tr:even"
+							             query="addClass('even-row')"
+							             timing="domready"/>
+							<rich:jQuery id="mouseover"
+							             selector=".tabelleMitZebrastil tr"
+							             event="mouseover"
+							             query="jQuery(this).addClass('active-row')"
+							             timing="domready"/>
+							<rich:jQuery id="mouseout"
+							             selector=".tabelleMitZebrastil tr"
+							             event="mouseout"
+							             query="jQuery(this).removeClass('active-row')"
+							             timing="domready"/>
+						</a4j:outputPanel>
+					</h:panelGroup>
+				</a4j:outputPanel>
 			</h:form>
 		</ui:define>
 	</ui:composition>
