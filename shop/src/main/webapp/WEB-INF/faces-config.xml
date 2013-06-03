@@ -30,11 +30,6 @@
    <var>msgKv</var>
   </resource-bundle>
   
-   <resource-bundle>
-   <base-name>de.shop.LRmessages</base-name>
-   <var>msgLr</var>
-  </resource-bundle>
-  
   <resource-bundle>
    <base-name>de.shop.Artikelverwaltung.controller.messagesLR</base-name>
    <var>msgLr</var>
