@@ -27,7 +27,7 @@
     
   <resource-bundle>
    <base-name>de.shop.Kundenverwaltung.controller.messages</base-name>
-   <var>msgKV</var>
+   <var>msgKv</var>
   </resource-bundle>
   
    <resource-bundle>
