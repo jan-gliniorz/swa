@@ -46,6 +46,7 @@ import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Kundenverwaltung.domain.Adresse;
 import de.shop.Kundenverwaltung.domain.PasswordGroup;
 import de.shop.Kundenverwaltung.service.EmailExistsException;
+import de.shop.Kundenverwaltung.service.InvalidKundeIdException;
 //import de.shop.Kundenverwaltung.service.InvalidKundeException;
 import de.shop.Kundenverwaltung.service.InvalidNachnameException;
 import de.shop.Kundenverwaltung.service.KundeDeleteBestellungException;
@@ -88,18 +89,15 @@ public class KundeController implements Serializable {
 	private static final String MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME = "listKunden.notFound";
 
 	private static final String CLIENT_ID_CREATE_EMAIL = "createKundeForm:email";
-	private static final String MSG_KEY_CREATE_PRIVATKUNDE_EMAIL_EXISTS = "createPrivatkunde.emailExists";
+	private static final String MSG_KEY_CREATE_KUNDE_EMAIL_EXISTS = "createKunde.emailExists";
 	
 	private static final Class<?>[] PASSWORD_GROUP = { PasswordGroup.class };
 	
 	private static final String CLIENT_ID_UPDATE_PASSWORD = "updateKundeForm:password";
 	private static final String CLIENT_ID_UPDATE_EMAIL = "updateKundeForm:email";
-	private static final String MSG_KEY_UPDATE_PRIVATKUNDE_DUPLIKAT = "updatePrivatkunde.duplikat";
-	private static final String MSG_KEY_UPDATE_FIRMENKUNDE_DUPLIKAT = "updateFirmenkunde.duplikat";
-	private static final String MSG_KEY_UPDATE_PRIVATKUNDE_CONCURRENT_UPDATE = "updatePrivatkunde.concurrentUpdate";
-	private static final String MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_UPDATE = "updateFirmenkunde.concurrentUpdate";
-	private static final String MSG_KEY_UPDATE_PRIVATKUNDE_CONCURRENT_DELETE = "updatePrivatkunde.concurrentDelete";
-	private static final String MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_DELETE = "updateFirmenkunde.concurrentDelete";
+	private static final String MSG_KEY_UPDATE_KUNDE_DUPLIKAT = "updateKunde.duplikat";
+	private static final String MSG_KEY_UPDATE_KUNDE_CONCURRENT_UPDATE = "updateKunde.concurrentUpdate";
+	private static final String MSG_KEY_UPDATE_KUNDE_CONCURRENT_DELETE = "updateKunde.concurrentDelete";
 	
 	//private static final String CLIENT_ID_SELECT_DELETE_BUTTON_PREFIX = "form:kundenTabelle:";
 	//private static final String CLIENT_ID_SELECT_DELETE_BUTTON_SUFFIX = ":deleteButton";
@@ -156,8 +154,8 @@ public class KundeController implements Serializable {
 
 	private transient UIPanelMenuItem menuItemEmail;   // eigentlich nicht dynamisch, nur zur Demo
 	
-	@PostConstruct
-	private void postConstruct() {
+//	@PostConstruct
+//	private void postConstruct() {
 //		// Dynamischer Menuepunkt fuer Emails
 //		final Application app = facesCtx.getApplication();  // javax.faces.application.Application
 //		menuItemEmail = (UIPanelMenuItem) app.createComponent(facesCtx,
@@ -177,8 +175,8 @@ public class KundeController implements Serializable {
 //		//                                                             PanelMenuItemRenderer.class.getName());
 //		//menuGroup.getChildren().add(item);
 
-		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
-	}
+//		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
+//	}
 
 	@PreDestroy
 	private void preDestroy() {
@@ -385,34 +383,28 @@ public class KundeController implements Serializable {
 	
 //	@TransactionAttribute(REQUIRED)
 //	public String createPrivatkunde() {
-//		// Liste von Strings als Set von Enums konvertieren
-//		final Set<HobbyType> hobbiesPrivatkunde = new HashSet<>();
-//		for (String s : hobbies) {
-//			hobbiesPrivatkunde.add(HobbyType.valueOf(s));
-//		}
-//		neuerPrivatkunde.setHobbies(hobbiesPrivatkunde);
-//
+//		
 //		try {
-//			neuerPrivatkunde = (Privatkunde) ks.createKunde(neuerPrivatkunde, locale);
+//			neuerKunde = (Kunde) ks.createKunde(neuerKunde, locale);
 //		}
 //		catch (InvalidKundeException | EmailExistsException e) {
-//			final String outcome = createPrivatkundeErrorMsg(e);
+//			final String outcome = createKundeErrorMsg(e);
 //			return outcome;
 //		}
 //
 //		// Push-Event fuer Webbrowser
-//		neuerKundeEvent.fire(String.valueOf(neuerPrivatkunde.getId()));
+//		neuerKundeEvent.fire(String.valueOf(neuerKunde.getId()));
 //		
 //		// Aufbereitung fuer viewKunde.xhtml
-//		kundeId = neuerPrivatkunde.getId();
-//		kunde = neuerPrivatkunde;
-//		neuerPrivatkunde = null;  // zuruecksetzen
+//		kundeId = neuerKunde.getId();
+//		kunde = neuerKunde;
+//		neuerKunde = null;  // zuruecksetzen
 //		hobbies = null;
 //		
 //		return JSF_VIEW_KUNDE + JSF_REDIRECT_SUFFIX;
 //	}
 //
-//	private String createPrivatkundeErrorMsg(AbstractShopException e) {
+//	private String createKundeErrorMsg(AbstractShopException e) {
 //		final Class<? extends AbstractShopException> exceptionClass = e.getClass();
 //		if (exceptionClass.equals(EmailExistsException.class)) {
 //			messages.error(KUNDENVERWALTUNG, MSG_KEY_CREATE_PRIVATKUNDE_EMAIL_EXISTS, CLIENT_ID_CREATE_EMAIL);
@@ -424,7 +416,7 @@ public class KundeController implements Serializable {
 //		
 //		return null;
 //	}
-//
+
 //	public void createEmptyPrivatkunde() {
 //		if (neuerPrivatkunde != null) {
 //			return;
@@ -468,81 +460,62 @@ public class KundeController implements Serializable {
 	}
 	
 
-//	@TransactionAttribute(REQUIRED)
-//	public String update() {
-//		auth.preserveLogin();
-//		
-//		if (!geaendertKunde || kunde == null) {
-//			return JSF_INDEX;
-//		}
-//		
-//		if (kunde.getClass().equals(Privatkunde.class)) {
-//			final Privatkunde privatkunde = (Privatkunde) kunde;
-//			final Set<HobbyType> hobbiesPrivatkunde = privatkunde.getHobbies();
-//			hobbiesPrivatkunde.clear();
-//			
-//			for (String s : hobbies) {
-//				hobbiesPrivatkunde.add(HobbyType.valueOf(s));				
-//			}
-//		}
-//		
-//		LOGGER.tracef("Aktualisierter Kunde: %s", kunde);
-//		try {
-//			kunde = ks.updateKunde(kunde, locale, false);
-//		}
-//		catch (EmailExistsException | InvalidKundeException
-//			  | OptimisticLockException | ConcurrentDeletedException e) {
-//			final String outcome = updateErrorMsg(e, kunde.getClass());
-//			return outcome;
-//		}
-//
-//		// Push-Event fuer Webbrowser
-//		updateKundeEvent.fire(String.valueOf(kunde.getKundenNr()));
-//		
-//		// ValueChangeListener zuruecksetzen
-//		geaendertKunde = false;
-//		
-//		// Aufbereitung fuer viewKunde.xhtml
-//		kundeId = kunde.getKundenNr();
-//		
-//		return JSF_VIEW_KUNDE + JSF_REDIRECT_SUFFIX;
-//	}
-//	
-//	private String updateErrorMsg(RuntimeException e, Class<? extends Kunde> kundeClass) {
-//		final Class<? extends RuntimeException> exceptionClass = e.getClass();
-//		if (exceptionClass.equals(InvalidKundeException.class)) {
-//			// Ungueltiges Password: Attribute wurden bereits von JSF validiert
-//			final InvalidKundeException orig = (InvalidKundeException) e;
-//			final Collection<ConstraintViolation<Kunde>> violations = orig.getViolations();
-//			messages.error(violations, CLIENT_ID_UPDATE_PASSWORD);
-//		}
-//		else if (exceptionClass.equals(EmailExistsException.class)) {
-//			if (kundeClass.equals(Privatkunde.class)) {
-//				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_PRIVATKUNDE_DUPLIKAT, CLIENT_ID_UPDATE_EMAIL);
-//			}
-//			else {
-//				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_FIRMENKUNDE_DUPLIKAT, CLIENT_ID_UPDATE_EMAIL);
-//			}
-//		}
-//		else if (exceptionClass.equals(OptimisticLockException.class)) {
-//			if (kundeClass.equals(Privatkunde.class)) {
-//				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_PRIVATKUNDE_CONCURRENT_UPDATE, null);
-//			}
-//			else {
-//				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_UPDATE, null);
-//			}
-//		}
-//		else if (exceptionClass.equals(ConcurrentDeletedException.class)) {
-//			if (kundeClass.equals(Privatkunde.class)) {
-//				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_PRIVATKUNDE_CONCURRENT_DELETE, null);
-//			}
-//			else {
-//				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_FIRMENKUNDE_CONCURRENT_DELETE, null);
-//			}
-//		}
-//		return null;
-//	}
-//	
+	@TransactionAttribute(REQUIRED)
+	public String update() {
+		auth.preserveLogin();
+		
+		if (!geaendertKunde || kunde == null) {
+			return JSF_INDEX;
+		}
+			
+		LOGGER.tracef("Aktualisierter Kunde: %s", kunde);
+		try {
+			kunde = ks.updateKunde(kunde, locale);
+		}
+		catch (EmailExistsException | InvalidKundeIdException
+			  | OptimisticLockException | ConcurrentDeletedException e) {
+			final String outcome = updateErrorMsg(e, kunde.getClass());
+			return outcome;
+		}
+
+		// Push-Event fuer Webbrowser
+		updateKundeEvent.fire(String.valueOf(kunde.getKundenNr()));
+		
+		// ValueChangeListener zuruecksetzen
+		geaendertKunde = false;
+		
+		// Aufbereitung fuer viewKunde.xhtml
+		kundeId = kunde.getKundenNr();
+		
+		return JSF_VIEW_KUNDE + JSF_REDIRECT_SUFFIX;
+	}
+	
+	private String updateErrorMsg(RuntimeException e, Class<? extends Kunde> kundeClass) {
+		final Class<? extends RuntimeException> exceptionClass = e.getClass();
+		if (exceptionClass.equals(InvalidKundeIdException.class)) {
+			// Ungueltiges Password: Attribute wurden bereits von JSF validiert
+			final InvalidKundeIdException orig = (InvalidKundeIdException) e;
+			final Collection<ConstraintViolation<Kunde>> violations = orig.getViolations();
+			messages.error(violations, CLIENT_ID_UPDATE_PASSWORD);
+		}
+		else if (exceptionClass.equals(EmailExistsException.class)) {
+			
+				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_KUNDE_DUPLIKAT, CLIENT_ID_UPDATE_EMAIL);
+				
+		}
+		else if (exceptionClass.equals(OptimisticLockException.class)) {
+
+				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_KUNDE_CONCURRENT_UPDATE, null);
+				
+		}
+		else if (exceptionClass.equals(ConcurrentDeletedException.class)) {
+			
+				messages.error(KUNDENVERWALTUNG, MSG_KEY_UPDATE_KUNDE_CONCURRENT_DELETE, null);
+				
+		}
+		return null;
+	}
+	
 	/**
 	 * Action Methode, um einen zuvor gesuchten Kunden zu l&ouml;schen
 	 * @return URL fuer Startseite im Erfolgsfall, sonst wieder die gleiche Seite

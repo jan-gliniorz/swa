@@ -18,7 +18,7 @@
 		<ui:define name="article">
 			<h1>
 				<h:outputFormat id="headingPrivatkunde" value="#{msgKv['updatePrivatkunde.heading']}" rendered="#{not empty kc.kunde}">
-					<f:param id="idWert" value="#{kc.kunde.id}"/>
+					<f:param id="idWert" value="#{kc.kunde.kundenNr}"/>
 				</h:outputFormat>
 			</h1>
 			
