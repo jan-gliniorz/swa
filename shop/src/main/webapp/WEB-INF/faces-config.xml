@@ -16,17 +16,17 @@
   </resource-bundle>
   
   <resource-bundle>
-   <base-name>de.shop.ARmessages</base-name>
+   <base-name>de.shop.Artikelverwaltung.controller.messages</base-name>
    <var>msgAr</var>
   </resource-bundle>
   
   <resource-bundle>
-   <base-name>de.shop.AVmessages</base-name>
+   <base-name>de.shop.Auftragsverwaltung.controller.messages</base-name>
    <var>msgAv</var>
   </resource-bundle>
     
   <resource-bundle>
-   <base-name>de.shop.KVmessages</base-name>
+   <base-name>de.shop.Kundenverwaltung.controller.messages</base-name>
    <var>msgKV</var>
   </resource-bundle>
   

@@ -64,7 +64,7 @@
 							<h:commandButton type="reset" value="#{msgAv['viewWarenkorb.reset']}"/>
 							#{' '}
 							<h:commandButton id="bestellButton"
-											 action="/auftragsverwaltung/confirmBestellung"
+											 action="/auftragsverwaltung/confirmAuftrag"
 									         value="#{msgAv['viewWarenkorb.bestellen']}"/>
 							<rich:message id="bestellButtonFehlermeldung" for="bestellButton" rendered="#{auth.loggedIn}"/>
 						</h:panelGroup>

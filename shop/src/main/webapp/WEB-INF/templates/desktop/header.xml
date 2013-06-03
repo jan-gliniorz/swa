@@ -89,21 +89,21 @@
 						                styleClass="tabelleMitZebrastil">
 							<rich:column id="artikelIdSpalte">
 								<f:facet name="header">
-									#{msgBv['viewWarenkorb.artikel.id']}
+									#{msgAv['viewWarenkorb.artikel.id']}
 								</f:facet>
 								#{position.artikel.id}
 							</rich:column>
 								
 							<rich:column id="bezeichnungSpalte">
 								<f:facet name="header">
-									#{msgBv['viewWarenkorb.artikel.bezeichnung']}
+									#{msgAv['viewWarenkorb.artikel.bezeichnung']}
 								</f:facet>
 								#{position.artikel.bezeichnung}
 							</rich:column>
 					
 							<rich:column id="anzahlSpalte">
 								<f:facet name="header">
-									#{msgBv['viewWarenkorb.anzahl']}
+									#{msgAv['viewWarenkorb.anzahl']}
 								</f:facet>
 								
 								<rich:inputNumberSpinner id="anzahl"
@@ -116,7 +116,7 @@
 							<rich:column id="deleteButton">
 								<h:commandButton image="#{resource['images:delete.gif']}"
 										         action="#{wk.remove(position)}"
-										         alt="#{msgBv['viewWarenkorb.deleteButtonAlt']}"/>
+										         alt="#{msgAv['viewWarenkorb.deleteButtonAlt']}"/>
 							</rich:column>
 						</rich:dataTable>
 						
@@ -144,12 +144,12 @@
 						<p id="buttonsWarenkorb">
 							<h:commandButton id="updateButton"
 				                             action="#"
-				                             value="#{msgBv['viewWarenkorb.update']}"/>
-							<h:commandButton type="reset" value="#{msgBv['viewWarenkorb.reset']}"/>
+				                             value="#{msgAv['viewWarenkorb.update']}"/>
+							<h:commandButton type="reset" value="#{msgAv['viewWarenkorb.reset']}"/>
 							#{' '}
 							<h:commandButton id="bestellButton"
-											 action="#{bc.bestellen}"
-									         value="#{msgBv['viewWarenkorb.bestellen']}"
+											 action="#{auc.bestellen}"
+									         value="#{msgAv['viewWarenkorb.bestellen']}"
 									         rendered="#{auth.loggedIn}"/>
 							<rich:message id="bestellButtonFehlermeldung"
 							              for="bestellButton"/>
@@ -159,9 +159,12 @@
 			</h:form>
 
 			<h:form id="logoutForm">
-				<h:commandLink id="logout" action="#{auth.logout}" rendered="#{auth.loggedIn}">
-					#{msg['header.logout']}
-				</h:commandLink>
+			    <h:panelGrid id="userInfoGrid" columns="1">
+			        <h:outputText value="#{msg['header.willkommenBenutzer']} #{auth.vorname} #{auth.nachname}" title="#{auth.userRolesToDisply}" rendered="#{auth.loggedIn}"/>
+					<h:commandLink id="logout" action="#{auth.logout}" rendered="#{auth.loggedIn}">
+						#{msg['header.logout']}
+					</h:commandLink>
+			    </h:panelGrid>
 			</h:form>
 		</rich:toolbarGroup>
 		

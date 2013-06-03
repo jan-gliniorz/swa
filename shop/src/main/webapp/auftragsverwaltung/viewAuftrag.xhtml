@@ -14,17 +14,17 @@
 		<ui:define name="article">
 			<c:set var="auftrag" value="#{flash.auftrag}" scope="view"/>
 					
-			<rich:panel id="bestellungMainPanel" header="#{msgBv['viewAuftrag.heading']}">  
+			<rich:panel id="bestellungMainPanel" header="#{msgAv['viewAuftrag.heading']}">  
 				<h:panelGrid id="bestellungGrid" columns="2">
 		
-					<h:outputText id="idLabel" value="#{msgBv['viewAuftrag.id']}"/>
+					<h:outputText id="idLabel" value="#{msgAv['viewAuftrag.id']}"/>
 					<h:outputText id="id" value="#{auftrag.id}"/>
 		
-					<h:outputText id="kundeIdLabel" value="#{msgBv['viewAuftrag.kundeId']}"/>
-					<h:outputText id="kundeId" value="#{auftrag.kunde.id}"/>
+					<h:outputText id="kundenNrLabel" value="#{msgAv['viewAuftrag.kundeId']}"/>
+					<h:outputText id="kundenNr" value="#{auftrag.kunde.kundenNr}"/>
 		
-					<h:outputText id="erzeugtLabel" value="#{msgBv['viewAuftrag.zeitstempel']}"/>
-					<h:outputText id="erzeugt" value="#{auftrag.erzeugt}">
+					<h:outputText id="erstelltAmLabel" value="#{msgAv['viewAuftrag.zeitstempel']}"/>
+					<h:outputText id="erstelltAm" value="#{auftrag.erstelltAm}">
 						<f:convertDateTime type="date" style="full"/>
 					</h:outputText>
 				</h:panelGrid>
@@ -34,7 +34,7 @@
 	
 			<rich:panel id="positionen" header="#{msgAv['viewAuftrag.positionen']}"> 
 				<rich:dataTable id="positionenTabelle"
-				                value="#{auftrag.bestellpositionen}"
+				                value="#{auftrag.auftragspositionen}"
 				                var="pos">
 					<rich:column id="artikelIdSpalte">
 						<f:facet name="header">

@@ -108,6 +108,26 @@ public class AuthController implements Serializable {
 		return "AuthController [username=" + username + ", password=" + password + ", user=" + user + "]";
 	}
 	
+	public String getVorname() {
+		return user.getVorname();
+	}
+	
+	public String getNachname() {
+		return user.getNachname();
+	}
+	
+	public String getUserRolesToDisply() {
+		String result = "";
+		for(RolleType role : user.getRollen()) {
+			if(result.equals(""))
+				result = role.name();
+			else
+				result += ", " + role.name();
+		}
+		
+		return result;
+	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -242,30 +262,30 @@ public class AuthController implements Serializable {
 //		return usernameList;
 //	}
 	
-//	@Transactional
-//	public String findRollenByUsername() {
-//		// Gibt es den Usernamen ueberhaupt?
-//		final Kunde kunde = ks.findKundeByEmail(usernameUpdateRollen, locale);
-//		if (kunde == null) {
-//			kundeNr = null;
-//			ausgewaehlteRollenOrig = null;
-//			ausgewaehlteRollen = null;
-//			
-//			messages.error(AUTH, MSG_KEY_UPDATE_ROLLEN_KEIN_USER, CLIENT_ID_USERNAME_INPUT);
-//			return null;
-//		}
-//		
-//		ausgewaehlteRollenOrig = Lists.newArrayList(kunde.getRollen());
-//		ausgewaehlteRollen = Lists.newArrayList(kunde.getRollen());
-//		kundeNr = kunde.getKundenNr();
-//		LOGGER.tracef("Rollen von %s: %s", usernameUpdateRollen, ausgewaehlteRollen);
-//
-//		if (verfuegbareRollen == null) {
-//			verfuegbareRollen = Arrays.asList(RolleType.values());
-//		}
-//		
-//		return null;
-//	}
+	@Transactional
+	public String findRollenByUsername() {
+		// Gibt es den Usernamen ueberhaupt?
+		final Kunde kunde = ks.findKundeByEmail(usernameUpdateRollen, locale);
+		if (kunde == null) {
+			kundeNr = null;
+			ausgewaehlteRollenOrig = null;
+			ausgewaehlteRollen = null;
+			
+			messages.error(AUTH, MSG_KEY_UPDATE_ROLLEN_KEIN_USER, CLIENT_ID_USERNAME_INPUT);
+			return null;
+		}
+		
+		ausgewaehlteRollenOrig = Lists.newArrayList(kunde.getRollen());
+		ausgewaehlteRollen = Lists.newArrayList(kunde.getRollen());
+		kundeNr = kunde.getKundenNr();
+		LOGGER.tracef("Rollen von %s: %s", usernameUpdateRollen, ausgewaehlteRollen);
+
+		if (verfuegbareRollen == null) {
+			verfuegbareRollen = Arrays.asList(RolleType.values());
+		}
+		
+		return null;
+	}
 	
 //	@Transactional
 //	public String updateRollen() {

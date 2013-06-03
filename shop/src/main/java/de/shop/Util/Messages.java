@@ -33,22 +33,15 @@ public class Messages implements Serializable {
 
 	private static final String PREFIX_PACKAGES = "de.shop.";
 	//TODO: wenn die sprachdateien wieder zurueck in die Ordnerstruktur verschoben werden, muss hier der pfad entsprechend angepasst werden
-	//private static final String SUFFIX = ".controller.messages";
-	private static final String SUFFIX = "messages";
+	private static final String SUFFIX = ".controller.messages";
 
 	public enum MessagesType implements Serializable {
 		SHOP(PREFIX_PACKAGES + "messages"),
-		//KUNDENVERWALTUNG(PREFIX_PACKAGES + "kundenverwaltung" + SUFFIX),
-		//AUFTRAGSVERWALTUNG(PREFIX_PACKAGES + "auftragsverwaltung" + SUFFIX),
-		//ARTIKELVERWALTUNG(PREFIX_PACKAGES + "artikelverwaltung" + SUFFIX),
+		KUNDENVERWALTUNG(PREFIX_PACKAGES + "Kundenverwaltung" + SUFFIX),
+		AUFTRAGSVERWALTUNG(PREFIX_PACKAGES + "Auftragsverwaltung" + SUFFIX),
+		ARTIKELVERWALTUNG(PREFIX_PACKAGES + "Artikelverwaltung" + SUFFIX),
 		
-		//AUTH(PREFIX_PACKAGES + "auth" + SUFFIX);
-		
-		KUNDENVERWALTUNG(PREFIX_PACKAGES + "KV" + SUFFIX),
-		AUFTRAGSVERWALTUNG(PREFIX_PACKAGES + "AV" + SUFFIX),
-		ARTIKELVERWALTUNG(PREFIX_PACKAGES + "AR" + SUFFIX),
-		
-		AUTH(PREFIX_PACKAGES + "AT" + SUFFIX);
+		AUTH(PREFIX_PACKAGES + "Auth" + SUFFIX);
 		
 		private String value;
 		
