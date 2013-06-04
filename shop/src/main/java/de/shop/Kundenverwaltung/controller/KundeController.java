@@ -13,12 +13,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -136,7 +134,7 @@ public class KundeController implements Serializable {
 	@Inject
 	private FileHelper fileHelper;
 
-	private Long kundeId;
+	private Long kundenNr;
 	private Kunde kunde;
 	
 	private String nachname;
@@ -154,30 +152,6 @@ public class KundeController implements Serializable {
 
 	private transient UIPanelMenuItem menuItemEmail;   // eigentlich nicht dynamisch, nur zur Demo
 	
-//	@PostConstruct
-//	private void postConstruct() {
-//		// Dynamischer Menuepunkt fuer Emails
-//		final Application app = facesCtx.getApplication();  // javax.faces.application.Application
-//		menuItemEmail = (UIPanelMenuItem) app.createComponent(facesCtx,
-//				                                              UIPanelMenuItem.COMPONENT_TYPE,
-//				                                              PanelMenuItemRenderer.class.getName());
-//		menuItemEmail.setLabel("Email dynamisch");
-//		menuItemEmail.setId("KundenverwaltungViewByEmail");
-//		
-//		// <h:outputLink>
-//		// component-family: javax.faces.Output renderer-type: javax.faces.Link
-//		
-//		//menuGroup = (UIPanelMenuGroup) app.createComponent(facesCtx,
-//		//                                                   UIPanelMenuGroup.COMPONENT_TYPE,
-//		//                                                   PanelMenuGroupRenderer.class.getName());
-//		//UIPanelMenuItem item = (UIPanelMenuItem) app.createComponent(facesCtx,
-//		//                                                             UIPanelMenuItem.COMPONENT_TYPE,
-//		//                                                             PanelMenuItemRenderer.class.getName());
-//		//menuGroup.getChildren().add(item);
-
-//		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
-//	}
-
 	@PreDestroy
 	private void preDestroy() {
 		LOGGER.debugf("CDI-faehiges Bean %s wird geloescht", this);
@@ -185,16 +159,16 @@ public class KundeController implements Serializable {
 
 	@Override
 	public String toString() {
-		return "KundenverwaltungController [kundeId=" + kundeId + ", nachname=" + nachname
+		return "KundenverwaltungController [kundeId=" + kundenNr + ", nachname=" + nachname
 		       + ", geaendertKunde=" + geaendertKunde + "]";
 	}
 	
-	public Long getKundeId() {
-		return kundeId;
+	public Long getKundenNr() {
+		return kundenNr;
 	}
 
-	public void setKundeId(Long kundeId) {
-		this.kundeId = kundeId;
+	public void setKundenNr(Long kundenNr) {
+		this.kundenNr = kundenNr;
 	}
 
 	public Kunde getKunde() {
@@ -258,11 +232,11 @@ public class KundeController implements Serializable {
 	@TransactionAttribute(REQUIRED)
 	public String findKundeById() {
 		// Bestellungen werden durch "Extended Persistence Context" nachgeladen
-		kunde = ks.findKundenByKundennummer(kundeId, FetchType.NUR_KUNDE, locale);
+		kunde = ks.findKundenByKundennummer(kundenNr, FetchType.NUR_KUNDE, locale);
 		
 		if (kunde == null) {
 			// Kein Kunde zu gegebener ID gefunden
-			return findKundeByIdErrorMsg(kundeId.toString());
+			return findKundeByIdErrorMsg(kundenNr.toString());
 		}
 
 		return JSF_VIEW_KUNDE;
@@ -353,7 +327,7 @@ public class KundeController implements Serializable {
 		// NICHT: Liste von Kunden. Sonst waeren gleiche Nachnamen mehrfach vorhanden.
 		final List<String> nachnamen = ks.findNachnamenByPrefix(nachnamePrefix);
 		if (nachnamen.isEmpty()) {
-			messages.error(KUNDENVERWALTUNG, MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME, CLIENT_ID_KUNDEN_NACHNAME, kundeId);
+			messages.error(KUNDENVERWALTUNG, MSG_KEY_KUNDEN_NOT_FOUND_BY_NACHNAME, CLIENT_ID_KUNDEN_NACHNAME, kundenNr);
 			return nachnamen;
 		}
 
@@ -372,7 +346,7 @@ public class KundeController implements Serializable {
 		
 		// Bestellungen nachladen
 		this.kunde = ks.findKundenByKundennummer(ausgewaehlterKunde.getKundenNr(), FetchType.MIT_BESTELLUNGEN, locale);
-		this.kundeId = this.kunde.getKundenNr();
+		this.kundenNr = this.kunde.getKundenNr();
 		
 		return JSF_VIEW_KUNDE;
 	}
@@ -381,7 +355,7 @@ public class KundeController implements Serializable {
 	public String createKunde() {
 		
 		try {
-			neuerKunde = (Kunde) ks.createKunde(kunde, locale);
+			neuerKunde = (Kunde) ks.createKunde(neuerKunde, locale);
 		}
 		catch (InvalidKundeIdException | EmailExistsException e) {
 			final String outcome = createKundeErrorMsg(e);
@@ -392,7 +366,7 @@ public class KundeController implements Serializable {
 		neuerKundeEvent.fire(String.valueOf(neuerKunde.getKundenNr()));
 		
 		// Aufbereitung fuer viewKunde.xhtml
-		kundeId = neuerKunde.getKundenNr();
+		kundenNr = neuerKunde.getKundenNr();
 		kunde = neuerKunde;
 		neuerKunde = null;  // zuruecksetzen
 		
@@ -478,7 +452,7 @@ public class KundeController implements Serializable {
 		geaendertKunde = false;
 		
 		// Aufbereitung fuer viewKunde.xhtml
-		kundeId = kunde.getKundenNr();
+		kundenNr = kunde.getKundenNr();
 		
 		return JSF_VIEW_KUNDE + JSF_REDIRECT_SUFFIX;
 	}
@@ -534,7 +508,7 @@ public class KundeController implements Serializable {
 		
 		// Zuruecksetzen
 		kunde = null;
-		kundeId = null;
+		kundenNr = null;
 
 		return JSF_DELETE_OK;
 	}

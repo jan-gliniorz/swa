@@ -23,7 +23,7 @@
 						               for="kundeIdInput"/>
 						             
 						<rich:autocomplete id="kundeIdInput"
-						                   value="#{kc.kundeId}"
+						                   value="#{kc.kundenNr}"
 						                   mode="ajax"
 						                   minChars="1"
 						                   autocompleteMethod="#{kc.findKundenByIdPrefix}"
@@ -180,7 +180,7 @@
 							                 image="#{resource['images:edit.gif']}"
 							                 action="/kundenverwaltung/updateKunde"
 							                 alt="#{msgKv['viewKunde.update.alt']}"
-							                 rendered="#{kc.kunde.class.simpleName eq 'Kunde'}"/>
+							                 rendered="#{rich:isUserInRole('admin')}"/>
 							#{' '}
 							<h:commandButton id="deleteButton"
 											 image="#{resource['images:delete.gif']}"
