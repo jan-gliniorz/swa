@@ -16,54 +16,26 @@
 				#{msgLr['updateLieferung.heading']}
 			</h1>
 			<h:form id="form">
-				<rich:focus id="sucheFocus"/>	
-				<rich:panel id="suchePanel" header="#{msgLr['listLieferung.sucheNeu']}">
-					<h:panelGrid id="sucheGrid" columns="4">
-						<h:outputLabel id="idLabel"
-								       value="#{msgLr['listLieferung.id']}"
-								       for="id"/>
-				
-						<h:inputText id="id" value="#{lic.id}"/>
-				
-						<a4j:commandButton id="findButton"
-								           action="#{lic.findLieferungById}"
-										   value="#{msgLr['listLieferung.submit']}"
-										   render="lieferungPanel sucheForm:fehlermeldungId positionenTabelle"/>
-								
-						<a4j:status id="statusStart">
-							<f:facet name="start">
-								<h:panelGroup id="waitingGroup">
-									<h:graphicImage id="waitingGif"
-											        name="waiting.gif"
-											        library="images"/>
-									#{msgLr['listLieferung.inBearbeitung']}
-								</h:panelGroup>
-							</f:facet>
-						</a4j:status>
-					</h:panelGrid>
-				</rich:panel>	
-						
-				<p id="abstand1"/>
 					<c:set var="lieferung" value="#{flash.lieferung}" scope="view"/>
 					<c:set target="#{flash}" property="lieferung" value="#{lieferung}"/>			
 						<rich:panel id="lieferungDetailPanel" 
 									header="#{msgLr['listLieferung.heading']}"
-									value="#{lic.lieferung}"
+									value="#{lieferung}"
 						            var="lief"
 						            rendered="#{not empty lieferung or param.init ne 'true'}">
 							<h:panelGrid id="lieferungGrid" columns="2">
 								<h:outputText id="idLabel2" value="#{msgLr['listLieferung.id']}"/>
-								<h:outputText id="id2" value="#{lief.id}"/>
+								<h:outputText id="id2" value="#{lieferung.id}"/>
 					
 								<h:outputText id="bestelldatumLabel" value="#{msgLr['listLieferung.bestelldatum']}"/>
-								<h:outputText id="bestelldatum" value="#{lief.bestelldatum}"/>
+								<h:outputText id="bestelldatum" value="#{lieferung.bestelldatum}"/>
 								
 								<h:outputLabel id="lieferungsdatumLabel" for="lieferungsdatum" value="#{msgLr['updateLieferung.lieferungsdatum']}"/>
 								<rich:calendar id="lieferungsdatum"
 						               		   datePattern="#{msgLr['updateLieferung.calendar.pattern']}"
-						                       value="#{lief.lieferungsdatum}"
+						                       value="#{lieferung.lieferungsdatum}"
 						                       timezone="CET">
-									<rich:placeholder id="lieferungsdatumPlaceholder" value="#{msgLr['updateLieferung.lieferungsdatum.placeholder']}" />
+									<rich:placeholder id="lieferungsdatumPlaceholder" value="#{lieferung.lieferungsdatum}" />
 								</rich:calendar>
 							</h:panelGrid>				
 						</rich:panel>
@@ -76,23 +48,31 @@
 					                		var="pos">
 								<rich:column id="artikelIdSpalte">
 									<f:facet name="header">
-										#{msgLr['viewLieferung.artikel.id']}
+										#{msgLr['updateLieferung.artikel.id']}
 									</f:facet>
-									#{pos.artikel.id}
+									<h:inputText id="artikelId" value="#{pos.artikel.id}"/>
 								</rich:column>
 					
 								<rich:column id="bezeichnungSpalte">
 									<f:facet name="header">
-										#{msgLr['viewLieferung.artikel.bezeichnung']}
+										#{msgLr['updateLieferung.artikel.bezeichnung']}
 									</f:facet>
-									#{pos.artikel.bezeichnung}
+									<h:outputText id="artikelbezeichnung" value="#{pos.artikel.bezeichnung}"/>
 								</rich:column>
 					
 								<rich:column id="anzahlSpalte">
 									<f:facet name="header">
-										#{msgLr['viewLieferung.artikel.anzahl']}
+										#{msgLr['updateLieferung.artikel.anzahl']}
 									</f:facet>
-									<h:inputText id="anzahl" value="#{pos.artikel.anzahl}"/>
+									<h:inputText id="anzahl" value="#{pos.anzahl}"/>
+								</rich:column>
+								<rich:column id="addSpalte" rendered="#{not empty lic.lieferung}">
+									<f:facet name="header">
+										<h:commandButton id="addButton"
+											             image="#{resource['images:add.gif']}"
+											             action="#{lic.addPos(Lieferung)}"
+													     alt="#{msgLr['updateLieferung.addPos']}"/>
+									</f:facet>	
 								</rich:column>
 							</rich:dataTable>
 						</rich:panel>
@@ -120,8 +100,9 @@
 							</a4j:outputPanel>
 						</h:panelGroup>
 						<p id="buttons">
-							<h:commandButton id="button" action="#{lic.updateLieferung}" value="#{msgKv['updateLieferung.submit']}"/>
-							<h:commandButton type="reset" value="#{msgKv['updateLieferung.reset']}"/>
+							<h:commandButton id="button" action="#{lic.updateLieferung}" value="#{msgLr['updateLieferung.submit']}"/>
+							#{' '}
+							<h:commandButton type="reset" value="#{msgLr['updateLieferung.reset']}"/>
 						</p>
 			</h:form>
 		</ui:define>

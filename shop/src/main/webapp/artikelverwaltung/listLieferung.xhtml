@@ -29,7 +29,25 @@
 								           action="#{lic.findLieferungById}"
 										   value="#{msgLr['listLieferung.submit']}"
 										   render="lieferungPanel sucheForm:fehlermeldungId positionenTabelle"/>
-								
+    					<rich:panel id="editDelete"
+				                	rows ="10"
+				                	rowClasses="odd-row; even-row"
+				                	styleClass="tabelleMitZebrastil">
+							<rich:column id="editSpalte">
+								<h:commandButton id="editButton"
+										 		 image="#{resource['images:edit.gif']}"
+								         		 action="#{lic.selectForUpdate(lieferung)}"
+								         		 alt="#{msgLr['listLieferung.editButtonAlt']}"/>
+							</rich:column>
+							<rich:column id="deleteSpalte">
+								<a4j:commandButton id="deleteButton"
+										   		   image="#{resource['images:delete.gif']}"
+								           		   action="#{lic.deleteLieferung(lieferung)}"
+								           	       alt="#{msgLr['listLieferung.deleteButtonAlt']}"
+								           		   onclick="return confirm('#{msgLr['listLieferung.deleteLieferungBestaetigung']}')"
+								                   render="@form :globaleFehlermeldungen"/>
+							</rich:column>
+						</rich:panel>
 						<a4j:status id="statusStart">
 							<f:facet name="start">
 								<h:panelGroup id="waitingGroup">
@@ -40,9 +58,11 @@
 								</h:panelGroup>
 							</f:facet>
 						</a4j:status>
-					</h:panelGrid>
-				</rich:panel>	
 						
+					</h:panelGrid>
+					
+				</rich:panel>	
+	
 				<p id="abstand1"/>
 							
 				<a4j:outputPanel id="lieferungPanel">	
@@ -96,7 +116,7 @@
 							</rich:dataTable>
 						</rich:panel>
 						<p id="abstand2"/>
-						<h:panelGroup id="scrollerGroup" rendered="#{not empty lic.lieferung}">				
+						<h:panelGroup id="scrollerGroup" rendered="#{not empty lic.lieferung or param.init ne 'true'}">			
 							<a4j:outputPanel id="outputPanelZebra" ajaxRendered="true">
 								<rich:jQuery id="odd"
 								             selector=".tabelleMitZebrastil tr:odd"

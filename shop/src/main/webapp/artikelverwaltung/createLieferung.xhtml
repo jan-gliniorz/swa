@@ -47,42 +47,45 @@
 						</rich:calendar>
 						<rich:messages id="fehlermeldungenLieferungsdatum" for="lieferungsdatum"/>
 
-					</h:panelGrid>	
+					</h:panelGrid>
 					<rich:panel id="positionen" 
-									header="#{msgLr['listLieferung.positionen']}"
-									rendered="#{not empty lieferung or param.init ne 'true'}"> 
-							<rich:dataTable id="positionenTabelle"
-											value="#{lic.lieferung.lieferungspositionen}"
-					                		var="pos">
-								<rich:column id="artikelIdSpalte">
-									<f:facet name="header">
-										#{msgLr['viewLieferung.artikel.id']}
-									</f:facet>
-									<h:inputText id="artId"
-						            			 value="#{lic.neueLieferung.lieferungspositionen.id}">
-										<rich:validator oninvalid="$(#{rich:element('artId')}).addClass('invalid')"
-                                           		    	onvalid="$(#{rich:element('artId')}).removeClass('invalid')"/>
-									</h:inputText>
-									<rich:messages id="fehlermeldungArtId" for="artId"/>
-								</rich:column>
-								<rich:column id="anzahlSpalte">
-									<f:facet name="header">
-										#{msgLr['viewLieferung.artikel.anzahl']}
-									</f:facet>
-									<h:inputText id="anzahl"
-						             			 value="#{lic.neueLieferung.lieferungspositionen.anzahl}">
-										<rich:validator oninvalid="$(#{rich:element('anzahl')}).addClass('invalid')"
-                                            			onvalid="$(#{rich:element('anzahl')}).removeClass('invalid')"/>
-									</h:inputText>
-									<rich:messages id="fehlermeldungAnzahl" for="anzahl"/>
-								</rich:column>
-							</rich:dataTable>
-						</rich:panel>
+								header="#{msgLr['listLieferung.positionen']}"> 
+						<rich:dataTable id="positionenTabelle"
+										value="#{lic.neueLieferung.lieferungspositionen}"
+					                	var="pos">
+					                	
+							<rich:column id="artikelIdSpalte">
+								<f:facet name="header">
+									#{msgLr['viewLieferung.artikel.id']}
+								</f:facet>
+								<h:inputText id="artikelId" value="#{pos.artikel.id}"/>
+								<rich:messages id="fehlermeldungArtId" for="artikelId"/>
+							</rich:column>
+							
+							<rich:column id="anzahlSpalte">
+								<f:facet name="header">
+									#{msgLr['viewLieferung.artikel.anzahl']}
+								</f:facet>
+								<h:inputText id="anzahl" value="#{pos.anzahl}"/>
+								<rich:messages id="fehlermeldungAnzahl" for="anzahl"/>
+							</rich:column>
+							
+							<rich:column id="addSpalte">
+								<f:facet name="header">
+									<h:commandButton id="addButton"
+										             image="#{resource['images:add.gif']}"
+										             action="#{lic.addPos(neueLieferung)}"
+												     alt="#{msgLr['createLieferung.addPos']}"/>
+								</f:facet>	
+							</rich:column>
+							
+						</rich:dataTable>
+					</rich:panel>
 						
 					<p id="buttons">
 						<h:commandButton id="createSubmit" action="#{lic.createLieferung}" value="#{msgLr['createLieferung.submit']}"/>
 						#{' '}
-						<h:commandButton id="reset" type="reset" value="#{msLr['createLieferung.reset']}"/>
+						<h:commandButton id="reset" action = "#{lic.deleteLieferung}" value="#{msgLr['createLieferung.reset']}"/>
 					</p>
 			</h:form>
 		</ui:define>
