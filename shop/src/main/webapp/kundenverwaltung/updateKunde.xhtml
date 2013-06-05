@@ -31,9 +31,6 @@
 			<rich:messages id="fehlermeldungGobal" globalOnly="true"/>
 			<h:form id="updateKundeForm" rendered="#{not empty kc.kunde}">
 				<rich:jQuery id="nachnameFocus" selector="#nachname" query="focus()"/>
-				<!--
-				<rich:focus id="formFocus"/>
-				-->
 				
 				<h:panelGrid id="updateKundeTabelle"
 				             columns="3">
@@ -57,6 +54,17 @@
 					</h:inputText>
 					<rich:messages id="fehlermeldungenEmail" for="email"/>
 					
+					<h:outputLabel id="ErstelltAmLabel"
+						           for="ErstelltAm"
+						           value="#{msgKv['updateKunde.seit']}"
+					               escape="false"/>
+					<rich:calendar id="seit"
+					               datePattern="#{msgKv['updateKunde.calendar.pattern']}"
+					               value="#{kc.kunde.erstelltAm}"
+					               timezone="CET">
+					</rich:calendar>
+					<rich:messages id="fehlermeldungenErstelltAm" for="ErstelltAm"/>
+					
 					<h:outputLabel id="strasseLabel" for="strasse" value="#{msgKv['updateKunde.strasse']}"/>
 					<h:inputText id="strasse" value="#{kc.kunde.adresse.strasse}" valueChangeListener="#{kc.geaendert}"/>
 					<f:verbatim/>
@@ -72,7 +80,6 @@
 					<h:outputLabel id="ortLabel" for="ort" value="#{msgKv['updateKunde.ort']}"/>
 					<h:inputText id="ort" value="#{kc.kunde.adresse.ort}" valueChangeListener="#{kc.geaendert}"/>
 					<f:verbatim/>
-					
 
 				</h:panelGrid>
 	

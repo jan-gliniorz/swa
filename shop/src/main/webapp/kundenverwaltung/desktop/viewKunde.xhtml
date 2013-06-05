@@ -81,6 +81,11 @@
 									<h:outputText id="emailLabel" value="#{msgKv['viewKunde.email']}"/>
 									<h:outputText id="email" value="#{kc.kunde.email}"/>
 									
+									<h:outputText id="erstelltAmLabel" value="#{msgKv['viewKunde.seit']}"/>
+									<h:outputText id="erstelltAm" value="#{kc.kunde.erstelltAm}">
+									<f:convertDateTime type="date" dateStyle="long"/>
+									</h:outputText>
+									
 									<h:outputText id="StrasseLabel" value="#{msgKv['viewKunde.adresse.strasse']}"/>
 									<h:outputText id="strasse" value="#{kc.kunde.adresse.strasse}"/>
 									

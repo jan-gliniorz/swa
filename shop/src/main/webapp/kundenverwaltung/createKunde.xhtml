@@ -30,7 +30,7 @@
 					http://community.jboss.org/thread/169487 
 				-->
 				<rich:graphValidator id="kundeValidator"
-				                     value="#{kc.createKunde}"
+				                     value="#{kc.neuerKunde}"
 				                     groups="#{kc.passwordGroup}">
 					<rich:messages for="kundeValidator"/>
 					<rich:messages id="fehlermeldungPassword" globalOnly="true"/>
@@ -40,7 +40,7 @@
 					             columns="3">
 			
 						<h:outputLabel id="nachnameLabel" for="nachname" value="#{msgKv['createKunde.nachname']}"/>
-						<h:inputText id="nachname" value="#{kc.nachname}">
+						<h:inputText id="nachname" value="#{kc.neuerKunde.nachname}">
 							<rich:validator oninvalid="$(#{rich:element('nachname')}).addClass('invalid')"
                                             onvalid="$(#{rich:element('nachname')}).removeClass('invalid')"/>
 						</h:inputText>
@@ -56,6 +56,17 @@
                                             onvalid="$(#{rich:element('email')}).removeClass('invalid')"/>
 						</h:inputText>
 						<rich:messages id="fehlermeldungEmail" for="email"/>
+						
+						<h:outputLabel id="ErstelltAmLabel"
+						               for="ErstelltAm"
+						               value="#{msgKv['createKunde.seit']}"/>
+						<rich:calendar id="ErstelltAm"
+						               datePattern="#{msgKv['createKunde.calendar.pattern']}"
+						               value="#{kc.neuerKunde.erstelltAm}"
+						               timezone="CET">
+							<rich:placeholder id="seitPlaceholder" value="#{msgKv['createKunde.seit.placeholder']}" />
+						</rich:calendar>
+						<rich:messages id="fehlermeldungenSeit" for="seit"/>
 		
 						<h:outputLabel id="passwordLabel"
 						               for="password"
@@ -100,6 +111,12 @@
 						<h:outputLabel id="hausnrLabel" for="hausnr" value="#{msgKv['createKunde.hausnr']}"/>
 						<h:inputText id="hausnr" value="#{kc.neuerKunde.adresse.hausNr}"/>
 						<f:verbatim/>
+						<rich:messages id="fehlermeldungHausNr" for="plz"/>
+						
+						<h:outputLabel id="landLabel" for="land" value="#{msgKv['createKunde.land']}"/>
+						<h:inputText id="land" value="#{kc.neuerKunde.adresse.land}"/>
+						<f:verbatim/>
+						<rich:messages id="fehlermeldungLand" for="plz"/>
 						
 					</h:panelGrid>
 		
