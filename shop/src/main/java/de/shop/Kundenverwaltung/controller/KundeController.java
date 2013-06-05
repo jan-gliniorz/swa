@@ -9,13 +9,13 @@ import static javax.persistence.PersistenceContextType.EXTENDED;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
+//import java.util.Set;
 
 import javax.annotation.PreDestroy;
 import javax.ejb.Stateful;
@@ -30,14 +30,14 @@ import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
-import javax.xml.bind.DatatypeConverter;
+//import javax.xml.bind.DatatypeConverter;
 
 import org.jboss.logging.Logger;
 import org.richfaces.cdi.push.Push;
 import org.richfaces.component.SortOrder;
 import org.richfaces.component.UIPanelMenuItem;
-import org.richfaces.event.FileUploadEvent;
-import org.richfaces.model.UploadedFile;
+//import org.richfaces.event.FileUploadEvent;
+//import org.richfaces.model.UploadedFile;
 
 import de.shop.Auth.controller.AuthController;
 import de.shop.Kundenverwaltung.domain.Kunde;
@@ -55,7 +55,7 @@ import de.shop.Util.AbstractShopException;
 import de.shop.Util.Client;
 import de.shop.Util.ConcurrentDeletedException;
 import de.shop.Util.Messages;
-import de.shop.Util.File;
+//import de.shop.Util.File;
 import de.shop.Util.FileHelper;
 
 /**
@@ -147,8 +147,8 @@ public class KundeController implements Serializable {
 	private boolean geaendertKunde;    // fuer ValueChangeListener
 	private Kunde neuerKunde;
 
-	private byte[] bytes;
-	private String contentType;
+//	private byte[] bytes;
+//	private String contentType;
 
 	private transient UIPanelMenuItem menuItemEmail;   // eigentlich nicht dynamisch, nur zur Demo
 	
@@ -539,11 +539,11 @@ public class KundeController implements Serializable {
 		return null;
 	}
 
-	public void uploadListener(FileUploadEvent event) {
-		final UploadedFile uploadedFile = event.getUploadedFile();
-		contentType = uploadedFile.getContentType();
-		bytes = uploadedFile.getData();
-	}
+//	public void uploadListener(FileUploadEvent event) {
+//		final UploadedFile uploadedFile = event.getUploadedFile();
+//		contentType = uploadedFile.getContentType();
+//		bytes = uploadedFile.getData();
+//	}
 
 //	@TransactionAttribute(REQUIRED)
 //	public String upload() {

@@ -21,14 +21,6 @@
 	
 			<h:form id="createKundeForm">
 				<rich:jQuery id="nachnameFocus" selector="#nachname" query="focus()"/>
-				<!-- fokussiert auf id="kategorie" statt auf id="nachname" WARUM?
-				<rich:focus id="createKundeFormFocus"/>
-				-->
-				
-				<!--
-					https://issues.jboss.org/browse/AS7-1348
-					http://community.jboss.org/thread/169487 
-				-->
 				<rich:graphValidator id="kundeValidator"
 				                     value="#{kc.neuerKunde}"
 				                     groups="#{kc.passwordGroup}">
@@ -110,12 +102,10 @@
 						
 						<h:outputLabel id="hausnrLabel" for="hausnr" value="#{msgKv['createKunde.hausnr']}"/>
 						<h:inputText id="hausnr" value="#{kc.neuerKunde.adresse.hausNr}"/>
-						<f:verbatim/>
 						<rich:messages id="fehlermeldungHausNr" for="plz"/>
 						
 						<h:outputLabel id="landLabel" for="land" value="#{msgKv['createKunde.land']}"/>
 						<h:inputText id="land" value="#{kc.neuerKunde.adresse.land}"/>
-						<f:verbatim/>
 						<rich:messages id="fehlermeldungLand" for="plz"/>
 						
 					</h:panelGrid>

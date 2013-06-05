@@ -201,7 +201,8 @@ public class Kunde implements Serializable {
 	private URI auftraegeUri;
 	
 	public List<Auftrag> getAuftraege() {
-		return Collections.unmodifiableList(auftraege);
+//		return Collections.unmodifiableList(auftraege);
+		return auftraege;
 	}
 	
 	public URI getAuftraegeUri() {
@@ -209,15 +210,17 @@ public class Kunde implements Serializable {
 	}
 	
 	public void setAuftraege(List<Auftrag> auftraege) {
-		if (this.auftraege == null) {
-			this.auftraege = auftraege;
-			return;
-		}
-		// Wiederverwendung der vorhandenen Collection
-		auftraege.clear();
-		if (auftraege != null) {
-		this.auftraege.addAll(auftraege);
-		}
+//		if (this.auftraege == null) {
+//			this.auftraege = auftraege;
+//			return;
+//		}
+//		// Wiederverwendung der vorhandenen Collection
+//		auftraege.clear();
+//		if (auftraege != null) {
+//		this.auftraege.addAll(auftraege);
+//		}
+		
+		this.auftraege = auftraege;
 	}
 	
 	public void setAuftraegeUri(URI auftraegeUri) {
