@@ -14,6 +14,17 @@
 		</h:outputLink>
 
 		<h:form id="schnellsucheForm">
+		    <h:panelGrid id="quickSearchGrid" columns="2">
+				<h:outputLabel id="artikelBezLabel"
+					value="#{msg['header.schnellsuche.artikelSuchen']}"
+					for="artikelBezeichnung"/>
+				#{' '}
+				<h:inputText id="artikelBezeichnung" value="#{arc.bezeichnung}" size="50"/>
+				<h:commandButton id="artikelButton" action="#{arc.findArtikelByBezeichnung}" value="#{msg['header.schnellsuche.button']}"/>
+			</h:panelGrid>
+		    
+			
+			<!--
 			<rich:dropDownMenu id="schnellsucheMenu">
 				<f:facet name="label">
 					#{msg['header.schnellsuche']}
@@ -30,11 +41,12 @@
 						<h:outputLabel id="kundeIdLabel"
 						               value="#{msg['header.schnellsuche.kundeid']}"
 						               for="kundeId"/>
-						<h:inputText id="kundeId" value="#{kc.kundenNr}"/>
+						<h:inputText id="kundeId" value="#{kc.kundeId}"/>
 						<h:commandButton id="kundeButton" action="#{kc.findKundeById}" value="#{msg['header.schnellsuche.button']}"/>
 					</h:panelGrid>
 				</rich:menuItem>
 			</rich:dropDownMenu>
+			-->
 		</h:form>
 				
 		<rich:toolbarGroup id="rightGroup" location="right">

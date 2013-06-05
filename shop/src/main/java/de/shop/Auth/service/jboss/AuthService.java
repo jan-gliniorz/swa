@@ -1,7 +1,7 @@
 package de.shop.Auth.service.jboss;
 
-//import static de.shop.Kundenverwaltung.domain.Kunde.FIND_USERNAME_BY_USERNAME_PREFIX;
-//import static de.shop.Kundenverwaltung.domain.AbstractKunde.PARAM_USERNAME_PREFIX;
+import static de.shop.Kundenverwaltung.domain.Kunde.FIND_USERNAME_BY_USERNAME_PREFIX;
+import static de.shop.Kundenverwaltung.domain.Kunde.PARAM_USERNAME_PREFIX;
 import static de.shop.Util.Constants.HASH_ALGORITHM;
 import static de.shop.Util.Constants.HASH_CHARSET;
 import static de.shop.Util.Constants.HASH_ENCODING;
@@ -248,12 +248,12 @@ public class AuthService implements Serializable {
 
 	/**
 	 */
-//	public List<String> findUsernameListByUsernamePrefix(String usernamePrefix) {
-//		final List<String> usernameList = em.createNamedQuery(FIND_USERNAME_BY_USERNAME_PREFIX, String.class)
-//				                            .setParameter(PARAM_USERNAME_PREFIX, usernamePrefix + '%')
-//				                            .getResultList();
-//		return usernameList;
-//	}
+	public List<String> findUsernameListByUsernamePrefix(String usernamePrefix) {
+		final List<String> usernameList = em.createNamedQuery(FIND_USERNAME_BY_USERNAME_PREFIX, String.class)
+				                            .setParameter(PARAM_USERNAME_PREFIX, usernamePrefix + '%')
+				                            .getResultList();
+		return usernameList;
+	}
 	
 
 	public static void main(String[] args) throws IOException {

@@ -34,5 +34,10 @@
    <base-name>de.shop.Artikelverwaltung.controller.messagesLR</base-name>
    <var>msgLr</var>
   </resource-bundle>
+  
+  <resource-bundle>
+   <base-name>de.shop.Auth.controller.messages</base-name>
+   <var>msgAuth</var>
+  </resource-bundle>
  </application>
 </faces-config>

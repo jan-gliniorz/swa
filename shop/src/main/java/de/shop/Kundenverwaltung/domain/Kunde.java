@@ -79,6 +79,10 @@ import de.shop.Auth.service.jboss.AuthService.RolleType;
 					+ " FROM Kunde k"
 					+ " LEFT JOIN FETCH k.auftraege"
 					+ " WHERE k.kundenNr = :" + Kunde.PARAM_KUNDENNUMMER),
+@NamedQuery(name  = Kunde.FIND_USERNAME_BY_USERNAME_PREFIX,
+	  	            query = "SELECT   CONCAT('', k.email)"
+	  				        + " FROM  Kunde k"
+	   	            		+ " WHERE CONCAT('', k.email) LIKE :" + Kunde.PARAM_USERNAME_PREFIX),					
 @NamedQuery(name  = Kunde.FIND_KUNDEN_BY_KUNDENR_PREFIX,
 			 query = "SELECT   k"
 			                + " FROM  Kunde k"
@@ -100,12 +104,14 @@ public class Kunde implements Serializable {
 	public static final String FIND_KUNDEN_BY_KUNDENR_PREFIX = PREFIX + "findKundenByKundenNrPrefix";
 	public static final String KUNDE_BY_NAME_AUFTRAEGE = PREFIX + "findKundenByNachnameFetchAufraege";
 	public static final String KUNDE_BY_ID_AUFTRAEGE = PREFIX + "findKundenByIdFetchAufraege";
+	public static final String FIND_USERNAME_BY_USERNAME_PREFIX = PREFIX + "findKundeByUsernamePrefix";
 	
 	public static final String PARAM_PLZ = "plz";
 	public static final String PARAM_NACHNAME = "nachname";
 	public static final String PARAM_KUNDE_NACHNAME_PREFIX = "nachnamePrefix";
 	public static final String PARAM_KUNDENNUMMER = "kundenNr";
 	public static final String PARAM_KUNDE_KUNDENUMMER_PREFIX = "kundenNrPrefix";
+	public static final String PARAM_USERNAME_PREFIX = "usernamePrefix";
 	public static final String PARAM_EMAIL = "email";
 	
 	@Id

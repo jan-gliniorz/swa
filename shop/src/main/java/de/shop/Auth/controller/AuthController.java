@@ -54,12 +54,12 @@ public class AuthController implements Serializable {
 	private static final String CLIENT_ID_USERNAME = "loginFormHeader:username";
 	private static final String MSG_KEY_UPDATE_ROLLEN_KEIN_USER = "updateRollen.keinUser";
 	private static final String CLIENT_ID_USERNAME_INPUT = "rollenForm:usernameInput";
+	private static final String JSF_UPDATE_ROLLEN = "/auth/updateRollen";
 	
 	private String username;
 	private String password;
 	
 	private String usernameUpdateRollen;
-	private Long kundeNr;
 
 	@Produces
 	@SessionScoped
@@ -256,18 +256,18 @@ public class AuthController implements Serializable {
 		return user != null;
 	}
 	
-//	@Transactional
-//	public List<String> findUsernameListByUsernamePrefix(String usernamePrefix) {
-//		final List<String> usernameList = authService.findUsernameListByUsernamePrefix(usernamePrefix);
-//		return usernameList;
-//	}
+	@Transactional
+	public List<String> findUsernameListByUsernamePrefix(String usernamePrefix) {
+		final List<String> usernameList = authService.findUsernameListByUsernamePrefix(usernamePrefix);
+		return usernameList;
+	}
 	
 	@Transactional
 	public String findRollenByUsername() {
 		// Gibt es den Usernamen ueberhaupt?
 		final Kunde kunde = ks.findKundeByEmail(usernameUpdateRollen, locale);
 		if (kunde == null) {
-			kundeNr = null;
+			//kundeNr = null;
 			ausgewaehlteRollenOrig = null;
 			ausgewaehlteRollen = null;
 			
@@ -277,7 +277,7 @@ public class AuthController implements Serializable {
 		
 		ausgewaehlteRollenOrig = Lists.newArrayList(kunde.getRollen());
 		ausgewaehlteRollen = Lists.newArrayList(kunde.getRollen());
-		kundeNr = kunde.getKundenNr();
+		//kundeNr = kunde.getKundenNr();
 		LOGGER.tracef("Rollen von %s: %s", usernameUpdateRollen, ausgewaehlteRollen);
 
 		if (verfuegbareRollen == null) {
@@ -287,32 +287,32 @@ public class AuthController implements Serializable {
 		return null;
 	}
 	
-//	@Transactional
-//	public String updateRollen() {
-//		// Zusaetzliche Rollen?
-//		final List<RolleType> zusaetzlicheRollen = new ArrayList<>();
-//		for (RolleType rolle : ausgewaehlteRollen) {
-//			if (!ausgewaehlteRollenOrig.contains(rolle)) {
-//				zusaetzlicheRollen.add(rolle);
-//			}
-//		}
-//		authService.addRollen(kundeNr, zusaetzlicheRollen);
-//		
-//		// Zu entfernende Rollen?
-//		final List<RolleType> zuEntfernendeRollen = new ArrayList<>();
-//		for (RolleType rolle : ausgewaehlteRollenOrig) {
-//			if (!ausgewaehlteRollen.contains(rolle)) {
-//				zuEntfernendeRollen.add(rolle);
-//			}
-//		}
-//		authService.removeRollen(kundeNr, zuEntfernendeRollen);
-//		
-//		// zuruecksetzen
-//		usernameUpdateRollen = null;
-//		ausgewaehlteRollenOrig = null;
-//		ausgewaehlteRollen = null;
-//		kundeNr = null;
-//
-//		return JSF_INDEX + JSF_REDIRECT_SUFFIX;
-//	}
+	@Transactional
+	public String updateRollen() {
+		// Zusaetzliche Rollen?
+		final List<RolleType> zusaetzlicheRollen = new ArrayList<>();
+		for (RolleType rolle : ausgewaehlteRollen) {
+			if (!ausgewaehlteRollenOrig.contains(rolle)) {
+				zusaetzlicheRollen.add(rolle);
+			}
+		}
+		authService.addRollen(usernameUpdateRollen, zusaetzlicheRollen);
+		
+		// Zu entfernende Rollen?
+		final List<RolleType> zuEntfernendeRollen = new ArrayList<>();
+		for (RolleType rolle : ausgewaehlteRollenOrig) {
+			if (!ausgewaehlteRollen.contains(rolle)) {
+				zuEntfernendeRollen.add(rolle);
+			}
+		}
+		authService.removeRollen(usernameUpdateRollen, zuEntfernendeRollen);
+		
+		// zuruecksetzen
+		usernameUpdateRollen = null;
+		ausgewaehlteRollenOrig = null;
+		ausgewaehlteRollen = null;
+		//kundeNr = null;
+
+		return JSF_UPDATE_ROLLEN + JSF_REDIRECT_SUFFIX;
+	}
 }
