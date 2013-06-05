@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:rich="http://richfaces.org/rich"
+	  xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+		<ui:define name="metadata">
+			<f:event type="preRenderView" listener="#{mac.preRenderOrdersView}"/>
+		</ui:define>
+	
+		<ui:define name="article">
+			<h:form id="ordersForm">
+				<rich:focus id="rollenFormFocus"/>
+				
+				<rich:panel id="ordersPanel" header="#{msgKv['myAccount.bisherigeAuftraege']}">
+					<h:panelGrid id="ordersPanelGrid" columns="4">
+						<rich:dataTable id="AuftraegeTabelle" value="#{mac.kunde.auftraege}" var="auftrag">
+							<f:facet name="header">
+								<rich:columnGroup id="positionenSpalten">
+									<rich:column id="artikelIdSpalte">
+										#{msgKv['viewKunde.artikel.id']}
+									</rich:column>
+									<rich:column id="bezeichnungSpalte">
+										#{msgKv['viewKunde.artikel.bezeichnung']}
+									</rich:column>
+									<rich:column id="anzahlSpalte">
+										#{msgKv['viewKunde.artikel.anzahl']}
+									</rich:column>
+								</rich:columnGroup>
+							</f:facet>
+							
+							<rich:column id="togglerSpalte" colspan="3">
+								<rich:collapsibleSubTableToggler id="subTableToggler"
+								                                 for="positionenSubtable"
+								                                 collapsedLabel="#{msgKv['viewKunde.auftrag']} #{auftrag.id} : #{auftrag.erstelltAm}"
+								                                 expandedLabel="#{msgKv['viewKunde.auftrag']} #{auftrag.id} : #{auftrag.erstelltAm}"/>
+							</rich:column>
+							
+							<rich:collapsibleSubTable id="positionenSubtable"
+							                          value="#{auftrag.auftragspositionen}"
+							                          var="pos"
+							                          rowClasses="odd-row, even-row"
+								                      styleClass="tabelleMitZebrastil"
+							                          expandMode="client"
+							                          expanded="#{false}"> <!-- https://issues.jboss.org/browse/RF-10715 -->
+								<rich:column id="artikelIdSpalteSub">
+									#{pos.artikel.id}
+								</rich:column>
+					
+								<rich:column id="bezeichnungSpalteSub">
+									#{pos.artikel.bezeichnung}
+								</rich:column>
+					
+								<rich:column id="anzahlSpalteSub">
+									#{pos.anzahl}
+								</rich:column>
+							</rich:collapsibleSubTable>		
+						
+							<a4j:outputPanel id="outputPanelZebra" ajaxRendered="true">
+								<rich:jQuery id="odd"
+								             selector=".tabelleMitZebrastil tr:odd"
+								             query="addClass('odd-row')"
+								             timing="domready"/>
+								<rich:jQuery id="even"
+								             selector=".tabelleMitZebrastil tr:even"
+								             query="addClass('even-row')"
+								             timing="domready"/>
+								<rich:jQuery id="mouseover"
+								             selector=".tabelleMitZebrastil tr"
+								             event="mouseover"
+								             query="jQuery(this).addClass('active-row')"
+								             timing="domready"/>
+								<rich:jQuery id="mouseout"
+								             selector=".tabelleMitZebrastil tr"
+								             event="mouseout"
+								             query="jQuery(this).removeClass('active-row')"
+								             timing="domready"/>
+							</a4j:outputPanel>
+						</rich:dataTable>
+					</h:panelGrid>
+				</rich:panel>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

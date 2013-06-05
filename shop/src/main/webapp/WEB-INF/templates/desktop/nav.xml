@@ -154,6 +154,29 @@
 					</h:outputLink>
 				</rich:panelMenuItem>
 			</rich:panelMenuGroup>
+			<rich:panelMenuGroup id="customerAccount"
+			                     label="#{msg['nav.customerAccount']}"
+			                     expanded="true"
+			                     rendered="#{rich:isUserInRole('kunde')}">
+				<rich:panelMenuItem id="accountChange">
+					<h:outputLink id="accountChangeLink"
+					              value="#{request.contextPath}/konto/update.jsf">
+						#{msg['nav.customerAccount.update']}
+						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
+							<f:param id="updateAccountCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+						</c:if>
+					</h:outputLink>
+				</rich:panelMenuItem>
+				<rich:panelMenuItem id="accountOrders">
+					<h:outputLink id="accountOrdersLink"
+					              value="#{request.contextPath}/konto/orders.jsf">
+						#{msg['nav.customerAccount.myOrders']}
+						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
+							<f:param id="accountOrdersCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+						</c:if>
+					</h:outputLink>
+				</rich:panelMenuItem>				
+			</rich:panelMenuGroup>			
 		</rich:panelMenu>
 	</h:form>
 </ui:composition>
