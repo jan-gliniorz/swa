@@ -12,7 +12,8 @@
 		                itemLeftIcon="grid">
 			<rich:panelMenuGroup id="kundenverwaltung"
 			                     label="#{msg['nav.kundenverwaltung']}"
-			                     expanded="true">
+			                     expanded="true"
+			                     rendered="#{rich:isUserInRole('admin')}">
 				<rich:panelMenuItem id="kundenverwaltungViewKundeItem">
 					<h:outputLink id="kundenverwaltungViewKunde"
 					              value="#{request.contextPath}/kundenverwaltung/viewKunde.jsf">
@@ -38,16 +39,6 @@
 						#{msg['nav.kundenverwaltung.createPrivatkunde']}
 						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
 							<f:param id="createPrivatkundeCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
-						</c:if>
-					</h:outputLink>
-				</rich:panelMenuItem>
-				<rich:panelMenuItem id="kundenverwaltungUploadItem" rendered="#{rich:isUserInRole('admin')}">
-					<h:outputLink id="kundenverwaltungUpload"
-					              value="#{request.contextPath}/kundenverwaltung/upload.jsf"
-					              rendered="#{auth.loggedIn}">
-						#{msg['nav.kundenverwaltung.upload']}
-						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
-							<f:param id="uploadCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
 						</c:if>
 					</h:outputLink>
 				</rich:panelMenuItem>
