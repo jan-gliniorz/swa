@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:rich="http://richfaces.org/rich"
+	  xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+		<ui:param name="pageTitle" value="#{msgAr['updateArtikel.title']}"/>
+	
+		<ui:define name="article">
+			<h:form id="form1">
+				<rich:focus id="sucheFocus1"/>
+				
+				<rich:panel id="suchePanel1" header="#{msgAr['updateArtikel.sucheNeu']}">
+					<h:panelGrid id="sucheGrid1" columns="4">
+						<h:outputLabel id="bezeichnungLabel1"
+						               value="#{msgAr['updateArtikel.bezeichnung']}"
+						               for="bezeichnung"/>
+			              
+		
+						<rich:autocomplete id="bezeichnung1"
+					                   	   value="#{arc.bezeichnung}"
+					                       mode="ajax"
+					                       minChars="1"
+					                       autocompleteMethod="#{arc.findBezeichnungByPrefix}"/>
+		
+						<a4j:commandButton id="findButton1"
+						                   action="#{arc.findArtikelByBezeichnungUpdate}"
+								           value="#{msgAr['updateArtikel.submit']}"
+								           render="artikelPanelupdate sucheForm:fehlermeldungBezeichnung"/>
+								           
+								           						    
+									           
+						<a4j:status id="statusStart1">
+							<f:facet name="start">
+								<h:panelGroup id="waitingGroup">
+									<h:graphicImage id="waitingGif"
+									                name="waiting.gif"
+									                library="images"/>
+									#{msgAr['updateArtikel.inBearbeitung']}
+								</h:panelGroup>
+							</f:facet>
+						</a4j:status>
+					</h:panelGrid>
+				</rich:panel>	
+						
+			
+				<p id="abstand3"/>
+			
+				<a4j:outputPanel id="artikelPanelupdate">
+					<c:if test="#{not empty flash.artikel or param.init ne 'true'}">
+						<c:set var="artikel" value="#{flash.artikel}" scope="view"/>
+						<c:set target="#{flash}" property="artikel" value="#{artikel}"/>
+						
+						<rich:dataTable id="artikelTabelle1"
+						                value="#{artikel}"
+						                var="art"
+						                rows="5"
+						                noDataLabel="#{msgAr['updateArtikel.keineDaten']}"
+						                rowClasses="odd-row, even-row"
+						                styleClass="tabelleMitZebrastil"
+						                cellspacing="10"
+						                rendered="#{not empty artikel}">
+							<rich:column id="idSpalte">
+								<f:facet name="header">
+									#{msgAr['updateArtikel.id']}
+								</f:facet>
+								#{art.id}
+							</rich:column>
+							
+							<rich:column id="bezeichnungSpalte1">
+								<f:facet name="header">
+									#{msgAr['updateArtikel.bezeichnung']}
+								</f:facet>
+								#{art.bezeichnung}
+							</rich:column>
+							
+							<rich:column id="preisSpalte">
+								<f:facet name="header">
+									#{msgAr['updateArtikel.preis']}
+								</f:facet>
+								#{art.preis} €
+							</rich:column> 
+							
+							<rich:column id="editSpalte" >
+								<h:commandButton id="editButton"
+										 image="#{resource['images:edit.gif']}"
+										 action="#{arc.selectForUpdate(art)}"
+								         alt="#{msgAr['updateArtikel.editbutton']}"/>
+							</rich:column>
+						</rich:dataTable>
+						
+						<p id="abstand4"/>
+						<rich:dataScroller id="dataScroller1"
+						                   for="artikelTabelle1"
+						                   maxPages="10" 
+						                   rendered="#{not empty artikel}"/>
+						
+						<a4j:outputPanel id="outputPanelZebra" ajaxRendered="true">
+							<rich:jQuery id="odd"
+							             selector=".tabelleMitZebrastil tr:odd"
+							             query="addClass('odd-row')"
+							             timing="domready"/>
+							<rich:jQuery id="even"
+							             selector=".tabelleMitZebrastil tr:even"
+							             query="addClass('even-row')"
+							             timing="domready"/>
+							<rich:jQuery id="mouseover"
+							             selector=".tabelleMitZebrastil tr"
+							             event="mouseover"
+							             query="jQuery(this).addClass('active-row')"
+							             timing="domready"/>
+							<rich:jQuery id="mouseout"
+							             selector=".tabelleMitZebrastil tr"
+							             event="mouseout"
+							             query="jQuery(this).removeClass('active-row')"
+							             timing="domready"/>
+						</a4j:outputPanel>
+					</c:if>
+				</a4j:outputPanel>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

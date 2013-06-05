@@ -43,10 +43,11 @@ public class LagerController implements Serializable {
 	
 	private static final String JSF_LIST_LAGER = "/artikelverwaltung/listLager";
 	private static final String FLASH_LAGER = "lager";
-	
 	private static final String JSF_SELECT_LAGER = "/artikelverwaltung/selectLager";
 	private static final String SESSION_VERFUEGBARE_LAGER = "verfuegbareLAGER";
 
+	private static String bezeichnungfilter = "";
+	
 	private String bezeichnung;
 	
 	private List<Lagerposition> lagerpositionen;
@@ -103,6 +104,13 @@ public class LagerController implements Serializable {
 		this.bezeichnung = bezeichnung;
 	}
 
+	public String getBezeichnungFilter() {
+		return bezeichnungfilter;
+	}
+	
+	public void setBezeichnungFilter(String bezeichnungFilter) {
+		this.bezeichnungfilter = bezeichnungFilter;
+	}
 
 	public List<Artikel> getLadenhueter() {
 		return ladenhueter;

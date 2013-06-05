@@ -7,53 +7,93 @@
 	  xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
 	  xmlns:rich="http://richfaces.org/rich"
+	  xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	  xmlns:a4j="http://richfaces.org/a4j">
 
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 		<ui:param name="pageTitle" value="#{msgAr['listLager.title']}" />
 	
-			<ui:define name="article">
+		<ui:define name="article">
 			<h:form id="form">
-			<rich:panel id="listPanel" header="#{msgAr['listLager.listLagerpos']}">
-			<rich:dataTable id="lagerposTabelle"
-				                value="#{la.lagerposition}"
-				                var="lager"
-				                rows="5"
-				                noDataLabel="#{msgAr['listLager.keineDaten']}"
-				                rowClasses="odd-row, even-row"
-				                styleClass="tabelleMitZebrastil"
-				                cellspacing="10"
-				                rendered="#{not empty la.lagerposition}">
-					
-					<rich:column id="idSpalte">
-						<f:facet name="header">
-			                 #{msgAr['listLager.LagerposNr']}
-						</f:facet>
-						#{lagerposition.id}
-					</rich:column>
-					
-					<rich:column id="AnzahlSpalte">
-						<f:facet name="header">
-							#{msgAr['listLager.anzahl']}
-						</f:facet>
-						#{lagerposition.anzahl}
-					</rich:column>
-					
-					<rich:column id="ArtikelFidSpalte">
-						<f:facet name="header">
-							#{msgAr['listLager.artikel']}
-						</f:facet>
-						#{lagerposition.artikel.id}
-					</rich:column>
-					
-					<rich:column id="ArtikelBezSpalte">
-						<f:facet name="header">
-							#{msgAr['listLager.artikelbez']}
-						</f:facet>
-						#{lagerposition.artikel.bezeichnung}
-					</rich:column>
+				<rich:panel id="listPanel" header="#{msgAr['listLager.listLagerpos']}">
 
-				</rich:dataTable>
+						<rich:dataTable id="lagerposTabelle"
+			                value="#{la.lagerposition}"
+			                var="lager"
+			                rows="5"
+			                noDataLabel="#{msgAr['listLager.keineDaten']}"
+			                rowClasses="odd-row, even-row"
+			                styleClass="tabelleMitZebrastil"
+			                cellspacing="10" >
+<!-- 			                rendered="#{not empty la.lagerposition}"> -->
+					
+							<rich:column id="idSpalte">
+							<f:facet name="header">
+				                 #{msgAr['listLager.LagerposNr']}
+							</f:facet>
+								#{lager.id}
+							</rich:column>
+							
+							<rich:column id="AnzahlSpalte">
+								<f:facet name="header">
+									#{msgAr['listLager.anzahl']}
+								</f:facet>
+								#{lager.anzahl}
+							</rich:column>
+							
+							<rich:column id="ArtikelFidSpalte">
+								<f:facet name="header">
+									#{msgAr['listLager.artikel']}
+								</f:facet>
+								#{lager.artikel.id}
+							</rich:column>
+							
+							<rich:column id="ArtikelBezSpalte" filterValue="#{la.bezeichnungFilter}"
+										 filterExpression="#{fn:containsIgnoreCase(lager.artikel.bezeichnung, la.bezeichnungFilter)}">
+								<f:facet name="header">
+									<h:panelGroup id="panelg">
+<!-- 											<a4j:commandLink id="textbox"  value="#{la.lagerposition}"/> -->
+											
+											<h:inputText id="bezeichnungf" value="#{la.bezeichnungFilter}">
+												<a4j:ajax event="keyup"  render="#{lagerposTabelle}"/>
+												<br/>
+											</h:inputText>
+										<h:outputText id="keineLagerpos" rendered="empty #{la.lagerposition}"/>
+										#{msgAr['listLager.artikelbez']}
+									</h:panelGroup>
+								</f:facet>
+								
+								#{lager.artikel.bezeichnung}
+							</rich:column>
+						</rich:dataTable>
+
+						<p id="abstandZuScroller" />
+						<rich:dataScroller id="dataScroller"
+						                   for="lagerposTabelle"
+						                   maxPages="10"
+						                   rendered="#{not empty la.lagerposition}"/>
+						
+						<a4j:outputPanel id="outputPanelZebra" ajaxRendered="true">
+							<rich:jQuery id="odd"
+							             selector=".tabelleMitZebrastil tr:odd"
+							             query="addClass('odd-row')"
+							             timing="domready"/>
+							<rich:jQuery id="even"
+							             selector=".tabelleMitZebrastil tr:even"
+							             query="addClass('even-row')"
+							             timing="domready"/>
+							<rich:jQuery id="mouseover"
+							             selector=".tabelleMitZebrastil tr"
+							             event="mouseover"
+							             query="jQuery(this).addClass('active-row')"
+							             timing="domready"/>
+							<rich:jQuery id="mouseout"
+							             selector=".tabelleMitZebrastil tr"
+							             event="mouseout"
+							             query="jQuery(this).removeClass('active-row')"
+							             timing="domready"/>
+						</a4j:outputPanel>
+
 				</rich:panel>
 			</h:form>
 		</ui:define>
