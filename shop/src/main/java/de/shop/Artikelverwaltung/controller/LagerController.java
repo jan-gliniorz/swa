@@ -2,13 +2,11 @@ package de.shop.Artikelverwaltung.controller;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.ejb.TransactionAttribute;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.Flash;
 import javax.inject.Inject;
@@ -16,15 +14,10 @@ import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
 import org.jboss.logging.Logger;
-import org.richfaces.component.SortOrder;
 
 import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lagerposition;
-import de.shop.Artikelverwaltung.service.ArtikelService;
-import de.shop.Artikelverwaltung.service.ArtikelService.FetchType;
-import de.shop.Artikelverwaltung.service.ArtikelService.OrderType;
 import de.shop.Artikelverwaltung.service.LagerService;
-import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Util.Client;
 import de.shop.Util.Log;
 import de.shop.Util.Transactional;
@@ -42,11 +35,8 @@ public class LagerController implements Serializable {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
 	private static final String JSF_LIST_LAGER = "/artikelverwaltung/listLager";
-	private static final String FLASH_LAGER = "lager";
-	private static final String JSF_SELECT_LAGER = "/artikelverwaltung/selectLager";
-	private static final String SESSION_VERFUEGBARE_LAGER = "verfuegbareLAGER";
 
-	private static String bezeichnungfilter = "";
+	private String bezeichnungfilter = "";
 	
 	private String bezeichnung;
 	

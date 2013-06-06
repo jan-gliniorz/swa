@@ -151,7 +151,7 @@ public class ArtikelController implements Serializable {
 		
 		final Artikel artikel = as.findArtikelByID(id, FetchType.NUR_Artikel, locale);
 		
-		List<Artikel> artikelList = new ArrayList<Artikel>();
+		final List<Artikel> artikelList = new ArrayList<Artikel>();
 		artikelList.add(artikel);
 		
 		flash.put(FLASH_ARTIKEL, artikelList);

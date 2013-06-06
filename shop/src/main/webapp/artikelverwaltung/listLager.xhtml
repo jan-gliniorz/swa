@@ -51,9 +51,7 @@
 							<rich:column id="ArtikelBezSpalte" filterValue="#{la.bezeichnungFilter}"
 										 filterExpression="#{fn:containsIgnoreCase(lager.artikel.bezeichnung, la.bezeichnungFilter)}">
 								<f:facet name="header">
-									<h:panelGroup id="panelg">
-<!-- 											<a4j:commandLink id="textbox"  value="#{la.lagerposition}"/> -->
-											
+									<h:panelGroup id="panelg">											
 											<h:inputText id="bezeichnungf" value="#{la.bezeichnungFilter}">
 												<a4j:ajax event="keyup"  render="#{lagerposTabelle}"/>
 												<br/>
@@ -61,8 +59,7 @@
 										<h:outputText id="keineLagerpos" rendered="empty #{la.lagerposition}"/>
 										#{msgAr['listLager.artikelbez']}
 									</h:panelGroup>
-								</f:facet>
-								
+								</f:facet>							
 								#{lager.artikel.bezeichnung}
 							</rich:column>
 						</rich:dataTable>
