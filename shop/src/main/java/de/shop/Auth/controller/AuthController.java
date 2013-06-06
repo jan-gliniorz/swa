@@ -118,8 +118,8 @@ public class AuthController implements Serializable {
 	
 	public String getUserRolesToDisply() {
 		String result = "";
-		for(RolleType role : user.getRollen()) {
-			if(result.equals(""))
+		for (RolleType role : user.getRollen()) {
+			if ("".equals(result))
 				result = role.name();
 			else
 				result += ", " + role.name();

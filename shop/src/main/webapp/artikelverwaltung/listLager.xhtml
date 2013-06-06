@@ -53,7 +53,7 @@
 								<f:facet name="header">
 									<h:panelGroup id="panelg">											
 											<h:inputText id="bezeichnungf" value="#{la.bezeichnungFilter}">
-												<a4j:ajax event="keyup"  render="#{lagerposTabelle}"/>
+												<a4j:ajax event="keyup"   render="lagerposTabelle"/>
 												<br/>
 											</h:inputText>
 										<h:outputText id="keineLagerpos" rendered="empty #{la.lagerposition}"/>
