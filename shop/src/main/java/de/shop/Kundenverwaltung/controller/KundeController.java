@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Locale;
 //import java.util.Set;
 
-
 import javax.annotation.PreDestroy;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -33,7 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 //import javax.xml.bind.DatatypeConverter;
 
-
 import org.jboss.logging.Logger;
 import org.richfaces.cdi.push.Push;
 import org.richfaces.component.SortOrder;
@@ -41,9 +39,7 @@ import org.richfaces.component.UIPanelMenuItem;
 //import org.richfaces.event.FileUploadEvent;
 //import org.richfaces.model.UploadedFile;
 
-
 import de.shop.Auth.controller.AuthController;
-import de.shop.Auth.controller.KundeLoggedIn;
 import de.shop.Kundenverwaltung.domain.Kunde;
 import de.shop.Kundenverwaltung.domain.Adresse;
 import de.shop.Kundenverwaltung.domain.PasswordGroup;
@@ -93,7 +89,7 @@ public class KundeController implements Serializable {
 	private static final String CLIENT_ID_CREATE_EMAIL = "createKundeForm:email";
 	private static final String MSG_KEY_CREATE_KUNDE_EMAIL_EXISTS = "createKunde.emailExists";
 	
-	private static final Class<?>[] PASSWORD_GROUP = { PasswordGroup.class };
+	private static final Class<?>[] PASSWORD_GROUP = {PasswordGroup.class };
 	
 	private static final String CLIENT_ID_UPDATE_PASSWORD = "updateKundeForm:password";
 	private static final String CLIENT_ID_UPDATE_EMAIL = "updateKundeForm:email";
@@ -137,10 +133,6 @@ public class KundeController implements Serializable {
 	
 	@Inject
 	private FileHelper fileHelper;
-	
-	@Inject
-	@KundeLoggedIn
-	private Kunde kundeLoggedIn;
 
 	private Long kundenNr;
 	private Kunde kunde;
@@ -527,17 +519,6 @@ public class KundeController implements Serializable {
 		}
 		
 		kunde = ausgewaehlterKunde;
-		
-		return JSF_UPDATE_KUNDE;
-					
-	}
-	
-	@TransactionAttribute(REQUIRED)
-	public String selectCurrentUserForUpdate() {
-		if(kundeLoggedIn == null)
-			return null;
-		
-		kunde = ks.findKundenByKundennummer(kundeLoggedIn.getKundenNr(), FetchType.NUR_KUNDE, locale);
 		
 		return JSF_UPDATE_KUNDE;
 					

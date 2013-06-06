@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -165,7 +164,7 @@ public class Kunde implements Serializable {
 	
 	@ElementCollection(fetch = javax.persistence.FetchType.EAGER)
 	@CollectionTable(name = "kunde_rolle",
-	                 joinColumns = {@JoinColumn(name = "kunde_FID", nullable = false)},
+	                 joinColumns = {@JoinColumn(name = "kunde_FID", nullable = false) },
 	                 uniqueConstraints =  @UniqueConstraint(columnNames = { "kunde_FID", "rolle_FID" }))
 	@Column(table = "kunde_rolle", name = "rolle_FID", nullable = false)
 	private Set<RolleType> rollen;
@@ -242,7 +241,7 @@ public class Kunde implements Serializable {
 		passwort = k.passwort;
 		passwortWdh = k.passwort;
 		version = k.version;
-		if(k.getAdresse() != null)
+		if (k.getAdresse() != null)
 			adresse.setValues(k.getAdresse());
 		else
 			adresse = null;

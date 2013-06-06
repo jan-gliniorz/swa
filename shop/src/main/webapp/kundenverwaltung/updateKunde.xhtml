@@ -54,17 +54,6 @@
 					</h:inputText>
 					<rich:messages id="fehlermeldungenEmail" for="email"/>
 					
-					<h:outputLabel id="ErstelltAmLabel"
-						           for="ErstelltAm"
-						           value="#{msgKv['updateKunde.seit']}"
-					               escape="false"/>
-					<rich:calendar id="seit"
-					               datePattern="#{msgKv['updateKunde.calendar.pattern']}"
-					               value="#{kc.kunde.erstelltAm}"
-					               timezone="CET">
-					</rich:calendar>
-					<rich:messages id="fehlermeldungenErstelltAm" for="ErstelltAm"/>
-					
 					<h:outputLabel id="strasseLabel" for="strasse" value="#{msgKv['updateKunde.strasse']}"/>
 					<h:inputText id="strasse" value="#{kc.kunde.adresse.strasse}" valueChangeListener="#{kc.geaendert}"/>
 					<f:verbatim/>
