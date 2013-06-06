@@ -35,18 +35,6 @@
 							<rich:placeholder id="bestelldatumPlaceholder" value="#{msgLr['createLieferung.bestelldatum.placeholder']}" />
 						</rich:calendar>
 						<rich:messages id="fehlermeldungenBestelldatum" for="bestelldatum"/>
-			
-						<h:outputLabel id="LieferungsdatumLabel" for="lieferungsdatum" value="#{msgLr['createLieferung.lieferungsdatum']}"/>
-						<rich:calendar id="lieferungsdatum"
-						               datePattern="#{msgLr['createLieferung.calendar.pattern']}"
-						               value="#{lic.neueLieferung.lieferungsdatum}"
-						               timezone="CET">
-						    <!-- https://issues.jboss.org/browse/RF-10224
-							<rich:validator/>
-							-->
-							<rich:placeholder id="lieferungsdatumPlaceholder" value="#{msgLr['createLieferung.lieferungsdatum.placeholder']}" />
-						</rich:calendar>
-						<rich:messages id="fehlermeldungenLieferungsdatum" for="lieferungsdatum"/>
 					</h:panelGrid>
 					<rich:panel id="positionen" 
 								header="#{msgLr['createLieferung.positionen']}"> 
@@ -95,7 +83,7 @@
 					<p id="buttons">
 						<h:commandButton id="createSubmit" action="#{lic.createLieferung}" value="#{msgLr['createLieferung.submit']}"/>
 						#{' '}
-						<h:commandButton id="reset" action = "#{lic.deleteLieferung}" value="#{msgLr['createLieferung.reset']}"/>
+						<h:commandButton id="reset" type="reset" action="#{lic.removePos()}" render ="positionenTabelle" value="#{msgLr['createLieferung.reset']}"/>
 					</p>
 			</h:form>
 		</ui:define>

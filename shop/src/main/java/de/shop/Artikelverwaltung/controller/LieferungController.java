@@ -30,8 +30,10 @@ import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Artikelverwaltung.service.ArtikelService;
+import de.shop.Artikelverwaltung.service.LieferungInvalidIdException;
 import de.shop.Artikelverwaltung.service.LieferungService;
 import de.shop.Artikelverwaltung.service.LieferungService.FetchType;
+import de.shop.Util.AbstractShopException;
 import de.shop.Util.Client;
 import de.shop.Util.Log;
 import de.shop.Util.Messages;
@@ -222,8 +224,14 @@ public class LieferungController implements Serializable {
 	@TransactionAttribute(REQUIRED)
 	public String createLieferung() {
 		
-		neueLieferung = ls.createLieferung(neueLieferung, locale);
-
+		try {
+			neueLieferung = ls.createLieferung(neueLieferung, locale);
+		}
+		catch (LieferungInvalidIdException e){
+			final String outcome = createLieferungErrorMsg(e);
+			return outcome;
+		}
+		
 		// Aufbereitung fuer listLieferung.xhtml
 //		id = neueLieferung.getId();
 		
@@ -237,15 +245,15 @@ public class LieferungController implements Serializable {
 		return JSF_INDEX;
 	}
 	
-//	private String createLieferungErrorMsg(AbstractShopException e) {
-//		final Class<? extends AbstractShopException> exceptionClass = e.getClass();
-//		if (exceptionClass.equals(LieferungInvalidIdException.class)) {
-//			final LieferungInvalidIdException orig = (LieferungInvalidIdException) e;
-//			messages.error(orig.getViolations(), null);
-//		}
-//		
-//		return null;
-//	}
+	private String createLieferungErrorMsg(AbstractShopException e) {
+		final Class<? extends AbstractShopException> exceptionClass = e.getClass();
+		if (exceptionClass.equals(LieferungInvalidIdException.class)) {
+			final LieferungInvalidIdException orig = (LieferungInvalidIdException) e;
+			messages.error(orig.getViolations(), null);
+		}
+		
+		return null;
+	}
 	
 	@TransactionAttribute(REQUIRED)
 	public String updateLieferung() {
@@ -301,7 +309,6 @@ public class LieferungController implements Serializable {
 	@TransactionAttribute(REQUIRED)
 	public String deleteLieferung(Lieferung lieferung) {
 
-		
 		ls.deleteLieferung(lieferung);
 	
 //		if(lieferungen!=null)
@@ -312,6 +319,7 @@ public class LieferungController implements Serializable {
 		
 		return JSF_INDEX;
 	}
+	
 	
 	public Lieferung getLieferung() {
 		return lieferung;

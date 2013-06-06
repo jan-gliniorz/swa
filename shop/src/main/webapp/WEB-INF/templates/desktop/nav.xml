@@ -65,7 +65,7 @@
 				</rich:panelMenuItem>	
 				<rich:panelMenuItem id="ArtikelUpdateItem" 
 			                     	expanded="true"
-			                     	rendered="#{rich:isUserInRole('admin')}">
+			                     	rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}">
 					<h:outputLink id="artikelverwaltungUpdateArtikel"
 					              value="#{request.contextPath}/artikelverwaltung/updateArtikel.jsf">
 						#{msg['nav.artikelverwaltung.updateArtikel']}
@@ -73,7 +73,7 @@
 				</rich:panelMenuItem>
 				<rich:panelMenuItem id="ArtikelCreateItem" 
 			                     	expanded="true"
-			                     	rendered="#{rich:isUserInRole('admin')}">
+			                     	rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}">
 					<h:outputLink id="artikelverwaltungCreateArtikel"
 					              value="#{request.contextPath}/artikelverwaltung/createArtikel.jsf">
 						#{msg['nav.artikelverwaltung.createArtikel']}
@@ -81,13 +81,14 @@
 				</rich:panelMenuItem>
 					<rich:panelMenuItem id="LagerListItem" 
 			                     	expanded="true"
-			                     	rendered="#{rich:isUserInRole('admin')}">
+			                     	rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}">
 					<h:commandLink id="lagerList"
 								   action="#{la.listLagerposAll}">					              
 						#{msg['nav.artikelverwaltung.listLager']}
 					</h:commandLink>
 				</rich:panelMenuItem>
-				<rich:panelMenuItem id="artikelverwaltungListLieferungItem" rendered="#{rich:isUserInRole('admin')}">
+				<rich:panelMenuItem id="artikelverwaltungListLieferungItem" 
+			                     	rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}">
 					<h:outputLink id="artikelverwaltungListLieferung"
 					              value="#{request.contextPath}/artikelverwaltung/listLieferung.jsf">
 						#{msg['nav.artikelverwaltung.listLieferung']}
@@ -97,7 +98,8 @@
 						</c:if>
 					</h:outputLink>
 				</rich:panelMenuItem>
-				<rich:panelMenuItem id="artikelverwaltungListLieferungenAllItem" rendered="#{rich:isUserInRole('admin')}">
+				<rich:panelMenuItem id="artikelverwaltungListLieferungenAllItem" 
+			                     	rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}">
 					<h:outputLink id="artikelverwaltungListLieferungenAll"
 					              value="#{request.contextPath}/artikelverwaltung/listLieferungenAll.jsf">
 						#{msg['nav.artikelverwaltung.listLieferungenAll']}
@@ -107,7 +109,8 @@
 						</c:if>
 					</h:outputLink>
 				</rich:panelMenuItem>			
-				<rich:panelMenuItem id="artikelverwaltungCreateLieferungItem" rendered="#{rich:isUserInRole('admin')}">
+				<rich:panelMenuItem id="artikelverwaltungCreateLieferungItem" 
+			                     	rendered="#{rich:isUserInRole('admin') or rich:isUserInRole('mitarbeiter')}">
 					<h:outputLink id="artikelverwaltungCreateLieferung"
 					              value="#{request.contextPath}/artikelverwaltung/createLieferung.jsf">
 						#{msg['nav.artikelverwaltung.createLieferung']}
