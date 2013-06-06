@@ -150,13 +150,10 @@
 			                     expanded="true"
 			                     rendered="#{rich:isUserInRole('kunde')}">
 				<rich:panelMenuItem id="accountChange">
-					<h:outputLink id="accountChangeLink"
-					              value="#{request.contextPath}/konto/update.jsf">
+					<h:commandLink id="accountChangeLink2"
+					               action="#{kc.selectCurrentUserForUpdate}">
 						#{msg['nav.customerAccount.update']}
-						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
-							<f:param id="updateAccountCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
-						</c:if>
-					</h:outputLink>
+					</h:commandLink>
 				</rich:panelMenuItem>
 				<rich:panelMenuItem id="accountOrders">
 					<h:outputLink id="accountOrdersLink"
