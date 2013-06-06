@@ -23,31 +23,22 @@
 								       value="#{msgLr['listLieferung.id']}"
 								       for="id"/>
 				
-						<h:inputText id="id" value="#{lic.id}"/>
-				
+						<rich:autocomplete id="lieferungIdInput"
+						                   value="#{lic.id}"
+						                   mode="ajax"
+						                   minChars="1"
+						                   autocompleteMethod="#{lic.findLieferungByIdPrefix}"
+						                   var="AutoLieferung"
+						                   fetchValue="#{AutoLieferung.id}"
+						                   converter="javax.faces.Number"
+						                   converterMessage="#{msgLr['listLieferung.AutoLieferung.converterError']}">
+					    #{AutoLieferung.id} : Bestelldatum: #{AutoLieferung.bestelldatum}
+						</rich:autocomplete>                    
 						<a4j:commandButton id="findButton"
 								           action="#{lic.findLieferungById}"
 										   value="#{msgLr['listLieferung.submit']}"
 										   render="lieferungPanel sucheForm:fehlermeldungId positionenTabelle"/>
-    					<rich:panel id="editDelete"
-				                	rows ="10"
-				                	rowClasses="odd-row; even-row"
-				                	styleClass="tabelleMitZebrastil">
-							<rich:column id="editSpalte">
-								<h:commandButton id="editButton"
-										 		 image="#{resource['images:edit.gif']}"
-								         		 action="#{lic.selectForUpdate(lieferung)}"
-								         		 alt="#{msgLr['listLieferung.editButtonAlt']}"/>
-							</rich:column>
-							<rich:column id="deleteSpalte">
-								<a4j:commandButton id="deleteButton"
-										   		   image="#{resource['images:delete.gif']}"
-								           		   action="#{lic.deleteLieferung(lieferung)}"
-								           	       alt="#{msgLr['listLieferung.deleteButtonAlt']}"
-								           		   onclick="return confirm('#{msgLr['listLieferung.deleteLieferungBestaetigung']}')"
-								                   render="@form :globaleFehlermeldungen"/>
-							</rich:column>
-						</rich:panel>
+										   
 						<a4j:status id="statusStart">
 							<f:facet name="start">
 								<h:panelGroup id="waitingGroup">
@@ -58,64 +49,80 @@
 								</h:panelGroup>
 							</f:facet>
 						</a4j:status>
-						
 					</h:panelGrid>
-					
+					<rich:messages id="fehlermeldungId" for="id"/>
+					<rich:jQuery id="focus" selector="#id" query="focus()"/>
 				</rich:panel>	
 	
 				<p id="abstand1"/>
 							
-				<a4j:outputPanel id="lieferungPanel">	
-					<c:set var="lieferung" value="#{flash.lieferung}" scope="view"/>
-					<c:set target="#{flash}" property="lieferung" value="#{lieferung}"/>			
+				<a4j:outputPanel id="lieferungPanel">				
 						<rich:panel id="lieferungMainPanel" 
-									header="#{msgLr['listLieferung.heading']}"
-									value="#{lieferung}"
-						            var="lief"
-						            rendered="#{not empty lieferung or param.init ne 'true'}">
+									header="#{msgLr['listLieferung.details']}"
+						            rendered="#{not empty lic.lieferung or param.init ne 'true'}">
 							<h:panelGrid id="lieferungGrid" columns="2">
 					
 								<h:outputText id="idLabel2" value="#{msgLr['listLieferung.id']}"/>
-								<h:outputText id="id2" value="#{lieferung.id}"/>
+								<h:outputText id="id2" value="#{lic.lieferung.id}"/>
 					
 								<h:outputText id="bestelldatumLabel" value="#{msgLr['listLieferung.bestelldatum']}"/>
-								<h:outputText id="bestelldatum" value="#{lieferung.bestelldatum}"/>
+								<h:outputText id="bestelldatum" value="#{lic.lieferung.bestelldatum}"/>
 								
 								<h:outputText id="lieferungsdatumLabel" value="#{msgLr['listLieferung.lieferungsdatum']}"/>
-								<h:outputText id="lieferungsdatum" value="#{lieferung.lieferungsdatum}"/>
+								<h:outputText id="lieferungsdatum" value="#{lic.lieferung.lieferungsdatum}"/>
 								
 							</h:panelGrid>				
 						</rich:panel>
 						<p id="abstand2"/>
 						<rich:panel id="positionen" 
 									header="#{msgLr['listLieferung.positionen']}"
-									rendered="#{not empty lieferung or param.init ne 'true'}"> 
+									rendered="#{not empty lic.lieferung or param.init ne 'true'}"> 
 							<rich:dataTable id="positionenTabelle"
 											value="#{lic.lieferung.lieferungspositionen}"
 					                		var="pos">
 								<rich:column id="artikelIdSpalte">
 									<f:facet name="header">
-										#{msgLr['viewLieferung.artikel.id']}
+										#{msgLr['listLieferung.artikel.id']}
 									</f:facet>
 									#{pos.artikel.id}
 								</rich:column>
 					
 								<rich:column id="bezeichnungSpalte">
 									<f:facet name="header">
-										#{msgLr['viewLieferung.artikel.bezeichnung']}
+										#{msgLr['listLieferung.artikel.bezeichnung']}
 									</f:facet>
 									#{pos.artikel.bezeichnung}
 								</rich:column>
 					
 								<rich:column id="anzahlSpalte">
 									<f:facet name="header">
-										#{msgLr['viewLieferung.artikel.anzahl']}
+										#{msgLr['listLieferung.artikel.anzahl']}
 									</f:facet>
 									#{pos.anzahl}
 								</rich:column>
 							</rich:dataTable>
 						</rich:panel>
 						<p id="abstand2"/>
+						<rich:panel id="editDelete"
+				                	rows ="10"
+				                	rowClasses="odd-row; even-row"
+				                	styleClass="tabelleMitZebrastil"
+				                	rendered="#{not empty lic.lieferung or param.init ne 'true'}">
+							<rich:column id="editSpalte">
+								<h:commandButton id="editButton"
+										 		 image="#{resource['images:edit.gif']}"
+								         		 action="#{lic.selectForUpdate(lic.lieferung)}"
+								         		 alt="#{msgLr['listLieferung.editButtonAlt']}"/>
+							</rich:column>
+							<rich:column id="deleteSpalte">
+								<a4j:commandButton id="deleteButton"
+										   		   image="#{resource['images:delete.gif']}"
+								           		   action="#{lic.deleteLieferung(lic.lieferung)}"
+								           	       alt="#{msgLr['listLieferung.deleteButtonAlt']}"
+								           		   onclick="return confirm('#{msgLr['listLieferung.deleteLieferungBestaetigung']}')"
+								                   render="@form :globaleFehlermeldungen"/>
+							</rich:column>
+						</rich:panel>
 						<h:panelGroup id="scrollerGroup" rendered="#{not empty lic.lieferung or param.init ne 'true'}">			
 							<a4j:outputPanel id="outputPanelZebra" ajaxRendered="true">
 								<rich:jQuery id="odd"

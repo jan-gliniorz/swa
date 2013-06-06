@@ -1,6 +1,7 @@
 package de.shop.Artikelverwaltung.controller;
 
 import static de.shop.Util.Constants.JSF_INDEX;
+import static de.shop.Util.Messages.MessagesType.ARTIKELVERWALTUNG;
 import static javax.ejb.TransactionAttributeType.REQUIRED;
 import static javax.ejb.TransactionAttributeType.SUPPORTS;
 
@@ -25,11 +26,12 @@ import javax.servlet.http.HttpSession;
 import org.jboss.logging.Logger;
 import org.richfaces.cdi.push.Push;
 
+import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Artikelverwaltung.domain.Lieferungsposition;
-import de.shop.Artikelverwaltung.service.LieferungInvalidIdException;
+import de.shop.Artikelverwaltung.service.ArtikelService;
 import de.shop.Artikelverwaltung.service.LieferungService;
-import de.shop.Util.AbstractShopException;
+import de.shop.Artikelverwaltung.service.LieferungService.FetchType;
 import de.shop.Util.Client;
 import de.shop.Util.Log;
 import de.shop.Util.Messages;
@@ -56,6 +58,15 @@ public class LieferungController implements Serializable {
 	
 	private static final String JSF_UPDATE_LIEFERUNG = "/artikelverwaltung/updateLieferung";
 	
+	private static final int MAX_AUTOCOMPLETE = 10;
+	
+	private static final String CLIENT_ID_LIEFERUNGID = "form:lieferungIdInput";
+	private static final String MSG_KEY_LIEFERUNG_NOT_FOUND_BY_ID = "listLieferung.notFound";
+	
+	private static final String CLIENT_ID_ARTIKELID = "form:artikelIdInput";
+	private static final String MSG_KEY_ARTIKEL_NOT_FOUND_BY_ID = "listArtikel.notFound";
+	
+	
 	private Long id;
 	private Long neueId;
 
@@ -64,12 +75,17 @@ public class LieferungController implements Serializable {
 	private Lieferung neueLieferung;
 	
 	private List<Lieferungsposition> lieferungspositionen;
+	private List <Lieferungsposition> neueLieferungspositionen = new ArrayList<>();
 	
 	private Lieferungsposition neueLieferungsposition;
 	
 	private boolean geaendertLieferung;
+	
 	@Inject
 	private LieferungService ls;
+	
+	@Inject
+	private ArtikelService as;
 	
 	@Inject
 	private Flash flash;
@@ -87,10 +103,6 @@ public class LieferungController implements Serializable {
 	@Inject
 	@Push(topic = "updateLieferung")
 	private transient Event<String> updateLieferungEvent;
-	
-	@Inject
-	@Push(topic = "createLieferung")
-	private transient Event<String> neueLieferungEvent;
 	
 	@PostConstruct
 	private void postConstruct() {
@@ -135,7 +147,6 @@ public class LieferungController implements Serializable {
 	@TransactionAttribute(REQUIRED)
 	public String findLieferungById() {
 		lieferung = ls.findLieferungById(id, LieferungService.FetchType.MIT_POSITIONEN, locale);
-		flash.put(FLASH_LIEFERUNG, lieferung);	
 		return JSF_LIST_LIEFERUNG;
 	}
 	
@@ -147,85 +158,159 @@ public class LieferungController implements Serializable {
 		return  JSF_LIST_LIEFERUNGEN_ALL;
 	}
 	
-	@TransactionAttribute(REQUIRED)
-	public String createKunde() {
-		
-		try {
-			neueLieferung = (Lieferung) ls.createLieferung(neueLieferung, locale);
-		}
-		catch (LieferungInvalidIdException e) {
-			final String outcome = createLieferungErrorMsg(e);
-			return outcome;
-		}
-
-		// Push-Event fuer Webbrowser
-		neueLieferungEvent.fire(String.valueOf(neueLieferung.getId()));
-		
-		// Aufbereitung fuer viewKunde.xhtml
-		id = neueLieferung.getId();
-		lieferung = neueLieferung;
-		neueLieferung = null;  // zuruecksetzen
-		
-		return JSF_LIST_LIEFERUNGEN_ALL;
-	}
-	
-	private String createLieferungErrorMsg(AbstractShopException e) {
-		final Class<? extends AbstractShopException> exceptionClass = e.getClass();
-		if (exceptionClass.equals(LieferungInvalidIdException.class)) {
-			final LieferungInvalidIdException orig = (LieferungInvalidIdException) e;
-			messages.error(orig.getViolations(), null);
-		}
-		
+	private String findLieferungByIdErrorMsg(String id) {
+		messages.error(ARTIKELVERWALTUNG, MSG_KEY_LIEFERUNG_NOT_FOUND_BY_ID, CLIENT_ID_LIEFERUNGID, id);
 		return null;
 	}
 	
 	@TransactionAttribute(REQUIRED)
-	public String updateLieferung() {
-
-		if (!geaendertLieferung || lieferung == null) {
-			return JSF_INDEX;
+	public List<Lieferung> findLieferungByIdPrefix(String idPrefix) {
+		List<Lieferung> lieferungPrefix = null;
+		Long id = null; 
+		try {
+			id = Long.valueOf(idPrefix);
 		}
+		catch (NumberFormatException e) {
+			findLieferungByIdErrorMsg(idPrefix);
+			return null;
+		}
+		
+		lieferungPrefix = ls.findLieferungByIdPrefix(id);
+		if (lieferungPrefix == null || lieferungPrefix.isEmpty()) {
+			// Keine Lieferung zu gegebenem ID-Praefix vorhanden
+			findLieferungByIdErrorMsg(idPrefix);
+			return null;
+		}
+		
+		if (lieferungPrefix.size() > MAX_AUTOCOMPLETE) {
+			return lieferungPrefix.subList(0, MAX_AUTOCOMPLETE);
+		}
+		return lieferungPrefix;
+	}
+	
+	private String findArtikelByIdErrorMsg(String id) {
+		messages.error(ARTIKELVERWALTUNG, MSG_KEY_ARTIKEL_NOT_FOUND_BY_ID, CLIENT_ID_ARTIKELID, id);
+		return null;
+	}	
+	
+	@TransactionAttribute(REQUIRED)
+	public List<Artikel> findArtikelByIdPrefix(String idPrefix) {
+		List<Artikel> artikelPrefix = null;
+		
+		Long id = null; 
+		try {
+			id = Long.valueOf(idPrefix);
+		}
+		catch (NumberFormatException e) {
+			findArtikelByIdErrorMsg(idPrefix);
+			return null;
+		}
+		
+		artikelPrefix = as.findArtikelByIdPrefix(id);
+		if (artikelPrefix == null || artikelPrefix.isEmpty()) {
+			// Keine Lieferung zu gegebenem ID-Praefix vorhanden
+			findArtikelByIdErrorMsg(idPrefix);
+			return null;
+		}
+		
+		if (artikelPrefix.size() > MAX_AUTOCOMPLETE) {
+			return artikelPrefix.subList(0, MAX_AUTOCOMPLETE);
+		}
+		return artikelPrefix;
+	}
+	
+	@TransactionAttribute(REQUIRED)
+	public String createLieferung() {
+		
+		neueLieferung = ls.createLieferung(neueLieferung, locale);
+
+		// Aufbereitung fuer listLieferung.xhtml
+//		id = neueLieferung.getId();
+		
+//		neueLieferung = ls.findLieferungById(id, FetchType.MIT_POSITIONEN, locale);  // zuruecksetzen
+//		lieferung = neueLieferung;
+		
+		id = null;
+		neueLieferung = null;
+		lieferung = null;
+		
+		return JSF_INDEX;
+	}
+	
+//	private String createLieferungErrorMsg(AbstractShopException e) {
+//		final Class<? extends AbstractShopException> exceptionClass = e.getClass();
+//		if (exceptionClass.equals(LieferungInvalidIdException.class)) {
+//			final LieferungInvalidIdException orig = (LieferungInvalidIdException) e;
+//			messages.error(orig.getViolations(), null);
+//		}
+//		
+//		return null;
+//	}
+	
+	@TransactionAttribute(REQUIRED)
+	public String updateLieferung() {
 			
 		LOGGER.tracef("Aktualisierte Lieferung: %s", lieferung);
 		
 		lieferung = ls.updateLieferung(lieferung, locale);
 
-		// Push-Event fuer Webbrowser
-		updateLieferungEvent.fire(String.valueOf(lieferung.getId()));
-		
 		// ValueChangeListener zuruecksetzen
 		geaendertLieferung = false;
 		
 		// Aufbereitung fuer viewKunde.xhtml
-		id = lieferung.getId();
+		id = null;
+		lieferung = null;
 		
-		return JSF_LIST_LIEFERUNGEN_ALL;
+		return JSF_INDEX;
 	}
 	
-	@TransactionAttribute(REQUIRED)
-	public void addPos(Lieferung lieferung){
+	public void addPos(){
 		
-	lieferung.addLieferungsposition(neueLieferungsposition);
-	
+		Lieferungsposition neueLieferungsposition = new Lieferungsposition();
+		neueLieferungsposition.setArtikel(new Artikel());
+		neueLieferung.addLieferungsposition(neueLieferungsposition);	
 	}
+	
+	public void removePos(Lieferungsposition lieferungsposition) {
+		
+		neueLieferung.removeLieferungsposition(lieferungsposition);		
+	}
+	
+	
+	public void addUpdatePos(){	
+		
+		Lieferungsposition neueLieferungsposition = new Lieferungsposition();
+		neueLieferungsposition.setArtikel(new Artikel());
+		lieferung.addLieferungsposition(neueLieferungsposition);	
+	}
+	
+	public void removeUpdatePos(Lieferungsposition lieferungsposition) {
+		
+		lieferung.removeLieferungsposition(lieferungsposition);		
+	}
+		
 	
 	public void createEmptyLieferung() {
 		if (neueLieferung != null) {
 			return;
 		}
-
 		neueLieferung = new Lieferung();
-		final List <Lieferungsposition> lieferungspositionen = new ArrayList<>();
-		neueLieferung.setLieferungspositionen(lieferungspositionen);	
+		neueLieferung.setLieferungspositionen(neueLieferungspositionen);	
 	}
 		
 	@TransactionAttribute(REQUIRED)
 	public String deleteLieferung(Lieferung lieferung) {
 
-		ls.deleteLieferung(lieferung);
 		
-		lieferungen.remove(lieferung);
-		return null;
+		ls.deleteLieferung(lieferung);
+	
+//		if(lieferungen!=null)
+//			lieferungen.remove(lieferung);
+//		
+		this.lieferung=null;
+		this.id=null;
+		
+		return JSF_INDEX;
 	}
 	
 	public Lieferung getLieferung() {

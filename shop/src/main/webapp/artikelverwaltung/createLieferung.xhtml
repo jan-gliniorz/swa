@@ -5,7 +5,8 @@
 	  xmlns:ui="http://java.sun.com/jsf/facelets"
 	  xmlns:h="http://java.sun.com/jsf/html"
 	  xmlns:f="http://java.sun.com/jsf/core"
-	  xmlns:rich="http://richfaces.org/rich">
+	  xmlns:rich="http://richfaces.org/rich"
+	  xmlns:a4j="http://richfaces.org/a4j">
 
 	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 		<ui:define name="metadata">
@@ -46,40 +47,49 @@
 							<rich:placeholder id="lieferungsdatumPlaceholder" value="#{msgLr['createLieferung.lieferungsdatum.placeholder']}" />
 						</rich:calendar>
 						<rich:messages id="fehlermeldungenLieferungsdatum" for="lieferungsdatum"/>
-
 					</h:panelGrid>
 					<rich:panel id="positionen" 
-								header="#{msgLr['listLieferung.positionen']}"> 
+								header="#{msgLr['createLieferung.positionen']}"> 
 						<rich:dataTable id="positionenTabelle"
 										value="#{lic.neueLieferung.lieferungspositionen}"
 					                	var="pos">
 					                	
 							<rich:column id="artikelIdSpalte">
 								<f:facet name="header">
-									#{msgLr['viewLieferung.artikel.id']}
+									#{msgLr['createLieferung.artId']}
 								</f:facet>
-								<h:inputText id="artikelId" value="#{pos.artikel.id}"/>
-								<rich:messages id="fehlermeldungArtId" for="artikelId"/>
+								<rich:autocomplete id="artikelIdInput"
+								                   value="#{pos.artikel.id}"
+								                   mode="ajax"
+								                   minChars="1"
+								                   autocompleteMethod="#{lic.findArtikelByIdPrefix}"
+								                   var="artikel"
+								                   fetchValue="#{artikel.id}"
+								                   converter="javax.faces.Number"
+								                   converterMessage="#{msgLr['createLieferung.artikel.converterError']}">
+									#{artikel.id} : #{artikel.bezeichnung}
+								</rich:autocomplete>
 							</rich:column>
 							
 							<rich:column id="anzahlSpalte">
 								<f:facet name="header">
-									#{msgLr['viewLieferung.artikel.anzahl']}
+								#{msgLr['createLieferung.anzahl']}
 								</f:facet>
-								<h:inputText id="anzahl" value="#{pos.anzahl}"/>
-								<rich:messages id="fehlermeldungAnzahl" for="anzahl"/>
+								<rich:inputNumberSpinner id="anzahl"
+				                             value="#{pos.anzahl}"
+				                             minValue="0"
+				                             maxValue="99"
+				                             inputSize="2"/>
 							</rich:column>
 							
 							<rich:column id="addSpalte">
 								<f:facet name="header">
-									<h:commandButton id="addButton"
-										             image="#{resource['images:add.gif']}"
-										             action="#{lic.addPos(neueLieferung)}"
-												     alt="#{msgLr['createLieferung.addPos']}"/>
-								</f:facet>	
-							</rich:column>
-							
-						</rich:dataTable>
+									<a4j:commandButton image="#{resource['images:add.gif']}" action ="#{lic.addPos}" render ="positionenTabelle" />		
+								</f:facet>
+								<a4j:commandButton image="#{resource['images:remove.gif']}" action ="#{lic.removePos(pos)}" render ="positionenTabelle" />	
+							</rich:column>	
+										
+						</rich:dataTable>			 
 					</rich:panel>
 						
 					<p id="buttons">

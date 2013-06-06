@@ -3,6 +3,7 @@ package de.shop.Artikelverwaltung.service;
 import static de.shop.Util.Constants.KEINE_ID;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -19,6 +20,7 @@ import javax.validation.Validator;
 
 import org.jboss.logging.Logger;
 
+import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Util.IdGroup;
@@ -122,6 +124,22 @@ public class LieferungService implements Serializable {
 		return lieferung;
 	}
 	
+	/**
+	 */
+	public List<Lieferung> findLieferungByIdPrefix(Long id) {
+		if (id == null) {
+			return Collections.emptyList();
+		}
+		
+		final List<Lieferung> lieferung = em.createNamedQuery(Lieferung.FIND_LIEFERUNG_BY_ID_PREFIX,
+				                                               Lieferung.class)
+				                             .setParameter(Lieferung.PARAM_ID, id.toString() + '%')
+				                             .getResultList();
+		return lieferung;
+	}
+	
+	/**
+	 */
 	private void validateLieferungId(Long lieferungId, Locale locale) {
 		final Validator validator = validatorProvider.getValidator(locale);
 		final Set<ConstraintViolation<Lieferung>> violations = validator.validateValue(Lieferung.class,

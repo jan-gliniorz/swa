@@ -57,12 +57,18 @@ import de.shop.Util.IdGroup;
 	@NamedQuery(name = Lieferung.LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN,
 			query = "SELECT DISTINCT li"
 					+ " FROM Lieferung li"
-					+ " JOIN li.lieferungspositionen"
+					+ " JOIN li.lieferungspositionen lp"
+//					+ " JOIN FETCH lp.artikel"
 					+ " WHERE li.id = :" + Lieferung.PARAM_ID),
 	@NamedQuery(name = Lieferung.LIEFERUNG_BY_BESTELLDATUM,
 			query = "SELECT li"
 					+ " FROM Lieferung li"
 					+ " WHERE li.bestelldatum = :" + Lieferung.PARAM_BESTELLDATUM),
+	@NamedQuery(name  = Lieferung.FIND_LIEFERUNG_BY_ID_PREFIX,
+			        query = "SELECT   li"
+			                + " FROM  Lieferung li"
+			                + " WHERE CONCAT('', li.id) LIKE :" + Lieferung.PARAM_ID
+			                + " ORDER BY li.id"),
 	@NamedQuery(name = Lieferung.LIEFERUNGEN_ALL,
     		query = "SELECT li FROM Lieferung li")
 })
@@ -75,6 +81,7 @@ public class Lieferung implements Serializable {
 	public static final String LIEFERUNG_BY_ID = PREFIX + "findLieferungById";
 	public static final String LIEFERUNG_BY_ID_LIEFERUNGSPOSITIONEN = PREFIX 
 							   + "findLieferungByIdFetchLieferungspositionen";
+	public static final String FIND_LIEFERUNG_BY_ID_PREFIX = PREFIX + "findLieferungByIDPrefix";
 	public static final String LIEFERUNG_BY_BESTELLDATUM = PREFIX + "findLieferungByBestelldatum";
 	public static final String LIEFERUNGEN_ALL = PREFIX + "findLieferungenAll";
 	
@@ -145,6 +152,11 @@ public class Lieferung implements Serializable {
 		}
 		
 		lieferungspositionen.add(lieferungsposition);
+		return this;
+	}
+	
+	public Lieferung removeLieferungsposition(Lieferungsposition lieferungsposition) {
+		lieferungspositionen.remove(lieferungsposition);
 		return this;
 	}
 	

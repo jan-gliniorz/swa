@@ -63,7 +63,7 @@ public class Lieferungsposition implements Serializable {
 	
     @ManyToOne
 	@JoinColumn(name = "artikel_FID", nullable = false)
-	@NotNull(message = "{artikelverwaltung.lieferungsposition.artikel.notNull}")
+//	@NotNull(message = "{artikelverwaltung.lieferungsposition.artikel.notNull}")
     @JsonIgnore
 	private Artikel artikel;
 	
@@ -149,9 +149,14 @@ public class Lieferungsposition implements Serializable {
 		if (anzahl != other.anzahl)
 			return false;
 		
-		if (!id.equals(other.id))
+		if(id!=null && (other.id!=null)) {
+			if (!id.equals(other.id))
+				return false;
+		}
+		else if (id==null && other.id==null)
+				return true;
+		else
 			return false;
-		
 		return true;
 	}
 
