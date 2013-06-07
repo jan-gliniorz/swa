@@ -32,7 +32,6 @@ import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Artikelverwaltung.service.ArtikelService;
 import de.shop.Artikelverwaltung.service.LieferungInvalidIdException;
 import de.shop.Artikelverwaltung.service.LieferungService;
-import de.shop.Artikelverwaltung.service.LieferungService.FetchType;
 import de.shop.Util.AbstractShopException;
 import de.shop.Util.Client;
 import de.shop.Util.Log;
@@ -77,7 +76,7 @@ public class LieferungController implements Serializable {
 	private Lieferung neueLieferung;
 	
 	private List<Lieferungsposition> lieferungspositionen;
-	private List <Lieferungsposition> neueLieferungspositionen = new ArrayList<>();
+	private List<Lieferungsposition> neueLieferungspositionen = new ArrayList<>();
 	
 	private Lieferungsposition neueLieferungsposition;
 	
@@ -97,7 +96,7 @@ public class LieferungController implements Serializable {
 
 	@Inject
 	@Client
-	Locale locale;
+	private Locale locale;
 	
 	@Inject
 	private Messages messages;
@@ -154,7 +153,7 @@ public class LieferungController implements Serializable {
 	
 	@TransactionAttribute(REQUIRED)
 	public String findLieferungenAll() {
-		lieferungen = ls.findLieferungenAll (LieferungService.FetchType.NUR_LIEFERUNG, LieferungService.OrderType.ID);
+		lieferungen = ls.findLieferungenAll(LieferungService.FetchType.NUR_LIEFERUNG, LieferungService.OrderType.ID);
 		flash.put(FLASH_LIEFERUNGEN_ALL, lieferungen);
 		
 		return  JSF_LIST_LIEFERUNGEN_ALL;
@@ -227,7 +226,7 @@ public class LieferungController implements Serializable {
 		try {
 			neueLieferung = ls.createLieferung(neueLieferung, locale);
 		}
-		catch (LieferungInvalidIdException e){
+		catch (LieferungInvalidIdException e) {
 			final String outcome = createLieferungErrorMsg(e);
 			return outcome;
 		}
@@ -272,9 +271,9 @@ public class LieferungController implements Serializable {
 		return JSF_INDEX;
 	}
 	
-	public void addPos(){
+	public void addPos() {
 		
-		Lieferungsposition neueLieferungsposition = new Lieferungsposition();
+		final Lieferungsposition neueLieferungsposition = new Lieferungsposition();
 		neueLieferungsposition.setArtikel(new Artikel());
 		neueLieferung.addLieferungsposition(neueLieferungsposition);	
 	}
@@ -285,9 +284,9 @@ public class LieferungController implements Serializable {
 	}
 	
 	
-	public void addUpdatePos(){	
+	public void addUpdatePos() {	
 		
-		Lieferungsposition neueLieferungsposition = new Lieferungsposition();
+		final Lieferungsposition neueLieferungsposition = new Lieferungsposition();
 		neueLieferungsposition.setArtikel(new Artikel());
 		lieferung.addLieferungsposition(neueLieferungsposition);	
 	}
@@ -314,8 +313,8 @@ public class LieferungController implements Serializable {
 //		if(lieferungen!=null)
 //			lieferungen.remove(lieferung);
 //		
-		this.lieferung=null;
-		this.id=null;
+		this.lieferung = null;
+		this.id = null;
 		
 		return JSF_INDEX;
 	}

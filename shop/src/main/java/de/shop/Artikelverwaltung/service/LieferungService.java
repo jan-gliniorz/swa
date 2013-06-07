@@ -20,7 +20,6 @@ import javax.validation.Validator;
 
 import org.jboss.logging.Logger;
 
-import de.shop.Artikelverwaltung.domain.Artikel;
 import de.shop.Artikelverwaltung.domain.Lieferung;
 import de.shop.Artikelverwaltung.domain.Lieferungsposition;
 import de.shop.Util.IdGroup;

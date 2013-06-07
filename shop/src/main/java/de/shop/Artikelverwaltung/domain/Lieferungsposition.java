@@ -149,11 +149,11 @@ public class Lieferungsposition implements Serializable {
 		if (anzahl != other.anzahl)
 			return false;
 		
-		if(id!=null && (other.id!=null)) {
+		if (id != null && (other.id != null)) {
 			if (!id.equals(other.id))
 				return false;
 		}
-		else if (id==null && other.id==null)
+		else if (id == null && other.id == null)
 				return true;
 		else
 			return false;
