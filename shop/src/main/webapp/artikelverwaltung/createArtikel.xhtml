@@ -36,10 +36,10 @@
 						<h:inputText id="preis"
 						             value="#{arc.neuerArtikel.preis}"
 						             converterMessage="#{msgAr['createArtikel.preis.convert']}">
-						    <f:convertNumber type="currency"
+						    <!--<f:convertNumber type="currency"
 							                 currencyCode="EUR"
 							                 maxFractionDigits="2"/>
-							    <f:ajax event="blur" render="fehlermeldungenPreis"/>
+							    <f:ajax event="blur" render="fehlermeldungenPreis"/>-->
 						</h:inputText>
 						<rich:messages id="fehlermeldungenPreis" for="preis"/>
 			

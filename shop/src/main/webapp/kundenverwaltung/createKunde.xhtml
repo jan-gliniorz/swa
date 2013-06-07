@@ -48,17 +48,6 @@
                                             onvalid="$(#{rich:element('email')}).removeClass('invalid')"/>
 						</h:inputText>
 						<rich:messages id="fehlermeldungEmail" for="email"/>
-						
-						<h:outputLabel id="ErstelltAmLabel"
-						               for="ErstelltAm"
-						               value="#{msgKv['createKunde.seit']}"/>
-						<rich:calendar id="ErstelltAm"
-						               datePattern="#{msgKv['createKunde.calendar.pattern']}"
-						               value="#{kc.neuerKunde.erstelltAm}"
-						               timezone="CET">
-							<rich:placeholder id="seitPlaceholder" value="#{msgKv['createKunde.seit.placeholder']}" />
-						</rich:calendar>
-						<rich:messages id="fehlermeldungenSeit" for="seit"/>
 		
 						<h:outputLabel id="passwordLabel"
 						               for="password"

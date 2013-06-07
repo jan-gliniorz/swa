@@ -98,7 +98,7 @@ public class ArtikelController implements Serializable {
 	private transient Event<String> updateArtikelEvent;
 	
 	@Inject
-	@Push(topic = "marketing")
+	@Push(topic = "neuerArtikel")
 	private transient Event<String> neuerArtikelEvent;
 	
 	@PostConstruct
@@ -267,7 +267,7 @@ public class ArtikelController implements Serializable {
 			neuerArtikel = (Artikel) as.createArtikel(neuerArtikel, locale);
 
 		// Push-Event fuer Webbrowser
-		neuerArtikelEvent.fire(String.valueOf(neuerArtikel.getId()));
+		//neuerArtikelEvent.fire(String.valueOf(neuerArtikel.getId()));
 		
 		// Aufbereitung fuer viewKunde.xhtml
 		id = neuerArtikel.getId();
