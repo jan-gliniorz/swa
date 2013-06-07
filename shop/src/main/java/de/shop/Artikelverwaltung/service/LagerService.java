@@ -21,8 +21,6 @@ import org.jboss.logging.Logger;
 import de.shop.Artikelverwaltung.domain.Artikel;
 //import de.shop.Artikelverwaltung.domain.Lager;
 import de.shop.Artikelverwaltung.domain.Lagerposition;
-import de.shop.Artikelverwaltung.service.ArtikelService.FetchType;
-import de.shop.Artikelverwaltung.service.ArtikelService.OrderType;
 import de.shop.Util.IdGroup;
 import de.shop.Util.Log;
 import de.shop.Util.ValidatorProvider;

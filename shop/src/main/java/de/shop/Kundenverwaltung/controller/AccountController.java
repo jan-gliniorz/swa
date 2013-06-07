@@ -40,9 +40,6 @@ public class AccountController implements Serializable {
 	
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
-	
-	private static final String JSF_KUNDENVERWALTUNG = "/kundenverwaltung/";
-	
 	@Inject
 	private KundeService ks;
 	

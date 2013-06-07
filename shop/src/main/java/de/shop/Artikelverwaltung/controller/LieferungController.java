@@ -52,7 +52,6 @@ public class LieferungController implements Serializable {
 	
 	
 	private static final String JSF_LIST_LIEFERUNG = "/artikelverwaltung/listLieferung";
-	private static final String FLASH_LIEFERUNG = "lieferung";
 	
 	private static final String JSF_LIST_LIEFERUNGEN_ALL = "/artikelverwaltung/listLieferungenAll";
 	private static final String FLASH_LIEFERUNGEN_ALL = "lieferungen";
@@ -77,8 +76,6 @@ public class LieferungController implements Serializable {
 	
 	private List<Lieferungsposition> lieferungspositionen;
 	private List<Lieferungsposition> neueLieferungspositionen = new ArrayList<>();
-	
-	private Lieferungsposition neueLieferungsposition;
 	
 	private boolean geaendertLieferung;
 	
