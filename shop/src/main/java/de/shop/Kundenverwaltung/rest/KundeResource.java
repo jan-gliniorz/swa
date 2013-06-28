@@ -4,6 +4,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -104,6 +105,16 @@ public class KundeResource {
 		return kunde;
 	}
 	
+	@GET
+	@Path("/prefix/nachname/{name}")
+	public List<String> findNachnamenByPrefix(@PathParam("name") String namePrefix, 
+											@Context UriInfo uriInfo,
+											@Context HttpHeaders headers) {
+		final List<String> nachnamen = ks.findNachnamenByPrefix(namePrefix);
+		
+		return nachnamen;
+	}
+	
 	/**
 	 * Mit der URL /kunden werden alle Kunden ermittelt oder
 	 * mit kundenverwaltung/kunden?nachname=... diejenigen mit einem bestimmten Nachnamen.
@@ -158,6 +169,24 @@ public class KundeResource {
 			uriHelperAuftrag.updateUriAuftrag(auftrag, uriInfo);
 		}
 		return auftraege;
+	}
+	
+	@GET
+	@Path("{id:[1-9][0-9]*}/bestellungenIds")
+	public Collection<Long> findBestellungenIdsByKundeId(@PathParam("id") Long kundennummer, @Context UriInfo uriInfo) {
+		final Collection<Auftrag> auftraege = findAuftragById(kundennummer, uriInfo);
+		if (auftraege.isEmpty()) {
+			final String msg = "Kein Kunde gefunden mit der ID " + kundennummer;
+			throw new NotFoundException(msg);
+		}
+		
+		final int anzahl = auftraege.size();
+		final Collection<Long> auftraegeIds = new ArrayList<>(anzahl);
+		for (Auftrag auftrag : auftraege) {
+			auftraegeIds.add(auftrag.getId());
+		}
+		
+		return auftraegeIds;
 	}
 
 	/**

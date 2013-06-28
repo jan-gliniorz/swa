@@ -162,6 +162,7 @@ public class Kunde implements Serializable {
 	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
 	private Adresse adresse;
 	
+	@JsonIgnore
 	@ElementCollection(fetch = javax.persistence.FetchType.EAGER)
 	@CollectionTable(name = "kunde_rolle",
 	                 joinColumns = {@JoinColumn(name = "kunde_FID", nullable = false) },
